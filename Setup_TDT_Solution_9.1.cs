@@ -609,6 +609,21 @@ namespace TDTInstaller
                                 genKey.SetValue("TemplatePath", templatePath);
                             }
                         }
+                        foreach (string pName in profilesKey.GetSubKeyNames())
+                        {
+                            try
+                            {
+                                using (RegistryKey subGen = profilesKey.OpenSubKey(pName + @"\General", true))
+                                {
+                                    if (subGen != null)
+                                    {
+                                        subGen.SetValue("ACAD", cleanAcad);
+                                        subGen.SetValue("ACADDRV", drvPath);
+                                    }
+                                }
+                            }
+                            catch { }
+                        }
                     }
                 }
             }

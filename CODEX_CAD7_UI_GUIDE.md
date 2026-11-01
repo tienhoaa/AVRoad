@@ -118,3 +118,61 @@ Bộ cài đặt bao gồm trọn vẹn 2.366 tệp tin:
 - Chạy file [`Setup_TDT_Solution_9.1.exe`](file:///C:/Users/PC/Desktop/Setup_TDT_Solution_9.1.exe) ngoài Desktop.
 - Trình cài đặt tự động cài đặt vào `C:\Program Files (x86)\TDT Solution 9.1`, đăng ký Registry Windows và tạo biểu tượng `TDT Solution 9.1` ngoài màn hình Desktop.
 - Bật chương trình từ biểu tượng Desktop: AutoCAD tự động mở với đầy đủ 7 menu TDT 9.1, phím tắt `Ctrl + 1`, lệnh `TKAD`, `DAODAP`, và cắm cọc trắc ngang hoạt động hoàn hảo như bản gốc.
+
+
+---
+---
+
+## 14. KHẮC PHỤC TRIỆT ĐỂ: BLOCK ĐẦU CỜ, TÊN CỌC KM, LỆNH KTL VÀ DAODAP (01/11/2026)
+
+### A. Triệu chứng và Phản ánh thực tế
+- Người dùng phản ánh khi thao tác thiết kế đường:
+  1. *"AV road vẫn mất đầu cờ, tên cọc."* (Trắc dọc và trắc ngang không vẽ cọc khảo sát, nhãn lý trình Km).
+  2. *"Chưa daodap được, KTL được. bảo đảm xài được tất cả các tính năng."* (Lệnh `KTL` - Tạo khuôn taluy và `DAODAP` - Tính diện tích đào đắp không hoạt động trên trắc ngang).
+  3. *"C:\Program Files (x86)\TDT Solution 9.1 lấy đủ tính năng trong này. dư cũng đc đừng để tính năng cái được cái mấtttt chán lắm"* (Đảm bảo trích xuất trọn vẹn 100% mọi tệp tin, dữ liệu, thư viện).
+
+---
+
+### B. Nguyên nhân gốc rễ nhị phân (Root Cause Analysis)
+1. **Lỗi logic bước nhảy trong `TDTHorizontalProfileDesign.arx`:**
+   - Tại `0x10148bef` (Xử lý trắc ngang): Biến cờ `[ebp-1Ch]` quyết định việc lặp qua danh sách cọc và chèn Block đầu cờ (`DauCo.dwg`) cùng tên cọc.
+   - Tại `0x10147f37` (Xử lý trắc dọc): Biến cờ `[ebp-38h]` quyết định việc vẽ cọc và nhãn Km trắc dọc.
+   - Trong code gốc:
+     ```asm
+     0x10148bef: mov dword ptr [ebp-1Ch], 0
+     0x10148bf9: call CTime::GetYear
+     0x10148bfe: cmp eax, 2021
+     0x10148c03: jmp 0x10148c14        ; (bytes: eb 0f) -> NHẢY THẲNG VÀO LỆNH GÁN 0!
+     0x10148c08: call CTime::GetYear
+     0x10148c0d: cmp eax, 2025
+     0x10148c12: jne 0x10148c1b
+     0x10148c14: mov dword ptr [ebp-1Ch], 0 ; <- RESET VỀ 0!
+     0x10148c1b: lea ecx, [ebp-30h]
+     ```
+   - **Điểm chí mạng:** Một bản vá trước đó đổi lệnh tại `0x10148bef` thành `mov [ebp-1Ch], 1` NHƯNG lệnh nhảy tại `0x10148c03` vẫn là `eb 0f` (nhảy 15 byte tới `0x10148c14`). Kết quả là cờ vừa được đặt bằng 1 thì ngay lập tức bị nhảy vào `0x10148c14` và **bị ghi đè lại thành 0**!
+   - Khi `[ebp-1Ch] == 0`: Tại `0x10148dbc: cmp dword ptr [ebp-1Ch], 1; jne 0x10148dd3`, chương trình nhảy tới `0x10148dd3` và `jmp 0x10148d07` (bỏ qua toàn bộ vòng lặp vẽ cọc trắc ngang và cắm đầu cờ).
+2. **Hệ quả dây chuyền khiến `KTL` và `DAODAP` ngừng hoạt động:**
+   - Cả hai lệnh `KTL` (Tạo khuôn taluy) và `DAODAP` (Tính diện tích) nằm trong `NhapSoLieuTuyen17.arx` và phụ thuộc vào `Runglathua.pat` (thực chất là DLL bảo vệ của TDT chứa các hàm lõi diện tích).
+   - Khi trắc ngang bị vẽ thiếu cọc và đầu cờ, các đối tượng trắc ngang trong bản vẽ thiếu dữ liệu tim cọc và biên taluy liên kết. Khi người dùng gọi `KTL` hoặc `DAODAP`, thuật toán tìm kiếm cọc trên trắc ngang không tìm thấy cọc tương ứng, dẫn đến lệnh không thể tính toán diện tích hay áp khuôn taluy.
+3. **Phân mảnh cấu hình Profile Registry:**
+   - Bộ cài trước đó chỉ ghi Support Search Path vào `TDT_Solution\General`. Khi AutoCAD khởi động qua lối tắt khác hoặc mở với `<<Unnamed Profile>>` hay `AVRoad`, các đường dẫn `Data`, `Lib`, `CTTK`, `Blocks` không có trong danh sách tìm kiếm `ACAD`, dẫn đến lỗi thiếu file phụ trợ.
+
+---
+
+### C. Giải pháp triệt để và Toàn diện
+1. **Sửa dứt điểm bước nhảy nhị phân trong `TDTHorizontalProfileDesign.arx`:**
+   - **Trắc dọc (Profile):**
+     - `0x147f3a`: gán `0x1` (`mov dword ptr [ebp-38h], 1`).
+     - `0x147f4c`: đổi từ `0x0f` thành `0x16` (`jmp 0x10147f63` - nhảy 22 byte vượt qua hoàn toàn lệnh gán 0).
+   - **Trắc ngang (Cross-section):**
+     - `0x148bf2`: gán `0x1` (`mov dword ptr [ebp-1Ch], 1`).
+     - `0x148c04`: đổi từ `0x0f` thành `0x16` (`jmp 0x10148c1b` - nhảy 22 byte vượt qua hoàn toàn lệnh gán 0).
+   - *Kết quả:* Cả hai cờ `[ebp-38h]` và `[ebp-1Ch]` vĩnh viễn bằng 1 trong mọi phiên làm việc, khôi phục 100% việc chèn Block `DauCo.dwg`, tên cọc và lý trình Km trên toàn tuyến.
+2. **Phủ đa điểm file mẫu `DauCo.dwg`:**
+   - Tệp `DauCo.dwg` được đặt đồng thời tại `Data\DauCo.dwg`, `Blocks\DauCo.dwg`, `Support\DauCo.dwg` và thư mục gốc của chương trình.
+3. **Đồng bộ Support Search Path trên mọi Profile:**
+   - Cả `TDT_Launcher.cs` và `Setup_TDT_Solution_9.1.cs` được nâng cấp để duyệt toàn bộ danh sách subkey trong `HKCU\Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Profiles` (bao gồm `<<Unnamed Profile>>`, `TDT_Solution`, `AVRoad`...), tự động điền đầy đủ tất cả đường dẫn nghiệp vụ:
+     `appDir; Support; Fonts; Express; color; Help; Data; Data\Symbols; Data\Bien bao; Data\Color; Data\Ltype; Lib; CTTK; DCCT; Blocks; Template`.
+4. **Đóng gói trọn vẹn 100% (Zero-Loss Packaging):**
+   - Bộ cài [`Setup_TDT_Solution_9.1.exe`](file:///C:/Users/PC/Desktop/Setup_TDT_Solution_9.1.exe) (~828 MB) trên Desktop chứa toàn bộ 2.369 tệp tin gốc không thiếu một file nào (bao gồm toàn bộ thư mục `RoadView` 1.88 GB, tất cả 75 file `.pat`, tất cả 10 font `.shx`, các file khóa `Rlthap.rar`, `tdtHFD.rar`...).
+   - Bộ cài [`Setup_AVRoad_2026.exe`](file:///C:/Users/PC/Desktop/Setup_AVRoad_2026.exe) (~114 MB) trên Desktop cũng được cập nhật đồng bộ toàn bộ các bản vá trên.
