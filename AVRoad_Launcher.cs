@@ -358,7 +358,7 @@ namespace AVRoadLauncher
                 }
                 if (a.Equals("/check-update", StringComparison.OrdinalIgnoreCase) || a.Equals("--check-update-toast", StringComparison.OrdinalIgnoreCase))
                 {
-                    CheckUpdateAsync(appDir, null);
+                    CheckUpdateAsync(appDir, null, true);
                     return;
                 }
             }
@@ -479,7 +479,17 @@ namespace AVRoadLauncher
                         {
                             cleanAcad += fontPath + ";";
                         }
-                        cleanAcad += supportPath + ";" + fontsPath + ";" + expressPath + ";" + colorPath + ";" + helpPath;
+                        cleanAcad += supportPath + ";" + fontsPath + ";" + expressPath + ";" + colorPath + ";" + helpPath + ";" +
+                                     Path.Combine(appDir, "Data") + ";" +
+                                     Path.Combine(appDir, @"Data\Symbols") + ";" +
+                                     Path.Combine(appDir, @"Data\Bien bao") + ";" +
+                                     Path.Combine(appDir, @"Data\Color") + ";" +
+                                     Path.Combine(appDir, @"Data\Ltype") + ";" +
+                                     Path.Combine(appDir, "Lib") + ";" +
+                                     Path.Combine(appDir, "CTTK") + ";" +
+                                     Path.Combine(appDir, "DCCT") + ";" +
+                                     Path.Combine(appDir, "Blocks") + ";" +
+                                     Path.Combine(appDir, "Template");
 
                         try
                         {
@@ -566,6 +576,23 @@ namespace AVRoadLauncher
                         // Permanently block Communication Center and LaunchNFW in HKCU
                         try
                         {
+                            using (RegistryKey opmKey = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications\AcOpm"))
+                            {
+                                if (opmKey != null)
+                                {
+                                    opmKey.SetValue("LOADCTRLS", 14, RegistryValueKind.DWord);
+                                    opmKey.SetValue("LOADER", Path.Combine(appDir, "acopm.arx"), RegistryValueKind.String);
+                                    opmKey.SetValue("DESCRIPTION", "AutoCAD Object Property Manager", RegistryValueKind.String);
+                                    using (RegistryKey cmdKey = opmKey.CreateSubKey("Commands"))
+                                    {
+                                        if (cmdKey != null)
+                                        {
+                                            cmdKey.SetValue("PROPERTIES", "PROPERTIES", RegistryValueKind.String);
+                                            cmdKey.SetValue("PROPERTIESCLOSE", "PROPERTIESCLOSE", RegistryValueKind.String);
+                                        }
+                                    }
+                                }
+                            }
                             using (RegistryKey appKey1 = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications\WSCommCntrAcCon"))
                             {
                                 if (appKey1 != null)
@@ -800,7 +827,7 @@ namespace AVRoadLauncher
                     {
                         Thread.Sleep(4500); // Wait 4.5 seconds so CAD has cleanly rendered
                         if (acadProc.HasExited) return;
-                        CheckUpdateAsync(appDir, acadProc);
+                        CheckUpdateAsync(appDir, acadProc, false);
                     });
                     updateCheckThread.SetApartmentState(ApartmentState.STA);
                     updateCheckThread.IsBackground = true;
@@ -829,7 +856,7 @@ namespace AVRoadLauncher
             }
         }
 
-        static void CheckUpdateAsync(string appDir, Process acadProc)
+        static void CheckUpdateAsync(string appDir, Process acadProc, bool isManual)
         {
             try
             {
@@ -869,7 +896,11 @@ namespace AVRoadLauncher
                 }
 
                 Match mRemote = Regex.Match(remoteJson, "\"version\"\\s*:\\s*\"([^\"]+)\"");
-                if (!mRemote.Success) return;
+                if (!mRemote.Success)
+                {
+                    if (isManual) MessageBox.Show("Không thể đọc thông tin phiên bản mới từ máy chủ.", "AVRoad 2026", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    return;
+                }
 
                 string remoteVer = mRemote.Groups[1].Value;
 
@@ -887,11 +918,21 @@ namespace AVRoadLauncher
                     // Show Toast Popup
                     Application.Run(new UpdateToastForm(remoteVer, changelog, patchUrl, acadProc, appDir));
                 }
+                else
+                {
+                    if (isManual)
+                    {
+                        MessageBox.Show("AVRoad 2026 hiện đang là phiên bản mới nhất (" + localVer + ").\nHệ thống đã được cập nhật đầy đủ và ổn định.", "AVRoad 2026 Solution", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    }
+                }
             }
-            catch
+            catch (Exception ex)
             {
-                // Keep startup silent, but preserve the failure for support.
-                try { File.AppendAllText(Path.Combine(appDir, "update-check.log"), DateTime.Now.ToString("s") + " Update check failed." + Environment.NewLine); } catch { }
+                if (isManual)
+                {
+                    MessageBox.Show("Lỗi kết nối máy chủ cập nhật: " + ex.Message, "AVRoad 2026", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+                try { File.AppendAllText(Path.Combine(appDir, "update-check.log"), DateTime.Now.ToString("s") + " Update check failed: " + ex.Message + Environment.NewLine); } catch { }
             }
         }
 

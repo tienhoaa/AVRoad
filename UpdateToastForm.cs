@@ -26,7 +26,7 @@ namespace AVRoadLauncher
         {
             this.FormBorderStyle = FormBorderStyle.None;
             this.StartPosition = FormStartPosition.Manual;
-            this.Size = new Size(440, 200);
+            this.Size = new Size(450, 210);
             this.ShowInTaskbar = true;
             this.TopMost = true;
             this.BackColor = Color.FromArgb(23, 31, 37);
@@ -40,13 +40,13 @@ namespace AVRoadLauncher
                 try { this.Icon = new Icon(icoPath); } catch { }
             }
 
-            // Top accent bar
+            // Top accent bar Mint Neon
             Controls.Add(new Panel { BackColor = Color.FromArgb(45, 212, 191), Dock = DockStyle.Top, Height = 4 });
 
             // Category tag
             Label lblTag = new Label
             {
-                Text = "AVROAD 2026 • HỆ SINH THÁI AV BIM",
+                Text = "AVROAD 2026 • HỆ SINH THÁI THIẾT KẾ AV BIM CDE",
                 ForeColor = Color.FromArgb(45, 212, 191),
                 Location = new Point(20, 16),
                 AutoSize = true,
@@ -60,21 +60,21 @@ namespace AVRoadLauncher
                 Text = "Phát hiện bản cập nhật mới v" + version.TrimStart('v', 'V'),
                 ForeColor = Color.White,
                 Location = new Point(20, 40),
-                Size = new Size(400, 26),
+                Size = new Size(410, 26),
                 Font = new Font("Segoe UI", 12F, FontStyle.Bold)
             };
             Controls.Add(lblTitle);
 
             // Changelog preview
             string displayChangelog = string.IsNullOrWhiteSpace(changelog) 
-                ? "Bản cập nhật tối ưu độ ổn định và sửa các lỗi nghiệp vụ." 
+                ? "Bản cập nhật tối ưu độ ổn định và sửa các lỗi nghiệp vụ thiết kế." 
                 : changelog.Replace("\r", " ").Replace("\n", " • ");
             Label lblDesc = new Label
             {
                 Text = displayChangelog,
                 ForeColor = Color.FromArgb(181, 194, 203),
                 Location = new Point(20, 72),
-                Size = new Size(400, 42),
+                Size = new Size(410, 46),
                 AutoEllipsis = true,
                 Font = new Font("Segoe UI", 9F)
             };
@@ -83,10 +83,10 @@ namespace AVRoadLauncher
             // Note
             Label lblNote = new Label
             {
-                Text = "⚡ Tự động tải và áp dụng bản vá trong tích tắc.",
+                Text = "⚡ Tự động tải và áp dụng bản vá an toàn trong tích tắc.",
                 ForeColor = Color.FromArgb(143, 161, 173),
-                Location = new Point(20, 120),
-                Size = new Size(400, 20),
+                Location = new Point(20, 124),
+                Size = new Size(410, 20),
                 Font = new Font("Segoe UI", 8.5F, FontStyle.Italic)
             };
             Controls.Add(lblNote);
@@ -95,7 +95,7 @@ namespace AVRoadLauncher
             Button btnLater = new Button
             {
                 Text = "Để sau",
-                Bounds = new Rectangle(20, 150, 110, 34),
+                Bounds = new Rectangle(20, 156, 110, 36),
                 FlatStyle = FlatStyle.Flat,
                 BackColor = Color.FromArgb(42, 53, 63),
                 ForeColor = Color.FromArgb(200, 210, 220),
@@ -109,7 +109,7 @@ namespace AVRoadLauncher
             Button btnUpdate = new Button
             {
                 Text = "CẬP NHẬT NGAY",
-                Bounds = new Rectangle(142, 150, 278, 34),
+                Bounds = new Rectangle(145, 156, 285, 36),
                 FlatStyle = FlatStyle.Flat,
                 BackColor = Color.FromArgb(45, 212, 191),
                 ForeColor = Color.FromArgb(10, 37, 35),
@@ -146,13 +146,13 @@ namespace AVRoadLauncher
             // Sound alert
             try { System.Media.SystemSounds.Asterisk.Play(); } catch { }
 
-            // Timer to keep window on top above CAD for the first 10 seconds
-            keepOnTopTimer.Interval = 500;
+            // Timer to keep window strictly on top above CAD
+            keepOnTopTimer.Interval = 400;
             keepOnTopTimer.Tick += delegate
             {
                 keepOnTopTicks++;
                 SetWindowPos(this.Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
-                if (keepOnTopTicks > 20) // 10 seconds
+                if (keepOnTopTicks > 25) // 10 seconds
                 {
                     keepOnTopTimer.Stop();
                 }
@@ -163,14 +163,13 @@ namespace AVRoadLauncher
         private void PositionBottomRight()
         {
             Rectangle wa = Screen.PrimaryScreen.WorkingArea;
-            int margin = 20;
+            int margin = 24;
             this.Location = new Point(wa.Right - this.Width - margin, wa.Bottom - this.Height - margin);
         }
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-            // Draw subtle border
             using (Pen p = new Pen(Color.FromArgb(45, 212, 191), 1))
             {
                 e.Graphics.DrawRectangle(p, 0, 0, this.Width - 1, this.Height - 1);
@@ -180,19 +179,14 @@ namespace AVRoadLauncher
         protected override void OnShown(EventArgs e)
         {
             base.OnShown(e);
-            PositionBottomRight();
-            SetWindowPos(this.Handle, HWND_TOPMOST, this.Location.X, this.Location.Y, this.Width, this.Height, SWP_SHOWWINDOW);
-            this.BringToFront();
-            this.Activate();
+            SetWindowPos(this.Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
         }
 
-        protected override void Dispose(bool disposing)
+        protected override void OnFormClosed(FormClosedEventArgs e)
         {
-            if (disposing)
-            {
-                keepOnTopTimer.Dispose();
-            }
-            base.Dispose(disposing);
+            keepOnTopTimer.Stop();
+            keepOnTopTimer.Dispose();
+            base.OnFormClosed(e);
         }
     }
 }

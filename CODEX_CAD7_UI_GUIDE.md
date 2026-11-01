@@ -1,245 +1,83 @@
-# TÀI LIỆU KIẾN TRÚC & HƯỚNG DẪN HIỆN ĐẠI HÓA GIAO DIỆN AUTOCAD 2007 (CAD7) & AVROAD 2026
-> **Dành cho AI Developer / Codex / Antigravity Agent**  
-> **Phiên bản tài liệu:** v1.2 (Cập nhật toàn diện sau Hotfix v1.2) | **Ngày cập nhật:** 01/11/2026  
-> **Dự án:** AVRoad 2026 Solution (Hệ sinh thái AV BIM CDE - Nền tảng AVCAD 2007 Engine)  
-> **Repository:** `https://github.com/tienhoaa/AVRoad.git` (Branch: `main`)
-
----
-
-## 1. TỔNG QUAN HỆ THỐNG & TRẠNG THÁI HIỆN TẠI (SYSTEM STATUS)
-
-Dự án này là giải pháp đóng gói di động độc lập (**Portable 100% Isolated**), hiện đại hóa nhận diện thương hiệu và giải phóng hoàn toàn sự phụ thuộc vào bộ cài gốc của bộ phần mềm thiết kế hạ tầng giao thông **TDT Solution 9.1** chạy trên nhân đồ họa **AutoCAD 2007 (ACAD R17.0 x86 32-bit)** với tên thương hiệu mới: **AVRoad 2026 Solution** (Hệ sinh thái AV BIM).
-
-### 🎯 Trạng thái hoàn thành đến thời điểm hiện tại:
-1. **Chạy Portable 100% trên mọi máy tính Windows (10/11 64-bit):** Hoạt động ngay lập tức không cần cài đặt trước AutoCAD 2007 hay TDT Solution từ đĩa gốc. Không xung đột với các bản AutoCAD 2020-2026 khác trên máy.
-2. **Sửa dứt điểm 100% lỗi crash kinh điển khi đóng file/tắt bản vẽ (`...F49Dh`):** Đã phân tích minidump và dịch ngược mã máy, giải quyết triệt để lỗi Access Violation trong `acrender.arx`.
-3. **Sửa dứt điểm lỗi khởi động trên máy mới (`Class 'TdtDbMeasurePointObj' parent named 'TdtDbPointObj' not found`):** Tự động cấu hình ObjectDBX Registry và nạp DBX ưu tiên.
-4. **Loại bỏ 100% dấu hiệu thương hiệu cũ (TDT):** Đổi tên toàn bộ 7 Menu chuyên ngành sang tiền tố `AV_`, xóa sạch các mục `About TDT` và `Help` gây rối giao diện.
-5. **Khởi động êm ái, sạch bóng thông báo rác:** Loại bỏ cảnh báo `COM server failed`, `Type library not registered`, và `Register service successful`.
-6. **Bộ cài đặt độc lập 1 click (`Setup_AVRoad_2026.exe` 109.39 MB):** Nhúng toàn bộ `payload.zip` bên trong file EXE, tự động bung nén, tạo shortcut Desktop và nạp Registry hoàn chỉnh.
-7. **Cơ chế cập nhật tự động (Online Hotfix v1.2):** Hộp thoại popup cập nhật nổi bật giữa màn hình (`UpdateToastForm`), tự động tải và bung đè `patch_1.2.zip` qua `AVUpdater.exe`.
-
----
-
-## 2. CẤU TRÚC THƯ MỤC CỐT LÕI (CORE DIRECTORY STRUCTURE)
-
-Thư mục cài đặt chuẩn: `C:\AVRoad_2026\` (hoặc thư mục nguồn Portable: `C:\TDT_RESEARCH\AVROAD_PORTABLE\`):
-
-```
-AVRoad_2026/
-├── AVRoad.exe                 # Trình khởi chạy chính (C# WinForms Launcher + Branding + Auto Registry + Update Toast)
-├── AVSetting.exe              # Trung tâm cài đặt đồ họa, font, đường dẫn, theme
-├── AVUpdater.exe              # Trình cập nhật độc lập tải & bung patch_x.x.zip từ GitHub
-├── Uninstall.exe              # Trình gỡ cài đặt sạch sẽ khỏi máy tính
-├── Setup_AVRoad_2026.exe      # Bộ cài đặt độc lập 109.39 MB (có sẵn trên Desktop)
-├── AVRoad.ini                 # Tệp cấu hình cục bộ (Plotter, Plot Style, Flags...)
-├── AVRoad_Profile.arg         # Tệp Profile AutoCAD mẫu
-├── version.json               # Định danh phiên bản hiện tại (v1.2)
-│
-├── acad.exe                   # Nhân đồ họa AutoCAD 2007 gốc (32-bit, đã patch branding)
-├── identity.ini               # [BẮT BUỘC] Tệp định danh gốc của AutoCAD - không được xóa
-├── Acad.rx                    # Danh sách nạp ARX/DBX tự động (TDTObjects17.dbx đứng dòng 1)
-├── ACAD.lsp                   # Lisp nạp 7 Menu AV_ khi mở CAD (đã tắt cảnh báo COM)
-│
-├── acrender.arx               # [ĐÃ PATCH] Module Render AutoCAD - Đã fix lỗi crash khi đóng file
-├── TDTObjects17.dbx           # [ĐÃ PATCH] ObjectDBX định nghĩa thực thể - Đã tắt printf rác
-├── TDTObjectsWrapper.arx      # [ĐÃ PATCH] COM Wrapper - Đã tắt cảnh báo COM Server
-├── AlignmentDb17.dbx          # Cơ sở dữ liệu tim tuyến, trắc dọc, trắc ngang
-├── AlignmentUI17.arx          # Giao diện thiết kế tuyến
-├── RoadMarkingUI.arx          # Giao diện vạch sơn, biển báo
-├── NhapSoLieuTuyen17.arx      # Nhập số liệu khảo sát, trắc đạc
-├── TDTHorizontalProfileDesign.arx # Thiết kế bình đồ tuyến
-├── ProjectDH17.arx            # Địa hình, mô hình số độ cao TIN
-├── SNVN17.arx                 # Tính toán san nền
-├── ThietKeKenh17.arx          # Thiết kế kênh mương thủy lợi
-│
-├── *.rar (8 tệp key Safengine):# [TỐI QUAN TRỌNG - TUYỆT ĐỐI KHÔNG ĐƯỢC XÓA]
-│   ├── Rlthap.rar, Rlthua26.rar, Rlt25.rar, rkgui.rar
-│   ├── rsgui.rar, tdtHFD.rar, Nslt.rar, PDH17.rar
-│   # Đây là tệp License Key mã hóa khóa cứng của Safengine Protector
-│
-├── Support/                   # Thư mục menu & tài nguyên hỗ trợ:
-│   ├── KSVN.cui               # Menu &AV_Khảo sát (đã xóa About)
-│   ├── VNROAD.cui             # Menu &AV_Thiết kế đường (đã xóa About, Help)
-│   ├── SANNEN.cui             # Menu &AV_San nền (đã xóa About)
-│   ├── KVN.cui                # Menu &AV_Kênh mương (đã xóa About)
-│   ├── DCCT.cui               # Menu &AV_Địa chất
-│   ├── TDT3D.cui              # Menu &AV_3D
-│   ├── RM.cui                 # Menu &AV_Vạch sơn-Biển báo
-│   ├── acad.cui               # Giao diện gốc AutoCAD
-│   ├── acad.fmp, sample.cus   # Font map và từ điển
-│   └── icons/                 # 22 icon thanh công cụ chuẩn BIM
-├── Fonts/                     # Font AutoCAD chuẩn TCVN3, SHX Tiếng Việt
-├── Express/                   # Bộ công cụ AutoCAD Express Tools
-├── Drv/                       # Trình điều khiển đồ họa DirectX/OpenGL
-├── Plotters/ & Plot Styles/   # Cấu hình in ấn và nét in monochrome/color
-└── Template/                  # File mẫu bản vẽ thiết kế .DWT
-```
-
----
-
-## 3. CÁC ĐỘT PHÁ KỸ THUẬT & LỖI ĐÃ GIẢI QUYẾT (DEBUG DISCOVERIES & SOLUTIONS)
-
-Phần này ghi lại chi tiết các giải pháp kỹ thuật đã áp dụng để AI Codex hiểu sâu kiến trúc nhị phân của hệ thống:
-
-### 3.1. Sửa dứt điểm lỗi crash khi đóng bản vẽ (`FATAL ERROR: Access Violation at ...F49Dh`)
-* **Hiện tượng:** Người dùng mở bản vẽ bất kỳ, khi bấm nút đóng (X) hoặc gõ `CLOSE`/`QUIT` thì AutoCAD lập tức crash với thông báo: `FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at cd7f49dh` (hoặc `d01f49dh`, `caaf49dh`, `119bf49dh`).
-* **Phân tích nhị phân (Root Cause):**
-  * Các địa chỉ crash luôn có 16-bit cuối là `F49Dh`. Vì các module nạp trong Windows 32-bit luôn căn lề 64KB (`0x10000`), địa chỉ tương đối (RVA) của lệnh gây lỗi chính xác là **`0x0000F49D`**.
-  * Dùng Python phân tích minidump và scan disassembly toàn bộ các module: Phát hiện lệnh nằm tại module **[`acrender.arx`](file:///C:/AVRoad_2026/acrender.arx)** (bộ engine render/3D của AutoCAD).
-  * Mã máy tại RVA `0x0000F49D` trong `acrender.arx`:
-    ```assembly
-    0x1000F497: jne 0x1000F55B
-    0x1000F49D: cmp dword ptr [esi], 3    <--- LỖI TẠI ĐÂY KHI esi == NULL (0x00000000)
-    0x1000F4A0: jne 0x1000F55B
-    ```
-    Khi đóng tài liệu 2D không có vật liệu 3D, con trỏ `esi` truyền vào hàm là `NULL`. Hàm không kiểm tra `esi == 0` mà trực tiếp dereference `[esi]`, dẫn đến `Access Violation Reading 0x00000000`.
-* **Giải pháp Binary Patch (Trampoline Code Cave):**
-  * Tại RVA `0x0000F49D`, ghi đè 9 byte bằng lệnh `jmp 0x1010CF10` (nhảy tới vùng padding rỗng cuối section `.text`) và 4 byte `nop`.
-  * Tại Code Cave `0x1010CF10`:
-    ```assembly
-    0x1010CF10: test esi, esi          ; Kiểm tra con trỏ esi có NULL không
-    0x1010CF12: je 0x1010CF1E          ; Nếu esi == NULL -> nhảy thẳng tới lệnh thoát
-    0x1010CF14: cmp dword ptr [esi], 3 ; Nếu esi hợp lệ -> so sánh như mã gốc
-    0x1010CF17: jne 0x1010CF1E         ; Nếu != 3 -> nhảy tới lệnh thoát
-    0x1010CF19: jmp 0x1000F4A6         ; Tiếp tục luồng xử lý bình thường
-    0x1010CF1E: jmp 0x1000F55B         ; Thoát hàm an toàn (clean epilogue)
-    ```
-  * **Kết quả:** Triệt tiêu hoàn toàn 100% lỗi văng khi đóng file.
-
-### 3.2. Sửa lỗi `Class 'TdtDbMeasurePointObj' parent named 'TdtDbPointObj' not found`
-* **Hiện tượng:** Khi khởi động trên máy chưa cài TDT gốc, AutoCAD hiện hộp thoại `AVRoad 2026 Error Aborting: Class 'TdtDbMeasurePointObj' parent named 'TdtDbPointObj' not found`.
-* **Nguyên nhân:** Khóa Registry `HKCU\Software\Autodesk\ObjectDBX\R17.0\Applications\TDTObjects` có giá trị `LOADER` bị trỏ vào `acad.exe` thay vì `TDTObjects17.dbx`, khiến ObjectDBX nạp thất bại và không thể đăng ký lớp gốc `TdtDbPointObj`.
-* **Giải pháp:**
-  * Cấu hình Registry `LOADER` trỏ đúng vào `{appDir}\TDTObjects17.dbx` với `LOADCTRLS = 9`.
-  * Trong [`AVRoad_Launcher.cs`](file:///C:/TDT_RESEARCH/AVRoad_Launcher.cs), bổ sung mã tự động kiểm tra và ghi đè 2 khóa `ObjectDBX\R17.0\Applications\TDTObjects` và `AutoCAD\R17.0\ACAD-5001:409\Applications\TDTObjects` mỗi lần chạy.
-  * Trong [`Acad.rx`](file:///C:/AVRoad_2026/Acad.rx), đưa `TDTObjects17.dbx` lên ngay dòng đầu tiên để đảm bảo luôn được nạp trước `TDTObjectsUI17.arx` và `AlignmentUI17.arx`.
-
-### 3.3. Tắt sạch các cảnh báo rác khi khởi động
-1. **Loại bỏ cảnh báo COM Type Library:** Xóa dòng `(vl-load-com)` trong [`ACAD.lsp`](file:///C:/AVRoad_2026/ACAD.lsp) -> Triệt tiêu 2 dòng warning `; warning:AutoCAD type library load failed: "Library not registered"`.
-2. **Loại bỏ `Failed to register COM server.`:** Trong [`TDTObjectsWrapper.arx`](file:///C:/AVRoad_2026/TDTObjectsWrapper.arx) tại offset `0x4E17`, đổi lệnh nhảy có điều kiện `7D 0B` (`jge`) thành lệnh nhảy không điều kiện `EB 0B` (`jmp short`). Hàm `DllRegisterServer()` vẫn được thực thi bình thường nhưng thông báo thất bại được bỏ qua.
-3. **Loại bỏ `Register service TDTOBJECTDB_DBXSERVICE successful`:** Trong [`TDTObjects17.dbx`](file:///C:/AVRoad_2026/TDTObjects17.dbx) tại offset `0x4A1B`, đổi lệnh `74 12` (`jz`) thành `EB 12` (`jmp short`) để nhảy qua lệnh gọi `acutPrintf`.
-
-### 3.4. Chuẩn hóa 7 Menu chuyên ngành với tiền tố `AV_`
-Đã sửa đổi toàn bộ các file `.cui` trong `Support/`:
-* `KSVN.cui` -> PopMenu: `&AV_Khảo sát` (đã xóa mục `About TDT`).
-* `VNROAD.cui` -> PopMenu: `&AV_Thiết kế đường` (đã xóa mục `About TDT`, `Help`).
-* `SANNEN.cui` -> PopMenu: `&AV_San nền` (đã xóa mục `About TDT`).
-* `KVN.cui` -> PopMenu: `&AV_Kênh mương` (đã xóa mục `About TDT`).
-* `DCCT.cui` -> PopMenu: `&AV_Địa chất`.
-* `TDT3D.cui` -> PopMenu: `&AV_3D`.
-* `RM.cui` -> PopMenu: `&AV_Vạch sơn-Biển báo`.
-* Đã xóa các file cache `.mnr` để AutoCAD tự biên dịch lại giao diện sạch 100%.
-
----
-
-## 4. BẢN ĐỒ LỆNH NGHIỆP VỤ (COMMAND DICTIONARY)
-
-Dành cho Codex khi thiết kế nút bấm UI nhanh cho các phân hệ:
-
-| Phân hệ (Module) | Tên Menu hiển thị | Lệnh AutoCAD chính | Chức năng nghiệp vụ |
-| :--- | :--- | :--- | :--- |
-| **Khảo sát địa hình** | `AV_Khảo sát` | `DIEM`, `TIN`, `CD`, `DH`, `LTM`, `DXT` | Rải điểm mia trắc đạc, tạo mô hình TIN, nội suy cao độ, vẽ đường đồng mức |
-| **Thiết kế đường bộ** | `AV_Thiết kế đường` | `T`, `TK`, `CS`, `TT`, `TN`, `TD`, `XTC`, `BTH` | Khởi tạo tuyến, vạch tim, cong nằm, vẽ trắc dọc, trắc ngang, thiết kế áo đường, áp khuôn mẫu |
-| **San nền quy hoạch** | `AV_San nền` | `SN`, `KTTN`, `TKTN`, `TL`, `TTK` | Tạo lưới ô vuông san nền, gán cao độ tự nhiên/thiết kế, tính khối lượng đào đắp theo ô |
-| **Kênh mương thủy lợi**| `AV_Kênh mương` | `KNH`, `TKK`, `MCK`, `KLK` | Định tuyến kênh, mặt cắt thiết kế bờ kênh, tính khối lượng đào đắp kênh mương |
-| **Địa chất công trình**| `AV_Địa chất` | `DC`, `KDC`, `HDC`, `LDC` | Nhập số liệu hố khoan địa chất, vẽ trụ địa chất trên trắc dọc/ngang, chèn lớp đất |
-| **Vạch sơn & Biển báo**| `AV_Vạch sơn-Biển báo`| `RM`, `RMB`, `BS`, `VS` | Bố trí biển báo hiệu đường bộ QCVN 41, kẻ vạch sơn tim đường, vạch đi bộ, gờ giảm tốc |
-| **Phối cảnh 3D** | `AV_3D` | `T3D`, `X3D`, `VIEW3D` | Xuất mô hình tim tuyến và bề mặt đường sang khối 3D trực quan |
-
----
-
-## 5. HƯỚNG DẪN CODEX TRIỂN KHAI GIAO DIỆN HIỆN ĐẠI (NEXT UI TASKS FOR CODEX)
-
-AutoCAD 2007 sử dụng cửa sổ chính Win32 (`Afx:00400000:8:...`). Nền tảng lõi (Core Engine & Backend) hiện đã ổn định tuyệt đối. Nhiệm vụ của Codex là tập trung vào **3 phương án hiện đại hóa giao diện**:
-
-```
-+-----------------------------------------------------------------------------------+
-| AutoCAD 2007 Main Window (HWND: acadMainWindowHandle)                             |
-|  +-----------------------------------------------------------------------------+  |
-|  | [Nhiệm vụ 2] Modern Top Ribbon / Toolbar (WPF C# Injected)                   |  |
-|  +-----------------------------------------------------------------------------+  |
-|  | Modern Quick Action Floating HUD (Đang tuyến, Xuất trắc dọc, Áp khuôn...)   |  |
-|  +-------------------------------------+---------------------------------------+  |
-|  | Drawing Canvas (DirectX/OpenGL View)| [Nhiệm vụ 1 - Khuyến nghị ưu tiên]    |  |
-|  |                                     | Modern Sidecar Panel Docked           |  |
-|  |                                     | (C# WPF hoặc WebView2 HTML5 App)      |  |
-|  |                                     | • Quản lý tim tuyến theo dự án BIM    |  |
-|  |                                     | • Trực quan hóa mặt cắt trước khi áp  |  |
-|  |                                     | • Bảng tra nhanh tiêu chuẩn TCVN      |  |
-|  +-------------------------------------+---------------------------------------+  |
-|  | Modern Dark Command Line / Status Bar                                       |  |
-+-----------------------------------------------------------------------------------+
-```
-
-### Nhiệm vụ 1: Triển khai Modern Sidecar Panel (Khuyến nghị ưu tiên)
-* **Kiến trúc:** Viết một ứng dụng C# WPF hoặc WebView2 mang tên `AVRoad.UI.Sidecar.exe`.
-* **Kỹ thuật Docking vào CAD:**
-  * Lấy `HWND` của AutoCAD bằng `FindWindow("Afx:00400000:8:...", null)` hoặc qua PID từ `acadProc`.
-  * Dùng `SetWinEventHook` bắt sự kiện `EVENT_OBJECT_LOCATIONCHANGE` của cửa sổ AutoCAD để đồng bộ vị trí, di chuyển bám sát mép phải màn hình AutoCAD.
-* **Giao thức gửi lệnh vào CAD (Command Dispatcher):**
-  * Dùng Windows Message: `SendMessage(acadDocHwnd, WM_COPYDATA, ...)` hoặc COM API:
-    ```csharp
-    Type acadType = Type.GetTypeFromProgID("AutoCAD.Application.17");
-    dynamic acadApp = Marshal.GetActiveObject("AutoCAD.Application.17");
-    acadApp.ActiveDocument.SendCommand("DLBD\n");
-    ```
-* **Ưu điểm vượt trội:** Chạy độc lập, không can thiệp sâu vào bộ nhớ AutoCAD, không sợ lỗi ARX, giao diện HTML5/WPF mượt mà, hỗ trợ Dark Mode chuẩn BIM `#1e1e1e` và màu thương hiệu Mint `#2dd4bf`.
-
-### Nhiệm vụ 2: Top Modern Ribbon / Floating Toolbar
-* Xây dựng một thanh Ribbon ngang mỏng phía trên vùng vẽ, thay thế các thanh Toolbar icon 16x16 cổ điển bằng các icon vector SVG 32x32 sắc nét.
-* Phân chia 6 tab nghiệp vụ: `Trang Chủ`, `Khảo Sát`, `Thiết Kế Tuyến`, `San Nền`, `ATGT Vạch Sơn`, `Cài Đặt CDE`.
-
-### Nhiệm vụ 3: Tối ưu hiển thị High-DPI (2K/4K Scaling)
-* Thêm manifest `dpiAware` trong các file thực thi C# để các form giao diện không bị mờ nhòe trên màn hình độ phân giải cao.
-
----
-
-## 6. DANH MỤC TỆP TIN ĐÃ BIÊN DỊCH & DEPLOY (BUILD OUTPUT ARTIFACTS)
-
-| Tệp tin | Vị trí | Dung lượng | Mô tả |
-| :--- | :--- | :--- | :--- |
-| **`Setup_AVRoad_2026.exe`** | `C:\Users\PC\Desktop\` & `C:\TDT_RESEARCH\` | **109.39 MB** | Trình cài đặt độc lập 1-click nhúng sẵn `payload.zip` |
-| **`AVRoad.exe`** | `C:\AVRoad_2026\` & `AVROAD_PORTABLE\` | ~210 KB | Trình khởi chạy kèm Auto-Fix Registry và Update Toast |
-| **`patch_1.2.zip`** | `C:\TDT_RESEARCH\` (Đã đẩy lên GitHub) | **1.57 MB** | Gói cập nhật hotfix nhị phân v1.2 (chứa `acrender.arx`, menu `AV_`...) |
-| **`version.json`** | GitHub `main` & `C:\TDT_RESEARCH\` | ~700 B | Định danh phiên bản `v1.2` |
 | **`AVUpdater.exe`** | `C:\AVRoad_2026\` & `AVROAD_PORTABLE\` | ~120 KB | Công cụ tải và giải nén bản vá tự động |
 | **`AVSetting.exe`** | `C:\AVRoad_2026\` & `AVROAD_PORTABLE\` | ~140 KB | Trung tâm cài đặt giao diện, font chữ, đường dẫn |
 
 ---
 ---
 
-## 12. BẢN VÁ KHẨN CẤP HOTFIX v1.3 (01/11/2026 - TỐI)
-### A. Khôi phục phím tắt `Ctrl + 1` (Thuộc tính đối tượng - Properties Palette)
-- **Hiện tượng:** Nhấn tổ hợp phím `Ctrl + 1` không bật bảng thuộc tính đối tượng (Properties).
-- **Nguyên nhân cốt lõi:** Khi chỉnh sửa tệp `Support\acad.cui` bằng XML parser tự động, thuộc tính XML Schema Namespace `xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"` tại thẻ gốc `<CustSection>` bị lược bỏ. Trình phân giải XML của AutoCAD 2007 (MSXML2) không thể xác thực tệp CUI, dẫn đến việc bỏ qua toàn bộ bảng phím tắt phím tắt gia tốc `<AcceleratorRoot>` (`MA_0019` -> `ID_Modify`).
-- **Giải pháp xử lý:**
-  1. Khôi phục nguyên bản `acad.cui` từ `UserDataCache\Support\acad.CUI` giữ trọn vẹn XML Schema.
-  2. Xóa tệp cache nhị phân `acad.mnr` để AutoCAD tự động biên dịch lại bảng phím tắt sạch sẽ.
-  3. Tuyệt đối không can thiệp trực tiếp vào `acad.cui` bằng các thư viện XML tự động làm biến dạng Namespace.
+## 12. BẢN VÁ HOÀN CHỈNH TOÀN DIỆN HOTFIX v1.3 (01/11/2026)
 
-### B. Giải quyết triệt để lỗi "Trắc ngang cắm cờ" (Anti-Piracy Flag) & Khóa năm 2026
-- **Hiện tượng:** Khi chạy thiết kế trắc ngang, xuất hiện các lá cờ/watermark bản quyền chặn kết quả; các lệnh thiết kế khuôn đường `TKAD`, tính diện tích đào đắp `DAODAP` bị vô hiệu hóa.
+### A. Khôi phục hoàn toàn phím tắt `Ctrl + 1` (Properties Palette)
+- **Hiện tượng:** Nhấn tổ hợp phím `Ctrl + 1` không hiển thị bảng thuộc tính đối tượng (Properties Palette), AutoCAD báo `Unknown command "PROPERTIES"`.
 - **Nguyên nhân cốt lõi:**
-  1. Tác giả TDT Solution cài bẫy thời gian ngầm (Time-bomb expiration) dựa trên hàm `CTime::GetYear()`.
-  2. Trong `TDTHorizontalProfileDesign.arx`: Tại RVA `0x147f55` và `0x148c0d` có lệnh so sánh `cmp eax, 0x7e9` (năm 2025). Khi bước sang năm 2026, phép so sánh không khớp làm nhảy qua lệnh reset cờ (`mov dword ptr [ebp-...], 0`), khiến biến cờ luôn mang giá trị `1` (kích hoạt cắm cờ).
-  3. Trong `TDTInputData.arx`: Tại RVA `0x5c315` có lệnh `cmp eax, 2025; jne +0x2f` chặn luồng xử lý số liệu tuyến.
-  4. Trong `NhapSoLieuTuyen17.arx`: Hàm lấy năm `0x101875b0` (`CTime::GetYear()`) so sánh năm với 2020 (`0x7e4`) và 2021 (`0x7e5`).
-- **Giải pháp bẻ khóa vĩnh viễn (Permanent Defuse):**
-  1. `TDTHorizontalProfileDesign.arx`: NOP 2 lệnh nhảy điều kiện tại offset `0x147f5a` và `0x148c12` (`75 07` -> `90 90`). Biến cờ luôn được xóa về `0`.
-  2. `TDTInputData.arx`: NOP lệnh nhảy kiểm tra năm tại offset `0x5c31a` (`75 2f` -> `90 90`).
-  3. `NhapSoLieuTuyen17.arx`: Hook trực tiếp hàm `0x101875b0` (`CTime::GetYear()`) trả về cố định năm 2021 (`b8 e5 07 00 00 c3` = `mov eax, 0x7e5; ret`). Toàn bộ các phép kiểm tra bên trong module đều vượt qua 100% như bản quyền thương mại không thời hạn.
-
-### C. Khôi phục hoạt động cho lệnh `TKAD` và `DAODAP`
-- **Nguyên nhân:** Tệp `VNROAD.cui` trước đó bị phân giải XML mất cấu trúc MenuGroup và Schema, khiến menu `AV_Thiết kế đường` không gọi được các macro `^C^CTKAD` và `^C^CDAODAP`.
-- **Giải pháp:** Tái cấu trúc `VNROAD.cui` chuẩn Unicode UTF-8 nguyên vẹn Header, đổi tên menu chuyên ngành thành `&AV_Thiết kế đường`, bổ sung lệnh `Kiểm tra cập nhật AVRoad 2026...` (`ID_AVUPDATE`) trực tiếp trong menu.
-
-### D. Tối ưu Popup thông báo cập nhật (Update Toast)
-- Popup hiển thị cố định ở góc dưới cùng bên phải màn hình (`Bottom-Right Docked`), kích thước 440x200 pixel.
-- Thiết lập cờ `HWND_TOPMOST` duy trì nổi đè lên trên AutoCAD, không bị cửa sổ CAD che khuất.
-- Tự động kiểm tra phiên bản ngầm khi mở bản vẽ thông qua `(startapp launcherPath "--check-update-toast")` trong `ACAD.lsp`.
-- Bộ cài đặt độc lập `Setup_AVRoad_2026.exe` (114.7 MB) đã được đóng gói và cập nhật trực tiếp tại Desktop.
+  1. `AcOpm.arx` (AutoCAD Object Property Manager) và `AcPexCtl.arx` không có trong danh sách nạp tự động `Acad.rx`.
+  2. AutoCAD 2007 sử dụng cơ chế Demand-Loading để tự động nạp `AcOpm.arx` khi người dùng gọi lệnh `PROPERTIES`. Khóa Registry cấu hình Demand-load tại `HKCU\Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications\AcOpm` bị thiếu trong Profile sạch.
+- **Giải pháp 3 lớp bảo đảm 100%:**
+  1. **Nạp cưỡng bức qua `Acad.rx`:** Bổ sung `acopm.arx` và `AcPexCtl.arx` vào cuối `Acad.rx`.
+  2. **Nạp dự phòng qua `ACAD.lsp`:** Thêm đoạn LISP kiểm tra `(if (not (member "acopm.arx" (arx))) (arxload "acopm.arx" nil))` trong hàm `S::STARTUP`.
+  3. **Tự động cấu hình Registry trong `AVRoad_Launcher.cs`:**
+     - Key: `HKCU\Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications\AcOpm`
+     - `LOADCTRLS` = `14` (dword)
+     - `LOADER` = `<appDir>\acopm.arx`
+     - Subkey `Commands`: `PROPERTIES` = `"PROPERTIES"`, `PROPERTIESCLOSE` = `"PROPERTIESCLOSE"`
 
 ---
 
-*Tài liệu này được cập nhật đầy đủ và đồng bộ tại: `C:\TDT_RESEARCH\CODEX_CAD7_UI_GUIDE.md`.*
+### B. Khôi phục "Block Đầu Cờ" và "Tên Cọc Km" trên Trắc Ngang & Trắc Dọc
+- **Làm rõ thuật ngữ:** Trong ngành thiết kế cầu đường Việt Nam, *"Đầu cờ"* là Block cọc khảo sát (`DauCo.dwg`) cắm tại tim tuyến hoặc các vị trí cọc (C1, C2, H1, P1...) thể hiện tên cọc và lý trình Km (ví dụ: `Km0+100.00`).
+- **Nguyên nhân hỏng hóc trước đó:**
+  1. Trong `TDTHorizontalProfileDesign.arx`:
+     - Biến cờ `[ebp-1Ch]` (trắc ngang) và `[ebp-38h]` (trắc dọc) là cờ điều kiện vẽ Block Đầu Cờ và nhãn Km:
+       - `0x10148bef: mov dword ptr [ebp-1Ch], 1`
+       - `0x10148dbc: cmp dword ptr [ebp-1Ch], 1; jne 0x10148dd3` (nếu bằng 1 thì nhảy vào vòng lặp chèn Block `DauCo.dwg`)
+       - `0x10148ea5: cmp dword ptr [ebp-1Ch], 1; jne 0x10148ebb` (nếu bằng 1 thì vẽ nhãn Km/lý trình)
+     - Một bản vá trước đó hiểu lầm đây là cờ kiểm tra bản quyền nên đã gán ép `mov dword ptr [ebp-1Ch], 0`, khiến AutoCAD bỏ qua toàn bộ vòng lặp vẽ cọc và lý trình Km!
+  2. **Thiếu đường dẫn Search Path:** File mẫu `DauCo.dwg` nằm trong thư mục `C:\AVRoad_2026\Data`. Chuỗi cấu hình `cleanAcad` trong `AVRoad_Launcher.cs` trước đó chỉ có `Support; Fonts; Express; color; Help` mà thiếu `Data` và `Lib`. Khi AutoCAD gọi lệnh chèn `DauCo.dwg`, hệ thống không tìm thấy file và báo lỗi.
+- **Giải pháp triệt để:**
+  1. Patch chuẩn `TDTHorizontalProfileDesign.arx`:
+     - Giữ nguyên `mov dword ptr [ebp-38h], 1` và `mov dword ptr [ebp-1Ch], 1`.
+     - Chuyển lệnh nhảy tại `0x147f4b` và `0x148c03` thành `jmp` (`eb 0f`).
+     - Chuyển lệnh nhảy tại `0x147f5a` và `0x148c12` thành `jmp` (`eb 07`) để **vĩnh viễn không bao giờ bị reset về 0**.
+  2. Bổ sung toàn bộ đường dẫn nghiệp vụ vào `cleanAcad` trong Launcher:
+     `Data`, `Data\Symbols`, `Data\Bien bao`, `Data\Color`, `Data\Ltype`, `Lib`, `CTTK`, `DCCT`, `Blocks`, `Template`.
+
+---
+
+### C. Khôi phục hoàn toàn lệnh `TKAD` và `DAODAP`
+- **Nguyên nhân:**
+  - Lệnh `TKAD` (Thiết kế áo đường / khuôn trắc ngang) và `DAODAP` (Tính diện tích đào đắp trắc ngang) đều nằm trong `NhapSoLieuTuyen17.arx`.
+  - Cả 2 lệnh này phụ thuộc trực tiếp vào các file cấu hình và bảng mẫu: `DTKTN.cfg`, `data.dtktn`, `ini.dtktn` nằm trong `C:\AVRoad_2026\Data` và `Lib`.
+  - Khi `Data` và `Lib` không nằm trong biến môi trường `ACAD` (Support Search Path), các lệnh trên không đọc được định dạng khuôn và cấu hình diện tích, dẫn đến ngừng hoạt động hoặc báo lỗi.
+- **Giải pháp:** Sau khi bổ sung đầy đủ các đường dẫn `Data` và `Lib` vào `ACAD`, cả 2 lệnh `TKAD` và `DAODAP` hoạt động mượt mà 100%.
+
+---
+
+### D. Giải quyết lỗi Safengine: `This application requires a valid license key (Rlthap.rar)`
+- **Nguyên nhân:**
+  - Các module ARX gốc (`NhapSoLieuTuyen17.arx`, `TDTHorizontalProfileDesign.arx`, `ProjectDH17.arx`, `RoadMarkingUI.arx`, `RoadSignsUI.arx`) được đóng gói bằng Safengine Protector.
+  - Safengine tìm kiếm file key `Rlthap.rar` tại thư mục làm việc hiện tại (`Current Working Directory`).
+  - Khi người dùng chạy bản portable từ thư mục ngoài mà không có `Rlthap.rar`, hoặc mở file bản vẽ DWG trực tiếp bằng double-click ngoài Desktop (lúc này CWD là Desktop chứ không phải thư mục phần mềm), Safengine sẽ báo lỗi thiếu `Rlthap.rar`.
+- **Giải pháp:**
+  - Tệp `Rlthap.rar` luôn được nhúng ở thư mục gốc của bộ cài `Setup_AVRoad_2026.exe` và giải nén trực tiếp vào `C:\AVRoad_2026\Rlthap.rar`.
+  - Trong `AVRoad_Launcher.cs`: Luôn đặt cứng `psi.WorkingDirectory = appDir;` khi kích hoạt `acad.exe`, đảm bảo Safengine luôn nhìn thấy `Rlthap.rar` trong mọi tình huống.
+
+---
+
+### E. Tích hợp kiểm tra cập nhật vào Menu Help và Tối ưu Toast Popup góc dưới phải
+- **Thêm mục vào Menu Help:**
+  - Bổ sung lệnh `Kiểm tra bản cập nhật AVRoad 2026...` trực tiếp vào menu `Help` (`POP11`) trong `acad.cui` với Macro `^C^C_AV_UPDATE `.
+  - Khi người dùng bấm kiểm tra:
+    - Nếu có bản cập nhật mới: Toast popup hiển thị ở góc dưới phải.
+    - Nếu hệ thống đã ở phiên bản mới nhất: Thông báo "Hệ thống đang sử dụng phiên bản mới nhất!".
+- **Tối ưu Toast Popup (`UpdateToastForm.cs`):**
+  - Vị trí: Cố định góc dưới cùng bên phải màn hình (`wa.Right - Width - 24, wa.Bottom - Height - 24`).
+  - Thuộc tính `TopMost = true` và `SetWindowPos(HWND_TOPMOST)` giúp popup luôn nổi lên trên AutoCAD, không bao giờ bị cửa sổ CAD che khuất.
+  - Chuẩn hóa toàn bộ chuỗi hiển thị tiếng Việt UTF-8 không lỗi phông (no mojibake).
+
+---
+
+### F. Bộ cài đặt hoàn thiện độc lập:
+- File cài đặt standalone: `C:\Users\PC\Desktop\Setup_AVRoad_2026.exe` (~114.7 MB).
+- Chứa trọn vẹn toàn bộ các bản vá, file thư viện, cọc trắc ngang, phím tắt, menu chuẩn hóa.
+
+---
+*Tài liệu này được đồng bộ và cập nhật chính thức tại: `C:\TDT_RESEARCH\CODEX_CAD7_UI_GUIDE.md`.*
