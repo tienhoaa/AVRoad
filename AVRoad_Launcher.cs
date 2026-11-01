@@ -190,158 +190,6 @@ namespace AVRoadLauncher
         }
     }
 
-    public class UpdateToastForm : Form
-    {
-        [DllImport("user32.dll")]
-        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
-        private static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
-        private const uint SWP_NOSIZE = 0x0001;
-        private const uint SWP_NOMOVE = 0x0002;
-        private const uint SWP_SHOWWINDOW = 0x0040;
-
-        public UpdateToastForm(string newVer, string changelog, string patchUrl, Process acadProc, string appDir)
-        {
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.Size = new Size(500, 240);
-            this.Text = "AVRoad 2026 - CÓ BẢN CẬP NHẬT MỚI (HOTFIX)";
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.ShowInTaskbar = true;
-            this.TopMost = true;
-            this.DoubleBuffered = true;
-
-            string icoPath = Path.Combine(appDir, "AVRoad.ico");
-            if (File.Exists(icoPath)) { try { this.Icon = new Icon(icoPath); } catch { } }
-
-            BuildUI(newVer, changelog, patchUrl, acadProc, appDir);
-
-            this.Shown += (s, e) =>
-            {
-                try {
-                    SetWindowPos(this.Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
-                    this.BringToFront();
-                    this.Activate();
-                    System.Media.SystemSounds.Asterisk.Play();
-                } catch { }
-            };
-        }
-
-        private void BuildUI(string newVer, string changelog, string patchUrl, Process acadProc, string appDir)
-        {
-            this.Paint += (s, e) =>
-            {
-                Graphics g = e.Graphics;
-                g.SmoothingMode = SmoothingMode.AntiAlias;
-
-                using (LinearGradientBrush brush = new LinearGradientBrush(this.ClientRectangle, Color.FromArgb(7, 35, 26), Color.FromArgb(17, 85, 65), LinearGradientMode.ForwardDiagonal))
-                {
-                    g.FillRectangle(brush, this.ClientRectangle);
-                }
-
-                using (Pen pen = new Pen(Color.FromArgb(45, 212, 191), 1.5f))
-                {
-                    g.DrawRectangle(pen, 0, 0, this.Width - 1, this.Height - 1);
-                }
-
-                // Accent icon / badge
-                using (SolidBrush b = new SolidBrush(Color.FromArgb(45, 212, 191)))
-                {
-                    g.FillEllipse(b, 20, 18, 14, 14);
-                }
-
-                using (Font fTitle = new Font("Segoe UI", 12f, FontStyle.Bold))
-                using (Brush bTitle = new SolidBrush(Color.FromArgb(94, 234, 212)))
-                {
-                    g.DrawString("AVROAD 2026 - BẢN NÂNG CẤP V" + newVer, fTitle, bTitle, 42, 14);
-                }
-
-                using (Font fDesc = new Font("Segoe UI", 9.5f, FontStyle.Regular))
-                using (Brush bDesc = new SolidBrush(Color.FromArgb(204, 251, 241)))
-                {
-                    string summary = "Đã phát hiện bản cập nhật tối ưu & vá lỗi mới nhất trên GitHub.";
-                    if (!string.IsNullOrEmpty(changelog))
-                    {
-                        summary += "\nNội dung: " + (changelog.Length > 100 ? changelog.Substring(0, 100) + "..." : changelog);
-                    }
-                    summary += "\nBạn có muốn tự động thoát CAD để cập nhật ngay bây giờ?";
-                    g.DrawString(summary, fDesc, bDesc, new RectangleF(20, 50, 445, 90));
-                }
-            };
-
-            // Buttons
-            Button btnUpdate = new Button()
-            {
-                Text = "🚀 CẬP NHẬT NGAY (Khuyên dùng)",
-                Location = new Point(20, 150),
-                Size = new Size(300, 42),
-                BackColor = Color.FromArgb(16, 185, 129),
-                ForeColor = Color.White,
-                Font = new Font("Segoe UI", 10.5f, FontStyle.Bold),
-                FlatStyle = FlatStyle.Flat,
-                Cursor = Cursors.Hand
-            };
-            btnUpdate.FlatAppearance.BorderSize = 0;
-            btnUpdate.Click += (s, e) =>
-            {
-                this.Hide();
-
-                // 1. Gracefully close CAD
-                try
-                {
-                    if (acadProc != null && !acadProc.HasExited)
-                    {
-                        acadProc.CloseMainWindow();
-                        if (!acadProc.WaitForExit(1500)) acadProc.Kill();
-                    }
-                }
-                catch { }
-
-                // 2. Launch AVUpdater.exe
-                string updaterExe = Path.Combine(appDir, "AVUpdater.exe");
-                if (File.Exists(updaterExe))
-                {
-                    try
-                    {
-                        string args = "";
-                        if (!string.IsNullOrEmpty(patchUrl)) args += " \"/url:" + patchUrl + "\"";
-                        if (!string.IsNullOrEmpty(newVer)) args += " \"/ver:" + newVer + "\"";
-
-                        Process.Start(new ProcessStartInfo()
-                        {
-                            FileName = updaterExe,
-                            Arguments = args.Trim(),
-                            WorkingDirectory = appDir
-                        });
-                    }
-                    catch { }
-                }
-
-                this.Close();
-                Application.Exit();
-            };
-            this.Controls.Add(btnUpdate);
-
-            Button btnSkip = new Button()
-            {
-                Text = "Để Sau",
-                Location = new Point(335, 150),
-                Size = new Size(130, 42),
-                BackColor = Color.FromArgb(30, 60, 50),
-                ForeColor = Color.FromArgb(204, 251, 241),
-                Font = new Font("Segoe UI", 10f),
-                FlatStyle = FlatStyle.Flat,
-                Cursor = Cursors.Hand
-            };
-            btnSkip.FlatAppearance.BorderSize = 0;
-            btnSkip.Click += (s, e) =>
-            {
-                this.Close();
-            };
-            this.Controls.Add(btnSkip);
-        }
-    }
-
     public class AboutForm : Form
     {
         private Image logoImg = null;
@@ -506,6 +354,11 @@ namespace AVRoadLauncher
                 if (a.Equals("/about", StringComparison.OrdinalIgnoreCase))
                 {
                     Application.Run(new AboutForm(appDir));
+                    return;
+                }
+                if (a.Equals("/check-update", StringComparison.OrdinalIgnoreCase) || a.Equals("--check-update-toast", StringComparison.OrdinalIgnoreCase))
+                {
+                    CheckUpdateAsync(appDir, null);
                     return;
                 }
             }
@@ -949,6 +802,7 @@ namespace AVRoadLauncher
                         if (acadProc.HasExited) return;
                         CheckUpdateAsync(appDir, acadProc);
                     });
+                    updateCheckThread.SetApartmentState(ApartmentState.STA);
                     updateCheckThread.IsBackground = true;
                     updateCheckThread.Start();
                 }
@@ -1036,7 +890,8 @@ namespace AVRoadLauncher
             }
             catch
             {
-                // Silent fail if offline or unreachable
+                // Keep startup silent, but preserve the failure for support.
+                try { File.AppendAllText(Path.Combine(appDir, "update-check.log"), DateTime.Now.ToString("s") + " Update check failed." + Environment.NewLine); } catch { }
             }
         }
 
@@ -1095,3 +950,4 @@ namespace AVRoadLauncher
         }
     }
 }
+

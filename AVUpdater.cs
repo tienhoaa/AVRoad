@@ -206,28 +206,25 @@ namespace AVRoadUpdater
                     }
                     catch { }
 
-                    // 1. Wait for acad.exe or AVRoad.exe to close
-                    SetStatus("Đang đóng các tiến trình CAD...", "Đang kiểm tra acad.exe...");
-                    int retries = 0;
-                    while (retries < 15)
+                    // Never terminate CAD or interrupt a save prompt.
+                    foreach (Process cad in Process.GetProcessesByName("acad"))
                     {
-                        Process[] procs = Process.GetProcessesByName("acad");
-                        if (procs.Length == 0) break;
-
-                        AppendLog("Đang đóng tiến trình AutoCAD/AVCAD (" + procs.Length + " tiến trình đang mở)...");
-                        foreach (Process p in procs)
+                        try
                         {
-                            try
-                            {
-                                p.CloseMainWindow();
-                                if (!p.WaitForExit(1000)) p.Kill();
-                            }
-                            catch { }
+                            string installedCad = Path.GetFullPath(Path.Combine(appDir, "acad.exe"));
+                            if (!string.Equals(cad.MainModule.FileName, installedCad, StringComparison.OrdinalIgnoreCase)) continue;
+                            SetStatus("Vui lòng lưu và đóng AVRoad", "Sau khi đóng CAD, mở lại trình cập nhật để tiếp tục.");
+                            AppendLog("Dừng cập nhật: AVRoad trong thư mục này vẫn đang chạy.");
+                            EnableCloseButton();
+                            return;
                         }
-                        Thread.Sleep(500);
-                        retries++;
+                        catch (InvalidOperationException) { }
+                        catch (System.ComponentModel.Win32Exception)
+                        {
+                            throw new IOException("Không kiểm tra được tiến trình CAD. Hãy đóng CAD trước khi cập nhật.");
+                        }
+                        finally { cad.Dispose(); }
                     }
-
                     // 2. Fetch patch info if not provided
                     if (string.IsNullOrEmpty(patchUrl))
                     {
@@ -458,3 +455,4 @@ namespace AVRoadUpdater
         }
     }
 }
+

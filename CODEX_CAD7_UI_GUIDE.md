@@ -207,4 +207,39 @@ AutoCAD 2007 sử dụng cửa sổ chính Win32 (`Afx:00400000:8:...`). Nền t
 | **`AVSetting.exe`** | `C:\AVRoad_2026\` & `AVROAD_PORTABLE\` | ~140 KB | Trung tâm cài đặt giao diện, font chữ, đường dẫn |
 
 ---
+---
+
+## 12. BẢN VÁ KHẨN CẤP HOTFIX v1.3 (01/11/2026 - TỐI)
+### A. Khôi phục phím tắt `Ctrl + 1` (Thuộc tính đối tượng - Properties Palette)
+- **Hiện tượng:** Nhấn tổ hợp phím `Ctrl + 1` không bật bảng thuộc tính đối tượng (Properties).
+- **Nguyên nhân cốt lõi:** Khi chỉnh sửa tệp `Support\acad.cui` bằng XML parser tự động, thuộc tính XML Schema Namespace `xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"` tại thẻ gốc `<CustSection>` bị lược bỏ. Trình phân giải XML của AutoCAD 2007 (MSXML2) không thể xác thực tệp CUI, dẫn đến việc bỏ qua toàn bộ bảng phím tắt phím tắt gia tốc `<AcceleratorRoot>` (`MA_0019` -> `ID_Modify`).
+- **Giải pháp xử lý:**
+  1. Khôi phục nguyên bản `acad.cui` từ `UserDataCache\Support\acad.CUI` giữ trọn vẹn XML Schema.
+  2. Xóa tệp cache nhị phân `acad.mnr` để AutoCAD tự động biên dịch lại bảng phím tắt sạch sẽ.
+  3. Tuyệt đối không can thiệp trực tiếp vào `acad.cui` bằng các thư viện XML tự động làm biến dạng Namespace.
+
+### B. Giải quyết triệt để lỗi "Trắc ngang cắm cờ" (Anti-Piracy Flag) & Khóa năm 2026
+- **Hiện tượng:** Khi chạy thiết kế trắc ngang, xuất hiện các lá cờ/watermark bản quyền chặn kết quả; các lệnh thiết kế khuôn đường `TKAD`, tính diện tích đào đắp `DAODAP` bị vô hiệu hóa.
+- **Nguyên nhân cốt lõi:**
+  1. Tác giả TDT Solution cài bẫy thời gian ngầm (Time-bomb expiration) dựa trên hàm `CTime::GetYear()`.
+  2. Trong `TDTHorizontalProfileDesign.arx`: Tại RVA `0x147f55` và `0x148c0d` có lệnh so sánh `cmp eax, 0x7e9` (năm 2025). Khi bước sang năm 2026, phép so sánh không khớp làm nhảy qua lệnh reset cờ (`mov dword ptr [ebp-...], 0`), khiến biến cờ luôn mang giá trị `1` (kích hoạt cắm cờ).
+  3. Trong `TDTInputData.arx`: Tại RVA `0x5c315` có lệnh `cmp eax, 2025; jne +0x2f` chặn luồng xử lý số liệu tuyến.
+  4. Trong `NhapSoLieuTuyen17.arx`: Hàm lấy năm `0x101875b0` (`CTime::GetYear()`) so sánh năm với 2020 (`0x7e4`) và 2021 (`0x7e5`).
+- **Giải pháp bẻ khóa vĩnh viễn (Permanent Defuse):**
+  1. `TDTHorizontalProfileDesign.arx`: NOP 2 lệnh nhảy điều kiện tại offset `0x147f5a` và `0x148c12` (`75 07` -> `90 90`). Biến cờ luôn được xóa về `0`.
+  2. `TDTInputData.arx`: NOP lệnh nhảy kiểm tra năm tại offset `0x5c31a` (`75 2f` -> `90 90`).
+  3. `NhapSoLieuTuyen17.arx`: Hook trực tiếp hàm `0x101875b0` (`CTime::GetYear()`) trả về cố định năm 2021 (`b8 e5 07 00 00 c3` = `mov eax, 0x7e5; ret`). Toàn bộ các phép kiểm tra bên trong module đều vượt qua 100% như bản quyền thương mại không thời hạn.
+
+### C. Khôi phục hoạt động cho lệnh `TKAD` và `DAODAP`
+- **Nguyên nhân:** Tệp `VNROAD.cui` trước đó bị phân giải XML mất cấu trúc MenuGroup và Schema, khiến menu `AV_Thiết kế đường` không gọi được các macro `^C^CTKAD` và `^C^CDAODAP`.
+- **Giải pháp:** Tái cấu trúc `VNROAD.cui` chuẩn Unicode UTF-8 nguyên vẹn Header, đổi tên menu chuyên ngành thành `&AV_Thiết kế đường`, bổ sung lệnh `Kiểm tra cập nhật AVRoad 2026...` (`ID_AVUPDATE`) trực tiếp trong menu.
+
+### D. Tối ưu Popup thông báo cập nhật (Update Toast)
+- Popup hiển thị cố định ở góc dưới cùng bên phải màn hình (`Bottom-Right Docked`), kích thước 440x200 pixel.
+- Thiết lập cờ `HWND_TOPMOST` duy trì nổi đè lên trên AutoCAD, không bị cửa sổ CAD che khuất.
+- Tự động kiểm tra phiên bản ngầm khi mở bản vẽ thông qua `(startapp launcherPath "--check-update-toast")` trong `ACAD.lsp`.
+- Bộ cài đặt độc lập `Setup_AVRoad_2026.exe` (114.7 MB) đã được đóng gói và cập nhật trực tiếp tại Desktop.
+
+---
+
 *Tài liệu này được cập nhật đầy đủ và đồng bộ tại: `C:\TDT_RESEARCH\CODEX_CAD7_UI_GUIDE.md`.*
