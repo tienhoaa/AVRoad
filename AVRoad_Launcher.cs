@@ -850,21 +850,6 @@ namespace AVRoadLauncher
                                                 DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE_OLD, ref dm, sizeof(int));
                                             }
                                             catch { }
-
-                                            // Launch Modern HUD Toolbar
-                                            try
-                                            {
-                                                string tbExe = Path.Combine(appDir, "AVRoad_Toolbar.exe");
-                                                if (File.Exists(tbExe))
-                                                {
-                                                    Process.Start(new ProcessStartInfo()
-                                                    {
-                                                        FileName = tbExe,
-                                                        WorkingDirectory = appDir
-                                                    });
-                                                }
-                                            }
-                                            catch { }
                                         }
                                     }
                                 }
