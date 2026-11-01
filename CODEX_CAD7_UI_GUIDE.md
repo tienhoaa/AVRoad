@@ -81,3 +81,40 @@
 
 ---
 *Tài liệu này được đồng bộ và cập nhật chính thức tại: `C:\TDT_RESEARCH\CODEX_CAD7_UI_GUIDE.md`.*
+
+
+---
+---
+
+## 13. BỘ CÀI ĐẶT CHUẨN GỐC TDT SOLUTION 9.1 (KHÔNG BỎ SÓT NỘI DUNG - KHÔNG PORTABLE)
+
+### A. Yêu cầu và Định hướng chuyển giao
+- **Yêu cầu người dùng:** Chấm dứt hoàn toàn việc đóng gói bản Portable. Trích xuất trực tiếp toàn bộ 100% nội dung từ thư mục gốc `C:\Program Files (x86)\TDT Solution 9.1`, giữ nguyên vẹn toàn bộ tính năng, menu, thư viện và mô hình như bản gốc, không lược bỏ bất kỳ tệp tin nào.
+- **Tệp cài đặt bàn giao:** [`Setup_TDT_Solution_9.1.exe`](file:///C:/Users/PC/Desktop/Setup_TDT_Solution_9.1.exe) (Dung lượng: ~828 MB, đóng gói độc lập dạng Single-File Installer đặt tại Desktop).
+
+### B. Cam kết nội dung nguyên bản 100% (Zero-Loss Packaging)
+Bộ cài đặt bao gồm trọn vẹn 2.366 tệp tin:
+1. **Toàn bộ thư mục nghiệp vụ gốc từ `C:\Program Files (x86)\TDT Solution 9.1`:**
+   - `RoadView\` (~1.88 GB dữ liệu mô phỏng 3D tuyến đường - giữ nguyên vẹn).
+   - `Data\` (toàn bộ cấu hình `DauCo.dwg`, `DTKTN.cfg`, `data.dtktn`, `ini.dtktn`, ký hiệu `Symbols\`, `Bien bao\`, `Color\`, `Ltype\`).
+   - `Lib\`, `Blocks\`, `Config\`, `CTTK\`, `DCCT\`, `sample\`.
+   - Toàn bộ 75 tệp mặt cắt/hatch `*.pat` và 10 tệp font `*.shx`.
+2. **7 Menu chuyên ngành gốc nguyên bản:**
+   - `&VNRoad 9.1` (`VNROAD.cui`)
+   - `&Khao sat 9.1` (`KSVN.cui`)
+   - `&San nen 9.1` (`SANNEN.cui`)
+   - `&Thiet ke kenh 9.1` (`KVN.cui`)
+   - `&Dia chat cong trinh` (`DCCT.cui`)
+   - `&TDT 3D` (`TDT3D.cui`)
+   - `&Vach son bien bao` (`RM.cui`)
+3. **Các bản vá tối ưu hóa bắt buộc cho năm 2026+:**
+   - Bỏ bẫy thời gian 2026 trong `TDTInputData.arx` (`0x5c308: 74 -> eb`).
+   - Bỏ bẫy giới hạn cọc và khóa trong `NhapSoLieuTuyen17.arx`.
+   - Giữ nguyên cờ vẽ cọc và Km trên trắc dọc (`[ebp-38h]=1`) và trắc ngang (`[ebp-1Ch]=1`) trong `TDTHorizontalProfileDesign.arx`.
+   - Nạp tự động bảng thuộc tính Properties `Ctrl + 1` qua Registry Demand-Loading `HKCU\Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications\AcOpm`.
+   - Tệp khóa `Rlthap.rar` và `tdtHFD.rar` đặt tại thư mục gốc; launcher khóa cứng `WorkingDirectory` đảm bảo Safengine không bao giờ báo lỗi khóa.
+
+### C. Khởi chạy và Sử dụng
+- Chạy file [`Setup_TDT_Solution_9.1.exe`](file:///C:/Users/PC/Desktop/Setup_TDT_Solution_9.1.exe) ngoài Desktop.
+- Trình cài đặt tự động cài đặt vào `C:\Program Files (x86)\TDT Solution 9.1`, đăng ký Registry Windows và tạo biểu tượng `TDT Solution 9.1` ngoài màn hình Desktop.
+- Bật chương trình từ biểu tượng Desktop: AutoCAD tự động mở với đầy đủ 7 menu TDT 9.1, phím tắt `Ctrl + 1`, lệnh `TKAD`, `DAODAP`, và cắm cọc trắc ngang hoạt động hoàn hảo như bản gốc.
