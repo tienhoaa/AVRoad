@@ -1,0 +1,28 @@
+# Ignore heavy binary archives, installers, and full portable runtime
+*.zip
+*.7z
+*.rar
+Setup_AVRoad_2026.exe
+AVRoad_2026_Portable.zip
+AVROAD_PORTABLE/
+
+# Ignore temporary and cache files
+*.bak
+*.tmp
+*.log
+*.old
+*~
+*.dmp
+# Ignore research archive and temporary folders
+_RESEARCH_ARCHIVE/
+Temp/
+UserDataCache/Support/*.bak
+
+# Ignore build artifacts
+*.pdb
+*.obj
+
+# Keep source code, launchers, icons, patches, configs, and documentation:
+!patch_*.zip
+!version.json
+!README.md
