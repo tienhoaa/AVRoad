@@ -324,6 +324,120 @@ namespace AVRoadLauncher
         }
     }
 
+    public class AboutForm : Form
+    {
+        private Image logoImg = null;
+
+        public AboutForm(string appDir)
+        {
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.Size = new Size(520, 360);
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.Text = "Giới thiệu AVRoad 2026 Solution - Hệ sinh thái AV BIM CDE";
+            this.BackColor = Color.FromArgb(7, 35, 26);
+            this.DoubleBuffered = true;
+
+            string icoPath = Path.Combine(appDir, "AVRoad.ico");
+            if (File.Exists(icoPath))
+            {
+                try { this.Icon = new Icon(icoPath); } catch { }
+            }
+
+            string logoPath = Path.Combine(appDir, "av_bim_logo_transparent.png");
+            if (File.Exists(logoPath))
+            {
+                try { logoImg = Image.FromFile(logoPath); } catch { }
+            }
+
+            BuildUI(appDir);
+        }
+
+        private void BuildUI(string appDir)
+        {
+            this.Paint += (s, e) =>
+            {
+                Graphics g = e.Graphics;
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+
+                using (LinearGradientBrush b = new LinearGradientBrush(this.ClientRectangle, Color.FromArgb(7, 35, 26), Color.FromArgb(23, 102, 79), LinearGradientMode.ForwardDiagonal))
+                {
+                    g.FillRectangle(b, this.ClientRectangle);
+                }
+
+                int logoY = 24;
+                if (logoImg != null)
+                {
+                    int lw = 150;
+                    int lh = (int)(logoImg.Height * (lw / (double)logoImg.Width));
+                    g.DrawImage(logoImg, new Rectangle(30, logoY, lw, lh));
+                }
+
+                using (Font fTitle = new Font("Segoe UI", 18f, FontStyle.Bold))
+                using (Brush brTitle = new SolidBrush(Color.FromArgb(94, 234, 212)))
+                {
+                    g.DrawString("AVRoad 2026 Solution", fTitle, brTitle, 200, 24);
+                }
+
+                using (Font fSub = new Font("Segoe UI", 9.5f))
+                using (Brush brSub = new SolidBrush(Color.FromArgb(204, 251, 241)))
+                {
+                    g.DrawString("HỆ THỐNG THIẾT KẾ TUYẾN & HẠ TẦNG GIAO THÔNG", fSub, brSub, 202, 58);
+                }
+
+                using (Font fSlogan = new Font("Segoe UI", 9f, FontStyle.Bold))
+                using (Brush brSlogan = new SolidBrush(Color.FromArgb(254, 240, 138)))
+                {
+                    g.DrawString("CHUẨN HÓA DỮ LIỆU CDE • TỐI ƯU THIẾT KẾ HẠ TẦNG BIM", fSlogan, brSlogan, 30, 120);
+                }
+
+                using (Font fBody = new Font("Segoe UI", 9f))
+                using (Brush brBody = new SolidBrush(Color.FromArgb(226, 232, 240)))
+                {
+                    string info = "• Nhân đồ họa: AVCAD Core Engine (Portable Isolated độc lập)\n" +
+                                  "• Phiên bản: v1.0 (2026 Edition)\n" +
+                                  "• Tích hợp: 7 Menu nghiệp vụ AV_KS, AV_Road, San nền, Kênh...\n" +
+                                  "• Bản quyền: AV Technology Ecosystem. Tất cả các quyền được bảo lưu.";
+                    g.DrawString(info, fBody, brBody, 30, 150);
+                }
+            };
+
+            Button btnWeb = new Button()
+            {
+                Text = "Trang Chủ Dự Án (GitHub)",
+                Location = new Point(30, 260),
+                Size = new Size(210, 38),
+                BackColor = Color.FromArgb(16, 185, 129),
+                ForeColor = Color.White,
+                Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+            };
+            btnWeb.FlatAppearance.BorderSize = 0;
+            btnWeb.Click += (s, e) =>
+            {
+                try { Process.Start("https://github.com/tienhoaa/AVRoad"); } catch { }
+            };
+            this.Controls.Add(btnWeb);
+
+            Button btnClose = new Button()
+            {
+                Text = "Đóng",
+                Location = new Point(255, 260),
+                Size = new Size(120, 38),
+                BackColor = Color.FromArgb(30, 60, 50),
+                ForeColor = Color.FromArgb(204, 251, 241),
+                Font = new Font("Segoe UI", 9.5f),
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+            };
+            btnClose.FlatAppearance.BorderSize = 0;
+            btnClose.Click += (s, e) => this.Close();
+            this.Controls.Add(btnClose);
+        }
+    }
+
     static class Program
     {
         [DllImport("user32.dll", SetLastError = true)]
@@ -348,6 +462,12 @@ namespace AVRoadLauncher
         [DllImport("user32.dll", CharSet = CharSet.Auto)]
         static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr wParam, IntPtr lParam);
 
+        [DllImport("dwmapi.dll")]
+        static extern int DwmSetWindowAttribute(IntPtr hwnd, int attr, ref int attrValue, int attrSize);
+
+        const int DWMWA_USE_IMMERSIVE_DARK_MODE = 20;
+        const int DWMWA_USE_IMMERSIVE_DARK_MODE_OLD = 19;
+
         const uint WM_SETICON = 0x80;
         const int ICON_SMALL = 0;
         const int ICON_BIG = 1;
@@ -362,6 +482,15 @@ namespace AVRoadLauncher
 
             string appDir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
             string iniPath = Path.Combine(appDir, "AVRoad.ini");
+
+            foreach (string a in args)
+            {
+                if (a.Equals("/about", StringComparison.OrdinalIgnoreCase))
+                {
+                    Application.Run(new AboutForm(appDir));
+                    return;
+                }
+            }
 
             bool isDirect = false;
             foreach (string a in args)
@@ -712,6 +841,30 @@ namespace AVRoadLauncher
                                             closedSplash = true;
                                             CloseSplashSafe();
                                             SetForegroundWindow(hwnd);
+
+                                            // Apply Windows Immersive Dark Mode to AutoCAD Window
+                                            try
+                                            {
+                                                int dm = 1;
+                                                DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, ref dm, sizeof(int));
+                                                DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE_OLD, ref dm, sizeof(int));
+                                            }
+                                            catch { }
+
+                                            // Launch Modern HUD Toolbar
+                                            try
+                                            {
+                                                string tbExe = Path.Combine(appDir, "AVRoad_Toolbar.exe");
+                                                if (File.Exists(tbExe))
+                                                {
+                                                    Process.Start(new ProcessStartInfo()
+                                                    {
+                                                        FileName = tbExe,
+                                                        WorkingDirectory = appDir
+                                                    });
+                                                }
+                                            }
+                                            catch { }
                                         }
                                     }
                                 }
@@ -764,7 +917,7 @@ namespace AVRoadLauncher
         {
             try
             {
-                string localVer = "2026.1.0";
+                string localVer = "1.0";
                 string verPath = Path.Combine(appDir, "version.json");
                 if (File.Exists(verPath))
                 {
@@ -773,7 +926,7 @@ namespace AVRoadLauncher
                     if (mLocal.Success) localVer = mLocal.Groups[1].Value;
                 }
 
-                string checkUrl = "https://raw.githubusercontent.com/avtechnology/AVRoad/main/version.json";
+                string checkUrl = "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version.json";
                 string iniPath = Path.Combine(appDir, "AVRoad.ini");
                 if (File.Exists(iniPath))
                 {

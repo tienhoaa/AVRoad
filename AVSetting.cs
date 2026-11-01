@@ -3,6 +3,8 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
+using System.Net;
+using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.Win32;
 
@@ -178,10 +180,11 @@ namespace AVSettingApp
             {
                 Text = "Dọn Cache & Tối Ưu CAD",
                 Location = new Point(18, 82),
-                Size = new Size(180, 26),
+                Size = new Size(160, 26),
                 Font = new Font("Segoe UI", 8.5f),
                 BackColor = Color.FromArgb(241, 245, 249),
-                FlatStyle = FlatStyle.Flat
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
             };
             btnClearCache.Click += (s, e) =>
             {
@@ -189,7 +192,24 @@ namespace AVSettingApp
                 MessageBox.Show("Đã làm sạch bộ đệm tạm và tối ưu nhân AVCAD Engine!", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             };
 
-            grpOpt.Controls.AddRange(new Control[] { chkAutoStart, chkCheckUpdate, btnClearCache });
+            Button btnCheckUpdateNow = new Button()
+            {
+                Text = "Kiểm Tra Cập Nhật Online (GitHub)",
+                Location = new Point(186, 82),
+                Size = new Size(230, 26),
+                Font = new Font("Segoe UI", 8.5f, FontStyle.Bold),
+                BackColor = Color.FromArgb(16, 185, 129),
+                ForeColor = Color.White,
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+            };
+            btnCheckUpdateNow.FlatAppearance.BorderSize = 0;
+            btnCheckUpdateNow.Click += (s, e) =>
+            {
+                CheckOnlineUpdateGUI();
+            };
+
+            grpOpt.Controls.AddRange(new Control[] { chkAutoStart, chkCheckUpdate, btnClearCache, btnCheckUpdateNow });
 
             y += 128;
 
@@ -451,6 +471,124 @@ namespace AVSettingApp
                 }
                 catch { }
             }
+        }
+
+        private void CheckOnlineUpdateGUI()
+        {
+            try
+            {
+                string localVer = "1.0";
+                string verPath = Path.Combine(appDir, "version.json");
+                if (File.Exists(verPath))
+                {
+                    string localJson = File.ReadAllText(verPath);
+                    Match mLocal = Regex.Match(localJson, "\"version\"\\s*:\\s*\"([^\"]+)\"");
+                    if (mLocal.Success) localVer = mLocal.Groups[1].Value;
+                }
+
+                string checkUrl = "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version.json";
+                ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072; // TLS 1.2
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(checkUrl);
+                req.UserAgent = "AVRoad-Client";
+                req.Timeout = 6000;
+
+                string remoteJson = "";
+                using (HttpWebResponse resp = (HttpWebResponse)req.GetResponse())
+                using (StreamReader sr = new StreamReader(resp.GetResponseStream()))
+                {
+                    remoteJson = sr.ReadToEnd();
+                }
+
+                Match mRemote = Regex.Match(remoteJson, "\"version\"\\s*:\\s*\"([^\"]+)\"");
+                if (!mRemote.Success)
+                {
+                    MessageBox.Show("Không thể đọc thông tin phiên bản từ GitHub!", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
+                string remoteVer = mRemote.Groups[1].Value;
+                string changelog = "";
+                Match mChange = Regex.Match(remoteJson, "\"changelog\"\\s*:\\s*\"([^\"]+)\"");
+                if (mChange.Success) changelog = mChange.Groups[1].Value.Replace("\\n", "\n");
+
+                string patchUrl = "";
+                Match mUrl = Regex.Match(remoteJson, "\"download_url\"\\s*:\\s*\"([^\"]+)\"");
+                if (mUrl.Success) patchUrl = mUrl.Groups[1].Value;
+
+                bool isNewer = IsNewer(remoteVer, localVer);
+
+                if (isNewer)
+                {
+                    DialogResult dr = MessageBox.Show(
+                        string.Format("Đã tìm thấy bản cập nhật mới v{0} trên GitHub!\n(Phiên bản hiện tại của bạn: v{1})\n\nNội dung bản vá:\n{2}\n\nBạn có muốn mở trình tải bản vá (AVUpdater) để cập nhật ngay không?", remoteVer, localVer, changelog),
+                        "Có Bản Cập Nhật Mới - AVRoad 2026",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Information);
+
+                    if (dr == DialogResult.Yes)
+                    {
+                        LaunchUpdater(patchUrl, remoteVer);
+                        this.Close();
+                    }
+                }
+                else
+                {
+                    DialogResult dr = MessageBox.Show(
+                        string.Format("Bạn đang sử dụng phiên bản mới nhất: v{0}!\n\nKết nối máy chủ GitHub (tienhoaa/AVRoad): THÀNH CÔNG (100% OK).\nHiện chưa có bản vá mới hơn.\n\n[Thử Nghiệm Tính Năng]: Bạn có muốn mở trình tải bản vá (AVUpdater) để kiểm tra thử màn hình cập nhật không?", localVer),
+                        "Kiểm Tra Cập Nhật - AVRoad 2026",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Information);
+
+                    if (dr == DialogResult.Yes)
+                    {
+                        LaunchUpdater(patchUrl, remoteVer);
+                        this.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Lỗi kết nối kiểm tra cập nhật từ GitHub:\n" + ex.Message + "\n\nVui lòng kiểm tra lại kết nối mạng hoặc thử lại sau.", "Lỗi Kiểm Tra Cập Nhật", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void LaunchUpdater(string patchUrl, string remoteVer)
+        {
+            string updaterExe = Path.Combine(appDir, "AVUpdater.exe");
+            if (File.Exists(updaterExe))
+            {
+                string args = "";
+                if (!string.IsNullOrEmpty(patchUrl)) args += " \"/url:" + patchUrl + "\"";
+                if (!string.IsNullOrEmpty(remoteVer)) args += " \"/ver:" + remoteVer + "\"";
+
+                Process.Start(new ProcessStartInfo()
+                {
+                    FileName = updaterExe,
+                    Arguments = args.Trim(),
+                    WorkingDirectory = appDir
+                });
+            }
+        }
+
+        private bool IsNewer(string remote, string local)
+        {
+            try
+            {
+                string[] rParts = remote.Split('.');
+                string[] lParts = local.Split('.');
+                int len = Math.Max(rParts.Length, lParts.Length);
+                for (int i = 0; i < len; i++)
+                {
+                    int rv = 0;
+                    int lv = 0;
+                    if (i < rParts.Length) int.TryParse(rParts[i], out rv);
+                    if (i < lParts.Length) int.TryParse(lParts[i], out lv);
+                    if (rv > lv) return true;
+                    if (rv < lv) return false;
+                }
+            }
+            catch { }
+            return false;
         }
 
         [STAThread]
