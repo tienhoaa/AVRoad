@@ -729,6 +729,24 @@ namespace AVRoadLauncher
                                     appKey2.SetValue("LOADER", "", RegistryValueKind.String);
                                 }
                             }
+                            using (RegistryKey tdtObjKey1 = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\ObjectDBX\R17.0\Applications\TDTObjects"))
+                            {
+                                if (tdtObjKey1 != null)
+                                {
+                                    tdtObjKey1.SetValue("LOADCTRLS", 9, RegistryValueKind.DWord);
+                                    tdtObjKey1.SetValue("LOADER", Path.Combine(appDir, "TDTObjects17.dbx"), RegistryValueKind.String);
+                                    tdtObjKey1.SetValue("DESCRIPTION", "TDT Objects version 1.0", RegistryValueKind.String);
+                                }
+                            }
+                            using (RegistryKey tdtObjKey2 = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications\TDTObjects"))
+                            {
+                                if (tdtObjKey2 != null)
+                                {
+                                    tdtObjKey2.SetValue("LOADCTRLS", 9, RegistryValueKind.DWord);
+                                    tdtObjKey2.SetValue("LOADER", Path.Combine(appDir, "TDTObjects17.dbx"), RegistryValueKind.String);
+                                    tdtObjKey2.SetValue("DESCRIPTION", "TDT Objects version 1.0", RegistryValueKind.String);
+                                }
+                            }
                             using (RegistryKey cmKey = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\CadManagerControl\CommunicationCenter"))
                             {
                                 if (cmKey != null)

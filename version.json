@@ -1,6 +1,8 @@
 {
-  "version": "1.1",
+  "version": "1.2",
   "release_date": "2026-11-01",
-  "download_url": "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/patch_1.1.zip",
-  "changelog": "Bản vá Hotfix v1.1:\n- Khôi phục toàn bộ 7 Menu chuẩn gốc TDT 9.1 ổn định 100%\n- Bỏ mục Giới thiệu trong menu, giao diện thuần khiết sạch sẽ\n- Tắt hoàn toàn cửa sổ Tool Palettes và Sheet Set Manager khi mở máy\n- Khôi phục biểu tượng hệ tọa độ OXY (UCS Icon) về chuẩn 2D cổ điển\n- Trả lại màu thanh tiêu đề Windows tự nhiên (bỏ Dark Mode)\n- Sửa dứt điểm lệnh DLBD và khắc phục triệt để lỗi TinhKLMo, PALETTEOPAQUE"
+  "title": "AVRoad 2026 Solution - He Sinh Thai AV BIM",
+  "changelog": "Ban va Hotfix v1.2:\n- Sua triet de 100% loi Access Violation khi tat file / dong ban ve (Fix crash acrender.arx)\n- Chuan hoa toan bo 7 Menu chuyen nganh voi tien to AV_\n- Go bo hoan toan muc About va Help gay roi giao dien\n- Tat canh bao COM server va service registration khi khoi dong\n- Tu dong sua loi khoi dong Class TdtDbPointObj not found tren may moi",
+  "download_url": "https://github.com/tienhoaa/AVRoad/releases/latest",
+  "patch_download_url": "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/patch_1.2.zip"
 }
