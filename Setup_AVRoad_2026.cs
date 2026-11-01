@@ -7,6 +7,7 @@ using System.IO.Compression;
 using System.Reflection;
 using System.Threading;
 using System.Windows.Forms;
+using Microsoft.Win32;
 
 namespace AVRoadInstaller
 {
@@ -473,8 +474,27 @@ namespace AVRoadInstaller
                         }
                     }
 
-                    // Create Shortcuts
+                    // Fix paths in targetDir\AVRoad.ini
+                    string iniPath = Path.Combine(targetDir, "AVRoad.ini");
+                    if (File.Exists(iniPath))
+                    {
+                        try
+                        {
+                            string[] lines = File.ReadAllLines(iniPath);
+                            for (int i = 0; i < lines.Length; i++)
+                            {
+                                if (lines[i].StartsWith("PlotStylePath=")) lines[i] = "PlotStylePath=" + Path.Combine(targetDir, "Plot Styles");
+                                if (lines[i].StartsWith("PlotterPath=")) lines[i] = "PlotterPath=" + Path.Combine(targetDir, "Plotters");
+                                if (lines[i].StartsWith("ArgProfilePath=")) lines[i] = "ArgProfilePath=" + Path.Combine(targetDir, "AVRoad_Profile.arg");
+                            }
+                            File.WriteAllLines(iniPath, lines);
+                        }
+                        catch { }
+                    }
+
+                    // Create Shortcuts and Register Uninstall
                     CreateShortcuts(targetDir);
+                    RegisterWindowsUninstall(targetDir);
 
                     // Proceed to step 4
                     this.BeginInvoke((Action)(() =>
@@ -549,6 +569,38 @@ namespace AVRoadInstaller
                         sc.WorkingDirectory = targetDir;
                         if (File.Exists(icoPath)) sc.IconLocation = icoPath + ",0";
                         sc.Save();
+                    }
+
+                    string uninstExe = Path.Combine(targetDir, "Uninstall.exe");
+                    if (File.Exists(uninstExe))
+                    {
+                        dynamic sc = shell.CreateShortcut(Path.Combine(avStartGroup, "Gỡ Cài Đặt AVRoad 2026.lnk"));
+                        sc.TargetPath = uninstExe;
+                        sc.WorkingDirectory = targetDir;
+                        if (File.Exists(icoPath)) sc.IconLocation = icoPath + ",0";
+                        sc.Save();
+                    }
+                }
+            }
+            catch { }
+        }
+
+        private void RegisterWindowsUninstall(string targetDir)
+        {
+            try
+            {
+                string uninstExe = Path.Combine(targetDir, "Uninstall.exe");
+                using (RegistryKey uKey = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026"))
+                {
+                    if (uKey != null)
+                    {
+                        uKey.SetValue("DisplayName", "AVRoad 2026 Solution");
+                        uKey.SetValue("DisplayVersion", "1.0");
+                        uKey.SetValue("Publisher", "AV Technology CDE");
+                        uKey.SetValue("UninstallString", "\"" + uninstExe + "\"");
+                        uKey.SetValue("DisplayIcon", Path.Combine(targetDir, "AVRoad.ico"));
+                        uKey.SetValue("InstallLocation", targetDir);
+                        uKey.SetValue("EstimatedSize", 314000, RegistryValueKind.DWord);
                     }
                 }
             }
