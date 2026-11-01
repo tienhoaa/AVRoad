@@ -603,12 +603,51 @@ namespace AVRoadLauncher
                         string drvPath = Path.Combine(appDir, "Drv");
                         string templatePath = Path.Combine(appDir, "Template");
 
-                        string cleanAcad = "";
+                        string cleanAcad = appDir + ";";
                         if (!string.IsNullOrEmpty(fontPath) && Directory.Exists(fontPath))
                         {
                             cleanAcad += fontPath + ";";
                         }
                         cleanAcad += supportPath + ";" + fontsPath + ";" + expressPath + ";" + colorPath + ";" + helpPath;
+
+                        try
+                        {
+                            using (RegistryKey rk = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409"))
+                            {
+                                if (rk != null)
+                                {
+                                    rk.SetValue("SerialNumber", "000-00000000");
+                                    rk.SetValue("Location", appDir);
+                                    rk.SetValue("ProductName", "AVRoad 2026");
+                                    rk.SetValue("Release", "17.0");
+                                    rk.SetValue("CurVer", "ACAD-5001:409");
+                                }
+                            }
+                        }
+                        catch { }
+
+                        try
+                        {
+                            using (RegistryKey rk = Registry.LocalMachine.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409"))
+                            {
+                                if (rk != null)
+                                {
+                                    rk.SetValue("SerialNumber", "000-00000000");
+                                    rk.SetValue("Location", appDir);
+                                    rk.SetValue("ProductName", "AVRoad 2026");
+                                }
+                            }
+                            using (RegistryKey rk64 = Registry.LocalMachine.CreateSubKey(@"Software\WOW6432Node\Autodesk\AutoCAD\R17.0\ACAD-5001:409"))
+                            {
+                                if (rk64 != null)
+                                {
+                                    rk64.SetValue("SerialNumber", "000-00000000");
+                                    rk64.SetValue("Location", appDir);
+                                    rk64.SetValue("ProductName", "AVRoad 2026");
+                                }
+                            }
+                        }
+                        catch { }
 
                         using (RegistryKey genKey = profilesKey.CreateSubKey(@"AVRoad\General"))
                         {
@@ -620,7 +659,7 @@ namespace AVRoadLauncher
                                 genKey.SetValue("PrinterDescDir", Path.Combine(plotterPath, "PMP Files"));
                                 genKey.SetValue("ColorBookLocation", colorPath);
                                 genKey.SetValue("ACADDRV", drvPath);
-                                genKey.SetValue("ACADHELP", Path.Combine(helpPath, "acad170.chm"));
+                                genKey.SetValue("ACADHELP", Path.Combine(helpPath, "acad.chm"));
                                 genKey.SetValue("TemplatePath", templatePath);
                             }
                         }
