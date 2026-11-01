@@ -2,5 +2,5 @@
   "version": "1.1",
   "release_date": "2026-11-01",
   "download_url": "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/patch_1.1.zip",
-  "changelog": "Bản vá Hotfix v1.1:\n- Sửa dứt điểm lỗi Fatal Error và nạp DBX cho DLBD\n- Bỏ thanh toolbar phụ, giữ giao diện CAD gốc sạch sẽ ổn định\n- Chuẩn hóa toàn bộ 7 Menu thiết kế AV_Road, AV_KS, AV_SanNen..."
+  "changelog": "Bản vá Hotfix v1.1:\n- Khôi phục toàn bộ 7 Menu chuẩn gốc TDT 9.1 ổn định 100%\n- Bỏ mục Giới thiệu trong menu, giao diện thuần khiết sạch sẽ\n- Tắt hoàn toàn cửa sổ Tool Palettes và Sheet Set Manager khi mở máy\n- Khôi phục biểu tượng hệ tọa độ OXY (UCS Icon) về chuẩn 2D cổ điển\n- Trả lại màu thanh tiêu đề Windows tự nhiên (bỏ Dark Mode)\n- Sửa dứt điểm lệnh DLBD và khắc phục triệt để lỗi TinhKLMo, PALETTEOPAQUE"
 }

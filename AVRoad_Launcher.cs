@@ -842,14 +842,7 @@ namespace AVRoadLauncher
                                             CloseSplashSafe();
                                             SetForegroundWindow(hwnd);
 
-                                            // Apply Windows Immersive Dark Mode to AutoCAD Window
-                                            try
-                                            {
-                                                int dm = 1;
-                                                DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE, ref dm, sizeof(int));
-                                                DwmSetWindowAttribute(hwnd, DWMWA_USE_IMMERSIVE_DARK_MODE_OLD, ref dm, sizeof(int));
-                                            }
-                                            catch { }
+
                                         }
                                     }
                                 }
