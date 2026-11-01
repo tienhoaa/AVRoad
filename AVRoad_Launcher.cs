@@ -659,7 +659,16 @@ namespace AVRoadLauncher
                                 genKey.SetValue("PrinterDescDir", Path.Combine(plotterPath, "PMP Files"));
                                 genKey.SetValue("ColorBookLocation", colorPath);
                                 genKey.SetValue("ACADDRV", drvPath);
-                                genKey.SetValue("ACADHELP", Path.Combine(helpPath, "acad.chm"));
+                                string chmTarget = Path.Combine(helpPath, "acad.chm");
+                                if (!File.Exists(chmTarget)) chmTarget = Path.Combine(appDir, "acad.chm");
+                                genKey.SetValue("ACADHELP", chmTarget);
+                                genKey.SetValue("HelpFilePath", helpPath);
+                                try {
+                                    if (!Directory.Exists(helpPath)) Directory.CreateDirectory(helpPath);
+                                    if (!File.Exists(Path.Combine(helpPath, "acad.chm")) && File.Exists(Path.Combine(appDir, "acad.chm"))) {
+                                        File.Copy(Path.Combine(appDir, "acad.chm"), Path.Combine(helpPath, "acad.chm"), true);
+                                    }
+                                } catch { }
                                 genKey.SetValue("TemplatePath", templatePath);
                             }
                         }

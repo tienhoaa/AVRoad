@@ -427,14 +427,43 @@ namespace AVRoadInstaller
                 try
                 {
                     Assembly asm = Assembly.GetExecutingAssembly();
-                    using (Stream zipStream = asm.GetManifestResourceStream("payload.zip"))
+                    Stream zipStream = asm.GetManifestResourceStream("payload.zip");
+                    if (zipStream == null)
                     {
-                        if (zipStream == null)
+                        foreach (string res in asm.GetManifestResourceNames())
                         {
-                            MessageBox.Show("Không tìm thấy tệp tài nguyên payload.zip bên trong trình cài đặt!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                            return;
+                            if (res.IndexOf("payload", StringComparison.OrdinalIgnoreCase) >= 0 || res.EndsWith(".zip", StringComparison.OrdinalIgnoreCase))
+                            {
+                                zipStream = asm.GetManifestResourceStream(res);
+                                if (zipStream != null) break;
+                            }
                         }
+                    }
+                    if (zipStream == null)
+                    {
+                        string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+                        string[] diskCandidates = new string[] {
+                            Path.Combine(baseDir, "payload.zip"),
+                            Path.Combine(baseDir, "AVRoad_2026_Portable.zip"),
+                            @"C:\TDT_RESEARCH\AVRoad_2026_Portable.zip"
+                        };
+                        foreach (string cand in diskCandidates)
+                        {
+                            if (File.Exists(cand))
+                            {
+                                zipStream = new FileStream(cand, FileMode.Open, FileAccess.Read, FileShare.Read);
+                                break;
+                            }
+                        }
+                    }
+                    if (zipStream == null)
+                    {
+                        MessageBox.Show("Không tìm thấy tệp tài nguyên payload.zip bên trong hoặc cạnh trình cài đặt!", "Lỗi", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        return;
+                    }
 
+                    using (zipStream)
+                    {
                         using (ZipArchive archive = new ZipArchive(zipStream, ZipArchiveMode.Read))
                         {
                             int totalEntries = archive.Entries.Count;
