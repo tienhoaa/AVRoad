@@ -192,21 +192,39 @@ namespace AVRoadLauncher
 
     public class UpdateToastForm : Form
     {
+        [DllImport("user32.dll")]
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
+        private static readonly IntPtr HWND_TOPMOST = new IntPtr(-1);
+        private const uint SWP_NOSIZE = 0x0001;
+        private const uint SWP_NOMOVE = 0x0002;
+        private const uint SWP_SHOWWINDOW = 0x0040;
+
         public UpdateToastForm(string newVer, string changelog, string patchUrl, Process acadProc, string appDir)
         {
-            this.FormBorderStyle = FormBorderStyle.None;
-            this.StartPosition = FormStartPosition.Manual;
-            this.Size = new Size(380, 180);
-            this.Text = "AVRoad 2026 - Bản vá mới";
-            this.ShowInTaskbar = false;
+            this.FormBorderStyle = FormBorderStyle.FixedDialog;
+            this.StartPosition = FormStartPosition.CenterScreen;
+            this.Size = new Size(500, 240);
+            this.Text = "AVRoad 2026 - CÓ BẢN CẬP NHẬT MỚI (HOTFIX)";
+            this.MaximizeBox = false;
+            this.MinimizeBox = false;
+            this.ShowInTaskbar = true;
             this.TopMost = true;
             this.DoubleBuffered = true;
 
-            // Position at bottom-right of primary screen
-            Rectangle wa = Screen.PrimaryScreen.WorkingArea;
-            this.Location = new Point(wa.Right - this.Width - 20, wa.Bottom - this.Height - 20);
+            string icoPath = Path.Combine(appDir, "AVRoad.ico");
+            if (File.Exists(icoPath)) { try { this.Icon = new Icon(icoPath); } catch { } }
 
             BuildUI(newVer, changelog, patchUrl, acadProc, appDir);
+
+            this.Shown += (s, e) =>
+            {
+                try {
+                    SetWindowPos(this.Handle, HWND_TOPMOST, 0, 0, 0, 0, SWP_NOMOVE | SWP_NOSIZE | SWP_SHOWWINDOW);
+                    this.BringToFront();
+                    this.Activate();
+                    System.Media.SystemSounds.Asterisk.Play();
+                } catch { }
+            };
         }
 
         private void BuildUI(string newVer, string changelog, string patchUrl, Process acadProc, string appDir)
@@ -229,37 +247,37 @@ namespace AVRoadLauncher
                 // Accent icon / badge
                 using (SolidBrush b = new SolidBrush(Color.FromArgb(45, 212, 191)))
                 {
-                    g.FillEllipse(b, 16, 16, 12, 12);
+                    g.FillEllipse(b, 20, 18, 14, 14);
                 }
 
-                using (Font fTitle = new Font("Segoe UI", 11.5f, FontStyle.Bold))
+                using (Font fTitle = new Font("Segoe UI", 12f, FontStyle.Bold))
                 using (Brush bTitle = new SolidBrush(Color.FromArgb(94, 234, 212)))
                 {
-                    g.DrawString("AVRoad 2026 - Bản vá mới v" + newVer, fTitle, bTitle, 36, 12);
+                    g.DrawString("AVROAD 2026 - BẢN NÂNG CẤP V" + newVer, fTitle, bTitle, 42, 14);
                 }
 
-                using (Font fDesc = new Font("Segoe UI", 9f, FontStyle.Regular))
+                using (Font fDesc = new Font("Segoe UI", 9.5f, FontStyle.Regular))
                 using (Brush bDesc = new SolidBrush(Color.FromArgb(204, 251, 241)))
                 {
-                    string summary = "Đã có bản cập nhật vá lỗi (Hotfix) trên GitHub.";
+                    string summary = "Đã phát hiện bản cập nhật tối ưu & vá lỗi mới nhất trên GitHub.";
                     if (!string.IsNullOrEmpty(changelog))
                     {
-                        summary += "\n" + (changelog.Length > 85 ? changelog.Substring(0, 85) + "..." : changelog);
+                        summary += "\nNội dung: " + (changelog.Length > 100 ? changelog.Substring(0, 100) + "..." : changelog);
                     }
-                    summary += "\nBạn có muốn thoát CAD để áp dụng bản vá ngay?";
-                    g.DrawString(summary, fDesc, bDesc, new RectangleF(16, 42, 348, 70));
+                    summary += "\nBạn có muốn tự động thoát CAD để cập nhật ngay bây giờ?";
+                    g.DrawString(summary, fDesc, bDesc, new RectangleF(20, 50, 445, 90));
                 }
             };
 
             // Buttons
             Button btnUpdate = new Button()
             {
-                Text = "CẬP NHẬT NGAY",
-                Location = new Point(16, 128),
-                Size = new Size(180, 36),
+                Text = "🚀 CẬP NHẬT NGAY (Khuyên dùng)",
+                Location = new Point(20, 150),
+                Size = new Size(300, 42),
                 BackColor = Color.FromArgb(16, 185, 129),
                 ForeColor = Color.White,
-                Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
+                Font = new Font("Segoe UI", 10.5f, FontStyle.Bold),
                 FlatStyle = FlatStyle.Flat,
                 Cursor = Cursors.Hand
             };
@@ -307,11 +325,11 @@ namespace AVRoadLauncher
             Button btnSkip = new Button()
             {
                 Text = "Để Sau",
-                Location = new Point(206, 128),
-                Size = new Size(158, 36),
+                Location = new Point(335, 150),
+                Size = new Size(130, 42),
                 BackColor = Color.FromArgb(30, 60, 50),
                 ForeColor = Color.FromArgb(204, 251, 241),
-                Font = new Font("Segoe UI", 9.5f),
+                Font = new Font("Segoe UI", 10f),
                 FlatStyle = FlatStyle.Flat,
                 Cursor = Cursors.Hand
             };

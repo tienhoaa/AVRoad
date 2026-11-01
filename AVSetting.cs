@@ -192,24 +192,7 @@ namespace AVSettingApp
                 MessageBox.Show("Đã làm sạch bộ đệm tạm và tối ưu nhân AVCAD Engine!", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             };
 
-            Button btnCheckUpdateNow = new Button()
-            {
-                Text = "Kiểm Tra Cập Nhật Online (GitHub)",
-                Location = new Point(186, 82),
-                Size = new Size(230, 26),
-                Font = new Font("Segoe UI", 8.5f, FontStyle.Bold),
-                BackColor = Color.FromArgb(16, 185, 129),
-                ForeColor = Color.White,
-                FlatStyle = FlatStyle.Flat,
-                Cursor = Cursors.Hand
-            };
-            btnCheckUpdateNow.FlatAppearance.BorderSize = 0;
-            btnCheckUpdateNow.Click += (s, e) =>
-            {
-                CheckOnlineUpdateGUI();
-            };
-
-            grpOpt.Controls.AddRange(new Control[] { chkAutoStart, chkCheckUpdate, btnClearCache, btnCheckUpdateNow });
+            grpOpt.Controls.AddRange(new Control[] { chkAutoStart, chkCheckUpdate, btnClearCache });
 
             y += 128;
 
