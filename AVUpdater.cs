@@ -198,6 +198,14 @@ namespace AVRoadUpdater
                 {
                     AppendLog("Bắt đầu tiến trình cập nhật...");
 
+                    try
+                    {
+                        ServicePointManager.Expect100Continue = true;
+                        ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072 | (SecurityProtocolType)12288 | SecurityProtocolType.Tls;
+                        ServicePointManager.ServerCertificateValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
+                    }
+                    catch { }
+
                     // 1. Wait for acad.exe or AVRoad.exe to close
                     SetStatus("Đang đóng các tiến trình CAD...", "Đang kiểm tra acad.exe...");
                     int retries = 0;
@@ -226,7 +234,7 @@ namespace AVRoadUpdater
                         SetStatus("Đang kiểm tra bản vá từ GitHub...", "Kết nối máy chủ GitHub Releases...");
                         AppendLog("Đang truy vấn thông tin bản vá từ GitHub...");
 
-                        string checkUrl = "https://raw.githubusercontent.com/avtechnology/AVRoad/main/version.json";
+                        string checkUrl = "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version.json";
                         string iniPath = Path.Combine(appDir, "AVRoad.ini");
                         if (File.Exists(iniPath))
                         {
@@ -437,6 +445,15 @@ namespace AVRoadUpdater
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
+
+            try
+            {
+                ServicePointManager.Expect100Continue = true;
+                ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072 | (SecurityProtocolType)12288 | SecurityProtocolType.Tls;
+                ServicePointManager.ServerCertificateValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
+            }
+            catch { }
+
             Application.Run(new UpdaterForm(args));
         }
     }
