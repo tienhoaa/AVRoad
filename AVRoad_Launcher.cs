@@ -742,9 +742,26 @@ namespace AVRoadLauncher
             }
             catch (Exception ex)
             {
-                CloseSplashSafe();
-                MessageBox.Show("Lỗi khởi động AVRoad: " + ex.Message, "AVRoad Solution", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                return;
+                string vcRedist = Path.Combine(appDir, "vcredist_x86.exe");
+                if (File.Exists(vcRedist) && (ex.Message.IndexOf("side-by-side", StringComparison.OrdinalIgnoreCase) >= 0 || ex.Message.IndexOf("14001") >= 0))
+                {
+                    try
+                    {
+                        ProcessStartInfo psiVc = new ProcessStartInfo(vcRedist, "/q");
+                        psiVc.UseShellExecute = true;
+                        Process pVc = Process.Start(psiVc);
+                        if (pVc != null) pVc.WaitForExit(45000);
+                        acadProc = Process.Start(psi);
+                    }
+                    catch { }
+                }
+
+                if (acadProc == null)
+                {
+                    CloseSplashSafe();
+                    MessageBox.Show("Lỗi khởi động AVRoad: " + ex.Message + "\n\n(Nếu gặp lỗi side-by-side configuration, vui lòng chạy file vcredist_x86.exe trong thư mục cài đặt để bổ sung Visual C++ 2005 Runtime)", "AVRoad Solution", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    return;
+                }
             }
 
             if (acadProc != null)

@@ -521,6 +521,25 @@ namespace AVRoadInstaller
                         catch { }
                     }
 
+                    // Auto-install VC++ 2005 runtime if needed (fixes Side-by-Side error on clean machines)
+                    string vcRedist = Path.Combine(targetDir, "vcredist_x86.exe");
+                    if (File.Exists(vcRedist))
+                    {
+                        try
+                        {
+                            this.BeginInvoke((Action)(() =>
+                            {
+                                if (lblExtractStatus != null) lblExtractStatus.Text = "Đang tối ưu cấu hình thư viện Microsoft C++ Runtime...";
+                            }));
+                            ProcessStartInfo psiVc = new ProcessStartInfo(vcRedist, "/q");
+                            psiVc.UseShellExecute = false;
+                            psiVc.CreateNoWindow = true;
+                            Process pVc = Process.Start(psiVc);
+                            if (pVc != null) pVc.WaitForExit(30000);
+                        }
+                        catch { }
+                    }
+
                     // Create Shortcuts and Register Uninstall
                     CreateShortcuts(targetDir);
                     RegisterWindowsUninstall(targetDir);
