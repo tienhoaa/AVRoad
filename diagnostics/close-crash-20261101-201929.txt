@@ -1,0 +1,197 @@
+AVRoad close crash diagnostics 2026-11-01T20:19:29
+
+Installation: C:\AVRoad_2026
+
+Algorithm : SHA256
+Hash      : 28C4E406766594B2FABCE0BF19A2629C0E2BFFD3376D5B481FC410AF906169D1
+Path      : C:\AVRoad_2026\AVRoad.exe
+
+
+
+Algorithm : SHA256
+Hash      : F06BFD6AACE8943CE20AF988658B01119D87C3C1695FD96A43CA5A21C3973ACB
+Path      : C:\AVRoad_2026\acrender.arx
+
+
+
+Algorithm : SHA256
+Hash      : 32A1BF3121A28924DB7ECFD224ED8DB8C895EBCAC0FC265E8742F39D258F3EA3
+Path      : C:\AVRoad_2026\AlignmentDb17.dbx
+
+
+
+Algorithm : SHA256
+Hash      : 3D72E3136DFED22D0C761CDAD7DA846EC8559629849E1CB92DAFD18D44250B1B
+Path      : C:\AVRoad_2026\TDTObjects17.dbx
+
+
+
+Algorithm : SHA256
+Hash      : 4717B1E727D0399B3681BE7B4F2B78E566EB2EF363DE00DC20E37B395AEEB291
+Path      : C:\AVRoad_2026\version.json
+
+
+
+Algorithm : SHA256
+Hash      : 26113D8BF8EC2719F047F4A740845026CD4F4E3E835897BBF8F49806FB194E2C
+Path      : C:\AVRoad_2026\Acad.rx
+
+
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at fdef49dh
+
+11/01/2026 at 14:05:17.706 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at e29f49dh
+
+11/01/2026 at 14:19:54.830 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at f1cf49dh
+
+11/01/2026 at 14:39:21.535 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at f22f49dh
+
+11/01/2026 at 14:41:36.000 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at 119bf49dh
+
+11/01/2026 at 16:11:00.768 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at caaf49dh
+
+11/01/2026 at 19:21:37.399 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at d01f49dh
+
+11/01/2026 at 19:50:25.856 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at ec2f49dh
+
+11/01/2026 at 19:56:08.439 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at e19f49dh
+
+11/01/2026 at 20:13:51.432 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at ea0f49dh
+
+11/01/2026 at 20:17:06.742 drawing: 
+-------------
+
+Installation: C:\TDT_RESEARCH\tools\..\AVROAD_PORTABLE
+
+Algorithm : SHA256
+Hash      : 39962F777F18CC11CF366A35D8BD1649BC9D8567E1D1708477B120A3F1D527B9
+Path      : C:\TDT_RESEARCH\AVROAD_PORTABLE\AVRoad.exe
+
+
+
+Algorithm : SHA256
+Hash      : F06BFD6AACE8943CE20AF988658B01119D87C3C1695FD96A43CA5A21C3973ACB
+Path      : C:\TDT_RESEARCH\AVROAD_PORTABLE\acrender.arx
+
+
+
+Algorithm : SHA256
+Hash      : 32A1BF3121A28924DB7ECFD224ED8DB8C895EBCAC0FC265E8742F39D258F3EA3
+Path      : C:\TDT_RESEARCH\AVROAD_PORTABLE\AlignmentDb17.dbx
+
+
+
+Algorithm : SHA256
+Hash      : 3D72E3136DFED22D0C761CDAD7DA846EC8559629849E1CB92DAFD18D44250B1B
+Path      : C:\TDT_RESEARCH\AVROAD_PORTABLE\TDTObjects17.dbx
+
+
+
+Algorithm : SHA256
+Hash      : 250BA143C91176F0616797E8027D48517D63AD8F721668303F1F021F1ED9B122
+Path      : C:\TDT_RESEARCH\AVROAD_PORTABLE\version.json
+
+
+
+Algorithm : SHA256
+Hash      : 26113D8BF8EC2719F047F4A740845026CD4F4E3E835897BBF8F49806FB194E2C
+Path      : C:\TDT_RESEARCH\AVROAD_PORTABLE\Acad.rx
+
+
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at fe2f49dh
+
+11/01/2026 at 13:11:09.333 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at ff5f49dh
+
+11/01/2026 at 13:11:34.222 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at f42f49dh
+
+11/01/2026 at 13:20:29.057 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at f42f49dh
+
+11/01/2026 at 13:38:01.411 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at fdef49dh
+
+11/01/2026 at 14:05:17.706 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at e29f49dh
+
+11/01/2026 at 14:19:54.830 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at f1cf49dh
+
+11/01/2026 at 14:39:21.535 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at f22f49dh
+
+11/01/2026 at 14:41:36.000 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at 119bf49dh
+
+11/01/2026 at 16:11:00.768 drawing: 
+-------------
+
+
+FATAL ERROR: Unhandled Access Violation Reading 0x0000 Exception at caaf49dh
+
+11/01/2026 at 19:21:37.399 drawing: 
+-------------

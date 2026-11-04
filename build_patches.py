@@ -4,7 +4,6 @@ files_to_pack = [
     'AVRoad.exe',
     'startup_bg_clean.png',
     'startup_bg.png',
-    'ACAD.lsp',
     'AVRoad_Profile.arg',
     'acad.rx',
     'version.json',
