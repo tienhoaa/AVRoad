@@ -1,3 +1,4 @@
+﻿using AVRoadDeployment;
 using AVRoadLauncher;
 using System;
 
@@ -912,87 +913,13 @@ namespace AVRoadInstaller
 
 
                     using (zipStream)
-
                     {
-
-                        using (ZipArchive archive = new ZipArchive(zipStream, ZipArchiveMode.Read))
-
+                        string journal = PatchTransaction.InstallEmbedded(zipStream, targetDir, true, (percent, name) =>
                         {
-
-                            int totalEntries = archive.Entries.Count;
-
-                            int currentEntry = 0;
-
-
-
-                            foreach (ZipArchiveEntry entry in archive.Entries)
-
-                            {
-
-                                currentEntry++;
-
-                                int percent = (int)((currentEntry / (double)totalEntries) * 100);
-
-
-
-                                string destPath = Path.Combine(targetDir, entry.FullName);
-
-                                if (string.IsNullOrEmpty(entry.Name)) // Directory
-
-                                {
-
-                                    if (!Directory.Exists(destPath)) Directory.CreateDirectory(destPath);
-
-                                    continue;
-
-                                }
-
-
-
-                                string parentDir = Path.GetDirectoryName(destPath);
-
-                                if (!Directory.Exists(parentDir)) Directory.CreateDirectory(parentDir);
-
-
-
-                                try
-
-                                {
-
-                                    entry.ExtractToFile(destPath, true);
-
-                                }
-
-                                catch { }
-
-
-
-                                if (currentEntry % 20 == 0 || currentEntry == totalEntries)
-
-                                {
-
-                                    this.BeginInvoke((Action)(() =>
-
-                                    {
-
-                                        progressBar.Value = percent;
-
-                                        lblExtractStatus.Text = string.Format("Đang trích xuất: {0}/{1} tệp ({2}%)", currentEntry, totalEntries, percent);
-
-                                        lblExtractFile.Text = entry.FullName;
-
-                                    }));
-
-                                }
-
-                            }
-
-                        }
-
+                            this.BeginInvoke((Action)(() => { progressBar.Value = percent; lblExtractFile.Text = name; }));
+                        });
+                        File.WriteAllText(Path.Combine(targetDir, "last-install-rollback.txt"), journal);
                     }
-
-
-
                     // Fix paths in targetDir\AVRoad.ini
 
                     string iniPath = Path.Combine(targetDir, "AVRoad.ini");
@@ -1033,7 +960,7 @@ namespace AVRoadInstaller
 
                     string vcRedist = Path.Combine(targetDir, "vcredist_x86.exe");
 
-                    if (File.Exists(vcRedist))
+                    if (!RegistryScope.IsLimited && File.Exists(vcRedist))
 
                     {
 
@@ -1248,6 +1175,8 @@ namespace AVRoadInstaller
         private void ConfigureHardwareAccelerationAndSmoothDrafting(string targetDir)
 
         {
+            if (RegistryScope.IsLimited) return;
+
 
             try
 
@@ -1606,6 +1535,8 @@ namespace AVRoadInstaller
         private void RegisterWindowsUninstall(string targetDir)
 
         {
+            if (RegistryScope.IsLimited) return;
+
 
             try
 
@@ -1648,8 +1579,18 @@ namespace AVRoadInstaller
 
 
         [STAThread]
-        public static void Main()
+        public static void Main(string[] args)
         {
+            if (args.Length == 2 && args[0] == "/extract-only")
+            {
+                // File-only artifact verification: bypass all legacy configuration/Registry code.
+                using (Stream payload = Assembly.GetExecutingAssembly().GetManifestResourceStream("payload.zip"))
+                {
+                    string journal = PatchTransaction.InstallEmbedded(payload, args[1], false, null);
+                    File.WriteAllText(Path.Combine(args[1], "verified-installer.txt"), journal);
+                }
+                return;
+            }
             try
             {
                 using (var id = System.Security.Principal.WindowsIdentity.GetCurrent())
@@ -1694,6 +1635,8 @@ namespace AVRoadInstaller
 
         public static void RegisterTypeLibraries(string appDir)
         {
+            if (RegistryScope.IsLimited) return;
+
             string[] tlbs = new string[]
             {
                 "acax17enu.tlb", "axdb17enu.tlb", "AcAuthEntities17enu.tlb",
@@ -1725,6 +1668,8 @@ namespace AVRoadInstaller
 
         public static void RegisterAutoCADCOMClasses(string appDir)
         {
+            if (RegistryScope.IsLimited) { Cad7ComRegistration.Apply(appDir, null); return; }
+
             try
             {
                 string acadExe = Path.Combine(appDir, "acad.exe");
@@ -1897,6 +1842,8 @@ namespace AVRoadInstaller
 
         public static void RegisterAutoCADApplications(string appDir)
         {
+            if (RegistryScope.IsLimited) { Cad7ComRegistration.Apply(appDir, null); return; }
+
             try
             {
                 CADRegistryConfig.RegisterAll(appDir);
@@ -1929,6 +1876,8 @@ namespace AVRoadInstaller
 
         public static void CleanPortableAssociations()
         {
+            if (RegistryScope.IsLimited) return;
+
             try
             {
                 using (RegistryKey k = Registry.CurrentUser.OpenSubKey(@"Software\Classes\.dwg", true))

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -8,7 +8,7 @@ namespace AVRoadLauncher
 {
     public class UpdateToastForm : Form
     {
-        public UpdateToastForm(string version, string changelog, string patchUrl, Process cad, string appDir)
+        public UpdateToastForm(string version, string changelog, string patchUrl, Process cad, string appDir, string patchSha = "")
         {
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.StartPosition = FormStartPosition.CenterScreen;
@@ -107,7 +107,8 @@ namespace AVRoadLauncher
             btnUpdate.FlatAppearance.BorderSize = 0;
             btnUpdate.Click += delegate
             {
-                string exe = Path.Combine(appDir, "AVUpdater.exe");
+                string exe = Path.Combine(appDir, "AVUpdater.v2.exe");
+                if (!File.Exists(exe)) exe = Path.Combine(appDir, "AVUpdater.exe");
                 if (!File.Exists(exe))
                 {
                     MessageBox.Show(this, "Kh\u00f4ng t\u00ecm th\u1ea5y file AVUpdater.exe trong th\u01b0 m\u1ee5c ph\u1ea7n m\u1ec1m.", "AVRoad 2026", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -115,7 +116,7 @@ namespace AVRoadLauncher
                 }
                 try
                 {
-                    string updArgs = "\"/url:" + patchUrl + "\" \"/ver:" + version + "\"";
+                    string updArgs = "\"/url:" + patchUrl + "\" \"/ver:" + version + "\" \"/sha:" + patchSha + "\"";
                     Process.Start(new ProcessStartInfo(exe, updArgs)
                     {
                         WorkingDirectory = appDir

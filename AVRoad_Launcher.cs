@@ -1,3 +1,4 @@
+﻿using AVRoadDeployment;
 using System;
 
 using System.Collections.Generic;
@@ -1534,6 +1535,7 @@ namespace AVRoadLauncher
             {
                 if (a.Equals("/repair-hklm", StringComparison.OrdinalIgnoreCase) || a.Equals("--repair-hklm", StringComparison.OrdinalIgnoreCase))
                 {
+                    if (RegistryScope.IsLimited) throw new InvalidOperationException("RC1 permits only the three HKCU COM values.");
                     CADRegistryConfig.WriteHklmKeys(appDir);
                     CADRegistryConfig.GrantUsersFullControl();
                     return;
@@ -1607,6 +1609,8 @@ namespace AVRoadLauncher
         public static void ConfigureHardwareAccelerationAndSmoothDrafting(string appDir)
 
         {
+            if (RegistryScope.IsLimited) return;
+
 
             try
 
@@ -1857,6 +1861,8 @@ namespace AVRoadLauncher
         public static void PrepareProfile(string appDir, string argProfile, string fontPath, string plotStylePath, string plotterPath)
 
         {
+            if (RegistryScope.IsLimited) return;
+
 
             // Configure Hardware Acceleration, Direct3D, Smooth Line Display, and Tessellations
 
@@ -2544,6 +2550,8 @@ namespace AVRoadLauncher
 
                 public static void EnsureSystemRegistryConfigured(string appDir)
         {
+            if (RegistryScope.IsLimited) return;
+
             try
             {
                 bool needsHklm = false;
@@ -2578,6 +2586,7 @@ namespace AVRoadLauncher
 public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, string dwgPath = "")
 
         {
+            Cad7ComRegistration.Apply(appDir, null);
             EnsureSystemRegistryConfigured(appDir);
 
             string acadExe = Path.Combine(appDir, "acad.exe");
@@ -2676,7 +2685,7 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
 
                 string vcRedist = Path.Combine(appDir, "vcredist_x86.exe");
 
-                if (File.Exists(vcRedist) && (ex.Message.IndexOf("side-by-side", StringComparison.OrdinalIgnoreCase) >= 0 || ex.Message.IndexOf("14001") >= 0))
+                if (!RegistryScope.IsLimited && File.Exists(vcRedist) && (ex.Message.IndexOf("side-by-side", StringComparison.OrdinalIgnoreCase) >= 0 || ex.Message.IndexOf("14001") >= 0))
 
                 {
 
@@ -2920,7 +2929,7 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
 
                             {
 
-                                profilesKey.SetValue("", originalProfile);
+                                if (!RegistryScope.IsLimited) profilesKey.SetValue("", originalProfile);
 
                             }
 
@@ -3062,7 +3071,10 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
 
                     // Show Update Dialog
 
-                    using (UpdateToastForm form = new UpdateToastForm(remoteVer, changelog, patchUrl, acadProc, appDir))
+                    string patchSha = "";
+                    Match shaMatch = Regex.Match(remoteJson, "\"patch_sha256\"\\s*:\\s*\"([a-fA-F0-9]{64})\"");
+                    if (shaMatch.Success) patchSha = shaMatch.Groups[1].Value;
+                    using (UpdateToastForm form = new UpdateToastForm(remoteVer, changelog, patchUrl, acadProc, appDir, patchSha))
 
                     {
 
@@ -3220,6 +3232,8 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
 
         public static void RegisterTypeLibraries(string appDir)
         {
+            if (RegistryScope.IsLimited) return;
+
             string[] tlbs = new string[]
             {
                 "acax17enu.tlb", "axdb17enu.tlb", "AcAuthEntities17enu.tlb",
@@ -3249,6 +3263,8 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
 
         public static void RegisterAutoCADCOMClasses(string appDir)
         {
+            if (RegistryScope.IsLimited) { Cad7ComRegistration.Apply(appDir, null); return; }
+
             try
             {
                 string acadExe = Path.Combine(appDir, "acad.exe");
@@ -3421,6 +3437,8 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
 
         public static void RegisterAutoCADApplications(string appDir)
         {
+            if (RegistryScope.IsLimited) { Cad7ComRegistration.Apply(appDir, null); return; }
+
             try
             {
                 CADRegistryConfig.RegisterAll(appDir);
@@ -3453,6 +3471,8 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
 
         public static void CleanPortableAssociations()
         {
+            if (RegistryScope.IsLimited) return;
+
             try
             {
                 using (RegistryKey k = Registry.CurrentUser.OpenSubKey(@"Software\Classes\.dwg", true))

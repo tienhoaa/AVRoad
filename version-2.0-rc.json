@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0.1",
+  "release_date": "2026-11-05",
+  "title": "AVRoad 2.0 RC1",
+  "release_channel": "rc",
+  "prerelease": true,
+  "changelog": "RC1: ba COM HKCU 32-bit cho Properties/QSELECT; checksum SHA-256 va rollback. Loi dong CAD F49Dh con ton tai; chua du bang chung cai moi/nang cap legacy.",
+  "download_url": "https://github.com/tienhoaa/AVRoad/releases/tag/v2.0-rc.1",
+  "patch_download_url": "https://github.com/tienhoaa/AVRoad/releases/download/v2.0-rc.1/patch_2.0_rc1.zip",
+  "patch_sha256": "ac1fdc6381cc213ce4b130e857833db5b55bc5c5f8ba35173163833237e59c30"
+}

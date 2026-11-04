@@ -1,3 +1,4 @@
+﻿using AVRoadDeployment;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -28,6 +29,7 @@ namespace AVRoadUpdater
         private string changelog = "";
         private string tempZipPath = "";
         private bool isFinished = false;
+        private string expectedPatchSha = "";
 
         public UpdaterForm(string[] args)
         {
@@ -35,6 +37,8 @@ namespace AVRoadUpdater
 
             foreach (string arg in args)
             {
+                if (arg.StartsWith("/appdir:", StringComparison.OrdinalIgnoreCase)) appDir = Path.GetFullPath(arg.Substring(8));
+                if (arg.StartsWith("/sha:", StringComparison.OrdinalIgnoreCase)) expectedPatchSha = arg.Substring(5).Trim('"', ' ');
                 if (arg.StartsWith("/url:", StringComparison.OrdinalIgnoreCase))
                 {
                     patchUrl = arg.Substring(5).Trim('"', ' ');
@@ -202,7 +206,7 @@ namespace AVRoadUpdater
                     {
                         ServicePointManager.Expect100Continue = true;
                         ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072 | (SecurityProtocolType)12288 | SecurityProtocolType.Tls;
-                        ServicePointManager.ServerCertificateValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
+                        // Use platform certificate validation.
                     }
                     catch { }
 
@@ -250,6 +254,8 @@ namespace AVRoadUpdater
                             wc.Headers.Add("User-Agent", "AVRoad-Updater");
                             string json = wc.DownloadString(checkUrl);
                             AppendLog("Nhận dữ liệu version.json thành công.");
+                            Match mSha = Regex.Match(json, "\"patch_sha256\"\\s*:\\s*\"([a-fA-F0-9]{64})\"");
+                            if (mSha.Success) expectedPatchSha = mSha.Groups[1].Value;
 
                             Match mVer = Regex.Match(json, "\"version\"\\s*:\\s*\"([^\"]+)\"");
                             if (mVer.Success) targetVersion = mVer.Groups[1].Value;
@@ -293,11 +299,13 @@ namespace AVRoadUpdater
                             }));
                         };
 
+                        Exception downloadError = null;
                         AutoResetEvent done = new AutoResetEvent(false);
                         dlClient.DownloadFileCompleted += (s, e) =>
                         {
                             if (e.Error != null)
                             {
+                                downloadError = e.Error;
                                 AppendLog("Lỗi tải file: " + e.Error.Message);
                             }
                             else
@@ -309,6 +317,7 @@ namespace AVRoadUpdater
 
                         dlClient.DownloadFileAsync(new Uri(patchUrl), tempZipPath);
                         done.WaitOne();
+                        if (downloadError != null) throw new IOException("Patch download failed", downloadError);
                     }
 
                     if (!File.Exists(tempZipPath) || new FileInfo(tempZipPath).Length == 0)
@@ -322,23 +331,11 @@ namespace AVRoadUpdater
                     SetStatus("Đang áp dụng bản vá...", "Đang trích xuất và cập nhật các tệp tin...");
                     AppendLog("Bắt đầu trích xuất các tệp tin bản vá...");
 
-                    ExtractZipOverDirectory(tempZipPath, appDir);
+                    string rollback = PatchTransaction.Apply(tempZipPath, appDir, expectedPatchSha, true);
+                    AppendLog("Rollback: " + rollback);
 
                     // Clean temp zip
                     try { File.Delete(tempZipPath); } catch { }
-
-                    // 5. Update local version.json
-                    if (!string.IsNullOrEmpty(targetVersion))
-                    {
-                        string localVerPath = Path.Combine(appDir, "version.json");
-                        try
-                        {
-                            string newJson = "{\n  \"version\": \"" + targetVersion + "\",\n  \"release_date\": \"" + DateTime.Now.ToString("yyyy-MM-dd") + "\",\n  \"title\": \"AVRoad 2026 Solution - Powered by AVCAD Engine\",\n  \"changelog\": \"" + changelog.Replace("\n", "\\n") + "\"\n}";
-                            File.WriteAllText(localVerPath, newJson, System.Text.Encoding.UTF8);
-                            AppendLog("Đã cập nhật phiên bản local lên v" + targetVersion);
-                        }
-                        catch { }
-                    }
 
                     AppendLog("CẬP NHẬT HOÀN TẤT THÀNH CÔNG!");
                     SetStatus("Cập nhật thành công!", "Bản vá đã được áp dụng. Sẵn sàng khởi động lại!");
@@ -381,31 +378,6 @@ namespace AVRoadUpdater
             t.Start();
         }
 
-        private void ExtractZipOverDirectory(string zipPath, string targetDir)
-        {
-            using (ZipArchive archive = ZipFile.OpenRead(zipPath))
-            {
-                foreach (ZipArchiveEntry entry in archive.Entries)
-                {
-                    if (string.IsNullOrEmpty(entry.Name)) continue; // directory
-
-                    string fullPath = Path.Combine(targetDir, entry.FullName);
-                    string dir = Path.GetDirectoryName(fullPath);
-                    if (!Directory.Exists(dir)) Directory.CreateDirectory(dir);
-
-                    try
-                    {
-                        entry.ExtractToFile(fullPath, true);
-                        AppendLog("Cập nhật: " + entry.FullName);
-                    }
-                    catch (Exception ex)
-                    {
-                        AppendLog("Bỏ qua (" + entry.FullName + "): " + ex.Message);
-                    }
-                }
-            }
-        }
-
         private void EnableCloseButton()
         {
             this.BeginInvoke((Action)(() =>
@@ -440,6 +412,32 @@ namespace AVRoadUpdater
         [STAThread]
         public static void Main(string[] args)
         {
+            // Same transaction engine as online updates; test mode never writes Registry.
+            if (args.Length == 5 && args[0] == "/test-apply")
+            {
+                try { string journal = PatchTransaction.Apply(args[1], args[2], args[3], false); File.WriteAllText(args[4], journal); }
+                catch (Exception ex) { File.WriteAllText(args[4], ex.ToString()); Environment.Exit(1); }
+                return;
+            }
+            if (args.Length == 3 && args[0] == "/rollback")
+            {
+                try { PatchTransaction.Rollback(args[1]); File.WriteAllText(args[2], "Rollback completed"); }
+                catch (Exception ex) { File.WriteAllText(args[2], ex.ToString()); Environment.Exit(1); }
+                return;
+            }
+            // Run outside the installation so neither updater nor deployment DLL is locked.
+            if (Array.IndexOf(args, "/detached") < 0)
+            {
+                string original = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
+                string temp = Path.Combine(Path.GetTempPath(), "AVRoadUpdate-" + Guid.NewGuid().ToString("N"));
+                Directory.CreateDirectory(temp);
+                string runner = Path.Combine(temp, "AVUpdater.v2.exe");
+                File.Copy(Application.ExecutablePath, runner);
+                File.Copy(Path.Combine(original, "AVRoad.Deployment.dll"), Path.Combine(temp, "AVRoad.Deployment.dll"));
+                string forwarded = String.Join(" ", Array.ConvertAll(args, a => "\"" + a.Replace("\"", "\\\"") + "\""));
+                Process.Start(new ProcessStartInfo(runner, forwarded + " /detached \"/appdir:" + original + "\"") { WorkingDirectory = temp });
+                return;
+            }
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
 
@@ -447,7 +445,7 @@ namespace AVRoadUpdater
             {
                 ServicePointManager.Expect100Continue = true;
                 ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072 | (SecurityProtocolType)12288 | SecurityProtocolType.Tls;
-                ServicePointManager.ServerCertificateValidationCallback = (sender, cert, chain, sslPolicyErrors) => true;
+                // Use platform certificate validation.
             }
             catch { }
 
@@ -455,4 +453,3 @@ namespace AVRoadUpdater
         }
     }
 }
-
