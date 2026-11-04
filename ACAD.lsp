@@ -10,20 +10,12 @@
   (load "acetauto.lsp")
 )
 
-;; Command wrappers for Properties palette (Ctrl+1)
-(defun c:properties ()
-  (vl-cmdf "_.properties")
-  (princ)
-)
-
-(defun c:propertiesclose ()
-  (vl-cmdf "_.propertiesclose")
-  (princ)
-)
-
 (defun S::STARTUP()
   (setvar "CMDECHO" 0)
   (vl-catch-all-apply '(lambda ()
+    ;; Disable DWG association checking permanently (Portable mode)
+    (setvar "DWGCHECK" 0)
+
     ;; Set Command Line font to Segoe UI
     (setenv "CmdLine.FontFace" "Segoe UI")
     (setenv "TextWindow.FontFace" "Segoe UI")
