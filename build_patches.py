@@ -1,4 +1,4 @@
-import os, zipfile
+﻿import os, zipfile
 
 files_to_pack = [
     'AVRoad.exe',
@@ -25,14 +25,21 @@ files_to_pack = [
 
 app_dir = r'C:\AVRoad_2026'
 
-for target_zip in [r'C:\TDT_RESEARCH\patch_1.4.zip', r'C:\TDT_RESEARCH\patch_1.3.zip', r'C:\TDT_RESEARCH\patch_1.2.zip']:
+target_zips = [
+    r'C:\TDT_RESEARCH\patch_1.5.zip',
+    r'C:\TDT_RESEARCH\patch_1.4.zip',
+    r'C:\TDT_RESEARCH\patch_1.3.zip',
+    r'C:\TDT_RESEARCH\patch_1.2.zip'
+]
+
+for target_zip in target_zips:
     with zipfile.ZipFile(target_zip, 'w', compression=zipfile.ZIP_DEFLATED) as z:
         for f in files_to_pack:
             src = os.path.join(app_dir, f)
             if os.path.exists(src):
                 z.write(src, arcname=f)
-                print(f'Packed {f} into {os.path.basename(target_zip)}')
             else:
                 print(f'WARNING: {f} not found!')
+    print(f'Created {os.path.basename(target_zip)} ({os.path.getsize(target_zip):,} bytes)')
 
-print('Patch packages created successfully!')
+print('All patch packages created successfully!')

@@ -1,8 +1,8 @@
-{
-  "version": "1.4",
+﻿{
+  "version": "1.5",
   "release_date": "2026-11-04",
-  "title": "AVRoad 2026 Solution - Ban Nang Cap Toan Dien v1.4",
-  "changelog": "Ban cap nhat v1.4:\n- Hoan thien Hub khoi dong: giao dien chuan goc khong vet demo, tich hop du an gan day va tin tuc cap nhat dong\n- Tich hop truc tiep trung tam AV Setting ngay tren Hub\n- Chuan hoa font Command Line sang Arial sac net, chuyen nghiep tren moi thiet bi\n- Lam sach dong lenh khoi dong, chi hien duy nhat thong bao san sang\n- Khac phuc triet de loi gioi han so nguyen 1-10 trong Performance Tuning\n- Chuan hoa toan bo duong dan ho tro, font va menu phu hop moi may tinh cai dat",
+  "title": "AVRoad 2026 Solution - Bản Nâng Cấp Toàn Diện v1.5",
+  "changelog": "Bản cập nhật v1.5:\n- Khắc phục triệt để lỗi không mở được bảng Layer Manager và các lệnh chuẩn AutoCAD (UNITS, DIMSTYLE, DSETTINGS, COLOR, LWEIGHT)\n- Tích hợp và tự động kích hoạt bộ Express Tools (XLIST, RTEXT, BREAKLINE, ALIGNSPACE, BURST, FLATTEN, OVERKILL)\n- Sửa dứt điểm lỗi khởi động cửa sổ cập nhật (Form.ShowDialog)\n- Khắc phục giới hạn số nguyên 1-10 trong Performance Tuning\n- Chuẩn hóa font Command Line Segoe UI sắc nét, loại bỏ hoàn toàn các thông báo nạp rác\n- Tự động căn giữa bảng Layer Manager trên mọi độ phân giải màn hình",
   "download_url": "https://github.com/tienhoaa/AVRoad/releases/latest",
-  "patch_download_url": "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/patch_1.4.zip"
+  "patch_download_url": "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/patch_1.5.zip"
 }

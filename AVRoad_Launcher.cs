@@ -129,6 +129,7 @@ namespace AVRoadLauncher
                 try
                 {
                     Program.ConfigureHardwareAccelerationAndSmoothDrafting(appDir);
+                    Program.RegisterAutoCADApplications(appDir);
                     Program.PrepareProfile(appDir, argProfile, fontPath, plotStylePath, plotterPath);
                 }
                 catch { }
@@ -749,9 +750,19 @@ namespace AVRoadLauncher
 
             string appDir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
             string iniPath = Path.Combine(appDir, "AVRoad.ini");
+            string fontPath = "";
+            string plotStylePath = Path.Combine(appDir, "Plot Styles");
+            string plotterPath = Path.Combine(appDir, "Plotters");
+            string argProfile = Path.Combine(appDir, "AVRoad_Profile.arg");
 
             foreach (string a in args)
             {
+                if (a.Equals("/prepare-only", StringComparison.OrdinalIgnoreCase))
+                {
+                    PrepareProfile(appDir, argProfile, fontPath, plotStylePath, plotterPath);
+                    RegisterAutoCADApplications(appDir);
+                    return;
+                }
                 if (a.Equals("/about", StringComparison.OrdinalIgnoreCase))
                 {
                     MessageBox.Show("AVRoad 2026 Solution - Hệ sinh thái AV BIM CDE\nPhiên bản 2026.0.0 (Unlocked Engine)\n\nChuẩn hóa dữ liệu thiết kế hạ tầng giao thông.", "AVRoad 2026 Solution", MessageBoxButtons.OK, MessageBoxIcon.Information);
@@ -764,10 +775,7 @@ namespace AVRoadLauncher
                 }
             }
 
-            string fontPath = "";
-            string plotStylePath = Path.Combine(appDir, "Plot Styles");
-            string plotterPath = Path.Combine(appDir, "Plotters");
-            string argProfile = Path.Combine(appDir, "AVRoad_Profile.arg");
+
             bool checkUpdateOnStartup = true;
 
             if (File.Exists(iniPath))
@@ -802,6 +810,7 @@ namespace AVRoadLauncher
             if (!string.IsNullOrEmpty(directFile))
             {
                 ConfigureHardwareAccelerationAndSmoothDrafting(appDir);
+                    Program.RegisterAutoCADApplications(appDir);
                 PrepareProfile(appDir, argProfile, fontPath, plotStylePath, plotterPath);
                 LaunchAutoCAD(appDir, checkUpdateOnStartup, directFile);
                 return;
@@ -828,7 +837,7 @@ namespace AVRoadLauncher
                 {
                     if (prk != null)
                     {
-                        prk.SetValue("MaxTessellations", 16, RegistryValueKind.DWord);
+                        prk.SetValue("MaxTessellations", 8, RegistryValueKind.DWord);
                         prk.SetValue("SurfaceTessellationTol", 92, RegistryValueKind.DWord);
                         prk.SetValue("CurveTessellationTol", 87, RegistryValueKind.DWord);
                     }
@@ -847,7 +856,7 @@ namespace AVRoadLauncher
                         rk.SetValue("CustomHeidiDriverPath", drvPath, RegistryValueKind.String);
                         rk.SetValue("DriverName", "direct3d9.hdi", RegistryValueKind.String);
                         rk.SetValue("FramesPerSecond", 5, RegistryValueKind.DWord);
-                        rk.SetValue("MaxTessellations", 16, RegistryValueKind.DWord); // Fixes 1-60 dialog error
+                        rk.SetValue("MaxTessellations", 8, RegistryValueKind.DWord); // Fixes 1-60 dialog error
                         rk.SetValue("SurfaceTessellationTol", 92, RegistryValueKind.DWord);
                         rk.SetValue("CurveTessellationTol", 87, RegistryValueKind.DWord);
                         rk.SetValue("PTCardAvaliable", 1, RegistryValueKind.DWord); // Enables HW checkbox
@@ -857,7 +866,7 @@ namespace AVRoadLauncher
                         rk.SetValue("PTUsingOGL", 0, RegistryValueKind.DWord);
                         rk.SetValue("PTWorkArounds", "0:", RegistryValueKind.String);
                         rk.SetValue("SNAPSHOTFLAGS", 103, RegistryValueKind.DWord);
-                        rk.SetValue("SNAPSHOTCACHETESS", 16, RegistryValueKind.DWord);
+                        rk.SetValue("SNAPSHOTCACHETESS", 8, RegistryValueKind.DWord);
                         rk.SetValue("SNAPSHOTCURVTESS", 87, RegistryValueKind.DWord);
                         rk.SetValue("SNAPSHOTSURFTESS", 92, RegistryValueKind.DWord);
                         rk.SetValue("SNAPSHOTTRANSPARENCY", 1, RegistryValueKind.DWord);
@@ -920,6 +929,9 @@ namespace AVRoadLauncher
                         genKey.SetValue("VtEnable", 3, RegistryValueKind.DWord);
                         genKey.SetValue("Dragmode", 2, RegistryValueKind.DWord);
                         genKey.SetValue("SelectionPreview", 2, RegistryValueKind.DWord);
+                        genKey.SetValue("CmdDia", 1, RegistryValueKind.DWord);
+                        genKey.SetValue("FileDia", 1, RegistryValueKind.DWord);
+                        genKey.SetValue("AttDia", 1, RegistryValueKind.DWord);
                     }
                 }
                 using (RegistryKey edKey = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Profiles\AVRoad\Editor Configuration"))
@@ -937,6 +949,7 @@ namespace AVRoadLauncher
         {
             // Configure Hardware Acceleration, Direct3D, Smooth Line Display, and Tessellations
             ConfigureHardwareAccelerationAndSmoothDrafting(appDir);
+                    Program.RegisterAutoCADApplications(appDir);
 
             string profilesKeyPath = @"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Profiles";
 
@@ -1500,19 +1513,9 @@ namespace AVRoadLauncher
                     if (mUrl.Success) patchUrl = mUrl.Groups[1].Value;
 
                     // Show Update Dialog
-                    if (Application.MessageLoop)
+                    using (UpdateToastForm form = new UpdateToastForm(remoteVer, changelog, patchUrl, acadProc, appDir))
                     {
-                        using (UpdateToastForm form = new UpdateToastForm(remoteVer, changelog, patchUrl, acadProc, appDir))
-                        {
-                            form.ShowDialog();
-                        }
-                    }
-                    else
-                    {
-                        using (UpdateToastForm form = new UpdateToastForm(remoteVer, changelog, patchUrl, acadProc, appDir))
-                        {
-                            Application.Run(form);
-                        }
+                        form.ShowDialog();
                     }
                 }
                 else
@@ -1585,6 +1588,285 @@ namespace AVRoadLauncher
                 }
                 catch { }
             }
+        }
+
+        public static void RegisterAutoCADApplications(string appDir)
+        {
+            try
+            {
+                // Reset LayerManager bounds so it centers on any screen
+                try
+                {
+                    using (RegistryKey lmDlg = Registry.CurrentUser.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Profiles\AVRoad\Dialogs\LayerManager", true))
+                    {
+                        if (lmDlg != null) lmDlg.DeleteValue("Bounds", false);
+                    }
+                }
+                catch { }
+
+                // Set Command Line Font to Segoe UI 10pt
+                try
+                {
+                    using (RegistryKey cmdKey = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Profiles\AVRoad\Command Line Windows"))
+                    {
+                        if (cmdKey != null)
+                        {
+                            cmdKey.SetValue("CmdLine.FontFace", "Segoe UI", RegistryValueKind.String);
+                            cmdKey.SetValue("CmdLine.FontHeight", 10, RegistryValueKind.DWord);
+                            cmdKey.SetValue("TextWindow.FontFace", "Segoe UI", RegistryValueKind.String);
+                            cmdKey.SetValue("TextWindow.FontHeight", 10, RegistryValueKind.DWord);
+                        }
+                    }
+                }
+                catch { }
+
+                // Register demand-load applications in HKCU and HKLM WOW6432Node
+                string[] baseKeys = new string[] {
+                    @"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications",
+                    @"Software\WOW6432Node\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications"
+                };
+
+                foreach (string bk in baseKeys)
+                {
+                    try
+                    {
+                        RegistryKey rootKey = bk.Contains("WOW6432Node") ? Registry.LocalMachine : Registry.CurrentUser;
+                        using (RegistryKey appRoot = rootKey.CreateSubKey(bk))
+                        {
+                            if (appRoot == null) continue;
+
+                            // AcLayer
+                            using (RegistryKey k = appRoot.CreateSubKey("AcLayer"))
+                            {
+                                if (k != null)
+                                {
+                                    k.SetValue("LOADER", Path.Combine(appDir, "AcLayer.dll"), RegistryValueKind.String);
+                                    k.SetValue("DESCRIPTION", "AutoCAD Layer Manager", RegistryValueKind.String);
+                                    k.SetValue("LOADCTRLS", 76, RegistryValueKind.DWord);
+                                    k.SetValue("MANAGED", 1, RegistryValueKind.DWord);
+                                    using (RegistryKey c = k.CreateSubKey("Commands"))
+                                    {
+                                        if (c != null)
+                                        {
+                                            c.SetValue("LAYER", "LAYER", RegistryValueKind.String);
+                                            c.SetValue("CLASSICLAYER", "CLASSICLAYER", RegistryValueKind.String);
+                                            c.SetValue("LAYERCLOSE", "LAYERCLOSE", RegistryValueKind.String);
+                                            c.SetValue("LAYERPALETTE", "LAYERPALETTE", RegistryValueKind.String);
+                                        }
+                                    }
+                                    using (RegistryKey g = k.CreateSubKey("Groups"))
+                                    {
+                                        if (g != null) g.SetValue("AcLayer", "AcLayer", RegistryValueKind.String);
+                                    }
+                                }
+                            }
+
+                            // AcLayerTools
+                            using (RegistryKey k = appRoot.CreateSubKey("AcLayerTools"))
+                            {
+                                if (k != null)
+                                {
+                                    k.SetValue("LOADER", Path.Combine(appDir, "AcLayerTools.dll"), RegistryValueKind.String);
+                                    k.SetValue("DESCRIPTION", "AutoCAD Layer Tools", RegistryValueKind.String);
+                                    k.SetValue("LOADCTRLS", 14, RegistryValueKind.DWord);
+                                    k.SetValue("MANAGED", 1, RegistryValueKind.DWord);
+                                    using (RegistryKey c = k.CreateSubKey("Commands"))
+                                    {
+                                        if (c != null)
+                                        {
+                                            c.SetValue("LAYISO", "LAYISO", RegistryValueKind.String);
+                                            c.SetValue("LAYUNISO", "LAYUNISO", RegistryValueKind.String);
+                                            c.SetValue("LAYON", "LAYON", RegistryValueKind.String);
+                                            c.SetValue("LAYOFF", "LAYOFF", RegistryValueKind.String);
+                                            c.SetValue("LAYCUR", "LAYCUR", RegistryValueKind.String);
+                                            c.SetValue("LAYFRZ", "LAYFRZ", RegistryValueKind.String);
+                                            c.SetValue("LAYTHW", "LAYTHW", RegistryValueKind.String);
+                                            c.SetValue("LAYLCK", "LAYLCK", RegistryValueKind.String);
+                                            c.SetValue("LAYULK", "LAYULK", RegistryValueKind.String);
+                                        }
+                                    }
+                                }
+                            }
+
+                            // AcadUnits
+                            using (RegistryKey k = appRoot.CreateSubKey("AcadUnits"))
+                            {
+                                if (k != null)
+                                {
+                                    k.SetValue("LOADER", Path.Combine(appDir, "units.arx"), RegistryValueKind.String);
+                                    k.SetValue("DESCRIPTION", "AutoCAD Units", RegistryValueKind.String);
+                                    k.SetValue("LOADCTRLS", 14, RegistryValueKind.DWord);
+                                    using (RegistryKey c = k.CreateSubKey("Commands"))
+                                    {
+                                        if (c != null)
+                                        {
+                                            c.SetValue("UNITS", "UNITS", RegistryValueKind.String);
+                                            c.SetValue("-UNITS", "-UNITS", RegistryValueKind.String);
+                                        }
+                                    }
+                                }
+                            }
+
+                            // AcadDim
+                            using (RegistryKey k = appRoot.CreateSubKey("AcadDim"))
+                            {
+                                if (k != null)
+                                {
+                                    k.SetValue("LOADER", Path.Combine(appDir, "AcDim.arx"), RegistryValueKind.String);
+                                    k.SetValue("DESCRIPTION", "AutoCAD Dimensioning", RegistryValueKind.String);
+                                    k.SetValue("LOADCTRLS", 14, RegistryValueKind.DWord);
+                                    using (RegistryKey c = k.CreateSubKey("Commands"))
+                                    {
+                                        if (c != null)
+                                        {
+                                            c.SetValue("DDIM", "DDIM", RegistryValueKind.String);
+                                            c.SetValue("DIMSTYLE", "DIMSTYLE", RegistryValueKind.String);
+                                        }
+                                    }
+                                }
+                            }
+
+                            // AcadDWGAids
+                            using (RegistryKey k = appRoot.CreateSubKey("AcadDWGAids"))
+                            {
+                                if (k != null)
+                                {
+                                    k.SetValue("LOADER", Path.Combine(appDir, "dwgaids.arx"), RegistryValueKind.String);
+                                    k.SetValue("DESCRIPTION", "AutoCAD Drawing Aids", RegistryValueKind.String);
+                                    k.SetValue("LOADCTRLS", 14, RegistryValueKind.DWord);
+                                    using (RegistryKey c = k.CreateSubKey("Commands"))
+                                    {
+                                        if (c != null)
+                                        {
+                                            c.SetValue("DSETTINGS", "DSETTINGS", RegistryValueKind.String);
+                                            c.SetValue("+DSETTINGS", "+DSETTINGS", RegistryValueKind.String);
+                                        }
+                                    }
+                                }
+                            }
+
+                            // AcadAppload
+                            using (RegistryKey k = appRoot.CreateSubKey("AcadAppload"))
+                            {
+                                if (k != null)
+                                {
+                                    k.SetValue("LOADER", Path.Combine(appDir, "appload.arx"), RegistryValueKind.String);
+                                    k.SetValue("DESCRIPTION", "AutoCAD Appload", RegistryValueKind.String);
+                                    k.SetValue("LOADCTRLS", 14, RegistryValueKind.DWord);
+                                    using (RegistryKey c = k.CreateSubKey("Commands"))
+                                    {
+                                        if (c != null) c.SetValue("APPLOAD", "APPLOAD", RegistryValueKind.String);
+                                    }
+                                }
+                            }
+
+                            // AcadFind
+                            using (RegistryKey k = appRoot.CreateSubKey("AcadFind"))
+                            {
+                                if (k != null)
+                                {
+                                    k.SetValue("LOADER", Path.Combine(appDir, "textfind.arx"), RegistryValueKind.String);
+                                    k.SetValue("DESCRIPTION", "AutoCAD Find", RegistryValueKind.String);
+                                    k.SetValue("LOADCTRLS", 14, RegistryValueKind.DWord);
+                                    using (RegistryKey c = k.CreateSubKey("Commands"))
+                                    {
+                                        if (c != null) c.SetValue("FIND", "FIND", RegistryValueKind.String);
+                                    }
+                                }
+                            }
+
+                            // AcadPurge
+                            using (RegistryKey k = appRoot.CreateSubKey("AcadPurge"))
+                            {
+                                if (k != null)
+                                {
+                                    k.SetValue("LOADER", Path.Combine(appDir, "AcPurge.arx"), RegistryValueKind.String);
+                                    k.SetValue("DESCRIPTION", "AutoCAD Purge", RegistryValueKind.String);
+                                    k.SetValue("LOADCTRLS", 14, RegistryValueKind.DWord);
+                                    using (RegistryKey c = k.CreateSubKey("Commands"))
+                                    {
+                                        if (c != null)
+                                        {
+                                            c.SetValue("PURGE", "PURGE", RegistryValueKind.String);
+                                            c.SetValue("+PURGE", "+PURGE", RegistryValueKind.String);
+                                        }
+                                    }
+                                }
+                            }
+
+                            // AcadMatch
+                            using (RegistryKey k = appRoot.CreateSubKey("AcadMatch"))
+                            {
+                                if (k != null)
+                                {
+                                    k.SetValue("LOADER", Path.Combine(appDir, "acmatch.arx"), RegistryValueKind.String);
+                                    k.SetValue("DESCRIPTION", "AutoCAD Match", RegistryValueKind.String);
+                                    k.SetValue("LOADCTRLS", 14, RegistryValueKind.DWord);
+                                    using (RegistryKey c = k.CreateSubKey("Commands"))
+                                    {
+                                        if (c != null) c.SetValue("MATCHPROP", "MATCHPROP", RegistryValueKind.String);
+                                    }
+                                }
+                            }
+
+                            // AcadTable
+                            using (RegistryKey k = appRoot.CreateSubKey("AcadTable"))
+                            {
+                                if (k != null)
+                                {
+                                    k.SetValue("LOADER", Path.Combine(appDir, "AcTable.arx"), RegistryValueKind.String);
+                                    k.SetValue("DESCRIPTION", "AutoCAD Table", RegistryValueKind.String);
+                                    k.SetValue("LOADCTRLS", 14, RegistryValueKind.DWord);
+                                    using (RegistryKey c = k.CreateSubKey("Commands"))
+                                    {
+                                        if (c != null) c.SetValue("TABLE", "TABLE", RegistryValueKind.String);
+                                    }
+                                }
+                            }
+
+                            // AcadBlock
+                            using (RegistryKey k = appRoot.CreateSubKey("AcadBlock"))
+                            {
+                                if (k != null)
+                                {
+                                    k.SetValue("LOADER", Path.Combine(appDir, "acblock.arx"), RegistryValueKind.String);
+                                    k.SetValue("DESCRIPTION", "AutoCAD Block", RegistryValueKind.String);
+                                    k.SetValue("LOADCTRLS", 14, RegistryValueKind.DWord);
+                                    using (RegistryKey c = k.CreateSubKey("Commands"))
+                                    {
+                                        if (c != null)
+                                        {
+                                            c.SetValue("INSERT", "INSERT", RegistryValueKind.String);
+                                            c.SetValue("DDINSERT", "DDINSERT", RegistryValueKind.String);
+                                        }
+                                    }
+                                }
+                            }
+
+                            // AcadArray
+                            using (RegistryKey k = appRoot.CreateSubKey("AcadArray"))
+                            {
+                                if (k != null)
+                                {
+                                    k.SetValue("LOADER", Path.Combine(appDir, "AcArray.arx"), RegistryValueKind.String);
+                                    k.SetValue("DESCRIPTION", "AutoCAD Array", RegistryValueKind.String);
+                                    k.SetValue("LOADCTRLS", 14, RegistryValueKind.DWord);
+                                    using (RegistryKey c = k.CreateSubKey("Commands"))
+                                    {
+                                        if (c != null)
+                                        {
+                                            c.SetValue("ARRAY", "ARRAY", RegistryValueKind.String);
+                                            c.SetValue("ARRAYCLASSIC", "ARRAYCLASSIC", RegistryValueKind.String);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch { }
+                }
+            }
+            catch { }
         }
     }
 }
