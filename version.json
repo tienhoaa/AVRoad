@@ -1,8 +1,8 @@
 {
-  "version": "1.3",
+  "version": "1.4",
   "release_date": "2026-11-04",
-  "title": "AVRoad 2026 Solution - Ban Nang Cap He Thong & CDE Hub",
-  "changelog": "Ban cap nhat v1.3:\n- Trang khoi dong AVRoad Hub hien dai, tich hop du an gan day va tin tuc dong\n- Tich hop truc tiep trung tam AV Setting ngay tren Hub khoi dong\n- Chuan hoa font Command Line sang Arial sac net chuyen nghiep\n- Lam sach dong lenh khoi dong, loai bo hoan toan thong bao menuload/menuunload\n- Khac phuc triet de loi regsvr32 adui17res.dll va loi gioi han so nguyen 1-60\n- Toi uu do hoa Direct3D 9 va bat khu rang cua giup net ve muot ma",
+  "title": "AVRoad 2026 Solution - Ban Nang Cap Toan Dien v1.4",
+  "changelog": "Ban cap nhat v1.4:\n- Hoan thien Hub khoi dong: giao dien chuan goc khong vet demo, tich hop du an gan day va tin tuc cap nhat dong\n- Tich hop truc tiep trung tam AV Setting ngay tren Hub\n- Chuan hoa font Command Line sang Arial sac net, chuyen nghiep tren moi thiet bi\n- Lam sach dong lenh khoi dong, chi hien duy nhat thong bao san sang\n- Khac phuc triet de loi gioi han so nguyen 1-10 trong Performance Tuning\n- Chuan hoa toan bo duong dan ho tro, font va menu phu hop moi may tinh cai dat",
   "download_url": "https://github.com/tienhoaa/AVRoad/releases/latest",
-  "patch_download_url": "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/patch_1.3.zip"
+  "patch_download_url": "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/patch_1.4.zip"
 }

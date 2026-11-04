@@ -634,7 +634,7 @@ namespace AVRoadInstaller
                 {
                     if (prk != null)
                     {
-                        prk.SetValue("MaxTessellations", 16, RegistryValueKind.DWord);
+                        prk.SetValue("MaxTessellations", 8, RegistryValueKind.DWord);
                         prk.SetValue("SurfaceTessellationTol", 92, RegistryValueKind.DWord);
                         prk.SetValue("CurveTessellationTol", 87, RegistryValueKind.DWord);
                     }
@@ -655,7 +655,7 @@ namespace AVRoadInstaller
                         rk.SetValue("CustomHeidiDriverPath", drvPath, RegistryValueKind.String);
                         rk.SetValue("DriverName", "direct3d9.hdi", RegistryValueKind.String);
                         rk.SetValue("FramesPerSecond", 5, RegistryValueKind.DWord);
-                        rk.SetValue("MaxTessellations", 16, RegistryValueKind.DWord); // Fixes 1-60 dialog error
+                        rk.SetValue("MaxTessellations", 8, RegistryValueKind.DWord); // Fixes 1-60 dialog error
                         rk.SetValue("SurfaceTessellationTol", 92, RegistryValueKind.DWord);
                         rk.SetValue("CurveTessellationTol", 87, RegistryValueKind.DWord);
                         rk.SetValue("PTCardAvaliable", 1, RegistryValueKind.DWord); // Enables HW checkbox

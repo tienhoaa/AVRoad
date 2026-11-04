@@ -79,7 +79,13 @@ namespace AVRoadLauncher
             if (!File.Exists(bgPath)) bgPath = Path.Combine(appDir, "startup_bg.png");
             if (File.Exists(bgPath))
             {
-                try { bgImage = Image.FromFile(bgPath); } catch { }
+                try {
+                    byte[] bytes = File.ReadAllBytes(bgPath);
+                    using (MemoryStream ms = new MemoryStream(bytes))
+                    {
+                        bgImage = new Bitmap(ms);
+                    }
+                } catch { }
             }
             if (bgImage == null)
             {
@@ -194,33 +200,27 @@ namespace AVRoadLauncher
                 }
             }
 
-            // Top Window Controls: Min, Max, Close
+            // Top Window Controls: Min (956, 8), Close (988, 8)
             if (hoveredWin == 0) // Min
             {
-                using (SolidBrush b = new SolidBrush(Color.FromArgb(60, 255, 255, 255)))
-                    g.FillRectangle(b, new Rectangle(930, 8, 24, 22));
+                using (SolidBrush b = new SolidBrush(Color.FromArgb(50, 255, 255, 255)))
+                    g.FillRectangle(b, new Rectangle(956, 8, 28, 24));
             }
-            else if (hoveredWin == 1) // Max
+            else if (hoveredWin == 1) // Close
             {
-                using (SolidBrush b = new SolidBrush(Color.FromArgb(60, 255, 255, 255)))
-                    g.FillRectangle(b, new Rectangle(960, 8, 24, 22));
+                using (SolidBrush b = new SolidBrush(Color.FromArgb(220, 239, 68, 68)))
+                    g.FillRectangle(b, new Rectangle(988, 8, 28, 24));
             }
-            else if (hoveredWin == 2) // Close
+            using (Pen pWin = new Pen(Color.FromArgb(230, 255, 255, 255), 1.6f))
             {
-                using (SolidBrush b = new SolidBrush(Color.FromArgb(200, 239, 68, 68)))
-                    g.FillRectangle(b, new Rectangle(990, 8, 24, 22));
-            }
-            using (Pen pWin = new Pen(Color.FromArgb(220, 255, 255, 255), 1.5f))
-            {
-                g.DrawLine(pWin, 936, 19, 948, 19);
-                g.DrawRectangle(pWin, 966, 13, 11, 11);
-                g.DrawLine(pWin, 996, 13, 1007, 24);
-                g.DrawLine(pWin, 1007, 13, 996, 24);
+                g.DrawLine(pWin, 963, 21, 977, 21);
+                g.DrawLine(pWin, 996, 14, 1007, 25);
+                g.DrawLine(pWin, 1007, 14, 996, 25);
             }
 
             // 1. Draw Card 1 (Left - Menu Điều Khiển)
             Rectangle card1 = new Rectangle(34, 275, 213, 225);
-            using (SolidBrush bCard = new SolidBrush(Color.FromArgb(225, 12, 28, 42)))
+            using (SolidBrush bCard = new SolidBrush(Color.FromArgb(250, 13, 27, 40)))
             using (Pen pCard = new Pen(Color.FromArgb(180, 28, 62, 90), 1f))
             {
                 GraphicsPath gp = CreateRoundedRect(card1, 8);
@@ -296,7 +296,7 @@ namespace AVRoadLauncher
 
             // 2. Draw Card 2 (Center - Dự án gần đây)
             Rectangle card2 = new Rectangle(262, 275, 365, 225);
-            using (SolidBrush bCard = new SolidBrush(Color.FromArgb(225, 12, 28, 42)))
+            using (SolidBrush bCard = new SolidBrush(Color.FromArgb(250, 13, 27, 40)))
             using (Pen pCard = new Pen(Color.FromArgb(180, 28, 62, 90), 1f))
             {
                 GraphicsPath gp = CreateRoundedRect(card2, 8);
@@ -394,7 +394,7 @@ namespace AVRoadLauncher
 
             // 3. Draw Card 3 (Right - Tin tức & Cập nhật)
             Rectangle card3 = new Rectangle(642, 275, 350, 225);
-            using (SolidBrush bCard = new SolidBrush(Color.FromArgb(225, 12, 28, 42)))
+            using (SolidBrush bCard = new SolidBrush(Color.FromArgb(250, 13, 27, 40)))
             using (Pen pCard = new Pen(Color.FromArgb(180, 28, 62, 90), 1f))
             {
                 GraphicsPath gp = CreateRoundedRect(card3, 8);
@@ -496,7 +496,7 @@ namespace AVRoadLauncher
             using (Font fVer = new Font("Segoe UI", 8.5f, FontStyle.Regular))
             using (Brush bVer = new SolidBrush(Color.FromArgb(148, 163, 184)))
             {
-                g.DrawString("Phiên bản: AVRoad 2026.0.0", fVer, bVer, 840, 526);
+                g.DrawString("Phiên bản: AVRoad 2026 v1.4", fVer, bVer, 840, 526);
             }
         }
 
@@ -526,9 +526,8 @@ namespace AVRoadLauncher
             hoveredWin = -1;
 
             // Window Buttons
-            if (new Rectangle(930, 8, 24, 22).Contains(e.Location)) hoveredWin = 0;
-            else if (new Rectangle(960, 8, 24, 22).Contains(e.Location)) hoveredWin = 1;
-            else if (new Rectangle(990, 8, 24, 22).Contains(e.Location)) hoveredWin = 2;
+            if (new Rectangle(956, 8, 28, 24).Contains(e.Location)) hoveredWin = 0;
+            else if (new Rectangle(988, 8, 28, 24).Contains(e.Location)) hoveredWin = 1;
 
             // Left Buttons (Exactly matching btnRects)
             Rectangle[] btnRects = new Rectangle[] {
@@ -597,7 +596,7 @@ namespace AVRoadLauncher
                     this.WindowState = FormWindowState.Minimized;
                     return;
                 }
-                else if (hoveredWin == 2)
+                else if (hoveredWin == 1)
                 {
                     this.Close();
                     Application.Exit();
@@ -1219,6 +1218,14 @@ namespace AVRoadLauncher
                             if (menuKey != null)
                             {
                                 menuKey.SetValue("Group1", "CUSTOM custom");
+                                menuKey.SetValue("Group2", "EXPRESS express");
+                                menuKey.SetValue("Group3", "KSVN KSVN");
+                                menuKey.SetValue("Group4", "VNROAD VNROAD");
+                                menuKey.SetValue("Group5", "SANNEN SANNEN");
+                                menuKey.SetValue("Group6", "KVN KVN");
+                                menuKey.SetValue("Group7", "DCCT DCCT");
+                                menuKey.SetValue("Group8", "TDT3D TDT3D");
+                                menuKey.SetValue("Group9", "RM RM");
                                 for (int i = 1; i <= 30; i++)
                                 {
                                     try { menuKey.DeleteValue("Pop" + i); } catch { }
