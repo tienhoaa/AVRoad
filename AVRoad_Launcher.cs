@@ -1861,9 +1861,73 @@ namespace AVRoadLauncher
                                     }
                                 }
                             }
+                            // AcadOPM & AcOpm (Properties Palette - Ctrl+1)
+                            foreach (string opmName in new string[] { "AcadOPM", "AcOpm" })
+                            {
+                                using (RegistryKey k = appRoot.CreateSubKey(opmName))
+                                {
+                                    if (k != null)
+                                    {
+                                        k.SetValue("LOADER", Path.Combine(appDir, "acopm.arx"), RegistryValueKind.String);
+                                        k.SetValue("DESCRIPTION", "AutoCAD Object Property Manager", RegistryValueKind.String);
+                                        k.SetValue("LOADCTRLS", 14, RegistryValueKind.DWord);
+                                        using (RegistryKey c = k.CreateSubKey("Commands"))
+                                        {
+                                            if (c != null)
+                                            {
+                                                c.SetValue("PROPERTIES", "PROPERTIES", RegistryValueKind.String);
+                                                c.SetValue("PROPERTIESCLOSE", "PROPERTIESCLOSE", RegistryValueKind.String);
+                                                c.SetValue("QSELECT", "QSELECT", RegistryValueKind.String);
+                                                c.SetValue("PPGETACADINPUT", "PPGETACADINPUT", RegistryValueKind.String);
+                                            }
+                                        }
+                                        using (RegistryKey g = k.CreateSubKey("Groups"))
+                                        {
+                                            if (g != null) g.SetValue(opmName, opmName, RegistryValueKind.String);
+                                        }
+                                    }
+                                }
+                            }
+
                         }
                     }
                     catch { }
+                // Pre-register TDTObjectsWrapper COM server to avoid "Failed to register COM server"
+                try
+                {
+                    string wrapperPath = Path.Combine(appDir, "TDTObjectsWrapper.arx");
+                    if (File.Exists(wrapperPath))
+                    {
+                        ProcessStartInfo psiReg = new ProcessStartInfo("regsvr32.exe", "/s \"" + wrapperPath + "\"")
+                        {
+                            CreateNoWindow = true,
+                            UseShellExecute = false
+                        };
+                        using (Process pReg = Process.Start(psiReg))
+                        {
+                            pReg.WaitForExit(3000);
+                        }
+                    }
+                }
+                catch { }
+
+                // Clean old cached MNR files so new AV_ menus recompile cleanly
+                try
+                {
+                    string appDataSupport = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu\Support");
+                    foreach (string folder in new string[] { appDir, appDataSupport })
+                    {
+                        if (Directory.Exists(folder))
+                        {
+                            foreach (string mnr in Directory.GetFiles(folder, "*.mnr"))
+                            {
+                                try { File.Delete(mnr); } catch { }
+                            }
+                        }
+                    }
+                }
+                catch { }
+
                 }
             }
             catch { }

@@ -1,0 +1,2136 @@
+<?xml version="1.0"?>
+<!--
+Warning! Do not edit the contents of this file.
+If you attempt to edit this file using an XML editor, you could lose customization and migration functionality.
+If you need to change information in the customization file, use the Customize User Interface dialog box in the product.
+To access the Customize User Interface dialog box, click the Tools menu > Customize > Interface, or enter CUI on the command line. 
+-->
+<CustSection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <FileVersion MajorVersion="0" MinorVersion="5" IncrementalVersion="1" UserVersion="1" />
+  <Header>
+    <CommonConfiguration>
+      <CommonItems>
+        <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+      </CommonItems>
+    </CommonConfiguration>
+    <WorkspaceRoot>
+      <WorkspaceConfigRoot />
+    </WorkspaceRoot>
+  </Header>
+  <MenuGroup Name="AV_Khảo sát" DisplayName="AV_Khảo sát">
+    <MacroGroup Name="AV_Khảo sátMacros">
+      <MenuMacro UID="MMU_0002">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0002">Thông tin AVRoad 2026</Name>
+          <Command>^C^ABOUTTDT </Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0004">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0004">Khai báo lệnh tắt</Name>
+          <Command>^C^TAT </Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0005">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0005">Dữ liệu bình đồ</Name>
+          <Command>^C^CDLBD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0006">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0006">Tra cao độ nhiều mô hình</Name>
+          <Command>^C^CTCD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0007">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0007">Tạo các điểm tại các đỉnh của đường pline,2dpline,3dpolyline</Name>
+          <Command>^C^CD2D</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0008">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0008">Trích vùng bản đồ tạo tệp bản vẽ mới</Name>
+          <Command>^C^CTVBD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0009">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0014">Cài đặt hiển thị điểm đo</Name>
+          <Command>^C^CCDD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0010">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0015">Biên tập dữ liệu đo đạc</Name>
+          <Command>^C^CBTT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0011">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0016">Nhập điểm từ Tệp toạ độ</Name>
+          <Command>^C^CDTD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0012">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0017">Xuất điểm ra Tệp toạ độ</Name>
+          <Command>^C^CXTD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0013">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0018">Chuyển điểm đo thành trạm máy</Name>
+          <Command>^C^CDDTM</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0014">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0019">Nâng hạ cao độ tập hợp điểm</Name>
+          <Command>^C^CNCD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0015">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0020">Xoá điểm trong vùng</Name>
+          <Command>^C^CXD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0016">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0021">Che điểm trong vùng</Name>
+          <Command>^C^CBTD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0017">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0022">Nối điểm tự động</Name>
+          <Command>^C^CND</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0018">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0033">Nhập số liệu tuyến</Name>
+          <Command>^C^CNT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0019">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0034">Tạo tuyến</Name>
+          <Command>^C^CTT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0020">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0038">Bố trí đường cong nằm</Name>
+          <Command>^C^CCN</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0021">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0039">Hiệu chỉnh tuyến</Name>
+          <Command>^C^CHCT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0022">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0040">Chèn đỉnh tuyến</Name>
+          <Command>^C^CCDT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0023">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0041">Loại đỉnh tuyến</Name>
+          <Command>^C^CLDT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0024">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0042">Thay đoạn tuyên</Name>
+          <Command>^C^CTDT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0025">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0043">Cập nhật tuyến</Name>
+          <Command>^C^CCNT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0026">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0044">Đảo chiều tuyến</Name>
+          <Command>^C^CDCT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0027">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0045">Định vị tuyến</Name>
+          <Command>^C^CDVT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0028">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0046">Định vị điểm mia theo cọc</Name>
+          <Command>^C^CDVDM2</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0029">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0047">Hiệu chỉnh số liệu tuyến</Name>
+          <Command>^C^CSLT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0030">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0048">Che điểm bình đồ tuyến</Name>
+          <Command>^C^CTDBDT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0031">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0061">Bật điểm bình đồ tuyến</Name>
+          <Command>^C^CBDD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0032">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0062">Cài đặt hiển thị thông số tuyến</Name>
+          <Command>^C^CDTST</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0033">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0063">Bật thông số tuyến</Name>
+          <Command>^C^CBTST</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0034">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0064">Tắt thông số tuyến</Name>
+          <Command>^C^CTTST</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0035">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0069">Bán kính điền</Name>
+          <Command>^C^CBKD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0036">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0070">Cập nhật điểm mia</Name>
+          <Command>^C^CCNMIA</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0037">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0071">Quay điểm mia theo phương cọc</Name>
+          <Command>^C^CRMIA</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0038">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0072">Công trình trên tuyến</Name>
+          <Command>^C^CCONG</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0039">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0077">Tìm cọc</Name>
+          <Command>^C^CTIM</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0040">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0078">Định nghĩa đường mã hiệu</Name>
+          <Command>^C^CDMH</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0041">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0079">Xuất số liệu tuyến</Name>
+          <Command>^C^CXSLT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0042">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0080">Xoá tuyến</Name>
+          <Command>^C^CXT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0043">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0086">Khai báo lớp địa chất</Name>
+          <Command>^C^CLDC</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0044">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0087">Nhập lớp địa chất trắc dọc</Name>
+          <Command>^C^CDCTD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0045">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0088">Nhập lớp địa chất trắc ngang</Name>
+          <Command>^C^CDCTN</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0046">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0089">Cập nhật địa chất trắc ngang từ địa chất trắc dọc</Name>
+          <Command>^C^CCNDCTD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0047">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0090">Cập nhật địa chất từ trắc dọc sang trắc ngang</Name>
+          <Command>^C^CCNDCTN</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0048">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0097">Định nghĩa lớp đường cũ</Name>
+          <Command>^C^CDNLDC</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0049">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0098">Định nghĩa mép đường cũ trên bình đồ</Name>
+          <Command>^C^CDNDC</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0050">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0099">Vẽ lớp đường cũ</Name>
+          <Command>^C^CKLDC</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0051">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0100">Định nghĩa đường cũ trên trắc ngang</Name>
+          <Command>^C^CDNDCTN</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0052">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0101">Xoá lớp đường cũ</Name>
+          <Command>^C^CXLDC</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0053">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0108">Vẽ trắc dọc tự nhiên</Name>
+          <Command>^C^CTD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0054">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0109">Hiệu chỉnh cọc trên trắc dọc</Name>
+          <Command>^C^CHCC</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0055">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0110">Thay đổi mức so sánh trắc dọc</Name>
+          <Command>^C^CMSSTD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0056">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0117">Vẽ trắc ngang tự nhiên</Name>
+          <Command>^C^CTN</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0057">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0118">Định nghĩa đường địa vật</Name>
+          <Command>^C^CAI</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0058">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0119">Chèn địa vật lên trắc ngang</Name>
+          <Command>^C^CDSS</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0059">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0123">Hiệu chỉnh điểm mia trắc ngang</Name>
+          <Command>^C^CHCDM</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0060">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0124">Thêm điểm mia</Name>
+          <Command>^C^CTDM</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0061">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0125">Loại điểm mia</Name>
+          <Command>^C^CLDM</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0062">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0126">Thay đổi mức so sánh trắc ngang</Name>
+          <Command>^C^CMSSTN</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0063">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0127">Cập nhật trắc ngang</Name>
+          <Command>^C^CCNTN</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0064">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0128">Xoá điểm mia trùng trên tuyến</Name>
+          <Command>^C^CXMIA</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0065">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0136">Cài đặt thông số bảng biểu</Name>
+          <Command>^C^CCDB</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0066">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0137">Bảng cắm cong</Name>
+          <Command>^C^CXCC</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0067">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0138">Bảng yếu tố cong</Name>
+          <Command>^C^CXYTC</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0068">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0139">Bảng toạ độ cọc</Name>
+          <Command>^C^CXTDC</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0069">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0140">Bảng thống kê bán kính cong nằm</Name>
+          <Command>^C^CBBKCN</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0070">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0147">Vẽ nhà</Name>
+          <Command>^C^CVN</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0071">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0148">Địa vật</Name>
+          <Command>^C^CVD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0072">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0149">Đường</Name>
+          <Command>^C^CVDU</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0073">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0150">Vùng</Name>
+          <Command>^C^CVV</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0074">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0151">Taluy</Name>
+          <Command>^C^CTL</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0075">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0152">Hiệu chỉnh taluy</Name>
+          <Command>^C^CHCTL</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0076">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0160">Lưới toạ độ</Name>
+          <Command>^C^CTLTD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0077">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0161">Điểm toạ độ</Name>
+          <Command>^C^CTDTD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0078">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0162">Tạo khung bản đồ</Name>
+          <Command>^C^CTKBD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0079">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0167">Tạo phân mảnh bản đồ</Name>
+          <Command>^C^CTPM</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0080">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0168">Tạo khung phân mảnh</Name>
+          <Command>^C^CTKPM</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0081">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0172">Khung bản đồ xiên</Name>
+          <Command>^C^CTKX</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0082">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0174">Lưới toạ độ</Name>
+          <Command>^C^CHLTD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0083">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0175">Điểm toạ độ</Name>
+          <Command>^C^CHDTD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0084">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0176">Phân mảnh bản đồ</Name>
+          <Command>^C^CHPM</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0085">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0177">Khung bản đồ</Name>
+          <Command>^C^CHKBD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0086">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0178">Bản đồ xiên</Name>
+          <Command>^C^CHKX</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0087">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0179">Bật bản đồ</Name>
+          <Command>^C^CBBD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0088">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0180">Tắt bản đồ</Name>
+          <Command>^C^CTBD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0089">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0189">Loại đối tượng trùng (đường, điểm) trong bản vẽ</Name>
+          <Command>^C^CLDDT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0090">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0190">Đánh dấu các đường pline, pline2d và các đỉnh 3dpolyline có cao độ bằng không</Name>
+          <Command>^C^CCD0</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0091">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0194">Tạo trắc dọc in</Name>
+          <Command>^C^CINTD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0092">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0195">Tạo vùng chứa TN trong khung in</Name>
+          <Command>^C^CKIN</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0093">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0196">Tạo trang in trắc ngang theo khung in</Name>
+          <Command>^C^CINTN</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0094">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0197">Cắt bình đồ tuyến theo polyline</Name>
+          <Command>^C^CCAT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0096">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0205">Vẽ mẫu hatch</Name>
+          <Command>^C^CLHATCH</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0097">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0206">Ghi mẫu hatch ra tệp</Name>
+          <Command>^C^CTHATCH</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0099">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0215">Chuyển toàn bộ text từ TCVN3 Sang unicode</Name>
+          <Command>^C^CV2U</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0100">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0216">Chuyển toàn bộ text từ unicode sang TCVN3</Name>
+          <Command>^C^CU2V</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0101">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0217">Nối tự động text rời rạc phần nguyên, phần thập phân thành điểm đo</Name>
+          <Command>^C^CJT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0102">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0221">Định nghĩa đa tuyến dốc</Name>
+          <Command>^C^CDNPL</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0103">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0222">Vẽ đường 3Dpolyline theo độ dốc</Name>
+          <Command>^C^CPL3D</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0104">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0223">Tạo điểm đo tại các đỉnh của đường pline,2dpline,3dpolyline</Name>
+          <Command>^C^CD2D</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0105">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0224">Offset 3D Polyline</Name>
+          <Command>^C^CO3P</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0106">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0225">Nối các đường 3D Polyline</Name>
+          <Command>^C^CN3D</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0107">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0226">Gán cao độ nhiều Polyline</Name>
+          <Command>^C^C</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0108">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0227">Hiệu chỉnh cao độ Polyline</Name>
+          <Command>^C^CEM</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0109">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0228">Chia cung</Name>
+          <Command>^C^CBA</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0110">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0229">Chuyển 2D, 3D Polyline sang Spline</Name>
+          <Command>^C^CP2S</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0111">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0230">Chuyển Spline sang 2D Polyline</Name>
+          <Command>^C^CS2P</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0112">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0241">Chuyển Spline sang 3D Polyline</Name>
+          <Command>^C^CS3P</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0113">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0242">Chuyển 2D Polyline sang 3D Polyline</Name>
+          <Command>^C^CP23</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0114">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0243">Chuyển 3D Polyline sang 2D Polyline</Name>
+          <Command>^C^C32P</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0115">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0244">Chuyển 2D Polyline thành polyline</Name>
+          <Command>^C^C2P</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0116">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0245">Thêm đỉnh cho Polyline</Name>
+          <Command>^C^CTDPL</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0117">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0246">Loại đỉnh của Polyline</Name>
+          <Command>^C^CLDPL</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0118">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0247">Thêm đỉnh cho Spline</Name>
+          <Command>^C^CTDSPL</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0119">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0248">Loại đỉnh của Spline</Name>
+          <Command>^C^CTDSPL</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0120">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0257">Bật toàn bộ các lớp</Name>
+          <Command>^C^C11</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0121">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0258">Tắt lớp chứa đối tượng được chọn</Name>
+          <Command>^C^C22</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0122">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0259">Tắt lớp không chứa đối tượng được chọn</Name>
+          <Command>^C^C33</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0123">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0260">Xoá toàn bộ đối tượng của lớp</Name>
+          <Command>^C^C44</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0124">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0265">Định nghĩa khối</Name>
+          <Command>^C^CDNK</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0125">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0266">Chèn khối</Name>
+          <Command>^C^CCKTN</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0126">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0267">Thêm đỉnh 3Dpolyline</Name>
+          <Command>^C^CTDPL</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0127">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0268">Loại đỉnh 3Dpolyline</Name>
+          <Command>^C^CLDPL</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0128">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0269">Nhập địa chất TN theo lớp cập nhất lên TD</Name>
+          <Command>^C^CDCTTN</Command>
+          <HelpString xlate="true" UID="XLS_0270">Nhập địa chất TN theo lớp cập nhất lên TD</HelpString>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0129">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0271">Thay thế đoạn polyline</Name>
+          <Command>^C^CThayPL</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0130">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0272">Mặt cắt địa hình</Name>
+          <Command>^C^CMCDH</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0131">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0273">Tạo đường 3D từ đường 2D và mô hình địa hình</Name>
+          <Command>^C^CTD3D</Command>
+        </Macro>
+      </MenuMacro>
+    </MacroGroup>
+    <MenuRoot>
+      <AcceleratorRoot />
+      <OverrideRoot />
+      <MouseButtonRoot />
+      <DigitizerButtonRoot />
+      <PopMenuRoot>
+        <PopMenu hasDiesel="false" UID="PMU_0002">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Alias>POP1</Alias>
+          <Name xlate="true" UID="XLS_0001">&amp;AV_Khảo sát</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0001">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0003" xlate="true">Thông tin AVRoad 2026</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0002" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0002">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0005" xlate="true">Khai báo lệnh tắt</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0004" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="true" hasDiesel="false" UID="PMIU_0003">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0004">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0009" xlate="true">Dữ liệu bình đồ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0005" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0134">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0273" xlate="true">Mặt cắt địa hình</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0130" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0005">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0010" xlate="true">Tra cao độ nhiều mô hình</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0006" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0006">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0011" xlate="true">Tạo các điểm tại các đỉnh của đường pline,2dpline,3dpolyline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0007" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0135">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0274" xlate="true">Tạo đường 3D từ đường 2D và mô hình địa hình</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0131" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0007">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0012" xlate="true">Trích vùng bản đồ tạo tệp bản vẽ mới</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0008" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuRef pUID="PMU_0003" UID="PMRU_0001">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuRef pUID="PMU_0004" UID="PMRU_0002">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuRef pUID="PMU_0013" UID="PMRU_0011">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuRef pUID="PMU_0014" UID="PMRU_0012">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuRef pUID="PMU_0015" UID="PMRU_0013">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuRef pUID="PMU_0018" UID="PMRU_0016">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuRef pUID="PMU_0019" UID="PMRU_0017">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuRef pUID="PMU_0020" UID="PMRU_0018">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuRef pUID="PMU_0021" UID="PMRU_0019">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0003">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0013">Điểm đo</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0008">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0023" xlate="true">Cài đặt hiển thị điểm đo</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0009" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0009">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0024" xlate="true">Biên tập dữ liệu đo đạc</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0010" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0010">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0025" xlate="true">Nhập điểm từ Tệp toạ độ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0011" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0011">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0026" xlate="true">Xuất điểm ra Tệp toạ độ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0012" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="true" hasDiesel="false" UID="PMIU_0130">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0012">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0027" xlate="true">Chuyển điểm đo thành trạm máy</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0013" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0013">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0028" xlate="true">Nâng hạ cao độ tập hợp điểm</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0014" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0014">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0029" xlate="true">Xoá điểm trong vùng</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0015" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0015">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0030" xlate="true">Che điểm trong vùng</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0016" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0016">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0031" xlate="true">Nối điểm tự động</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0017" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0004">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0032">Tuyến</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0017">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0035" xlate="true">Nhập số liệu tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0018" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0018">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0036" xlate="true">Tạo tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0019" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuRef pUID="PMU_0005" UID="PMRU_0003">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuRef pUID="PMU_0006" UID="PMRU_0004">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0038">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0081" xlate="true">Tìm cọc</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0039" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0039">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0082" xlate="true">Định nghĩa đường mã hiệu</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0040" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0040">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0083" xlate="true">Xuất số liệu tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0041" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0041">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0084" xlate="true">Xoá tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0042" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuRef pUID="PMU_0007" UID="PMRU_0005">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuRef pUID="PMU_0008" UID="PMRU_0006">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuItem IsSeparator="true" hasDiesel="false" UID="PMIU_0052">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuItem>
+          <PopMenuRef pUID="PMU_0009" UID="PMRU_0007">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuRef pUID="PMU_0010" UID="PMRU_0008">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0005">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0037">Hiệu chỉnh tuyến</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0019">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0049" xlate="true">Bố trí đường cong nằm</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0020" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0020">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0050" xlate="true">Hiệu chỉnh tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0021" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0021">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0051" xlate="true">Chèn đỉnh tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0022" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0022">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0052" xlate="true">Loại đỉnh tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0023" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0023">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0053" xlate="true">Thay đoạn tuyên</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0024" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0024">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0054" xlate="true">Cập nhật tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0025" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0025">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0055" xlate="true">Đảo chiều tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0026" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0026">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0056" xlate="true">Định vị tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0027" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0027">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0057" xlate="true">Định vị điểm mia theo cọc</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0028" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0028">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0058" xlate="true">Hiệu chỉnh số liệu tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0029" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0006">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0060">Mặt bằng tuyến</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0030">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0065" xlate="true">Bật điểm bình đồ tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0031" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0031">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0066" xlate="true">Cài đặt hiển thị thông số tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0032" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0032">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0067" xlate="true">Bật thông số tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0033" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0033">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0068" xlate="true">Tắt thông số tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0034" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0029">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0059" xlate="true">Che điểm bình đồ tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0030" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0034">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0073" xlate="true">Bán kính điền</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0035" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0035">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0074" xlate="true">Cập nhật điểm mia</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0036" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0036">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0075" xlate="true">Quay điểm mia theo phương cọc</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0037" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0037">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0076" xlate="true">Công trình trên tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0038" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0007">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0085">Địa chất tuyến đường</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0042">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0091" xlate="true">Khai báo lớp địa chất</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0043" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0043">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0092" xlate="true">Nhập lớp địa chất trắc dọc</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0044" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0044">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0093" xlate="true">Nhập lớp địa chất trắc ngang</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0045" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0045">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0094" xlate="true">Cập nhật địa chất trắc ngang từ địa chất trắc dọc</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0046" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0046">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0095" xlate="true">Cập nhật địa chất từ trắc dọc sang trắc ngang</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0047" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0131">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0272" xlate="true">Nhập địa chất TN theo lớp cập nhất lên TD</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0128" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0008">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0096">Lớp đường cũ</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0047">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0102" xlate="true">Định nghĩa lớp đường cũ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0048" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0048">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0103" xlate="true">Định nghĩa mép đường cũ trên bình đồ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0049" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0049">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0104" xlate="true">Vẽ lớp đường cũ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0050" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0050">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0105" xlate="true">Định nghĩa đường cũ trên trắc ngang</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0051" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0051">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0106" xlate="true">Xoá lớp đường cũ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0052" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0009">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0107">Trắc dọc</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0053">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0111" xlate="true">Vẽ trắc dọc tự nhiên</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0053" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0054">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0112" xlate="true">Hiệu chỉnh cọc trên trắc dọc</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0054" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0055">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0113" xlate="true">Thay đổi mức so sánh trắc dọc</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0055" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0010">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0114">Trắc ngang</Name>
+          <PopMenuRef pUID="PMU_0011" UID="PMRU_0009">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuRef pUID="PMU_0012" UID="PMRU_0010">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0011">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0115">Trắc ngang tự nhiên</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0056">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0120" xlate="true">Vẽ trắc ngang tự nhiên</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0056" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0057">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0121" xlate="true">Định nghĩa đường địa vật</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0057" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0058">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0122" xlate="true">Chèn địa vật lên trắc ngang</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0058" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0012">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0116">Hiệu chỉnh trắc ngang</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0059">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0129" xlate="true">Hiệu chỉnh điểm mia trắc ngang</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0059" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0060">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0130" xlate="true">Thêm điểm mia</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0060" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0061">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0131" xlate="true">Loại điểm mia</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0061" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0062">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0132" xlate="true">Thay đổi mức so sánh trắc ngang</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0062" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0063">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0133" xlate="true">Cập nhật trắc ngang</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0063" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0064">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0134" xlate="true">Xoá điểm mia trùng trên tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0064" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0013">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0135">Bảng biểu</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0065">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0141" xlate="true">Cài đặt thông số bảng biểu</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0065" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0066">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0142" xlate="true">Bảng cắm cong</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0066" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0067">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0143" xlate="true">Bảng yếu tố cong</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0067" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0068">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0144" xlate="true">Bảng toạ độ cọc</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0068" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0069">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0145" xlate="true">Bảng thống kê bán kính cong nằm</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0069" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0014">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0146">Địa vật</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0070">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0153" xlate="true">Vẽ nhà</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0070" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0071">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0154" xlate="true">Địa vật</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0071" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0072">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0155" xlate="true">Đường</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0072" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0073">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0156" xlate="true">Vùng</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0073" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0074">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0157" xlate="true">Taluy</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0074" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0075">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0158" xlate="true">Hiệu chỉnh taluy</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0075" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0015">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0159">Khung bản đồ</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0076">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0163" xlate="true">Lưới toạ độ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0076" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0077">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0164" xlate="true">Điểm toạ độ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0077" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0078">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0165" xlate="true">Tạo khung bản đồ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0078" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuRef pUID="PMU_0016" UID="PMRU_0014">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0081">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0173" xlate="true">Khung bản đồ xiên</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0081" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="true" hasDiesel="false" UID="PMIU_0082">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuItem>
+          <PopMenuRef pUID="PMU_0017" UID="PMRU_0015">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0016">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0166">Phân mảnh bản đồ</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0079">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0169" xlate="true">Tạo phân mảnh bản đồ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0079" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0080">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0170" xlate="true">Tạo khung phân mảnh</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0080" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0017">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0171">Hiệu chỉnh</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0083">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0181" xlate="true">Lưới toạ độ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0082" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0084">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0182" xlate="true">Điểm toạ độ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0083" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0085">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0183" xlate="true">Phân mảnh bản đồ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0084" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0086">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0184" xlate="true">Khung bản đồ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0085" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0087">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0185" xlate="true">Bản đồ xiên</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0086" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0088">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0186" xlate="true">Bật bản đồ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0087" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0089">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0187" xlate="true">Tắt bản đồ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0088" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0018">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0188">Tiện ích tối ưu hóa bản vẽ</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0090">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0191" xlate="true">Loại đối tượng trùng (đường, điểm) trong bản vẽ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0089" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0091">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0192" xlate="true">Đánh dấu các đường pline, pline2d và các đỉnh 3dpolyline có cao độ bằng không</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0090" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0019">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0193">In ấn</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0092">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0199" xlate="true">Tạo trắc dọc in</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0091" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0093">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0200" xlate="true">Tạo vùng chứa TN trong khung in</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0092" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0094">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0201" xlate="true">Tạo trang in trắc ngang theo khung in</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0093" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0095">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0202" xlate="true">Cắt bình đồ tuyến theo polyline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0094" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0020">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0204">Tạo hatch người dùng</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0097">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0208" xlate="true">Vẽ mẫu hatch</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0096" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0098">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0209" xlate="true">Ghi mẫu hatch ra tệp</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0097" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0021">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0210">Tiện ích</Name>
+          <PopMenuRef pUID="PMU_0022" UID="PMRU_0020">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuRef pUID="PMU_0023" UID="PMRU_0021">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuRef pUID="PMU_0024" UID="PMRU_0022">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+          <PopMenuRef pUID="PMU_0025" UID="PMRU_0023">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuRef>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0022">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0211">Chèn khối trên tuyến</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0124">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0267" xlate="true">Định nghĩa khối</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0124" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0125">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0268" xlate="true">Chèn khối</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0125" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0023">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0212">Tiện ích lớp</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0120">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0261" xlate="true">Bật toàn bộ các lớp</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0120" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0121">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0262" xlate="true">Tắt lớp chứa đối tượng được chọn</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0121" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0122">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0263" xlate="true">Tắt lớp không chứa đối tượng được chọn</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0122" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0123">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0264" xlate="true">Xoá toàn bộ đối tượng của lớp</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0123" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0024">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0213">Tiện ích đường</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0102">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0231" xlate="true">Định nghĩa đa tuyến dốc</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0102" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0103">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0232" xlate="true">Vẽ đường 3Dpolyline theo độ dốc</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0103" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0104">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0233" xlate="true">Tạo điểm đo tại các đỉnh của đường pline,2dpline,3dpolyline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0104" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0105">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0234" xlate="true">Offset 3D Polyline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0105" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0106">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0235" xlate="true">Nối các đường 3D Polyline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0106" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0107">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0236" xlate="true">Gán cao độ nhiều Polyline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0107" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0108">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0237" xlate="true">Hiệu chỉnh cao độ Polyline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0108" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0109">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0238" xlate="true">Chia cung</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0109" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="true" hasDiesel="false" UID="PMIU_0129">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0110">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0239" xlate="true">Chuyển 2D, 3D Polyline sang Spline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0110" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0111">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0240" xlate="true">Chuyển Spline sang 2D Polyline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0111" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0112">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0249" xlate="true">Chuyển Spline sang 3D Polyline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0112" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0113">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0250" xlate="true">Chuyển 2D Polyline sang 3D Polyline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0113" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0114">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0251" xlate="true">Chuyển 3D Polyline sang 2D Polyline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0114" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0115">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0252" xlate="true">Chuyển 2D Polyline thành polyline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0115" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="true" hasDiesel="false" UID="PMIU_0126">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0127">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0269" xlate="true">Thêm đỉnh 3Dpolyline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0126" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0128">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0270" xlate="true">Loại đỉnh 3Dpolyline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0127" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0116">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0253" xlate="true">Thêm đỉnh cho Polyline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0116" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0117">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0254" xlate="true">Loại đỉnh của Polyline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0117" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0118">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0255" xlate="true">Thêm đỉnh cho Spline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0118" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0119">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0256" xlate="true">Loại đỉnh của Spline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0119" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="true" hasDiesel="false" UID="PMIU_0132">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0133">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0272" xlate="true">Thay thế đoạn polyline</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0129" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+        <PopMenu hasDiesel="false" UID="PMU_0025">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0214">Tiện ích Text</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0099">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0218" xlate="true">Chuyển toàn bộ text từ TCVN3 Sang unicode</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0099" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0100">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0219" xlate="true">Chuyển toàn bộ text từ unicode sang TCVN3</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0100" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0101">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0220" xlate="true">Nối tự động text rời rạc phần nguyên, phần thập phân thành điểm đo</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0101" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+      </PopMenuRoot>
+      <ToolbarRoot />
+      <ScreenMenuRoot />
+      <ImageMenuRoot />
+      <TabletMenuRoot />
+      <DoubleClickRoot />
+      <ToolPanelRoot />
+      <PanelSetRoot>
+        <PanelSet UID="PSTU_0001" />
+      </PanelSetRoot>
+      <QuickPropertiesRoot />
+      <RolloverTooltipRoot />
+    </MenuRoot>
+  </MenuGroup>
+</CustSection>

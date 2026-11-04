@@ -1,0 +1,613 @@
+<?xml version="1.0"?>
+<!--
+Warning! Do not edit the contents of this file.
+If you attempt to edit this file using an XML editor, you could lose customization and migration functionality.
+If you need to change information in the customization file, use the Customize User Interface dialog box in the product.
+To access the Customize User Interface dialog box, click the Tools menu > Customize > Interface, or enter CUI on the command line. 
+-->
+<CustSection xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <FileVersion MajorVersion="0" MinorVersion="5" IncrementalVersion="1" UserVersion="1" />
+  <Header>
+    <CommonConfiguration>
+      <CommonItems>
+        <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+      </CommonItems>
+    </CommonConfiguration>
+    <WorkspaceRoot>
+      <WorkspaceConfigRoot />
+    </WorkspaceRoot>
+  </Header>
+  <MenuGroup Name="DCCT" DisplayName="DCCT">
+    <MacroGroup Name="DCCTMacros">
+      <MenuMacro UID="MMU_0002">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0002">Khai báo bảng mã các lớp địa chất</Name>
+          <Command>^C^CKBM </Command>
+          <SmallImage Name="KBMKS_16x16" />
+          <LargeImage Name="KBMKS_16x16" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0004">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0004">Nhập sửa dữ liệu lỗ khoan</Name>
+          <Command>^C^CDLLK </Command>
+          <SmallImage Name="NDLLK_16x16" />
+          <LargeImage Name="NDLLK_16x16" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0006">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0006">Vẽ lỗ khoan ra bản vẽ</Name>
+          <Command>^C^CVLK </Command>
+          <SmallImage Name="VLK_16x16" />
+          <LargeImage Name="VLK_16x16" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0008">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0008">Tạo tuyến thăm dò từ đường pline hoặc tuyến đã có sẵn của AV_Road</Name>
+          <Command>^C^CTTD </Command>
+          <SmallImage Name="TTLK_16x16" />
+          <LargeImage Name="TTLK_16x16" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0010">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0010">Gán lỗ khoan vào tuyến</Name>
+          <Command>^C^CGLK </Command>
+          <SmallImage Name="GLKVT_16x16" />
+          <LargeImage Name="GLKVT_16x16" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0012">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0012">Loại bỏ lỗ khoan đã gán vào tuyến</Name>
+          <Command>^C^CBGLK </Command>
+          <SmallImage Name="XLK_16x16" />
+          <LargeImage Name="XLK_16x16" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0014">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0014">Vẽ mặt cắt</Name>
+          <Command>^C^CMCDC </Command>
+          <SmallImage Name="VeMCDC_16x16" />
+          <LargeImage Name="VeMCDC_16x16" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0016">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0016">Định nghĩa cấu trúc file hình trụ lỗ khoan</Name>
+          <Command>^C^CDNHT </Command>
+          <SmallImage Name="DNHTLK_16x16" />
+          <LargeImage Name="DNHTLK_16x16" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0018">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0018">Hình trụ lỗ khoan</Name>
+          <Command>^C^CHTLK </Command>
+          <SmallImage Name="HTLK_16x16" />
+          <LargeImage Name="HTLK_16x16" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0020">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0020">Cập nhật cao độ lỗ khoan theo địa hình</Name>
+          <Command>^C^CCNLKTDH</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0022">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0022">Cập nhật cao độ lỗ khoan theo tim tuyến AV_Road</Name>
+          <Command>^C^CCNLKTT</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0024">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0024">Vẽ mặt cắt địa chất lên trắc dọc AV_Road</Name>
+          <Command>^C^CLK2TD</Command>
+          <SmallImage Name="MCTT_16x16" />
+          <LargeImage Name="MCTT_16x16" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0026">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0026">Tạo lỗ khoan theo tuyến AV_Khảo sát,AV_Road,KVN</Name>
+          <Command>^C^CLKTT</Command>
+          <SmallImage Name="VeLKTheoTuyen_16x16" />
+          <LargeImage Name="VeLKTheoTuyen_16x16" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0028">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0028">Hiệu chỉnh thể hiện lỗ khoan trên bình đồ</Name>
+          <Command>^C^CHCLK</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0030">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0030">Hiệu chỉnh mặt cắt</Name>
+          <Command>^C^CDCCT_HCMC</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0032">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0032">Cài đặt các file mẫu sử dụng</Name>
+          <Command>^C^CDCCT_TS</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0034">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0034">Tô hatch mặt cắt</Name>
+          <Command>^C^CTHMC</Command>
+          <SmallImage Name="THMC_16x16" />
+          <LargeImage Name="THMC_16x16" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0036">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0036">Thay thế 1 đoạn polyline bằng 1 đoạn khác</Name>
+          <Command>^C^CTDL</Command>
+          <SmallImage Name="TDL_16x16" />
+          <LargeImage Name="TDL_16x16" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0038">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0038">Toolbar</Name>
+          <Command>^C^C^P(command "._toolbar" "DCCT" "_show") </Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0040">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0040">Hiệu chỉnh cao độ lỗ khoan</Name>
+          <Command>^C^CHCCD</Command>
+          <SmallImage Name="HCCD_16x16" />
+          <LargeImage Name="HCCD_16x16" />
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0042">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0042">Cập nhật thay đổi xuống trắc ngang khi chỉnh sửa địa chất trên trắc dọc</Name>
+          <Command>^C^CCNDCTN</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0044">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0044">Cập nhật thay đổi xuống trắc dọc khi chỉnh sửa địa chất trên trắc ngang</Name>
+          <Command>^C^CCNDCTD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0046">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0046">Định nghĩa điểm địa chất(DC1,DC2) trên bình đồ</Name>
+          <Command>^C^CDDCBD</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0048">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0048">Định nghĩa điểm địa chất(DC1,DC2) trên trắc ngang</Name>
+          <Command>^C^CDDC</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0050">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0050">Vẽ đường địa chất  trắc dọc khi định nghĩa các đường địa chất trắc ngang từ layer</Name>
+          <Command>^C^CDCTTN</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0051">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0066">Gán  lỗ khoan vào tuyến  theo lựa chọn</Name>
+          <Command>^C^CGLK1</Command>
+        </Macro>
+      </MenuMacro>
+      <MenuMacro UID="MMU_0052">
+        <Macro type="Any">
+          <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Name xlate="true" UID="XLS_0067">Hiệu chỉnh vẽ lỗ khoan trên trắc ngang</Name>
+          <Command>^C^CHCLKTN</Command>
+        </Macro>
+      </MenuMacro>
+    </MacroGroup>
+    <MenuRoot>
+      <AcceleratorRoot />
+      <OverrideRoot />
+      <MouseButtonRoot />
+      <DigitizerButtonRoot />
+      <PopMenuRoot>
+        <PopMenu hasDiesel="false" UID="PMU_0002">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Alias>POP1</Alias>
+          <Name xlate="true" UID="XLS_0001">&amp;AV_Địa chất</Name>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0001">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0003" xlate="true">Khai báo bảng mã các lớp địa chất</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0002" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="true" hasDiesel="false" UID="PMIU_0002">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0003">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0005" xlate="true">Nhập sửa dữ liệu lỗ khoan</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0004" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0004">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0007" xlate="true">Vẽ lỗ khoan ra bản vẽ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0006" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0005">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0009" xlate="true">Tạo lỗ khoan theo tuyến AV_Khảo sát,AV_Road,KVN</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0026" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0006">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0011" xlate="true">Hiệu chỉnh thể hiện lỗ khoan trên bình đồ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0028" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0007">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0013" xlate="true">Hiệu chỉnh cao độ lỗ khoan</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0040" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="true" hasDiesel="false" UID="PMIU_0008">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0009">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0015" xlate="true">Tạo tuyến thăm dò từ đường pline hoặc tuyến đã có sẵn của AV_Khảo sát,AV_Road,KVN</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0008" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0010">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0017" xlate="true">Gán nhiều lỗ khoan vào tuyến theo khoảng cách 2 bên tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0010" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0033">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0067" xlate="true">Gán  lỗ khoan vào tuyến  theo lựa chọn</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0051" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0011">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0019" xlate="true">Loại bỏ lỗ khoan đã gán vào tuyến</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0012" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="true" hasDiesel="false" UID="PMIU_0012">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0013">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0021" xlate="true">Cập nhật cao độ lỗ khoan theo địa hình</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0020" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0014">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0023" xlate="true">Cập nhật cao độ lỗ khoan theo tim tuyến AV_Khảo sát,AV_Road,KVN</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0022" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="true" hasDiesel="false" UID="PMIU_0015">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0016">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0025" xlate="true">Vẽ mặt cắt</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0014" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0017">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0027" xlate="true">Vẽ mặt cắt địa chất lên trắc dọc AV_Khảo sát,AV_Road,KVN</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0024" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0018">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0029" xlate="true">Hiệu chỉnh mặt cắt</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0030" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0019">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0031" xlate="true">Tô hatch mặt cắt</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0034" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0020">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0033" xlate="true">Thay thế 1 đoạn polyline bằng 1 đoạn khác</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0036" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="true" hasDiesel="false" UID="PMIU_0021">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0022">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0035" xlate="true">Cập nhật thay đổi xuống trắc ngang khi chỉnh sửa địa chất trên trắc dọc</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0042" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0023">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0037" xlate="true">Cập nhật thay đổi xuống trắc dọc khi chỉnh sửa địa chất trên trắc ngang</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0044" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0024">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0039" xlate="true">Định nghĩa điểm địa chất(DC1,DC2) trên bình đồ</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0046" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0025">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0041" xlate="true">Định nghĩa điểm địa chất(DC1,DC2) trên trắc ngang</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0048" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0026">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0043" xlate="true">Vẽ đường địa chất  trắc dọc khi định nghĩa các đường địa chất trắc ngang từ layer</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0050" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0034">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0068" xlate="true">Vẽ, Hiệu chỉnh lỗ khoan trên các trắc ngang</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0052" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="true" hasDiesel="false" UID="PMIU_0027">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0028">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0045" xlate="true">Định nghĩa cấu trúc file hình trụ lỗ khoan</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0016" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0029">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0047" xlate="true">Hình trụ lỗ khoan</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0018" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="true" hasDiesel="false" UID="PMIU_0030">
+            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0031">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0049" xlate="true">Cài đặt các file mẫu sử dụng</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0032" />
+            </MenuItem>
+          </PopMenuItem>
+          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0032">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <NameRef UID="XLS_0051" xlate="true">Toolbar</NameRef>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0038" />
+            </MenuItem>
+          </PopMenuItem>
+        </PopMenu>
+      </PopMenuRoot>
+      <ToolbarRoot>
+        <Toolbar ToolbarOrient="floating" ToolbarVisible="show" xval="101" yval="121" rows="1" UID="ID_Standard">
+          <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          <Alias>TB_DCCT</Alias>
+          <Alias>DCCT</Alias>
+          <Name xlate="true" UID="XLS_0042">DCCT</Name>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0001">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0052">Khai báo bảng mã các lớp địa chất</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0002" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="true" UID="TBBU_0002">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0003">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0053">Nhập sửa dữ liệu lỗ khoan</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0004" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0004">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0054">Vẽ lỗ khoan ra bản vẽ</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0006" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0005">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0055">Hiệu chỉnh cao độ lỗ khoan</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0040" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0006">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0056">Tạo lỗ khoan theo tuyến AV_Khảo sát,AV_Road,KVN</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0026" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0007">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0057">Tạo tuyến thăm dò từ đường pline hoặc tuyến đã có sẵn của AV_Road</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0008" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0008">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0058">Gán lỗ khoan vào tuyến</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0010" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0009">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0059">Loại bỏ lỗ khoan đã gán vào tuyến</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0012" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="true" UID="TBBU_0010">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0011">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0060">Vẽ mặt cắt</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0014" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0012">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0061">Vẽ mặt cắt địa chất lên trắc dọc AV_Road</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0024" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0013">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0062">Tô hatch mặt cắt</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0034" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0014">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0063">Thay thế 1 đoạn polyline bằng 1 đoạn khác</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0036" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0015">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0064">Định nghĩa cấu trúc file hình trụ lỗ khoan</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0016" />
+            </MenuItem>
+          </ToolbarButton>
+          <ToolbarButton IsSeparator="false" UID="TBBU_0016">
+            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
+            <Name xlate="true" UID="XLS_0065">Hình trụ lỗ khoan</Name>
+            <MenuItem>
+              <MacroRef MenuMacroID="MMU_0018" />
+            </MenuItem>
+          </ToolbarButton>
+        </Toolbar>
+      </ToolbarRoot>
+      <ScreenMenuRoot />
+      <ImageMenuRoot />
+      <TabletMenuRoot />
+      <DoubleClickRoot />
+      <ToolPanelRoot />
+      <PanelSetRoot>
+        <PanelSet UID="PSTU_0001" />
+      </PanelSetRoot>
+      <QuickPropertiesRoot />
+      <RolloverTooltipRoot />
+    </MenuRoot>
+  </MenuGroup>
+</CustSection>

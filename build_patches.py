@@ -1,4 +1,4 @@
-﻿import os, zipfile
+import os, zipfile
 
 files_to_pack = [
     'AVRoad.exe',
@@ -15,6 +15,15 @@ files_to_pack = [
     'DCCT.cui',
     'TDT3D.cui',
     'RM.cui',
+    'acopm.arx',
+    'Acpi.arx',
+    'AcOpmExt.arx',
+    'oleaprot.arx',
+    'AcDmPropertyEditors.arx',
+    'AcDblClkEdit.arx',
+    'AcDblClkEditPE.arx',
+    'AcObjClassImp.arx',
+    'AcFdUi.arx',
     'acrender.arx',
     'TDTObjectsWrapper.arx',
     'TDTObjects17.dbx',
@@ -26,6 +35,7 @@ files_to_pack = [
 app_dir = r'C:\AVRoad_2026'
 
 target_zips = [
+    r'C:\TDT_RESEARCH\patch_1.6.zip',
     r'C:\TDT_RESEARCH\patch_1.5.zip',
     r'C:\TDT_RESEARCH\patch_1.4.zip',
     r'C:\TDT_RESEARCH\patch_1.3.zip',

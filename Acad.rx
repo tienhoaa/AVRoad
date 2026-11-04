@@ -15,6 +15,15 @@ ThietKeKenh17.arx
 DrawSymbols.arx
 DCCT.arx
 RoadSignsUI.arx
+oleaprot.arx
+Acpi.arx
+acopm.arx
+AcFdUi.arx
+AcOpmExt.arx
+AcDmPropertyEditors.arx
+AcDblClkEditPE.arx
+AcDblClkEdit.arx
+AcObjClassImp.arx
 units.arx
 AcDim.arx
 dwgaids.arx
@@ -31,3 +40,4 @@ AcTp.arx
 Laytrans.arx
 Laywalk.arx
 AcWipeout.arx
+Express\acetutil.arx
