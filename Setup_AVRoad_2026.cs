@@ -1857,8 +1857,26 @@ namespace AVRoadInstaller
             {
 
                 string appDataProfiles = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu\Support\Profiles");
+                Directory.CreateDirectory(appDataProfiles);
 
-                if (!Directory.Exists(appDataProfiles)) return;
+                string appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                string srcAws = Path.Combine(appDir, "FixedProfile.aws");
+
+                string targetFixed = Path.Combine(appDataProfiles, "FixedProfile.aws");
+                if (File.Exists(srcAws) && (!File.Exists(targetFixed) || new FileInfo(targetFixed).Length < 100))
+                {
+                    try { File.Copy(srcAws, targetFixed, true); } catch { }
+                }
+
+                string avroadDir = Path.Combine(appDataProfiles, "AVRoad");
+                Directory.CreateDirectory(avroadDir);
+                string targetAvroad = Path.Combine(avroadDir, "Profile.aws");
+                if (File.Exists(srcAws) && (!File.Exists(targetAvroad) || new FileInfo(targetAvroad).Length < 100))
+                {
+                    try { File.Copy(srcAws, targetAvroad, true); } catch { }
+                }
+
+                // Ensure directories exist above
 
 
 
@@ -1915,6 +1933,15 @@ namespace AVRoadInstaller
                                         finfo.SetAttribute("Width", "300");
 
                                         finfo.SetAttribute("Height", "500");
+                                    }
+                                    var dinfo = dock.SelectSingleNode("DockInfo") as System.Xml.XmlElement;
+                                    if (dinfo != null)
+                                    {
+                                        dinfo.SetAttribute("MRUDockID", "0");
+                                        dinfo.SetAttribute("Left", "0");
+                                        dinfo.SetAttribute("Top", "0");
+                                        dinfo.SetAttribute("Width", "200");
+                                        dinfo.SetAttribute("Height", "300");
 
                                     }
 

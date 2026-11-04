@@ -26,3 +26,5 @@ UserDataCache/Support/*.bak
 !patch_*.zip
 !version.json
 !README.md
+acad_clean.exe
+payload.zip
