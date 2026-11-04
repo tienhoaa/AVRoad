@@ -27,7 +27,7 @@ namespace AVRoadInstaller
 
         // Step 2 controls
         private CheckBox chkDesktopShortcut;
-        private CheckBox chkSettingShortcut;
+        // private CheckBox chkSettingShortcut;
         private CheckBox chkStartMenuShortcut;
 
         // Step 3 controls
@@ -276,25 +276,16 @@ namespace AVRoadInstaller
                     Font = new Font("Segoe UI", 9.5f)
                 };
 
-                chkSettingShortcut = new CheckBox()
+                chkStartMenuShortcut = new CheckBox()
                 {
-                    Text = "Tạo biểu tượng AVRoad Settings (Cấu hình) trên Desktop",
+                    Text = "Tạo nhóm phím tắt trong Start Menu",
                     Location = new Point(24, 105),
                     AutoSize = true,
                     Checked = true,
                     Font = new Font("Segoe UI", 9.5f)
                 };
 
-                chkStartMenuShortcut = new CheckBox()
-                {
-                    Text = "Tạo nhóm phím tắt trong Start Menu",
-                    Location = new Point(24, 145),
-                    AutoSize = true,
-                    Checked = true,
-                    Font = new Font("Segoe UI", 9.5f)
-                };
-
-                pnlContent.Controls.AddRange(new Control[] { lblTitle, chkDesktopShortcut, chkSettingShortcut, chkStartMenuShortcut });
+                pnlContent.Controls.AddRange(new Control[] { lblTitle, chkDesktopShortcut, chkStartMenuShortcut });
             }
             else if (step == 3) // Extracting
             {
@@ -531,7 +522,7 @@ namespace AVRoadInstaller
                             {
                                 if (lblExtractStatus != null) lblExtractStatus.Text = "Đang tối ưu cấu hình thư viện Microsoft C++ Runtime...";
                             }));
-                            ProcessStartInfo psiVc = new ProcessStartInfo(vcRedist, "/q");
+                            ProcessStartInfo psiVc = new ProcessStartInfo(vcRedist, "/q:a /c:\"vcredist.msi /qn\"");
                             psiVc.UseShellExecute = false;
                             psiVc.CreateNoWindow = true;
                             Process pVc = Process.Start(psiVc);
@@ -541,6 +532,7 @@ namespace AVRoadInstaller
                     }
 
                     // Create Shortcuts and Register Uninstall
+                    ConfigureHardwareAccelerationAndSmoothDrafting(targetDir);
                     CreateShortcuts(targetDir);
                     RegisterWindowsUninstall(targetDir);
 
@@ -586,15 +578,7 @@ namespace AVRoadInstaller
                     sc.Save();
                 }
 
-                if (chkSettingShortcut.Checked && File.Exists(settingExe))
-                {
-                    dynamic sc = shell.CreateShortcut(Path.Combine(desktop, "AVRoad Settings.lnk"));
-                    sc.TargetPath = settingExe;
-                    sc.WorkingDirectory = targetDir;
-                    sc.Description = "AVRoad 2026 Settings - Trung tâm cấu hình";
-                    if (File.Exists(icoPath)) sc.IconLocation = icoPath + ",0";
-                    sc.Save();
-                }
+// Settings shortcut embedded inside AVRoad 2026 Startup Screen
 
                 // 2. Start Menu Shortcuts
                 if (chkStartMenuShortcut.Checked)
@@ -629,6 +613,180 @@ namespace AVRoadInstaller
                         sc.Save();
                     }
                 }
+            }
+            catch { }
+        }
+
+        private void ConfigureHardwareAccelerationAndSmoothDrafting(string targetDir)
+        {
+            try
+            {
+                string drvPath = Path.Combine(targetDir, "Drv");
+                string direct3d = Path.Combine(drvPath, "direct3d9.hdi");
+                string tuner = Path.Combine(drvPath, "tuner9.hdi");
+                if (!File.Exists(direct3d) && File.Exists(tuner))
+                {
+                    try { File.Copy(tuner, direct3d, true); } catch { }
+                }
+
+                string parent3DGS = @"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\3DGS Configuration";
+                using (RegistryKey prk = Registry.CurrentUser.CreateSubKey(parent3DGS))
+                {
+                    if (prk != null)
+                    {
+                        prk.SetValue("MaxTessellations", 16, RegistryValueKind.DWord);
+                        prk.SetValue("SurfaceTessellationTol", 92, RegistryValueKind.DWord);
+                        prk.SetValue("CurveTessellationTol", 87, RegistryValueKind.DWord);
+                    }
+                }
+
+                string key3DGS = @"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\3DGS Configuration\GSHEIDI10";
+                
+                // Write HKCU 3DGS Configuration
+                using (RegistryKey rk = Registry.CurrentUser.CreateSubKey(key3DGS))
+                {
+                    if (rk != null)
+                    {
+                        rk.SetValue("Help", Path.Combine(targetDir, "acad.chm"), RegistryValueKind.String);
+                        rk.SetValue("ContextHelp", "", RegistryValueKind.String);
+                        rk.SetValue("FirstRun", 1, RegistryValueKind.DWord);
+                        rk.SetValue("Flags", 4721767, RegistryValueKind.DWord); // HW Accel ON + Smooth lines ON + Geometry ON
+                        rk.SetValue("CustomHeidiDriver", "direct3d9.hdi", RegistryValueKind.String);
+                        rk.SetValue("CustomHeidiDriverPath", drvPath, RegistryValueKind.String);
+                        rk.SetValue("DriverName", "direct3d9.hdi", RegistryValueKind.String);
+                        rk.SetValue("FramesPerSecond", 5, RegistryValueKind.DWord);
+                        rk.SetValue("MaxTessellations", 16, RegistryValueKind.DWord); // Fixes 1-60 dialog error
+                        rk.SetValue("SurfaceTessellationTol", 92, RegistryValueKind.DWord);
+                        rk.SetValue("CurveTessellationTol", 87, RegistryValueKind.DWord);
+                        rk.SetValue("PTCardAvaliable", 1, RegistryValueKind.DWord); // Enables HW checkbox
+                        rk.SetValue("PTCardRecomended", 1, RegistryValueKind.DWord);
+                        rk.SetValue("PTCardCertified", 1, RegistryValueKind.DWord);
+                        rk.SetValue("PTUsingD3D", 1, RegistryValueKind.DWord);
+                        rk.SetValue("PTUsingOGL", 0, RegistryValueKind.DWord);
+                        rk.SetValue("PTWorkArounds", "0:", RegistryValueKind.String);
+                        rk.SetValue("SNAPSHOTFLAGS", 103, RegistryValueKind.DWord);
+                        rk.SetValue("SNAPSHOTCACHETESS", 16, RegistryValueKind.DWord);
+                        rk.SetValue("SNAPSHOTCURVTESS", 87, RegistryValueKind.DWord);
+                        rk.SetValue("SNAPSHOTSURFTESS", 92, RegistryValueKind.DWord);
+                        rk.SetValue("SNAPSHOTTRANSPARENCY", 1, RegistryValueKind.DWord);
+                        rk.SetValue("SNAPSHOTDRIVER", "direct3d9.hdi", RegistryValueKind.String);
+
+                        byte[] featData = new byte[] {
+                            0x1f, 0x00, 0x00, 0x00, // Available: HW Accel, Geom Accel, Smooth lines, Gooch, Shadows
+                            0x1f, 0x00, 0x00, 0x00, // Recommended: All
+                            0x0f, 0x00, 0x00, 0x00  // Enabled: HW Accel (1), Geom (2), Smooth lines (4), Gooch (8)
+                        };
+                        rk.SetValue("FeatureData", featData, RegistryValueKind.Binary);
+
+                        byte[] chain = new byte[] {
+                            0x00, 0x00, 0x00, 0x80, 0x01, 0x00, 0x00, 0x80, 0x02, 0x00, 0x00, 0x80,
+                            0x03, 0x00, 0x00, 0x80, 0x04, 0x00, 0x00, 0x80, 0x05, 0x00, 0x00, 0x80,
+                            0x06, 0x00, 0x00, 0x80, 0x07, 0x00, 0x00, 0x80, 0x08, 0x00, 0x00, 0x80,
+                            0x09, 0x00, 0x00, 0x80, 0x0a, 0x00, 0x00, 0x80, 0x0b, 0x00, 0x00, 0x80,
+                            0x0c, 0x00, 0x00, 0x80, 0x0d, 0x00, 0x00, 0x80, 0x0e, 0x00, 0x00, 0x80,
+                            0x0f, 0x00, 0x00, 0x80, 0x10, 0x00, 0x00, 0x80, 0x11, 0x00, 0x00, 0x80
+                        };
+                        rk.SetValue("DegradationChainOrder", chain, RegistryValueKind.Binary);
+                    }
+                }
+
+                // Write HKLM 3DGS Configuration (Setup is elevated)
+                try
+                {
+                    using (RegistryKey lm = Registry.LocalMachine.CreateSubKey(key3DGS))
+                    {
+                        if (lm != null)
+                        {
+                            lm.SetValue("Flags", 4721767, RegistryValueKind.DWord);
+                            lm.SetValue("CustomHeidiDriver", "direct3d9.hdi", RegistryValueKind.String);
+                            lm.SetValue("CustomHeidiDriverPath", drvPath, RegistryValueKind.String);
+                        }
+                    }
+                }
+                catch { }
+
+                try
+                {
+                    using (RegistryKey lm64 = Registry.LocalMachine.CreateSubKey(@"Software\WOW6432Node\Autodesk\AutoCAD\R17.0\ACAD-5001:409\3DGS Configuration\GSHEIDI10"))
+                    {
+                        if (lm64 != null)
+                        {
+                            lm64.SetValue("Flags", 4721767, RegistryValueKind.DWord);
+                            lm64.SetValue("CustomHeidiDriver", "direct3d9.hdi", RegistryValueKind.String);
+                            lm64.SetValue("CustomHeidiDriverPath", drvPath, RegistryValueKind.String);
+                        }
+                    }
+                }
+                catch { }
+
+                // Configure smooth drafting options in AVRoad profile
+                using (RegistryKey genKey = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Profiles\AVRoad\General"))
+                {
+                    if (genKey != null)
+                    {
+                        genKey.SetValue("WhipArcEnable", 1, RegistryValueKind.DWord);
+                        genKey.SetValue("VtEnable", 3, RegistryValueKind.DWord);
+                        genKey.SetValue("Dragmode", 2, RegistryValueKind.DWord);
+                        genKey.SetValue("SelectionPreview", 2, RegistryValueKind.DWord);
+                    }
+                }
+                using (RegistryKey edKey = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Profiles\AVRoad\Editor Configuration"))
+                {
+                    if (edKey != null)
+                    {
+                        edKey.SetValue("ZoomFactor", 60, RegistryValueKind.DWord);
+                    }
+                }
+                // Configure Command Line Window font to Arial across all profiles
+                try
+                {
+                    using (RegistryKey pk = Registry.CurrentUser.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Profiles", true))
+                    {
+                        if (pk != null)
+                        {
+                            foreach (string sub in pk.GetSubKeyNames())
+                            {
+                                try
+                                {
+                                    using (RegistryKey cmdKey = pk.CreateSubKey(sub + @"\Command Line Windows"))
+                                    {
+                                        if (cmdKey != null)
+                                        {
+                                            cmdKey.SetValue("CmdLine.FontFace", "Arial", RegistryValueKind.String);
+                                            cmdKey.SetValue("CmdLine.FontHeight", 10, RegistryValueKind.DWord);
+                                            cmdKey.SetValue("CmdLine.FontWeight", 400, RegistryValueKind.DWord);
+                                            cmdKey.SetValue("TextWindow.FontFace", "Arial", RegistryValueKind.String);
+                                            cmdKey.SetValue("TextWindow.FontHeight", 10, RegistryValueKind.DWord);
+                                            cmdKey.SetValue("TextWindow.FontWeight", 400, RegistryValueKind.DWord);
+                                        }
+                                    }
+                                }
+                                catch { }
+                            }
+                        }
+                    }
+                }
+                catch { }
+
+                // Clean up acmgd.dll from TabExtensions to prevent "invalid ARX file" error
+                try
+                {
+                    string[] dialogs = new string[] { "CustomizeDialog", "DrawingSettingsDialog", "OptionsDialog" };
+                    foreach (string dlg in dialogs)
+                    {
+                        string tabKey = @"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Profiles\AVRoad\Dialogs\" + dlg + @"\TabExtensions";
+                        using (RegistryKey tk = Registry.CurrentUser.OpenSubKey(tabKey, true))
+                        {
+                            if (tk != null)
+                            {
+                                try { tk.DeleteValue("acmgd.dll", false); } catch { }
+                            }
+                        }
+                    }
+                }
+                catch { }
+
+// ObjectDBX registry keys load TDTObjects natively
             }
             catch { }
         }

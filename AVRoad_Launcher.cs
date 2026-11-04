@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.IO;
 using System.Net;
+using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
 using System.Threading;
@@ -12,62 +14,164 @@ using Microsoft.Win32;
 
 namespace AVRoadLauncher
 {
-    public class SplashScreen : Form
+    public class AVStartupForm : Form
     {
-        private System.Windows.Forms.Timer animTimer;
-        private System.Windows.Forms.Timer autoCloseTimer;
-        private int progress = 0;
-        private string statusText = "Đang kết nối không gian dữ liệu CDE...";
-        private Image logoImg = null;
+        [DllImport("user32.dll")]
+        public static extern bool ReleaseCapture();
 
-        public SplashScreen()
+        [DllImport("user32.dll")]
+        public static extern int SendMessage(IntPtr hWnd, int Msg, int wParam, int lParam);
+
+        private Image bgImage = null;
+        private System.Windows.Forms.Timer animTimer;
+        private int progress = 0;
+        private string statusText = "Đang tối ưu nhân đồ họa AVCAD Engine & Direct3D...";
+        private bool isReady = false;
+
+        private string appDir;
+        private string iniPath;
+        private string fontPath = "";
+        private string plotStylePath;
+        private string plotterPath;
+        private string argProfile;
+        private bool checkUpdateOnStartup = true;
+
+        private int hoveredBtn = -1;      // 0: Start, 1: Open, 2: Recent, 3: Setting, 4: Info
+        private int hoveredRecent = -1;   // 0, 1, 2
+        private int hoveredNews = -1;     // 0, 1, 2, 3
+        private int hoveredWin = -1;      // 0: Min, 1: Max, 2: Close
+
+        public class RecentItem
         {
+            public string FileName;
+            public string FilePath;
+            public string FullPath;
+            public string TimeText;
+            public bool IsReal;
+        }
+
+        private List<RecentItem> recentItems = new List<RecentItem>();
+
+        public AVStartupForm(string appDir, string iniPath, string fontPath, string plotStylePath, string plotterPath, string argProfile, bool checkUpdateOnStartup)
+        {
+            this.appDir = appDir;
+            this.iniPath = iniPath;
+            this.fontPath = fontPath;
+            this.plotStylePath = plotStylePath;
+            this.plotterPath = plotterPath;
+            this.argProfile = argProfile;
+            this.checkUpdateOnStartup = checkUpdateOnStartup;
+
             this.FormBorderStyle = FormBorderStyle.None;
             this.StartPosition = FormStartPosition.CenterScreen;
-            this.Size = new Size(640, 360);
-            this.ShowInTaskbar = false;
-            this.TopMost = true;
+            this.Size = new Size(1024, 576);
             this.DoubleBuffered = true;
+            this.BackColor = Color.FromArgb(15, 23, 42);
 
-            string appDir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
-            string logoPath = Path.Combine(appDir, "av_bim_logo_transparent.png");
-            if (File.Exists(logoPath))
+            string icoPath = Path.Combine(appDir, "AVRoad.ico");
+            if (File.Exists(icoPath))
             {
-                try { logoImg = Image.FromFile(logoPath); } catch { }
+                try { this.Icon = new Icon(icoPath); } catch { }
             }
 
+            // Load Clean Background Image
+            string bgPath = Path.Combine(appDir, "startup_bg_clean.png");
+            if (!File.Exists(bgPath)) bgPath = Path.Combine(appDir, "startup_bg.png");
+            if (File.Exists(bgPath))
+            {
+                try { bgImage = Image.FromFile(bgPath); } catch { }
+            }
+            if (bgImage == null)
+            {
+                try
+                {
+                    Assembly asm = Assembly.GetExecutingAssembly();
+                    Stream s = asm.GetManifestResourceStream("startup_bg.png");
+                    if (s != null) bgImage = Image.FromStream(s);
+                }
+                catch { }
+            }
+
+            // Load Recent Files from AutoCAD Registry MRU
+            LoadRecentFiles();
+
+            // Progress Animation Timer
             animTimer = new System.Windows.Forms.Timer();
-            animTimer.Interval = 20;
+            animTimer.Interval = 25;
             animTimer.Tick += (s, e) =>
             {
-                if (progress < 96) progress += 3;
-                if (progress < 30) statusText = "Đang kết nối không gian dữ liệu CDE...";
-                else if (progress < 60) statusText = "Đang tối ưu hiệu năng nhân đồ họa AVCAD Engine...";
-                else if (progress < 85) statusText = "Đang nạp module AV_KS, AV_Road, Express Tools...";
-                else statusText = "Sẵn sàng làm việc!";
+                if (progress < 95)
+                {
+                    progress += 3;
+                    if (progress < 35) statusText = "Đang tối ưu nhân đồ họa AVCAD Engine & Direct3D...";
+                    else if (progress < 70) statusText = "Đang kết nối không gian dữ liệu CDE...";
+                    else statusText = "Đang nạp bộ menu chuẩn hóa AV_Road, AV_Khảo sát...";
+                }
+                else if (isReady)
+                {
+                    progress = 100;
+                    statusText = "Sẵn sàng làm việc!";
+                    animTimer.Stop();
+                }
                 this.Invalidate();
             };
             animTimer.Start();
 
-            autoCloseTimer = new System.Windows.Forms.Timer();
-            autoCloseTimer.Interval = 2200;
-            autoCloseTimer.Tick += (s, e) =>
+            // Background Preparation Thread
+            Thread prepThread = new Thread(() =>
             {
-                autoCloseTimer.Stop();
-                this.Close();
-            };
-            autoCloseTimer.Start();
+                try
+                {
+                    Program.ConfigureHardwareAccelerationAndSmoothDrafting(appDir);
+                    Program.PrepareProfile(appDir, argProfile, fontPath, plotStylePath, plotterPath);
+                }
+                catch { }
+
+                isReady = true;
+                this.BeginInvoke((Action)(() =>
+                {
+                    progress = 100;
+                    statusText = "Sẵn sàng làm việc!";
+                    this.Invalidate();
+                }));
+            });
+            prepThread.IsBackground = true;
+            prepThread.Start();
         }
 
-        protected override void Dispose(bool disposing)
+        private void LoadRecentFiles()
         {
-            if (disposing)
+            recentItems.Clear();
+            try
             {
-                if (animTimer != null) animTimer.Dispose();
-                if (autoCloseTimer != null) autoCloseTimer.Dispose();
-                if (logoImg != null) logoImg.Dispose();
+                using (RegistryKey rk = Registry.CurrentUser.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Recent File List"))
+                {
+                    if (rk != null)
+                    {
+                        for (int i = 1; i <= 9; i++)
+                        {
+                            object val = rk.GetValue("File" + i);
+                            if (val != null && !string.IsNullOrEmpty(val.ToString()))
+                            {
+                                string full = val.ToString().Trim('"');
+                                if (File.Exists(full))
+                                {
+                                    recentItems.Add(new RecentItem()
+                                    {
+                                        FileName = Path.GetFileName(full),
+                                        FilePath = Path.GetDirectoryName(full) + "\\",
+                                        FullPath = full,
+                                        TimeText = File.GetLastWriteTime(full).ToString("dd/MM/yyyy HH:mm"),
+                                        IsReal = true
+                                    });
+                                    if (recentItems.Count >= 3) break;
+                                }
+                            }
+                        }
+                    }
+                }
             }
-            base.Dispose(disposing);
+            catch { }
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -77,232 +181,530 @@ namespace AVRoadLauncher
             g.SmoothingMode = SmoothingMode.AntiAlias;
             g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
 
-            // Brand Gradient: Deep Forest Green (#07231A to #17664F)
-            using (LinearGradientBrush bgBrush = new LinearGradientBrush(this.ClientRectangle, Color.FromArgb(7, 35, 26), Color.FromArgb(23, 102, 79), LinearGradientMode.ForwardDiagonal))
+            // Draw Clean Background Artwork
+            if (bgImage != null)
             {
-                g.FillRectangle(bgBrush, this.ClientRectangle);
-            }
-
-            // Outer Border Mint Neon
-            using (Pen borderPen = new Pen(Color.FromArgb(45, 212, 191), 1.5f))
-            {
-                g.DrawRectangle(borderPen, 0, 0, this.Width - 1, this.Height - 1);
-            }
-
-            // Highway curve
-            using (GraphicsPath path = new GraphicsPath())
-            {
-                path.AddBezier(0, 290, 190, 210, 390, 320, 640, 230);
-                using (Pen roadPen = new Pen(Color.FromArgb(45, 45, 212, 191), 38))
-                {
-                    g.DrawPath(roadPen, path);
-                }
-                using (Pen linePen = new Pen(Color.FromArgb(220, 255, 255, 255), 2.5f))
-                {
-                    linePen.DashStyle = DashStyle.Dash;
-                    g.DrawPath(linePen, path);
-                }
-            }
-
-            // Logo
-            int logoY = 32;
-            if (logoImg != null)
-            {
-                int lw = 175;
-                int lh = (int)(logoImg.Height * (lw / (double)logoImg.Width));
-                g.DrawImage(logoImg, new Rectangle(42, logoY, lw, lh));
+                g.DrawImage(bgImage, 0, 0, this.Width, this.Height);
             }
             else
             {
-                using (Font fontAV = new Font("Arial", 42f, FontStyle.Bold | FontStyle.Italic))
-                using (Brush brushAV = new SolidBrush(Color.White))
+                using (LinearGradientBrush brush = new LinearGradientBrush(this.ClientRectangle, Color.FromArgb(7, 35, 26), Color.FromArgb(17, 85, 65), LinearGradientMode.ForwardDiagonal))
                 {
-                    g.DrawString("AV", fontAV, brushAV, 42, logoY);
+                    g.FillRectangle(brush, this.ClientRectangle);
                 }
             }
 
-            // Title "Road 2026"
-            using (Font fontRoad = new Font("Segoe UI", 38f, FontStyle.Bold))
-            using (Brush brushRoad = new SolidBrush(Color.FromArgb(94, 234, 212)))
+            // Top Window Controls: Min, Max, Close
+            if (hoveredWin == 0) // Min
             {
-                g.DrawString("Road", fontRoad, brushRoad, 225, logoY - 4);
+                using (SolidBrush b = new SolidBrush(Color.FromArgb(60, 255, 255, 255)))
+                    g.FillRectangle(b, new Rectangle(930, 8, 24, 22));
             }
-            using (Font tagFont = new Font("Segoe UI", 12f, FontStyle.Bold))
-            using (Brush tagBrush = new SolidBrush(Color.FromArgb(153, 246, 228)))
+            else if (hoveredWin == 1) // Max
             {
-                g.DrawString("2026", tagFont, tagBrush, 360, logoY + 22);
+                using (SolidBrush b = new SolidBrush(Color.FromArgb(60, 255, 255, 255)))
+                    g.FillRectangle(b, new Rectangle(960, 8, 24, 22));
             }
-
-            // Slogan CDE
-            using (Font sloganFont = new Font("Segoe UI", 11.5f, FontStyle.Bold))
-            using (Brush sloganBrush = new SolidBrush(Color.FromArgb(254, 240, 138)))
+            else if (hoveredWin == 2) // Close
             {
-                g.DrawString("CHUẨN HÓA DỮ LIỆU CDE • TỐI ƯU THIẾT KẾ HẠ TẦNG BIM", sloganFont, sloganBrush, 46, 122);
+                using (SolidBrush b = new SolidBrush(Color.FromArgb(200, 239, 68, 68)))
+                    g.FillRectangle(b, new Rectangle(990, 8, 24, 22));
             }
-
-            // Subtitle
-            using (Font subFont = new Font("Segoe UI", 9.5f, FontStyle.Regular))
-            using (Brush subBrush = new SolidBrush(Color.FromArgb(204, 251, 241)))
+            using (Pen pWin = new Pen(Color.FromArgb(220, 255, 255, 255), 1.5f))
             {
-                g.DrawString("COMMON DATA ENVIRONMENT • HỆ SINH THÁI THIẾT KẾ TUYẾN CHUYÊN NGHIỆP", subFont, subBrush, 46, 150);
+                g.DrawLine(pWin, 936, 19, 948, 19);
+                g.DrawRectangle(pWin, 966, 13, 11, 11);
+                g.DrawLine(pWin, 996, 13, 1007, 24);
+                g.DrawLine(pWin, 1007, 13, 996, 24);
             }
 
-            // Engine badge
-            using (Font engFont = new Font("Segoe UI", 8.5f, FontStyle.Regular))
-            using (Brush engBrush = new SolidBrush(Color.FromArgb(167, 243, 208)))
+            // 1. Draw Card 1 (Left - Menu Điều Khiển)
+            Rectangle card1 = new Rectangle(34, 275, 213, 225);
+            using (SolidBrush bCard = new SolidBrush(Color.FromArgb(225, 12, 28, 42)))
+            using (Pen pCard = new Pen(Color.FromArgb(180, 28, 62, 90), 1f))
             {
-                g.DrawString("GRAPHICS CORE: AVCAD 2026 ENGINE (PORTABLE ISOLATED)", engFont, engBrush, 46, 175);
+                GraphicsPath gp = CreateRoundedRect(card1, 8);
+                g.FillPath(bCard, gp);
+                g.DrawPath(pCard, gp);
             }
 
-            // Status Text
-            using (Font statusFont = new Font("Segoe UI", 9.5f, FontStyle.Italic))
-            using (Brush statusBrush = new SolidBrush(Color.FromArgb(240, 253, 250)))
+            // Buttons in Card 1
+            Rectangle[] btnRects = new Rectangle[] {
+                new Rectangle(42, 285, 197, 36), // 0: Start
+                new Rectangle(42, 327, 197, 32), // 1: Open
+                new Rectangle(42, 365, 197, 32), // 2: Recent
+                new Rectangle(42, 403, 197, 32), // 3: Setting
+                new Rectangle(42, 441, 197, 32)  // 4: Info
+            };
+
+            // Button 0: Bắt đầu công việc (Hero CTA Button)
+            using (LinearGradientBrush bHero = new LinearGradientBrush(btnRects[0], Color.FromArgb(2, 132, 199), Color.FromArgb(13, 148, 136), LinearGradientMode.Horizontal))
             {
-                g.DrawString(statusText, statusFont, statusBrush, 46, 260);
+                GraphicsPath gp0 = CreateRoundedRect(btnRects[0], 6);
+                g.FillPath(bHero, gp0);
+                if (hoveredBtn == 0)
+                {
+                    using (Pen pHover0 = new Pen(Color.FromArgb(255, 94, 234, 212), 2f))
+                        g.DrawPath(pHover0, gp0);
+                }
+            }
+            using (Font fHero = new Font("Segoe UI", 9.5f, FontStyle.Bold))
+            using (Brush bWhite = new SolidBrush(Color.White))
+            {
+                g.DrawString("⌂", new Font("Segoe UI", 12f, FontStyle.Bold), bWhite, 52, 290);
+                g.DrawString("Bắt đầu công việc", fHero, bWhite, 75, 294);
             }
 
-            // Progress Bar Track
-            int barX = 46;
-            int barY = 288;
-            int barW = 548;
-            int barH = 6;
-            using (Brush trackBrush = new SolidBrush(Color.FromArgb(18, 55, 42)))
+            // Buttons 1-4
+            string[] btnLabels = new string[] { "Mở bản vẽ...", "Dự án gần đây", "Cài đặt AVRoad", "Thông tin & Cập nhật" };
+            string[] btnIcons = new string[] { "📁", "🕒", "⚙", "ℹ" };
+
+            using (Font fBtn = new Font("Segoe UI", 9f, FontStyle.Regular))
             {
-                g.FillRectangle(trackBrush, barX, barY, barW, barH);
+                for (int i = 1; i <= 4; i++)
+                {
+                    Rectangle rBtn = btnRects[i];
+                    GraphicsPath gpBtn = CreateRoundedRect(rBtn, 6);
+
+                    if (hoveredBtn == i)
+                    {
+                        using (SolidBrush bHov = new SolidBrush(Color.FromArgb(45, 45, 212, 191)))
+                        using (Pen pHov = new Pen(Color.FromArgb(190, 45, 212, 191), 1.5f))
+                        {
+                            g.FillPath(bHov, gpBtn);
+                            g.DrawPath(pHov, gpBtn);
+                        }
+                    }
+                    else
+                    {
+                        using (SolidBrush bNorm = new SolidBrush(Color.FromArgb(140, 18, 38, 54)))
+                        using (Pen pNorm = new Pen(Color.FromArgb(90, 35, 70, 98), 1f))
+                        {
+                            g.FillPath(bNorm, gpBtn);
+                            g.DrawPath(pNorm, gpBtn);
+                        }
+                    }
+
+                    Color cText = (hoveredBtn == i) ? Color.FromArgb(240, 253, 250) : Color.FromArgb(226, 232, 240);
+                    using (Brush bText = new SolidBrush(cText))
+                    {
+                        g.DrawString(btnIcons[i - 1], new Font("Segoe UI", 8.5f), bText, 54, rBtn.Y + 7);
+                        g.DrawString(btnLabels[i - 1], fBtn, bText, 76, rBtn.Y + 7);
+                    }
+                }
+            }
+
+            // 2. Draw Card 2 (Center - Dự án gần đây)
+            Rectangle card2 = new Rectangle(262, 275, 365, 225);
+            using (SolidBrush bCard = new SolidBrush(Color.FromArgb(225, 12, 28, 42)))
+            using (Pen pCard = new Pen(Color.FromArgb(180, 28, 62, 90), 1f))
+            {
+                GraphicsPath gp = CreateRoundedRect(card2, 8);
+                g.FillPath(bCard, gp);
+                g.DrawPath(pCard, gp);
+            }
+
+            // Card 2 Header
+            using (Font fHeader = new Font("Segoe UI", 10f, FontStyle.Bold))
+            using (Brush bHeader = new SolidBrush(Color.FromArgb(241, 245, 249)))
+            {
+                g.DrawString("📁  Dự án gần đây", fHeader, bHeader, 276, 286);
+            }
+
+            // Card 2 Recent Items
+            Rectangle[] recentRects = new Rectangle[] {
+                new Rectangle(270, 316, 348, 46),
+                new Rectangle(270, 368, 348, 46),
+                new Rectangle(270, 420, 348, 46)
+            };
+
+            if (recentItems.Count > 0)
+            {
+                for (int i = 0; i < recentItems.Count && i < 3; i++)
+                {
+                    Rectangle r = recentRects[i];
+                    RecentItem item = recentItems[i];
+                    GraphicsPath gpItem = CreateRoundedRect(r, 6);
+
+                    if (hoveredRecent == i)
+                    {
+                        using (SolidBrush bHov = new SolidBrush(Color.FromArgb(40, 45, 212, 191)))
+                        using (Pen pHov = new Pen(Color.FromArgb(180, 45, 212, 191), 1f))
+                        {
+                            g.FillPath(bHov, gpItem);
+                            g.DrawPath(pHov, gpItem);
+                        }
+                    }
+                    else
+                    {
+                        using (SolidBrush bNorm = new SolidBrush(Color.FromArgb(100, 18, 38, 54)))
+                        {
+                            g.FillPath(bNorm, gpItem);
+                        }
+                    }
+
+                    // DWG Icon Badge (Red)
+                    Rectangle rBadge = new Rectangle(r.X + 8, r.Y + 8, 30, 30);
+                    using (SolidBrush bBadge = new SolidBrush(Color.FromArgb(220, 38, 38)))
+                    {
+                        GraphicsPath gpBadge = CreateRoundedRect(rBadge, 4);
+                        g.FillPath(bBadge, gpBadge);
+                    }
+                    using (Font fDwg = new Font("Arial", 6.5f, FontStyle.Bold))
+                    using (Brush bDwg = new SolidBrush(Color.White))
+                    {
+                        g.DrawString("DWG", fDwg, bDwg, r.X + 10, r.Y + 16);
+                    }
+
+                    // File Name
+                    using (Font fName = new Font("Segoe UI", 9f, FontStyle.Bold))
+                    using (Brush bName = new SolidBrush(Color.FromArgb(241, 245, 249)))
+                    {
+                        g.DrawString(item.FileName, fName, bName, r.X + 44, r.Y + 7);
+                    }
+
+                    // Path
+                    using (Font fPath = new Font("Segoe UI", 7.5f, FontStyle.Regular))
+                    using (Brush bPath = new SolidBrush(Color.FromArgb(148, 163, 184)))
+                    {
+                        string p = item.FilePath;
+                        if (p.Length > 32) p = p.Substring(0, 30) + "...";
+                        g.DrawString(p, fPath, bPath, r.X + 44, r.Y + 25);
+                    }
+
+                    // Date
+                    using (Font fTime = new Font("Segoe UI", 7.5f, FontStyle.Regular))
+                    using (Brush bTime = new SolidBrush(Color.FromArgb(100, 116, 139)))
+                    {
+                        g.DrawString(item.TimeText, fTime, bTime, r.Right - 95, r.Y + 8);
+                    }
+                }
+            }
+            else
+            {
+                using (Font fEmpty = new Font("Segoe UI", 9f, FontStyle.Regular))
+                using (Font fSub = new Font("Segoe UI", 8f, FontStyle.Italic))
+                using (Brush bEmpty = new SolidBrush(Color.FromArgb(148, 163, 184)))
+                using (Brush bSub = new SolidBrush(Color.FromArgb(100, 116, 139)))
+                {
+                    g.DrawString("Chưa có dự án bản vẽ mở gần đây.", fEmpty, bEmpty, 290, 360);
+                    g.DrawString("Bấm 'Mở bản vẽ...' hoặc 'Bắt đầu công việc' để thiết kế.", fSub, bSub, 280, 385);
+                }
+            }
+
+            // 3. Draw Card 3 (Right - Tin tức & Cập nhật)
+            Rectangle card3 = new Rectangle(642, 275, 350, 225);
+            using (SolidBrush bCard = new SolidBrush(Color.FromArgb(225, 12, 28, 42)))
+            using (Pen pCard = new Pen(Color.FromArgb(180, 28, 62, 90), 1f))
+            {
+                GraphicsPath gp = CreateRoundedRect(card3, 8);
+                g.FillPath(bCard, gp);
+                g.DrawPath(pCard, gp);
+            }
+
+            // Card 3 Header
+            using (Font fHeader = new Font("Segoe UI", 10f, FontStyle.Bold))
+            using (Brush bHeader = new SolidBrush(Color.FromArgb(241, 245, 249)))
+            {
+                g.DrawString("📢  Tin tức & Cập nhật", fHeader, bHeader, 656, 286);
+            }
+
+            // Card 3 News Items
+            Rectangle[] newsRects = new Rectangle[] {
+                new Rectangle(650, 316, 334, 34),
+                new Rectangle(650, 354, 334, 32),
+                new Rectangle(650, 390, 334, 32),
+                new Rectangle(650, 426, 334, 32)
+            };
+
+            for (int i = 0; i < newsRects.Length; i++)
+            {
+                Rectangle rN = newsRects[i];
+                if (hoveredNews == i)
+                {
+                    using (SolidBrush bHov = new SolidBrush(Color.FromArgb(30, 255, 255, 255)))
+                    {
+                        GraphicsPath gpHov = CreateRoundedRect(rN, 4);
+                        g.FillPath(bHov, gpHov);
+                    }
+                }
+
+                if (i == 0)
+                {
+                    using (SolidBrush bPill = new SolidBrush(Color.FromArgb(16, 185, 129)))
+                    {
+                        GraphicsPath gpPill = CreateRoundedRect(new Rectangle(rN.X + 6, rN.Y + 8, 32, 18), 3);
+                        g.FillPath(bPill, gpPill);
+                    }
+                    using (Font fPill = new Font("Segoe UI", 7f, FontStyle.Bold))
+                    using (Brush bWhite = new SolidBrush(Color.White))
+                    {
+                        g.DrawString("Mới", fPill, bWhite, rN.X + 11, rN.Y + 10);
+                    }
+                    using (Font fNews = new Font("Segoe UI", 8.5f, FontStyle.Bold))
+                    using (Brush bNews = new SolidBrush(Color.FromArgb(241, 245, 249)))
+                    {
+                        g.DrawString("AVRoad 2026 – Nâng cấp hiệu năng & CDE", fNews, bNews, rN.X + 44, rN.Y + 9);
+                    }
+                }
+                else
+                {
+                    using (SolidBrush bDot = new SolidBrush(Color.FromArgb(45, 212, 191)))
+                    {
+                        g.FillEllipse(bDot, rN.X + 16, rN.Y + 12, 6, 6);
+                    }
+                    string newsText = "";
+                    if (i == 1) newsText = "Chuẩn hóa toàn diện hệ thống menu AV_";
+                    else if (i == 2) newsText = "Đồ họa Direct3D 9 & Khử răng cưa nét vẽ mượt";
+                    else if (i == 3) newsText = "Tích hợp trung tâm AV Setting ngay trên Hub";
+
+                    using (Font fNews = new Font("Segoe UI", 8.5f, FontStyle.Regular))
+                    using (Brush bNews = new SolidBrush(Color.FromArgb(203, 213, 225)))
+                    {
+                        g.DrawString(newsText, fNews, bNews, rN.X + 32, rN.Y + 8);
+                    }
+                }
+            }
+
+            // 4. Draw Bottom Status Text
+            using (Font fStatus = new Font("Segoe UI", 9f, FontStyle.Regular))
+            using (Brush bStatus = new SolidBrush(isReady ? Color.FromArgb(45, 212, 191) : Color.FromArgb(203, 213, 225)))
+            {
+                g.DrawString(statusText, fStatus, bStatus, 34, 514);
+            }
+
+            // 5. Draw Bottom Progress Bar Track
+            int pbX = 34, pbY = 536, pbW = 290, pbH = 6;
+            using (SolidBrush bTrack = new SolidBrush(Color.FromArgb(15, 30, 45)))
+            {
+                GraphicsPath trackPath = CreateRoundedRect(new Rectangle(pbX, pbY, pbW, pbH), 3);
+                g.FillPath(bTrack, trackPath);
             }
 
             // Progress Bar Fill
-            int fillW = (int)(barW * (progress / 100.0));
-            if (fillW > 0)
+            int fillW = (int)(pbW * (progress / 100.0));
+            if (fillW > 4)
             {
-                using (LinearGradientBrush fillBrush = new LinearGradientBrush(new Rectangle(barX, barY, fillW, barH), Color.FromArgb(45, 212, 191), Color.FromArgb(16, 185, 129), LinearGradientMode.Horizontal))
+                using (LinearGradientBrush bFill = new LinearGradientBrush(new Rectangle(pbX, pbY, fillW, pbH), Color.FromArgb(6, 182, 212), Color.FromArgb(45, 212, 191), LinearGradientMode.Horizontal))
                 {
-                    g.FillRectangle(fillBrush, barX, barY, fillW, barH);
+                    GraphicsPath fillPath = CreateRoundedRect(new Rectangle(pbX, pbY, fillW, pbH), 3);
+                    g.FillPath(bFill, fillPath);
                 }
             }
 
-            // Copyright footer
-            using (Font copyFont = new Font("Segoe UI", 8f, FontStyle.Regular))
-            using (Brush copyBrush = new SolidBrush(Color.FromArgb(120, 175, 150)))
+            // 6. Draw Version Label
+            using (Font fVer = new Font("Segoe UI", 8.5f, FontStyle.Regular))
+            using (Brush bVer = new SolidBrush(Color.FromArgb(148, 163, 184)))
             {
-                g.DrawString("AV Technology Ecosystem • Hệ sinh thái AV BIM • Khởi chạy độc lập hoàn toàn", copyFont, copyBrush, 46, 316);
+                g.DrawString("Phiên bản: AVRoad 2026.0.0", fVer, bVer, 840, 526);
             }
         }
-    }
 
-    public class AboutForm : Form
-    {
-        private Image logoImg = null;
-
-        public AboutForm(string appDir)
+        private GraphicsPath CreateRoundedRect(Rectangle r, int radius)
         {
-            this.FormBorderStyle = FormBorderStyle.FixedDialog;
-            this.StartPosition = FormStartPosition.CenterScreen;
-            this.Size = new Size(520, 360);
-            this.MaximizeBox = false;
-            this.MinimizeBox = false;
-            this.Text = "Giới thiệu AVRoad 2026 Solution - Hệ sinh thái AV BIM CDE";
-            this.BackColor = Color.FromArgb(7, 35, 26);
-            this.DoubleBuffered = true;
-
-            string icoPath = Path.Combine(appDir, "AVRoad.ico");
-            if (File.Exists(icoPath))
-            {
-                try { this.Icon = new Icon(icoPath); } catch { }
-            }
-
-            string logoPath = Path.Combine(appDir, "av_bim_logo_transparent.png");
-            if (File.Exists(logoPath))
-            {
-                try { logoImg = Image.FromFile(logoPath); } catch { }
-            }
-
-            BuildUI(appDir);
+            GraphicsPath path = new GraphicsPath();
+            int d = radius * 2;
+            path.AddArc(r.X, r.Y, d, d, 180, 90);
+            path.AddArc(r.Right - d, r.Y, d, d, 270, 90);
+            path.AddArc(r.Right - d, r.Bottom - d, d, d, 0, 90);
+            path.AddArc(r.X, r.Bottom - d, d, d, 90, 90);
+            path.CloseFigure();
+            return path;
         }
 
-        private void BuildUI(string appDir)
+        protected override void OnMouseMove(MouseEventArgs e)
         {
-            this.Paint += (s, e) =>
-            {
-                Graphics g = e.Graphics;
-                g.SmoothingMode = SmoothingMode.AntiAlias;
+            base.OnMouseMove(e);
+            int prevBtn = hoveredBtn;
+            int prevRecent = hoveredRecent;
+            int prevNews = hoveredNews;
+            int prevWin = hoveredWin;
 
-                using (LinearGradientBrush b = new LinearGradientBrush(this.ClientRectangle, Color.FromArgb(7, 35, 26), Color.FromArgb(23, 102, 79), LinearGradientMode.ForwardDiagonal))
-                {
-                    g.FillRectangle(b, this.ClientRectangle);
-                }
+            hoveredBtn = -1;
+            hoveredRecent = -1;
+            hoveredNews = -1;
+            hoveredWin = -1;
 
-                int logoY = 24;
-                if (logoImg != null)
-                {
-                    int lw = 150;
-                    int lh = (int)(logoImg.Height * (lw / (double)logoImg.Width));
-                    g.DrawImage(logoImg, new Rectangle(30, logoY, lw, lh));
-                }
+            // Window Buttons
+            if (new Rectangle(930, 8, 24, 22).Contains(e.Location)) hoveredWin = 0;
+            else if (new Rectangle(960, 8, 24, 22).Contains(e.Location)) hoveredWin = 1;
+            else if (new Rectangle(990, 8, 24, 22).Contains(e.Location)) hoveredWin = 2;
 
-                using (Font fTitle = new Font("Segoe UI", 18f, FontStyle.Bold))
-                using (Brush brTitle = new SolidBrush(Color.FromArgb(94, 234, 212)))
-                {
-                    g.DrawString("AVRoad 2026 Solution", fTitle, brTitle, 200, 24);
-                }
-
-                using (Font fSub = new Font("Segoe UI", 9.5f))
-                using (Brush brSub = new SolidBrush(Color.FromArgb(204, 251, 241)))
-                {
-                    g.DrawString("HỆ THỐNG THIẾT KẾ TUYẾN & HẠ TẦNG GIAO THÔNG", fSub, brSub, 202, 58);
-                }
-
-                using (Font fSlogan = new Font("Segoe UI", 9f, FontStyle.Bold))
-                using (Brush brSlogan = new SolidBrush(Color.FromArgb(254, 240, 138)))
-                {
-                    g.DrawString("CHUẨN HÓA DỮ LIỆU CDE • TỐI ƯU THIẾT KẾ HẠ TẦNG BIM", fSlogan, brSlogan, 30, 120);
-                }
-
-                using (Font fBody = new Font("Segoe UI", 9f))
-                using (Brush brBody = new SolidBrush(Color.FromArgb(226, 232, 240)))
-                {
-                    string info = "• Nhân đồ họa: AVCAD Core Engine (Portable Isolated độc lập)\n" +
-                                  "• Phiên bản: v1.0 (2026 Edition)\n" +
-                                  "• Tích hợp: 7 Menu nghiệp vụ AV_KS, AV_Road, San nền, Kênh...\n" +
-                                  "• Bản quyền: AV Technology Ecosystem. Tất cả các quyền được bảo lưu.";
-                    g.DrawString(info, fBody, brBody, 30, 150);
-                }
+            // Left Buttons (Exactly matching btnRects)
+            Rectangle[] btnRects = new Rectangle[] {
+                new Rectangle(42, 285, 197, 36),
+                new Rectangle(42, 327, 197, 32),
+                new Rectangle(42, 365, 197, 32),
+                new Rectangle(42, 403, 197, 32),
+                new Rectangle(42, 441, 197, 32)
             };
+            for (int i = 0; i < btnRects.Length; i++)
+            {
+                if (btnRects[i].Contains(e.Location)) { hoveredBtn = i; break; }
+            }
 
-            Button btnWeb = new Button()
-            {
-                Text = "Trang Chủ Dự Án (GitHub)",
-                Location = new Point(30, 260),
-                Size = new Size(210, 38),
-                BackColor = Color.FromArgb(16, 185, 129),
-                ForeColor = Color.White,
-                Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
-                FlatStyle = FlatStyle.Flat,
-                Cursor = Cursors.Hand
+            // Recent Projects
+            Rectangle[] recentRects = new Rectangle[] {
+                new Rectangle(270, 316, 348, 46),
+                new Rectangle(270, 368, 348, 46),
+                new Rectangle(270, 420, 348, 46)
             };
-            btnWeb.FlatAppearance.BorderSize = 0;
-            btnWeb.Click += (s, e) =>
+            for (int i = 0; i < recentRects.Length; i++)
             {
-                try { Process.Start("https://github.com/tienhoaa/AVRoad"); } catch { }
-            };
-            this.Controls.Add(btnWeb);
+                if (recentRects[i].Contains(e.Location)) { hoveredRecent = i; break; }
+            }
 
-            Button btnClose = new Button()
-            {
-                Text = "Đóng",
-                Location = new Point(255, 260),
-                Size = new Size(120, 38),
-                BackColor = Color.FromArgb(30, 60, 50),
-                ForeColor = Color.FromArgb(204, 251, 241),
-                Font = new Font("Segoe UI", 9.5f),
-                FlatStyle = FlatStyle.Flat,
-                Cursor = Cursors.Hand
+            // News Items
+            Rectangle[] newsRects = new Rectangle[] {
+                new Rectangle(650, 316, 334, 34),
+                new Rectangle(650, 354, 334, 32),
+                new Rectangle(650, 390, 334, 32),
+                new Rectangle(650, 426, 334, 32)
             };
-            btnClose.FlatAppearance.BorderSize = 0;
-            btnClose.Click += (s, e) => this.Close();
-            this.Controls.Add(btnClose);
+            for (int i = 0; i < newsRects.Length; i++)
+            {
+                if (newsRects[i].Contains(e.Location)) { hoveredNews = i; break; }
+            }
+
+            if (hoveredBtn != -1 || hoveredRecent != -1 || hoveredNews != -1 || hoveredWin != -1)
+                this.Cursor = Cursors.Hand;
+            else
+                this.Cursor = Cursors.Default;
+
+            if (hoveredBtn != prevBtn || hoveredRecent != prevRecent || hoveredNews != prevNews || hoveredWin != prevWin)
+            {
+                this.Invalidate();
+            }
         }
-    }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+
+            // Drag window by header
+            if (e.Button == MouseButtons.Left && e.Y < 50 && e.X < 920)
+            {
+                ReleaseCapture();
+                SendMessage(this.Handle, 0xA1, 2, 0);
+                return;
+            }
+
+            if (e.Button == MouseButtons.Left)
+            {
+                // Window Buttons
+                if (hoveredWin == 0)
+                {
+                    this.WindowState = FormWindowState.Minimized;
+                    return;
+                }
+                else if (hoveredWin == 2)
+                {
+                    this.Close();
+                    Application.Exit();
+                    return;
+                }
+
+                // Left Navigation Buttons
+                if (hoveredBtn == 0) // Bắt đầu công việc
+                {
+                    LaunchCAD("");
+                }
+                else if (hoveredBtn == 1) // Mở bản vẽ...
+                {
+                    using (OpenFileDialog ofd = new OpenFileDialog())
+                    {
+                        ofd.Title = "Chọn Bản Vẽ Thiết Kế Hạ Tầng - AVRoad 2026";
+                        ofd.Filter = "AutoCAD Drawing (*.dwg)|*.dwg|DXF Files (*.dxf)|*.dxf|Tất cả tệp (*.*)|*.*";
+                        if (ofd.ShowDialog(this) == DialogResult.OK)
+                        {
+                            LaunchCAD(ofd.FileName);
+                        }
+                    }
+                }
+                else if (hoveredBtn == 2) // Dự án gần đây
+                {
+                    if (recentItems.Count > 0 && File.Exists(recentItems[0].FullPath))
+                    {
+                        LaunchCAD(recentItems[0].FullPath);
+                    }
+                    else
+                    {
+                        LaunchCAD("");
+                    }
+                }
+                else if (hoveredBtn == 3) // Cài đặt AVRoad
+                {
+                    OpenSettingsDialog();
+                }
+                else if (hoveredBtn == 4) // Thông tin & Cập nhật
+                {
+                    OpenAboutOrUpdate();
+                }
+
+                // Recent Projects Click
+                if (hoveredRecent >= 0 && hoveredRecent < recentItems.Count)
+                {
+                    RecentItem it = recentItems[hoveredRecent];
+                    if (it.IsReal && File.Exists(it.FullPath))
+                    {
+                        LaunchCAD(it.FullPath);
+                    }
+                    else
+                    {
+                        LaunchCAD("");
+                    }
+                }
+
+                // News Click
+                if (hoveredNews >= 0)
+                {
+                    OpenAboutOrUpdate();
+                }
+            }
+        }
+
+        private void LaunchCAD(string dwgPath)
+        {
+            this.Hide();
+            Program.LaunchAutoCAD(appDir, checkUpdateOnStartup, dwgPath);
+            this.Close();
+        }
+
+        private void OpenSettingsDialog()
+        {
+            string settingExe = Path.Combine(appDir, "AVSetting.exe");
+            if (File.Exists(settingExe))
+            {
+                try
+                {
+                    using (Process p = Process.Start(new ProcessStartInfo()
+                    {
+                        FileName = settingExe,
+                        WorkingDirectory = appDir
+                    }))
+                    {
+                        if (p != null) p.WaitForExit();
+                    }
+                }
+                catch { }
+            }
+            else
+            {
+                MessageBox.Show("Trung tâm cấu hình AVRoad Settings đã được tích hợp hoàn chỉnh.", "AVRoad 2026 Solution", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void OpenAboutOrUpdate()
+        {
+            try
+            {
+                Program.CheckUpdateAsync(appDir, null, true);
+            }
+            catch
+            {
+                MessageBox.Show("AVRoad 2026 Solution - Hệ sinh thái AV BIM CDE\nPhiên bản 2026.0.0 (Unlocked Engine)\n\nChuẩn hóa dữ liệu thiết kế hạ tầng giao thông.", "AVRoad 2026 Solution", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
 
     static class Program
     {
@@ -338,7 +740,7 @@ namespace AVRoadLauncher
         const int ICON_SMALL = 0;
         const int ICON_BIG = 1;
 
-        static SplashScreen globalSplash = null;
+        static Form globalSplash = null;
 
         [STAThread]
         static void Main(string[] args)
@@ -353,7 +755,7 @@ namespace AVRoadLauncher
             {
                 if (a.Equals("/about", StringComparison.OrdinalIgnoreCase))
                 {
-                    Application.Run(new AboutForm(appDir));
+                    MessageBox.Show("AVRoad 2026 Solution - Hệ sinh thái AV BIM CDE\nPhiên bản 2026.0.0 (Unlocked Engine)\n\nChuẩn hóa dữ liệu thiết kế hạ tầng giao thông.", "AVRoad 2026 Solution", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     return;
                 }
                 if (a.Equals("/check-update", StringComparison.OrdinalIgnoreCase) || a.Equals("--check-update-toast", StringComparison.OrdinalIgnoreCase))
@@ -363,19 +765,11 @@ namespace AVRoadLauncher
                 }
             }
 
-            bool isDirect = false;
-            foreach (string a in args)
-            {
-                if (a.Equals("/direct", StringComparison.OrdinalIgnoreCase)) isDirect = true;
-            }
-
-            bool isFirstRun = true;
-            bool autoStart = false;
-            bool checkUpdateOnStartup = true;
             string fontPath = "";
             string plotStylePath = Path.Combine(appDir, "Plot Styles");
             string plotterPath = Path.Combine(appDir, "Plotters");
             string argProfile = Path.Combine(appDir, "AVRoad_Profile.arg");
+            bool checkUpdateOnStartup = true;
 
             if (File.Exists(iniPath))
             {
@@ -386,8 +780,6 @@ namespace AVRoadLauncher
                     {
                         string k = l.Substring(0, eq).Trim();
                         string v = l.Substring(eq + 1).Trim();
-                        if (k == "Configured" && v == "1") isFirstRun = false;
-                        if (k == "AutoStart" && v == "1") autoStart = true;
                         if (k == "CheckUpdateOnStartup" && v == "0") checkUpdateOnStartup = false;
                         if (k == "FontPath" && !string.IsNullOrEmpty(v)) fontPath = v;
                         if (k == "PlotStylePath" && !string.IsNullOrEmpty(v)) plotStylePath = v;
@@ -397,45 +789,209 @@ namespace AVRoadLauncher
                 }
             }
 
-            bool shiftPressed = (Control.ModifierKeys & Keys.Shift) == Keys.Shift;
-
-            // FIRST RUN BEHAVIOR:
-            if (!isDirect && (isFirstRun || shiftPressed || !autoStart))
+            // If a DWG file was passed directly (via file association)
+            string directFile = "";
+            foreach (string a in args)
             {
-                string settingExe = Path.Combine(appDir, "AVSetting.exe");
-                if (File.Exists(settingExe))
+                if (!a.StartsWith("/") && !a.StartsWith("-") && File.Exists(a) && (a.EndsWith(".dwg", StringComparison.OrdinalIgnoreCase) || a.EndsWith(".dxf", StringComparison.OrdinalIgnoreCase)))
                 {
-                    try
-                    {
-                        Process.Start(new ProcessStartInfo()
-                        {
-                            FileName = settingExe,
-                            WorkingDirectory = appDir
-                        });
-                        return; // Exit launcher, AV Setting takes over!
-                    }
-                    catch { }
+                    directFile = a;
+                    break;
                 }
             }
 
-            // FROM THE SECOND RUN ONWARD:
-            Thread splashThread = new Thread(() =>
+            if (!string.IsNullOrEmpty(directFile))
             {
-                globalSplash = new SplashScreen();
-                Application.Run(globalSplash);
-            });
-            splashThread.SetApartmentState(ApartmentState.STA);
-            splashThread.IsBackground = true;
-            splashThread.Start();
+                ConfigureHardwareAccelerationAndSmoothDrafting(appDir);
+                PrepareProfile(appDir, argProfile, fontPath, plotStylePath, plotterPath);
+                LaunchAutoCAD(appDir, checkUpdateOnStartup, directFile);
+                return;
+            }
 
-            // Prepare Clean AVRoad Profile
-            PrepareProfile(appDir, argProfile, fontPath, plotStylePath, plotterPath);
-            LaunchAndBranding(appDir, checkUpdateOnStartup);
+            // Launch Modern Startup Screen Hub
+            Application.Run(new AVStartupForm(appDir, iniPath, fontPath, plotStylePath, plotterPath, argProfile, checkUpdateOnStartup));
         }
 
-        static void PrepareProfile(string appDir, string argProfile, string fontPath, string plotStylePath, string plotterPath)
+        public static void ConfigureHardwareAccelerationAndSmoothDrafting(string appDir)
         {
+            try
+            {
+                string drvPath = Path.Combine(appDir, "Drv");
+                string direct3d = Path.Combine(drvPath, "direct3d9.hdi");
+                string tuner = Path.Combine(drvPath, "tuner9.hdi");
+                if (!File.Exists(direct3d) && File.Exists(tuner))
+                {
+                    try { File.Copy(tuner, direct3d, true); } catch { }
+                }
+
+                string parent3DGS = @"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\3DGS Configuration";
+                using (RegistryKey prk = Registry.CurrentUser.CreateSubKey(parent3DGS))
+                {
+                    if (prk != null)
+                    {
+                        prk.SetValue("MaxTessellations", 16, RegistryValueKind.DWord);
+                        prk.SetValue("SurfaceTessellationTol", 92, RegistryValueKind.DWord);
+                        prk.SetValue("CurveTessellationTol", 87, RegistryValueKind.DWord);
+                    }
+                }
+
+                string key3DGS = @"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\3DGS Configuration\GSHEIDI10";
+                using (RegistryKey rk = Registry.CurrentUser.CreateSubKey(key3DGS))
+                {
+                    if (rk != null)
+                    {
+                        rk.SetValue("Help", Path.Combine(appDir, "acad.chm"), RegistryValueKind.String);
+                        rk.SetValue("ContextHelp", "", RegistryValueKind.String);
+                        rk.SetValue("FirstRun", 1, RegistryValueKind.DWord);
+                        rk.SetValue("Flags", 4721767, RegistryValueKind.DWord); // HW Accel + Smooth lines + Geometry
+                        rk.SetValue("CustomHeidiDriver", "direct3d9.hdi", RegistryValueKind.String);
+                        rk.SetValue("CustomHeidiDriverPath", drvPath, RegistryValueKind.String);
+                        rk.SetValue("DriverName", "direct3d9.hdi", RegistryValueKind.String);
+                        rk.SetValue("FramesPerSecond", 5, RegistryValueKind.DWord);
+                        rk.SetValue("MaxTessellations", 16, RegistryValueKind.DWord); // Fixes 1-60 dialog error
+                        rk.SetValue("SurfaceTessellationTol", 92, RegistryValueKind.DWord);
+                        rk.SetValue("CurveTessellationTol", 87, RegistryValueKind.DWord);
+                        rk.SetValue("PTCardAvaliable", 1, RegistryValueKind.DWord); // Enables HW checkbox
+                        rk.SetValue("PTCardRecomended", 1, RegistryValueKind.DWord);
+                        rk.SetValue("PTCardCertified", 1, RegistryValueKind.DWord);
+                        rk.SetValue("PTUsingD3D", 1, RegistryValueKind.DWord);
+                        rk.SetValue("PTUsingOGL", 0, RegistryValueKind.DWord);
+                        rk.SetValue("PTWorkArounds", "0:", RegistryValueKind.String);
+                        rk.SetValue("SNAPSHOTFLAGS", 103, RegistryValueKind.DWord);
+                        rk.SetValue("SNAPSHOTCACHETESS", 16, RegistryValueKind.DWord);
+                        rk.SetValue("SNAPSHOTCURVTESS", 87, RegistryValueKind.DWord);
+                        rk.SetValue("SNAPSHOTSURFTESS", 92, RegistryValueKind.DWord);
+                        rk.SetValue("SNAPSHOTTRANSPARENCY", 1, RegistryValueKind.DWord);
+                        rk.SetValue("SNAPSHOTDRIVER", "direct3d9.hdi", RegistryValueKind.String);
+
+                        byte[] featData = new byte[] {
+                            0x1f, 0x00, 0x00, 0x00, // Available: HW Accel, Geom Accel, Smooth lines, Gooch, Shadows
+                            0x1f, 0x00, 0x00, 0x00, // Recommended: All
+                            0x0f, 0x00, 0x00, 0x00  // Enabled: HW Accel (1), Geom (2), Smooth lines (4), Gooch (8)
+                        };
+                        rk.SetValue("FeatureData", featData, RegistryValueKind.Binary);
+
+                        byte[] chain = new byte[] {
+                            0x00, 0x00, 0x00, 0x80, 0x01, 0x00, 0x00, 0x80, 0x02, 0x00, 0x00, 0x80,
+                            0x03, 0x00, 0x00, 0x80, 0x04, 0x00, 0x00, 0x80, 0x05, 0x00, 0x00, 0x80,
+                            0x06, 0x00, 0x00, 0x80, 0x07, 0x00, 0x00, 0x80, 0x08, 0x00, 0x00, 0x80,
+                            0x09, 0x00, 0x00, 0x80, 0x0a, 0x00, 0x00, 0x80, 0x0b, 0x00, 0x00, 0x80,
+                            0x0c, 0x00, 0x00, 0x80, 0x0d, 0x00, 0x00, 0x80, 0x0e, 0x00, 0x00, 0x80,
+                            0x0f, 0x00, 0x00, 0x80, 0x10, 0x00, 0x00, 0x80, 0x11, 0x00, 0x00, 0x80
+                        };
+                        rk.SetValue("DegradationChainOrder", chain, RegistryValueKind.Binary);
+                    }
+                }
+
+                // Attempt to write HKLM if running with elevation
+                try
+                {
+                    using (RegistryKey lm = Registry.LocalMachine.CreateSubKey(key3DGS))
+                    {
+                        if (lm != null)
+                        {
+                            lm.SetValue("Flags", 4721767, RegistryValueKind.DWord);
+                            lm.SetValue("CustomHeidiDriver", "direct3d9.hdi", RegistryValueKind.String);
+                            lm.SetValue("CustomHeidiDriverPath", drvPath, RegistryValueKind.String);
+                        }
+                    }
+                }
+                catch { }
+
+                try
+                {
+                    using (RegistryKey lm64 = Registry.LocalMachine.CreateSubKey(@"Software\WOW6432Node\Autodesk\AutoCAD\R17.0\ACAD-5001:409\3DGS Configuration\GSHEIDI10"))
+                    {
+                        if (lm64 != null)
+                        {
+                            lm64.SetValue("Flags", 4721767, RegistryValueKind.DWord);
+                            lm64.SetValue("CustomHeidiDriver", "direct3d9.hdi", RegistryValueKind.String);
+                            lm64.SetValue("CustomHeidiDriverPath", drvPath, RegistryValueKind.String);
+                        }
+                    }
+                }
+                catch { }
+
+                // Configure smooth drafting options in AVRoad profile
+                using (RegistryKey genKey = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Profiles\AVRoad\General"))
+                {
+                    if (genKey != null)
+                    {
+                        genKey.SetValue("WhipArcEnable", 1, RegistryValueKind.DWord);
+                        genKey.SetValue("VtEnable", 3, RegistryValueKind.DWord);
+                        genKey.SetValue("Dragmode", 2, RegistryValueKind.DWord);
+                        genKey.SetValue("SelectionPreview", 2, RegistryValueKind.DWord);
+                    }
+                }
+                using (RegistryKey edKey = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Profiles\AVRoad\Editor Configuration"))
+                {
+                    if (edKey != null)
+                    {
+                        edKey.SetValue("ZoomFactor", 60, RegistryValueKind.DWord);
+                    }
+                }
+            }
+            catch { }
+        }
+
+        public static void PrepareProfile(string appDir, string argProfile, string fontPath, string plotStylePath, string plotterPath)
+        {
+            // Configure Hardware Acceleration, Direct3D, Smooth Line Display, and Tessellations
+            ConfigureHardwareAccelerationAndSmoothDrafting(appDir);
+
             string profilesKeyPath = @"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Profiles";
+
+            // 1. Configure Command Line Window font to Arial across ALL profiles
+            try
+            {
+                using (RegistryKey pk = Registry.CurrentUser.OpenSubKey(profilesKeyPath, true))
+                {
+                    if (pk != null)
+                    {
+                        foreach (string sub in pk.GetSubKeyNames())
+                        {
+                            try
+                            {
+                                using (RegistryKey cmdKey = pk.CreateSubKey(sub + @"\Command Line Windows"))
+                                {
+                                    if (cmdKey != null)
+                                    {
+                                        cmdKey.SetValue("CmdLine.FontFace", "Arial", RegistryValueKind.String);
+                                        cmdKey.SetValue("CmdLine.FontHeight", 10, RegistryValueKind.DWord);
+                                        cmdKey.SetValue("CmdLine.FontWeight", 400, RegistryValueKind.DWord);
+                                        cmdKey.SetValue("TextWindow.FontFace", "Arial", RegistryValueKind.String);
+                                        cmdKey.SetValue("TextWindow.FontHeight", 10, RegistryValueKind.DWord);
+                                        cmdKey.SetValue("TextWindow.FontWeight", 400, RegistryValueKind.DWord);
+                                    }
+                                }
+                            }
+                            catch { }
+                        }
+                    }
+                }
+            }
+            catch { }
+
+            // 2. Remove acmgd.dll from TabExtensions to stop "invalid ARX file" errors
+            try
+            {
+                string[] dialogs = new string[] { "CustomizeDialog", "DrawingSettingsDialog", "OptionsDialog" };
+                foreach (string dlg in dialogs)
+                {
+                    string tabKey = @"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Profiles\AVRoad\Dialogs\" + dlg + @"\TabExtensions";
+                    using (RegistryKey tk = Registry.CurrentUser.OpenSubKey(tabKey, true))
+                    {
+                        if (tk != null)
+                        {
+                            try { tk.DeleteValue("acmgd.dll", false); } catch { }
+                        }
+                    }
+                }
+            }
+            catch { }
+
+// 3. TDTObjectsWrapper is loaded natively via ObjectDBX registry keys
+
 
             bool profileExists = false;
             try
@@ -700,7 +1256,7 @@ namespace AVRoadLauncher
             catch { }
         }
 
-        static void LaunchAndBranding(string appDir, bool checkUpdateOnStartup)
+        public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, string dwgPath = "")
         {
             string acadExe = Path.Combine(appDir, "acad.exe");
             if (!File.Exists(acadExe))
@@ -731,7 +1287,10 @@ namespace AVRoadLauncher
 
             ProcessStartInfo psi = new ProcessStartInfo();
             psi.FileName = acadExe;
-            psi.Arguments = "/nologo /p AVRoad";
+            if (string.IsNullOrEmpty(dwgPath))
+                psi.Arguments = "/nologo /p AVRoad";
+            else
+                psi.Arguments = "/nologo /p AVRoad \"" + dwgPath + "\"";
             psi.WorkingDirectory = appDir;
             psi.UseShellExecute = false;
 
@@ -747,7 +1306,8 @@ namespace AVRoadLauncher
                 {
                     try
                     {
-                        ProcessStartInfo psiVc = new ProcessStartInfo(vcRedist, "/q");
+                        ProcessStartInfo psiVc = new ProcessStartInfo(vcRedist, "/q:a /c:\"vcredist.msi /qn\"");
+                        psiVc.Verb = "runas";
                         psiVc.UseShellExecute = true;
                         Process pVc = Process.Start(psiVc);
                         if (pVc != null) pVc.WaitForExit(45000);
@@ -873,7 +1433,7 @@ namespace AVRoadLauncher
             }
         }
 
-        static void CheckUpdateAsync(string appDir, Process acadProc, bool isManual)
+        public static void CheckUpdateAsync(string appDir, Process acadProc, bool isManual)
         {
             try
             {
@@ -1009,3 +1569,5 @@ namespace AVRoadLauncher
     }
 }
 
+
+}
