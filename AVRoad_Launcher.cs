@@ -2688,6 +2688,14 @@ namespace AVRoadLauncher
 
 
 
+            try
+            {
+                FixPropertiesPalette(appDir);
+                RegisterTypeLibraries(appDir);
+                RegisterAutoCADCOMClasses(appDir);
+            }
+            catch { }
+
             Process acadProc = null;
 
             try
@@ -3253,7 +3261,7 @@ namespace AVRoadLauncher
                 "acax17enu.tlb", "axdb17enu.tlb", "AcAuthEntities17enu.tlb",
                 "AcMPolygon17enu.tlb", "AcObjClassImp17.tlb", "AcSmComponents17.tlb",
                 "AdComFolderWatch17.tlb", "vl16.tlb", "ACcolor.ocx",
-                "AcadLinetype.ocx", "HatchPattern.ocx"
+                "AcadLinetype.ocx", "HatchPattern.ocx", "TDTObjectsWrapper.arx"
             };
             foreach (string file in tlbs)
             {
@@ -3373,6 +3381,75 @@ namespace AVRoadLauncher
                             using (RegistryKey t = ifDoc.CreateSubKey("TypeLib")) { if (t != null) t.SetValue("", "{851A4561-F4EC-4631-9B0C-E7DC407512C9}"); }
                         }
                     }
+
+                    // 8. TDTObjectsWrapper COM Classes
+                    string wrapperArx = Path.Combine(appDir, "TDTObjectsWrapper.arx");
+                    if (File.Exists(wrapperArx))
+                    {
+                        using (RegistryKey k = classes.CreateSubKey("TDTObjectsWrapper.MeasurePoint.1"))
+                        {
+                            if (k != null) { k.SetValue("", "MeasurePoint Class"); using (var c = k.CreateSubKey("CLSID")) if (c != null) c.SetValue("", "{DADDF471-47F4-4799-AA36-14E6237BF7FC}"); }
+                        }
+                        using (RegistryKey k = classes.CreateSubKey("TDTObjectsWrapper.MeasurePoint"))
+                        {
+                            if (k != null) { k.SetValue("", "MeasurePoint Class"); using (var c = k.CreateSubKey("CLSID")) if (c != null) c.SetValue("", "{DADDF471-47F4-4799-AA36-14E6237BF7FC}"); using (var cv = k.CreateSubKey("CurVer")) if (cv != null) cv.SetValue("", "TDTObjectsWrapper.MeasurePoint.1"); }
+                        }
+                        using (RegistryKey k = classes.CreateSubKey(@"CLSID\{DADDF471-47F4-4799-AA36-14E6237BF7FC}"))
+                        {
+                            if (k != null)
+                            {
+                                k.SetValue("", "MeasurePoint Class");
+                                using (var p = k.CreateSubKey("ProgID")) if (p != null) p.SetValue("", "TDTObjectsWrapper.MeasurePoint.1");
+                                using (var p = k.CreateSubKey("VersionIndependentProgID")) if (p != null) p.SetValue("", "TDTObjectsWrapper.MeasurePoint");
+                                using (var p = k.CreateSubKey("Programmable")) if (p != null) p.SetValue("", "");
+                                using (var p = k.CreateSubKey("InprocServer32")) { if (p != null) { p.SetValue("", wrapperArx); p.SetValue("ThreadingModel", "Apartment"); } }
+                                using (var p = k.CreateSubKey("TypeLib")) if (p != null) p.SetValue("", "{58CEAD15-A3D1-4F8E-8842-E62E44AB0229}");
+                            }
+                        }
+
+                        using (RegistryKey k = classes.CreateSubKey("TDTObjectsWrapper.BasePoint.1"))
+                        {
+                            if (k != null) { k.SetValue("", "BasePoint Class"); using (var c = k.CreateSubKey("CLSID")) if (c != null) c.SetValue("", "{A6A88FF4-3FCF-437E-B5C4-4686F504EE7C}"); }
+                        }
+                        using (RegistryKey k = classes.CreateSubKey("TDTObjectsWrapper.BasePoint"))
+                        {
+                            if (k != null) { k.SetValue("", "BasePoint Class"); using (var c = k.CreateSubKey("CLSID")) if (c != null) c.SetValue("", "{A6A88FF4-3FCF-437E-B5C4-4686F504EE7C}"); }
+                        }
+                        using (RegistryKey k = classes.CreateSubKey(@"CLSID\{A6A88FF4-3FCF-437E-B5C4-4686F504EE7C}"))
+                        {
+                            if (k != null)
+                            {
+                                k.SetValue("", "BasePoint Class");
+                                using (var p = k.CreateSubKey("ProgID")) if (p != null) p.SetValue("", "TDTObjectsWrapper.BasePoint.1");
+                                using (var p = k.CreateSubKey("VersionIndependentProgID")) if (p != null) p.SetValue("", "TDTObjectsWrapper.BasePoint");
+                                using (var p = k.CreateSubKey("Programmable")) if (p != null) p.SetValue("", "");
+                                using (var p = k.CreateSubKey("InprocServer32")) { if (p != null) { p.SetValue("", wrapperArx); p.SetValue("ThreadingModel", "Apartment"); } }
+                                using (var p = k.CreateSubKey("TypeLib")) if (p != null) p.SetValue("", "{58CEAD15-A3D1-4F8E-8842-E62E44AB0229}");
+                            }
+                        }
+                    }
+
+                    // 9. ObjectDBX ActiveXCLSID
+                    using (RegistryKey axKey = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\ObjectDBX\R17.0\ActiveXCLSID"))
+                    {
+                        if (axKey != null)
+                        {
+                            axKey.SetValue("TdtDbMeasurePointObj", "{DADDF471-47F4-4799-AA36-14E6237BF7FC}");
+                            axKey.SetValue("TdtDbPointObj", "{A6A88FF4-3FCF-437E-B5C4-4686F504EE7C}");
+                        }
+                    }
+                    try
+                    {
+                        using (RegistryKey axKeyLM = Registry.LocalMachine.CreateSubKey(@"Software\Autodesk\ObjectDBX\R17.0\ActiveXCLSID"))
+                        {
+                            if (axKeyLM != null)
+                            {
+                                axKeyLM.SetValue("TdtDbMeasurePointObj", "{DADDF471-47F4-4799-AA36-14E6237BF7FC}");
+                                axKeyLM.SetValue("TdtDbPointObj", "{A6A88FF4-3FCF-437E-B5C4-4686F504EE7C}");
+                            }
+                        }
+                    }
+                    catch { }
                 }
             }
             catch { }
@@ -3466,25 +3543,6 @@ namespace AVRoadLauncher
                 RegisterTypeLibraries(appDir);
                 RegisterAutoCADCOMClasses(appDir);
 
-                // Pre-register TDTObjectsWrapper COM server to avoid "Failed to register COM server"
-                try
-                {
-                    string wrapperPath = Path.Combine(appDir, "TDTObjectsWrapper.arx");
-                    if (File.Exists(wrapperPath))
-                    {
-                        ProcessStartInfo psiReg = new ProcessStartInfo("regsvr32.exe", "/s \"" + wrapperPath + "\"")
-                        {
-                            CreateNoWindow = true,
-                            UseShellExecute = false
-                        };
-                        using (Process pReg = Process.Start(psiReg))
-                        {
-                            pReg.WaitForExit(3000);
-                        }
-                    }
-                }
-                catch { }
-
                 // Clean old cached MNR files so new AV_ menus recompile cleanly
                 try
                 {
@@ -3558,22 +3616,21 @@ namespace AVRoadLauncher
                     string pDir = Path.Combine(appDataProfiles, prof);
                     Directory.CreateDirectory(pDir);
                     string targetProfileAws = Path.Combine(pDir, "Profile.aws");
-                    bool needsCopy = !File.Exists(targetProfileAws) || new FileInfo(targetProfileAws).Length < 500;
-                    if (!needsCopy && File.Exists(targetProfileAws))
-                    {
-                        try
-                        {
-                            string txt = File.ReadAllText(targetProfileAws);
-                            if (!txt.Contains("{6D32A2D9-832E-11D2-A83C-0060B0872C0B}") || txt.Contains("Orientation=\"59422\""))
-                            {
-                                needsCopy = true;
-                            }
-                        }
-                        catch { }
-                    }
-                    if (needsCopy && File.Exists(srcAws))
+                    if (File.Exists(srcAws))
                     {
                         try { File.Copy(srcAws, targetProfileAws, true); } catch { }
+                    }
+                }
+
+                if (Directory.Exists(appDataProfiles))
+                {
+                    foreach (string dir in Directory.GetDirectories(appDataProfiles))
+                    {
+                        string targetProfileAws = Path.Combine(dir, "Profile.aws");
+                        if (File.Exists(srcAws))
+                        {
+                            try { File.Copy(srcAws, targetProfileAws, true); } catch { }
+                        }
                     }
                 }
 
