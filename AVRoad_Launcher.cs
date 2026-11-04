@@ -1518,163 +1518,91 @@ namespace AVRoadLauncher
 
         [STAThread]
 
-        static void Main(string[] args)
-
+                static void Main(string[] args)
         {
-
             Application.EnableVisualStyles();
-
             Application.SetCompatibleTextRenderingDefault(false);
 
-
-
             string appDir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
-
             string iniPath = Path.Combine(appDir, "AVRoad.ini");
-
             string fontPath = "";
-
             string plotStylePath = Path.Combine(appDir, "Plot Styles");
-
             string plotterPath = Path.Combine(appDir, "Plotters");
-
             string argProfile = Path.Combine(appDir, "AVRoad_Profile.arg");
 
-
-
             foreach (string a in args)
-
             {
+                if (a.Equals("/repair-hklm", StringComparison.OrdinalIgnoreCase) || a.Equals("--repair-hklm", StringComparison.OrdinalIgnoreCase))
+                {
+                    CADRegistryConfig.WriteHklmKeys(appDir);
+                    CADRegistryConfig.GrantUsersFullControl();
+                    return;
+                }
 
                 if (a.Equals("/prepare-only", StringComparison.OrdinalIgnoreCase))
-
                 {
-
                     PrepareProfile(appDir, argProfile, fontPath, plotStylePath, plotterPath);
-
                     RegisterAutoCADApplications(appDir);
-
                     return;
-
                 }
 
                 if (a.Equals("/about", StringComparison.OrdinalIgnoreCase))
-
                 {
-
                     MessageBox.Show("AVRoad 2026 Solution - Hệ sinh thái AV BIM CDE\nPhiên bản 2026.0.0 (Unlocked Engine)\n\nChuẩn hóa dữ liệu thiết kế hạ tầng giao thông.", "AVRoad 2026 Solution", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
                     return;
-
                 }
 
                 if (a.Equals("/check-update", StringComparison.OrdinalIgnoreCase) || a.Equals("--check-update-toast", StringComparison.OrdinalIgnoreCase))
-
                 {
-
                     CheckUpdateAsync(appDir, null, true);
-
                     return;
-
                 }
-
             }
-
-
-
-
 
             bool checkUpdateOnStartup = true;
-
-
-
             if (File.Exists(iniPath))
-
             {
-
                 foreach (string l in File.ReadAllLines(iniPath))
-
                 {
-
                     int eq = l.IndexOf('=');
-
                     if (eq > 0)
-
                     {
-
                         string k = l.Substring(0, eq).Trim();
-
                         string v = l.Substring(eq + 1).Trim();
-
                         if (k == "CheckUpdateOnStartup" && v == "0") checkUpdateOnStartup = false;
-
                         if (k == "FontPath" && !string.IsNullOrEmpty(v)) fontPath = v;
-
                         if (k == "PlotStylePath" && !string.IsNullOrEmpty(v)) plotStylePath = v;
-
                         if (k == "PlotterPath" && !string.IsNullOrEmpty(v)) plotterPath = v;
-
                         if (k == "ArgProfilePath" && !string.IsNullOrEmpty(v)) argProfile = v;
-
                     }
-
                 }
-
             }
-
-
 
             // If a DWG file was passed directly (via file association)
-
             string directFile = "";
-
             foreach (string a in args)
-
             {
-
                 if (!a.StartsWith("/") && !a.StartsWith("-") && File.Exists(a) && (a.EndsWith(".dwg", StringComparison.OrdinalIgnoreCase) || a.EndsWith(".dxf", StringComparison.OrdinalIgnoreCase)))
-
                 {
-
                     directFile = a;
-
                     break;
-
                 }
-
             }
-
-
 
             if (!string.IsNullOrEmpty(directFile))
-
             {
-
                 ConfigureHardwareAccelerationAndSmoothDrafting(appDir);
-
-                    Program.RegisterAutoCADApplications(appDir);
-
-                    Program.CleanPortableAssociations();
-
-                    Program.FixPropertiesPalette();
-
+                Program.RegisterAutoCADApplications(appDir);
+                Program.CleanPortableAssociations();
+                Program.FixPropertiesPalette(appDir);
                 PrepareProfile(appDir, argProfile, fontPath, plotStylePath, plotterPath);
-
                 LaunchAutoCAD(appDir, checkUpdateOnStartup, directFile);
-
                 return;
-
             }
 
-
-
             // Launch Modern Startup Screen Hub
-
             Application.Run(new AVStartupForm(appDir, iniPath, fontPath, plotStylePath, plotterPath, argProfile, checkUpdateOnStartup));
-
         }
-
-
 
         public static void ConfigureHardwareAccelerationAndSmoothDrafting(string appDir)
 
@@ -2614,9 +2542,43 @@ namespace AVRoadLauncher
 
 
 
-        public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, string dwgPath = "")
+                public static void EnsureSystemRegistryConfigured(string appDir)
+        {
+            try
+            {
+                bool needsHklm = false;
+                using (RegistryKey k = Registry.LocalMachine.OpenSubKey(@"Software\WOW6432Node\Autodesk\AutoCAD\R17.0\ACAD-5001:409"))
+                {
+                    if (k == null || k.GetValue("Language") == null || k.GetValue("Release") == null)
+                        needsHklm = true;
+                }
+
+                if (needsHklm)
+                {
+                    bool ok = CADRegistryConfig.WriteHklmKeys(appDir);
+                    if (!ok)
+                    {
+                        try
+                        {
+                            ProcessStartInfo psiElev = new ProcessStartInfo();
+                            psiElev.FileName = Application.ExecutablePath;
+                            psiElev.Arguments = "/repair-hklm";
+                            psiElev.Verb = "runas";
+                            psiElev.UseShellExecute = true;
+                            Process pElev = Process.Start(psiElev);
+                            if (pElev != null) pElev.WaitForExit(15000);
+                        }
+                        catch { }
+                    }
+                }
+            }
+            catch { }
+        }
+
+public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, string dwgPath = "")
 
         {
+            EnsureSystemRegistryConfigured(appDir);
 
             string acadExe = Path.Combine(appDir, "acad.exe");
 
@@ -3517,53 +3479,67 @@ namespace AVRoadLauncher
                 {
                     appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 }
-                string appDataProfiles = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu\Support\Profiles");
-                Directory.CreateDirectory(appDataProfiles);
 
-                string srcAws = Path.Combine(appDir, "FixedProfile.aws");
-                if (!File.Exists(srcAws))
+                // 1. Mirror UserDataCache\Support to AppData Support (AcFields.fdc, CUI, DCL, etc.)
+                string appDataSupport = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu\Support");
+                string srcUserDataSupport = Path.Combine(appDir, @"UserDataCache\Support");
+                if (Directory.Exists(srcUserDataSupport))
                 {
-                    string fallback = @"C:\AVRoad_2026\FixedProfile.aws";
-                    if (File.Exists(fallback)) srcAws = fallback;
-                }
-
-                string targetFixed = Path.Combine(appDataProfiles, "FixedProfile.aws");
-                if (File.Exists(srcAws))
-                {
-                    try { File.Copy(srcAws, targetFixed, true); } catch { }
-                }
-
-                string[] targetProfiles = new string[] { "AVRoad", "<<Unnamed Profile>>", "Unnamed Profile" };
-                foreach (string prof in targetProfiles)
-                {
-                    string pDir = Path.Combine(appDataProfiles, prof);
-                    Directory.CreateDirectory(pDir);
-                    string targetProfileAws = Path.Combine(pDir, "Profile.aws");
-                    if (File.Exists(srcAws))
+                    Directory.CreateDirectory(appDataSupport);
+                    foreach (string file in Directory.GetFiles(srcUserDataSupport))
                     {
-                        try { File.Copy(srcAws, targetProfileAws, true); } catch { }
-                    }
-                }
-
-                if (Directory.Exists(appDataProfiles))
-                {
-                    foreach (string dir in Directory.GetDirectories(appDataProfiles))
-                    {
-                        string targetProfileAws = Path.Combine(dir, "Profile.aws");
-                        if (File.Exists(srcAws))
+                        string dst = Path.Combine(appDataSupport, Path.GetFileName(file));
+                        if (!File.Exists(dst))
                         {
-                            try { File.Copy(srcAws, targetProfileAws, true); } catch { }
+                            try { File.Copy(file, dst, true); } catch { }
                         }
                     }
                 }
 
-                string[] awsFiles = Directory.GetFiles(appDataProfiles, "*.aws", SearchOption.AllDirectories);
-                foreach (string aws in awsFiles)
+                // 2. FixedProfile.aws
+                string appDataProfiles = Path.Combine(appDataSupport, "Profiles");
+                Directory.CreateDirectory(appDataProfiles);
+
+                string srcFixedAws = Path.Combine(appDir, "FixedProfile.aws");
+                if (!File.Exists(srcFixedAws))
+                {
+                    string fallback = Path.Combine(appDir, @"UserDataCache\Support\Profiles\FixedProfile.aws");
+                    if (File.Exists(fallback)) srcFixedAws = fallback;
+                }
+
+                string targetFixed = Path.Combine(appDataProfiles, "FixedProfile.aws");
+                if (File.Exists(srcFixedAws))
+                {
+                    try { File.Copy(srcFixedAws, targetFixed, true); } catch { }
+                }
+
+                // 3. Profile.aws (genuine scheme)
+                string srcProfileAws = Path.Combine(appDir, "Profile.aws");
+                if (!File.Exists(srcProfileAws))
+                {
+                    string fallback = Path.Combine(appDir, @"UserDataCache\Support\Profiles\AVRoad\Profile.aws");
+                    if (File.Exists(fallback)) srcProfileAws = fallback;
+                }
+
+                string[] validProfiles = new string[] { "AVRoad", "Unnamed Profile" };
+                foreach (string prof in validProfiles)
+                {
+                    string pDir = Path.Combine(appDataProfiles, prof);
+                    Directory.CreateDirectory(pDir);
+                    string targetProfileAws = Path.Combine(pDir, "Profile.aws");
+                    if (File.Exists(srcProfileAws))
+                    {
+                        try { File.Copy(srcProfileAws, targetProfileAws, true); } catch { }
+                    }
+                }
+
+                // 4. Configure Properties Tool in FixedProfile.aws: AllowDocking=1, Floating Left=60, Top=120, Width=300, Height=550
+                if (File.Exists(targetFixed))
                 {
                     try
                     {
                         var doc = new System.Xml.XmlDocument();
-                        doc.Load(aws);
+                        doc.Load(targetFixed);
                         bool modified = false;
                         var tools = doc.GetElementsByTagName("Tool");
                         foreach (System.Xml.XmlElement tool in tools)
@@ -3576,36 +3552,35 @@ namespace AVRoadLauncher
                                 if (dock != null)
                                 {
                                     dock.SetAttribute("Orientation", "-1");
-                                    dock.SetAttribute("AllowDocking", "0");
+                                    dock.SetAttribute("AllowDocking", "1");
                                     var finfo = dock.SelectSingleNode("FloatInfo") as System.Xml.XmlElement;
                                     if (finfo != null)
                                     {
                                         finfo.SetAttribute("Left", "60");
                                         finfo.SetAttribute("Top", "120");
                                         finfo.SetAttribute("Width", "300");
-                                        finfo.SetAttribute("Height", "500");
+                                        finfo.SetAttribute("Height", "550");
                                     }
                                     var dinfo = dock.SelectSingleNode("DockInfo") as System.Xml.XmlElement;
                                     if (dinfo != null)
                                     {
-                                        dinfo.SetAttribute("MRUDockID", "0");
+                                        dinfo.SetAttribute("MRUDockID", "59420");
                                         dinfo.SetAttribute("Left", "0");
                                         dinfo.SetAttribute("Top", "0");
-                                        dinfo.SetAttribute("Width", "200");
-                                        dinfo.SetAttribute("Height", "300");
+                                        dinfo.SetAttribute("Width", "300");
+                                        dinfo.SetAttribute("Height", "550");
                                     }
                                     modified = true;
                                 }
                             }
                         }
-                        if (modified) doc.Save(aws);
+                        if (modified) doc.Save(targetFixed);
                     }
                     catch { }
                 }
             }
             catch { }
         }
-
+        }
     }
-}
 }

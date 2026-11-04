@@ -1,5 +1,7 @@
 using System;
 using System.IO;
+using System.Security.AccessControl;
+using System.Security.Principal;
 using Microsoft.Win32;
 
 namespace AVRoadLauncher
@@ -43,6 +45,7 @@ namespace AVRoadLauncher
             new DockToolDef { Guid = "{B6BCB9F4-84B2-11D2-A127-0060B0CE2DA0}", Name = "dbConnect Manager", Command = "DBCONNECT", CommandClose = "DBCCLOSE" },
             new DockToolDef { Guid = "{BEBBB318-2898-4C03-ADA2-360DC6B7AA69}", Name = "SheetSet Manager", Command = "SHEETSET", CommandClose = "SHEETSETHIDE" },
             new DockToolDef { Guid = "{D5CF410D-3E11-4D0C-AE69-A75C9B788C47}", Name = "Command Line", Command = "COMMANDLINE", CommandClose = "COMMANDLINEHIDE" },
+            new DockToolDef { Guid = "{57EBDB4A-B0D1-4081-A68B-F06CCA7FCBDB}", Name = "Drawing Recovery Manager", Command = "DRAWINGRECOVERY", CommandClose = "DRAWINGRECOVERYHIDE" },
         };
 
         public static readonly CadAppDef[] Applications = new CadAppDef[]
@@ -196,154 +199,385 @@ namespace AVRoadLauncher
             new CadAppDef { Name = "WSCommCntrAcCon", Loader = "WSCommCntrAcCon.arx", LoadCtrls = 2, Description = "WSCommCntrAcCon", Managed = 0, Commands = null, Groups = null },
         };
 
-        public static void RegisterAll(string appDir)
+        public static bool GrantUsersFullControl()
         {
             try
             {
-                // 1. Register in HKCU
-                using (RegistryKey appRoot = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications"))
+                using (RegistryKey baseKey = Registry.LocalMachine.OpenSubKey(@"Software\WOW6432Node\Autodesk", RegistryKeyPermissionCheck.ReadWriteSubTree, RegistryRights.ChangePermissions | RegistryRights.ReadKey | RegistryRights.WriteKey))
                 {
-                    if (appRoot != null)
+                    if (baseKey != null)
                     {
-                        foreach (var def in Applications)
+                        RegistrySecurity sec = baseKey.GetAccessControl();
+                        SecurityIdentifier sidUsers = new SecurityIdentifier(WellKnownSidType.BuiltinUsersSid, null);
+                        sec.AddAccessRule(new RegistryAccessRule(sidUsers, RegistryRights.FullControl, InheritanceFlags.ContainerInherit | InheritanceFlags.ObjectInherit, PropagationFlags.None, AccessControlType.Allow));
+                        baseKey.SetAccessControl(sec);
+                        return true;
+                    }
+                }
+            }
+            catch { }
+            return false;
+        }
+
+        public static bool WriteHkcuKeys(string appDir)
+        {
+            try
+            {
+                // Root AutoCAD
+                using (RegistryKey kAcad = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD"))
+                {
+                    if (kAcad != null) kAcad.SetValue("CurVer", "R17.0", RegistryValueKind.String);
+                }
+
+                // R17.0
+                using (RegistryKey kR17 = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0"))
+                {
+                    if (kR17 != null) kR17.SetValue("CurVer", "ACAD-5001:409", RegistryValueKind.String);
+                }
+
+                // ACAD-5001:409
+                using (RegistryKey mainKey = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409"))
+                {
+                    if (mainKey != null)
+                    {
+                        mainKey.SetValue("Roaming", 1, RegistryValueKind.DWord);
+                        mainKey.SetValue("ExtensionRootFolder", @"C:\ProgramData\Autodesk\AutoCAD 2007\R17.0\enu\", RegistryValueKind.String);
+                        string appDataEnu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu") + @"\";
+                        string localDataEnu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu") + @"\";
+                        mainKey.SetValue("RoamableRootFolder", appDataEnu, RegistryValueKind.String);
+                        mainKey.SetValue("LocalRootFolder", localDataEnu, RegistryValueKind.String);
+                        mainKey.SetValue("Release", "17.0.54.110", RegistryValueKind.String);
+                        mainKey.SetValue("Language", "English", RegistryValueKind.String);
+                        mainKey.SetValue("ProductCode", "{5783F2D7-5001-0409-0002-0060B0CE6BBA}", RegistryValueKind.String);
+                        mainKey.SetValue("AcadLocation", appDir, RegistryValueKind.String);
+                        mainKey.SetValue("Location", appDir, RegistryValueKind.String);
+                        mainKey.SetValue("ProductId", "5001", RegistryValueKind.String);
+                        mainKey.SetValue("LangAbbrev", "enu", RegistryValueKind.String);
+                        mainKey.SetValue("LocaleId", 0x409, RegistryValueKind.DWord);
+                        mainKey.SetValue("ProductName", "AutoCAD 2007", RegistryValueKind.String);
+                        mainKey.SetValue("StandaloneNetworkType", 1, RegistryValueKind.DWord);
+                        mainKey.SetValue("NetSupport", "TCP", RegistryValueKind.String);
+                        mainKey.SetValue("AdLMInfoPath", @"C:\ProgramData\Autodesk\AutoCAD 2007\R17.0\Adlm\", RegistryValueKind.String);
+                        mainKey.SetValue("SerialNumber", "000-12345678", RegistryValueKind.String);
+                        mainKey.SetValue("DefaultHelpFileName", "acad170", RegistryValueKind.String);
+                        mainKey.SetValue("EnablerURL", "http://webservices.autodesk.com/LiveEnabler17", RegistryValueKind.String);
+                        mainKey.SetValue("Mgroup", "ACAD", RegistryValueKind.String);
+                        mainKey.SetValue("NFWState", 1, RegistryValueKind.DWord);
+                        mainKey.SetValue("NFWUpgradeStrings", "AutoCAD 2006;AutoCAD 2005;AutoCAD 2004", RegistryValueKind.String);
+                        mainKey.SetValue("AutoMigrate", 1, RegistryValueKind.DWord);
+                        mainKey.SetValue("NIWSelection", 0, RegistryValueKind.DWord);
+
+                        using (RegistryKey adlm = mainKey.CreateSubKey("AdLM"))
                         {
-                            using (RegistryKey k = appRoot.CreateSubKey(def.Name))
+                            if (adlm != null) adlm.SetValue("Type", 42, RegistryValueKind.DWord);
+                        }
+
+                        using (RegistryKey ud = mainKey.CreateSubKey("UserData"))
+                        {
+                            if (ud != null) ud.SetValue("{5783F2D7-5001-0409-0002-0060B0CE6BBA}", @"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409", RegistryValueKind.String);
+                        }
+
+                        string drvPath = Path.Combine(appDir, "drv");
+                        using (RegistryKey gsKey = mainKey.CreateSubKey(@"3DGS Configuration\GSHEIDI10"))
+                        {
+                            if (gsKey != null)
                             {
-                                if (k == null) continue;
-                                string fullLoader = def.Loader;
-                                if (!string.IsNullOrEmpty(fullLoader))
+                                gsKey.SetValue("DriverName", "direct3d9.hdi", RegistryValueKind.String);
+                                gsKey.SetValue("CustomHeidiDriver", "direct3d9.hdi", RegistryValueKind.String);
+                                gsKey.SetValue("CustomHeidiDriverPath", drvPath, RegistryValueKind.String);
+                            }
+                        }
+
+                        using (RegistryKey drvKey = mainKey.CreateSubKey("3DGS Drivers"))
+                        {
+                            if (drvKey != null) drvKey.SetValue("Current GS", "GSHEIDI10", RegistryValueKind.String);
+                        }
+
+                        // DockingTools
+                        using (RegistryKey dtKey = mainKey.CreateSubKey("DockingTools"))
+                        {
+                            if (dtKey != null)
+                            {
+                                foreach (var dt in DockingTools)
                                 {
-                                    if (fullLoader.StartsWith(@"C:\Program Files (x86)\AutoCAD 2007", StringComparison.OrdinalIgnoreCase))
-                                        fullLoader = fullLoader.Substring(@"C:\Program Files (x86)\AutoCAD 2007".Length);
-                                    if (!Path.IsPathRooted(fullLoader))
-                                        fullLoader = Path.Combine(appDir, fullLoader);
-                                }
-                                k.SetValue("LOADER", fullLoader, RegistryValueKind.String);
-                                k.SetValue("LOADCTRLS", def.LoadCtrls, RegistryValueKind.DWord);
-                                if (!string.IsNullOrEmpty(def.Description))
-                                    k.SetValue("DESCRIPTION", def.Description, RegistryValueKind.String);
-                                if (def.Managed == 1)
-                                    k.SetValue("MANAGED", 1, RegistryValueKind.DWord);
-                                if (def.Commands != null && def.Commands.Length > 0)
-                                {
-                                    using (RegistryKey ck = k.CreateSubKey("Commands"))
+                                    using (RegistryKey k = dtKey.CreateSubKey(dt.Guid))
                                     {
-                                        if (ck != null) { foreach (var c in def.Commands) ck.SetValue(c, c, RegistryValueKind.String); }
-                                    }
-                                }
-                                if (def.Groups != null && def.Groups.Length > 0)
-                                {
-                                    using (RegistryKey gk = k.CreateSubKey("Groups"))
-                                    {
-                                        if (gk != null) { foreach (var g in def.Groups) gk.SetValue(g, g, RegistryValueKind.String); }
+                                        if (k != null)
+                                        {
+                                            k.SetValue("Name", dt.Name, RegistryValueKind.String);
+                                            k.SetValue("Command", dt.Command, RegistryValueKind.String);
+                                            k.SetValue("CommandClose", dt.CommandClose, RegistryValueKind.String);
+                                        }
                                     }
                                 }
                             }
                         }
-                        // TDTObjects demand-load registration
-                        using (RegistryKey tdtKey = appRoot.CreateSubKey("TDTObjects"))
+
+                        // Applications
+                        using (RegistryKey appKey = mainKey.CreateSubKey("Applications"))
                         {
-                            if (tdtKey != null)
+                            if (appKey != null)
                             {
-                                tdtKey.SetValue("LOADER", Path.Combine(appDir, "TDTObjects17.dbx"), RegistryValueKind.String);
-                                tdtKey.SetValue("LOADCTRLS", 13, RegistryValueKind.DWord);
-                                tdtKey.SetValue("DESCRIPTION", "TDT Objects Module", RegistryValueKind.String);
+                                foreach (var def in Applications)
+                                {
+                                    using (RegistryKey k = appKey.CreateSubKey(def.Name))
+                                    {
+                                        if (k == null) continue;
+                                        string fullLoader = def.Loader;
+                                        if (!string.IsNullOrEmpty(fullLoader))
+                                        {
+                                            if (fullLoader.StartsWith(@"C:\Program Files (x86)\AutoCAD 2007", StringComparison.OrdinalIgnoreCase))
+                                                fullLoader = fullLoader.Substring(@"C:\Program Files (x86)\AutoCAD 2007".Length);
+                                            if (!Path.IsPathRooted(fullLoader))
+                                                fullLoader = Path.Combine(appDir, fullLoader.TrimStart('\\', '/'));
+                                        }
+                                        k.SetValue("LOADER", fullLoader, RegistryValueKind.String);
+                                        k.SetValue("LOADCTRLS", def.LoadCtrls, RegistryValueKind.DWord);
+                                        if (!string.IsNullOrEmpty(def.Description)) k.SetValue("DESCRIPTION", def.Description, RegistryValueKind.String);
+                                        if (def.Managed == 1) k.SetValue("MANAGED", 1, RegistryValueKind.DWord);
+                                        if (def.Commands != null && def.Commands.Length > 0)
+                                        {
+                                            using (RegistryKey ck = k.CreateSubKey("Commands"))
+                                            {
+                                                if (ck != null) { foreach (var c in def.Commands) ck.SetValue(c, c, RegistryValueKind.String); }
+                                            }
+                                        }
+                                        if (def.Groups != null && def.Groups.Length > 0)
+                                        {
+                                            using (RegistryKey gk = k.CreateSubKey("Groups"))
+                                            {
+                                                if (gk != null) { foreach (var g in def.Groups) gk.SetValue(g, g, RegistryValueKind.String); }
+                                            }
+                                        }
+                                    }
+                                }
+                                // TDTObjects
+                                using (RegistryKey tdtKey = appKey.CreateSubKey("TDTObjects"))
+                                {
+                                    if (tdtKey != null)
+                                    {
+                                        tdtKey.SetValue("LOADER", Path.Combine(appDir, "TDTObjects17.dbx"), RegistryValueKind.String);
+                                        tdtKey.SetValue("LOADCTRLS", 13, RegistryValueKind.DWord);
+                                        tdtKey.SetValue("DESCRIPTION", "TDT Objects Module", RegistryValueKind.String);
+                                    }
+                                }
                             }
                         }
                     }
                 }
 
-                // 2. Register DockingTools in HKCU
-                using (RegistryKey dtRoot = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\DockingTools"))
+                // ObjectDBX ActiveXCLSID
+                using (RegistryKey axKey = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\ObjectDBX\R17.0\ActiveXCLSID"))
                 {
-                    if (dtRoot != null)
+                    if (axKey != null)
                     {
-                        foreach (var dt in DockingTools)
-                        {
-                            using (RegistryKey k = dtRoot.CreateSubKey(dt.Guid))
-                            {
-                                if (k == null) continue;
-                                k.SetValue("Name", dt.Name, RegistryValueKind.String);
-                                k.SetValue("Command", dt.Command, RegistryValueKind.String);
-                                k.SetValue("CommandClose", dt.CommandClose, RegistryValueKind.String);
-                            }
-                        }
+                        axKey.SetValue("TdtDbMeasurePointObj", "{DADDF471-47F4-4799-AA36-14E6237BF7FC}", RegistryValueKind.String);
+                        axKey.SetValue("TdtDbPointObj", "{A6A88FF4-3FCF-437E-B5C4-4686F504EE7C}", RegistryValueKind.String);
                     }
                 }
+                return true;
+            }
+            catch { return false; }
+        }
 
-                // 3. Register in HKLM ONLY if AutoCAD is not installed elsewhere
+        public static bool WriteHklmKeys(string appDir)
+        {
+            try
+            {
+                // Create ProgramData folders
                 try
                 {
-                    bool canWriteHklm = false;
-                    using (RegistryKey checkKey = Registry.LocalMachine.OpenSubKey(@"Software\WOW6432Node\Autodesk\AutoCAD\R17.0\ACAD-5001:409"))
+                    string pdataEnu = @"C:\ProgramData\Autodesk\AutoCAD 2007\R17.0\enu";
+                    string pdataAdlm = @"C:\ProgramData\Autodesk\AutoCAD 2007\R17.0\Adlm";
+                    if (!Directory.Exists(pdataEnu)) Directory.CreateDirectory(pdataEnu);
+                    if (!Directory.Exists(pdataAdlm)) Directory.CreateDirectory(pdataAdlm);
+                }
+                catch { }
+
+                // Copy Common Files if directory exists
+                try
+                {
+                    string commonShared = @"C:\Program Files (x86)\Common Files\Autodesk Shared";
+                    if (Directory.Exists(commonShared))
                     {
-                        if (checkKey == null || checkKey.GetValue("AcadLocation") == null)
+                        foreach (string f in new string[] { "acax17enu.tlb", "axdb17enu.tlb", "acstart17.exe", "acstart17.exe.config" })
                         {
-                            canWriteHklm = true;
-                        }
-                    }
-                    if (canWriteHklm)
-                    {
-                        using (RegistryKey hklmRoot = Registry.LocalMachine.CreateSubKey(@"Software\WOW6432Node\Autodesk\AutoCAD\R17.0\ACAD-5001:409"))
-                        {
-                            if (hklmRoot != null)
+                            string src = Path.Combine(appDir, f);
+                            string dst = Path.Combine(commonShared, f);
+                            if (File.Exists(src) && !File.Exists(dst))
                             {
-                                hklmRoot.SetValue("AcadLocation", appDir, RegistryValueKind.String);
-                                hklmRoot.SetValue("Location", appDir, RegistryValueKind.String);
-                                using (RegistryKey dtKey = hklmRoot.CreateSubKey("DockingTools"))
-                                {
-                                    if (dtKey != null)
-                                    {
-                                        foreach (var dt in DockingTools)
-                                        {
-                                            using (RegistryKey k = dtKey.CreateSubKey(dt.Guid))
-                                            {
-                                                if (k != null) { k.SetValue("Name", dt.Name); k.SetValue("Command", dt.Command); k.SetValue("CommandClose", dt.CommandClose); }
-                                            }
-                                        }
-                                    }
-                                }
-                                using (RegistryKey appKey = hklmRoot.CreateSubKey("Applications"))
-                                {
-                                    if (appKey != null)
-                                    {
-                                        foreach (var def in Applications)
-                                        {
-                                            using (RegistryKey k = appKey.CreateSubKey(def.Name))
-                                            {
-                                                if (k == null) continue;
-                                                string fullLoader = def.Loader;
-                                                if (!string.IsNullOrEmpty(fullLoader) && !Path.IsPathRooted(fullLoader))
-                                                    fullLoader = Path.Combine(appDir, fullLoader);
-                                                k.SetValue("LOADER", fullLoader, RegistryValueKind.String);
-                                                k.SetValue("LOADCTRLS", def.LoadCtrls, RegistryValueKind.DWord);
-                                                if (!string.IsNullOrEmpty(def.Description)) k.SetValue("DESCRIPTION", def.Description, RegistryValueKind.String);
-                                                if (def.Managed == 1) k.SetValue("MANAGED", 1, RegistryValueKind.DWord);
-                                                if (def.Commands != null && def.Commands.Length > 0)
-                                                {
-                                                    using (RegistryKey ck = k.CreateSubKey("Commands"))
-                                                    {
-                                                        if (ck != null) { foreach (var c in def.Commands) ck.SetValue(c, c, RegistryValueKind.String); }
-                                                    }
-                                                }
-                                                if (def.Groups != null && def.Groups.Length > 0)
-                                                {
-                                                    using (RegistryKey gk = k.CreateSubKey("Groups"))
-                                                    {
-                                                        if (gk != null) { foreach (var g in def.Groups) gk.SetValue(g, g, RegistryValueKind.String); }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+                                try { File.Copy(src, dst, true); } catch { }
                             }
                         }
                     }
                 }
                 catch { }
+
+                // CurVer under Autodesk\AutoCAD
+                using (RegistryKey kAcad = Registry.LocalMachine.CreateSubKey(@"Software\WOW6432Node\Autodesk\AutoCAD"))
+                {
+                    if (kAcad != null) kAcad.SetValue("CurVer", "R17.0", RegistryValueKind.String);
+                }
+
+                // CurVer under Autodesk\AutoCAD\R17.0
+                using (RegistryKey kR17 = Registry.LocalMachine.CreateSubKey(@"Software\WOW6432Node\Autodesk\AutoCAD\R17.0"))
+                {
+                    if (kR17 != null) kR17.SetValue("CurVer", "ACAD-5001:409", RegistryValueKind.String);
+                }
+
+                // ACAD-5001:409 base values
+                using (RegistryKey hklmRoot = Registry.LocalMachine.CreateSubKey(@"Software\WOW6432Node\Autodesk\AutoCAD\R17.0\ACAD-5001:409"))
+                {
+                    if (hklmRoot == null) return false;
+
+                    hklmRoot.SetValue("Roaming", 1, RegistryValueKind.DWord);
+                    hklmRoot.SetValue("ExtensionRootFolder", @"C:\ProgramData\Autodesk\AutoCAD 2007\R17.0\enu\", RegistryValueKind.String);
+                    string appDataEnu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu") + @"\";
+                    string localDataEnu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu") + @"\";
+                    hklmRoot.SetValue("RoamableRootFolder", appDataEnu, RegistryValueKind.String);
+                    hklmRoot.SetValue("LocalRootFolder", localDataEnu, RegistryValueKind.String);
+                    hklmRoot.SetValue("Release", "17.0.54.110", RegistryValueKind.String);
+                    hklmRoot.SetValue("Language", "English", RegistryValueKind.String);
+                    hklmRoot.SetValue("ProductCode", "{5783F2D7-5001-0409-0002-0060B0CE6BBA}", RegistryValueKind.String);
+                    hklmRoot.SetValue("AcadLocation", appDir, RegistryValueKind.String);
+                    hklmRoot.SetValue("Location", appDir, RegistryValueKind.String);
+                    hklmRoot.SetValue("ProductId", "5001", RegistryValueKind.String);
+                    hklmRoot.SetValue("LangAbbrev", "enu", RegistryValueKind.String);
+                    hklmRoot.SetValue("LocaleId", 0x409, RegistryValueKind.DWord);
+                    hklmRoot.SetValue("ProductName", "AutoCAD 2007", RegistryValueKind.String);
+                    hklmRoot.SetValue("StandaloneNetworkType", 1, RegistryValueKind.DWord);
+                    hklmRoot.SetValue("NetSupport", "TCP", RegistryValueKind.String);
+                    hklmRoot.SetValue("AdLMInfoPath", @"C:\ProgramData\Autodesk\AutoCAD 2007\R17.0\Adlm\", RegistryValueKind.String);
+                    hklmRoot.SetValue("SerialNumber", "000-12345678", RegistryValueKind.String);
+                    hklmRoot.SetValue("DefaultHelpFileName", "acad170", RegistryValueKind.String);
+                    hklmRoot.SetValue("EnablerURL", "http://webservices.autodesk.com/LiveEnabler17", RegistryValueKind.String);
+                    hklmRoot.SetValue("Mgroup", "ACAD", RegistryValueKind.String);
+                    hklmRoot.SetValue("NFWState", 1, RegistryValueKind.DWord);
+                    hklmRoot.SetValue("NFWUpgradeStrings", "AutoCAD 2006;AutoCAD 2005;AutoCAD 2004", RegistryValueKind.String);
+                    hklmRoot.SetValue("AutoMigrate", 1, RegistryValueKind.DWord);
+                    hklmRoot.SetValue("NIWSelection", 0, RegistryValueKind.DWord);
+
+                    using (RegistryKey adlm = hklmRoot.CreateSubKey("AdLM"))
+                    {
+                        if (adlm != null) adlm.SetValue("Type", 42, RegistryValueKind.DWord);
+                    }
+
+                    using (RegistryKey ud = hklmRoot.CreateSubKey("UserData"))
+                    {
+                        if (ud != null) ud.SetValue("{5783F2D7-5001-0409-0002-0060B0CE6BBA}", @"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409", RegistryValueKind.String);
+                    }
+
+                    string drvPath = Path.Combine(appDir, "drv");
+                    using (RegistryKey gsKey = hklmRoot.CreateSubKey(@"3DGS Configuration\GSHEIDI10"))
+                    {
+                        if (gsKey != null)
+                        {
+                            gsKey.SetValue("DriverName", "direct3d9.hdi", RegistryValueKind.String);
+                            gsKey.SetValue("CustomHeidiDriver", "direct3d9.hdi", RegistryValueKind.String);
+                            gsKey.SetValue("CustomHeidiDriverPath", drvPath, RegistryValueKind.String);
+                        }
+                    }
+
+                    using (RegistryKey drvKey = hklmRoot.CreateSubKey("3DGS Drivers"))
+                    {
+                        if (drvKey != null) drvKey.SetValue("Current GS", "GSHEIDI10", RegistryValueKind.String);
+                    }
+
+                    // DockingTools
+                    using (RegistryKey dtKey = hklmRoot.CreateSubKey("DockingTools"))
+                    {
+                        if (dtKey != null)
+                        {
+                            foreach (var dt in DockingTools)
+                            {
+                                using (RegistryKey k = dtKey.CreateSubKey(dt.Guid))
+                                {
+                                    if (k != null)
+                                    {
+                                        k.SetValue("Name", dt.Name, RegistryValueKind.String);
+                                        k.SetValue("Command", dt.Command, RegistryValueKind.String);
+                                        k.SetValue("CommandClose", dt.CommandClose, RegistryValueKind.String);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    // Applications
+                    using (RegistryKey appKey = hklmRoot.CreateSubKey("Applications"))
+                    {
+                        if (appKey != null)
+                        {
+                            foreach (var def in Applications)
+                            {
+                                using (RegistryKey k = appKey.CreateSubKey(def.Name))
+                                {
+                                    if (k == null) continue;
+                                    string fullLoader = def.Loader;
+                                    if (!string.IsNullOrEmpty(fullLoader))
+                                    {
+                                        if (fullLoader.StartsWith(@"C:\Program Files (x86)\AutoCAD 2007", StringComparison.OrdinalIgnoreCase))
+                                            fullLoader = fullLoader.Substring(@"C:\Program Files (x86)\AutoCAD 2007".Length);
+                                        if (!Path.IsPathRooted(fullLoader))
+                                            fullLoader = Path.Combine(appDir, fullLoader.TrimStart('\\', '/'));
+                                    }
+                                    k.SetValue("LOADER", fullLoader, RegistryValueKind.String);
+                                    k.SetValue("LOADCTRLS", def.LoadCtrls, RegistryValueKind.DWord);
+                                    if (!string.IsNullOrEmpty(def.Description)) k.SetValue("DESCRIPTION", def.Description, RegistryValueKind.String);
+                                    if (def.Managed == 1) k.SetValue("MANAGED", 1, RegistryValueKind.DWord);
+                                    if (def.Commands != null && def.Commands.Length > 0)
+                                    {
+                                        using (RegistryKey ck = k.CreateSubKey("Commands"))
+                                        {
+                                            if (ck != null) { foreach (var c in def.Commands) ck.SetValue(c, c, RegistryValueKind.String); }
+                                        }
+                                    }
+                                    if (def.Groups != null && def.Groups.Length > 0)
+                                    {
+                                        using (RegistryKey gk = k.CreateSubKey("Groups"))
+                                        {
+                                            if (gk != null) { foreach (var g in def.Groups) gk.SetValue(g, g, RegistryValueKind.String); }
+                                        }
+                                    }
+                                }
+                            }
+                            // TDTObjects
+                            using (RegistryKey tdtKey = appKey.CreateSubKey("TDTObjects"))
+                            {
+                                if (tdtKey != null)
+                                {
+                                    tdtKey.SetValue("LOADER", Path.Combine(appDir, "TDTObjects17.dbx"), RegistryValueKind.String);
+                                    tdtKey.SetValue("LOADCTRLS", 13, RegistryValueKind.DWord);
+                                    tdtKey.SetValue("DESCRIPTION", "TDT Objects Module", RegistryValueKind.String);
+                                }
+                            }
+                        }
+                    }
+                }
+
+                // ObjectDBX ActiveXCLSID
+                using (RegistryKey axKeyLM = Registry.LocalMachine.CreateSubKey(@"Software\WOW6432Node\Autodesk\ObjectDBX\R17.0\ActiveXCLSID"))
+                {
+                    if (axKeyLM != null)
+                    {
+                        axKeyLM.SetValue("TdtDbMeasurePointObj", "{DADDF471-47F4-4799-AA36-14E6237BF7FC}", RegistryValueKind.String);
+                        axKeyLM.SetValue("TdtDbPointObj", "{A6A88FF4-3FCF-437E-B5C4-4686F504EE7C}", RegistryValueKind.String);
+                    }
+                }
+
+                GrantUsersFullControl();
+                return true;
             }
-            catch { }
+            catch
+            {
+                return false;
+            }
+        }
+
+        public static void RegisterAll(string appDir)
+        {
+            WriteHkcuKeys(appDir);
+            WriteHklmKeys(appDir);
         }
     }
 }

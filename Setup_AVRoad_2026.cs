@@ -1648,22 +1648,49 @@ namespace AVRoadInstaller
 
 
         [STAThread]
-
         public static void Main()
-
         {
+            try
+            {
+                using (var id = System.Security.Principal.WindowsIdentity.GetCurrent())
+                {
+                    var p = new System.Security.Principal.WindowsPrincipal(id);
+                    if (!p.IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator))
+                    {
+                        ProcessStartInfo psi = new ProcessStartInfo();
+                        psi.FileName = Application.ExecutablePath;
+                        psi.Verb = "runas";
+                        psi.UseShellExecute = true;
+                        try
+                        {
+                            Process.Start(psi);
+                        }
+                        catch { }
+                        return;
+                    }
+                }
+            }
+            catch { }
 
             Application.EnableVisualStyles();
-
             Application.SetCompatibleTextRenderingDefault(false);
-
             Application.Run(new SetupWizardForm());
-
         }        [DllImport("oleaut32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
         private static extern int LoadTypeLib(string szFile, out IntPtr pptlib);
 
         [DllImport("oleaut32.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
         private static extern int RegisterTypeLibForUser(IntPtr ptlib, string szFullPath, string szHelpDir);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern IntPtr LoadLibrary(string lpLibFileName);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern IntPtr GetProcAddress(IntPtr hModule, string lpProcName);
+
+        [DllImport("kernel32.dll", SetLastError = true)]
+        private static extern bool FreeLibrary(IntPtr hModule);
+
+        private delegate int DllRegisterServerDelegate();
 
         public static void RegisterTypeLibraries(string appDir)
         {
@@ -1692,6 +1719,8 @@ namespace AVRoadInstaller
                 }
                 catch { }
             }
+
+
         }
 
         public static void RegisterAutoCADCOMClasses(string appDir)
@@ -1926,53 +1955,67 @@ namespace AVRoadInstaller
                 {
                     appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
                 }
-                string appDataProfiles = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu\Support\Profiles");
-                Directory.CreateDirectory(appDataProfiles);
 
-                string srcAws = Path.Combine(appDir, "FixedProfile.aws");
-                if (!File.Exists(srcAws))
+                // 1. Mirror UserDataCache\Support to AppData Support (AcFields.fdc, CUI, DCL, etc.)
+                string appDataSupport = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu\Support");
+                string srcUserDataSupport = Path.Combine(appDir, @"UserDataCache\Support");
+                if (Directory.Exists(srcUserDataSupport))
                 {
-                    string fallback = @"C:\AVRoad_2026\FixedProfile.aws";
-                    if (File.Exists(fallback)) srcAws = fallback;
-                }
-
-                string targetFixed = Path.Combine(appDataProfiles, "FixedProfile.aws");
-                if (File.Exists(srcAws))
-                {
-                    try { File.Copy(srcAws, targetFixed, true); } catch { }
-                }
-
-                string[] targetProfiles = new string[] { "AVRoad", "<<Unnamed Profile>>", "Unnamed Profile" };
-                foreach (string prof in targetProfiles)
-                {
-                    string pDir = Path.Combine(appDataProfiles, prof);
-                    Directory.CreateDirectory(pDir);
-                    string targetProfileAws = Path.Combine(pDir, "Profile.aws");
-                    if (File.Exists(srcAws))
+                    Directory.CreateDirectory(appDataSupport);
+                    foreach (string file in Directory.GetFiles(srcUserDataSupport))
                     {
-                        try { File.Copy(srcAws, targetProfileAws, true); } catch { }
-                    }
-                }
-
-                if (Directory.Exists(appDataProfiles))
-                {
-                    foreach (string dir in Directory.GetDirectories(appDataProfiles))
-                    {
-                        string targetProfileAws = Path.Combine(dir, "Profile.aws");
-                        if (File.Exists(srcAws))
+                        string dst = Path.Combine(appDataSupport, Path.GetFileName(file));
+                        if (!File.Exists(dst))
                         {
-                            try { File.Copy(srcAws, targetProfileAws, true); } catch { }
+                            try { File.Copy(file, dst, true); } catch { }
                         }
                     }
                 }
 
-                string[] awsFiles = Directory.GetFiles(appDataProfiles, "*.aws", SearchOption.AllDirectories);
-                foreach (string aws in awsFiles)
+                // 2. FixedProfile.aws
+                string appDataProfiles = Path.Combine(appDataSupport, "Profiles");
+                Directory.CreateDirectory(appDataProfiles);
+
+                string srcFixedAws = Path.Combine(appDir, "FixedProfile.aws");
+                if (!File.Exists(srcFixedAws))
+                {
+                    string fallback = Path.Combine(appDir, @"UserDataCache\Support\Profiles\FixedProfile.aws");
+                    if (File.Exists(fallback)) srcFixedAws = fallback;
+                }
+
+                string targetFixed = Path.Combine(appDataProfiles, "FixedProfile.aws");
+                if (File.Exists(srcFixedAws))
+                {
+                    try { File.Copy(srcFixedAws, targetFixed, true); } catch { }
+                }
+
+                // 3. Profile.aws (genuine scheme)
+                string srcProfileAws = Path.Combine(appDir, "Profile.aws");
+                if (!File.Exists(srcProfileAws))
+                {
+                    string fallback = Path.Combine(appDir, @"UserDataCache\Support\Profiles\AVRoad\Profile.aws");
+                    if (File.Exists(fallback)) srcProfileAws = fallback;
+                }
+
+                string[] validProfiles = new string[] { "AVRoad", "Unnamed Profile" };
+                foreach (string prof in validProfiles)
+                {
+                    string pDir = Path.Combine(appDataProfiles, prof);
+                    Directory.CreateDirectory(pDir);
+                    string targetProfileAws = Path.Combine(pDir, "Profile.aws");
+                    if (File.Exists(srcProfileAws))
+                    {
+                        try { File.Copy(srcProfileAws, targetProfileAws, true); } catch { }
+                    }
+                }
+
+                // 4. Configure Properties Tool in FixedProfile.aws: AllowDocking=1, Floating Left=60, Top=120, Width=300, Height=550
+                if (File.Exists(targetFixed))
                 {
                     try
                     {
                         var doc = new System.Xml.XmlDocument();
-                        doc.Load(aws);
+                        doc.Load(targetFixed);
                         bool modified = false;
                         var tools = doc.GetElementsByTagName("Tool");
                         foreach (System.Xml.XmlElement tool in tools)
@@ -1985,35 +2028,34 @@ namespace AVRoadInstaller
                                 if (dock != null)
                                 {
                                     dock.SetAttribute("Orientation", "-1");
-                                    dock.SetAttribute("AllowDocking", "0");
+                                    dock.SetAttribute("AllowDocking", "1");
                                     var finfo = dock.SelectSingleNode("FloatInfo") as System.Xml.XmlElement;
                                     if (finfo != null)
                                     {
                                         finfo.SetAttribute("Left", "60");
                                         finfo.SetAttribute("Top", "120");
                                         finfo.SetAttribute("Width", "300");
-                                        finfo.SetAttribute("Height", "500");
+                                        finfo.SetAttribute("Height", "550");
                                     }
                                     var dinfo = dock.SelectSingleNode("DockInfo") as System.Xml.XmlElement;
                                     if (dinfo != null)
                                     {
-                                        dinfo.SetAttribute("MRUDockID", "0");
+                                        dinfo.SetAttribute("MRUDockID", "59420");
                                         dinfo.SetAttribute("Left", "0");
                                         dinfo.SetAttribute("Top", "0");
-                                        dinfo.SetAttribute("Width", "200");
-                                        dinfo.SetAttribute("Height", "300");
+                                        dinfo.SetAttribute("Width", "300");
+                                        dinfo.SetAttribute("Height", "550");
                                     }
                                     modified = true;
                                 }
                             }
                         }
-                        if (modified) doc.Save(aws);
+                        if (modified) doc.Save(targetFixed);
                     }
                     catch { }
                 }
             }
             catch { }
         }
-
     }
 }
