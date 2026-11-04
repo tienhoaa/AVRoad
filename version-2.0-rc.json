@@ -1,11 +1,11 @@
 {
-  "version": "2.0.0.1",
+  "version": "2.1.0.1",
   "release_date": "2026-11-05",
-  "title": "AVRoad 2.0 RC1",
+  "title": "AVRoad 2.1 RC1 - Cong cu thiet ke",
   "release_channel": "rc",
   "prerelease": true,
-  "changelog": "RC1: ba COM HKCU 32-bit cho Properties/QSELECT; checksum SHA-256 va rollback. Loi dong CAD F49Dh con ton tai; chua du bang chung cai moi/nang cap legacy.",
-  "download_url": "https://github.com/tienhoaa/AVRoad/releases/tag/v2.0-rc.1",
-  "patch_download_url": "https://github.com/tienhoaa/AVRoad/releases/download/v2.0-rc.1/patch_2.0_rc1.zip",
-  "patch_sha256": "ac1fdc6381cc213ce4b130e857833db5b55bc5c5f8ba35173163833237e59c30"
+  "changelog": "DLBD va cong cu chung mot cot; nut an/hien DLBD; 6 nhom lenh; chu/icon lon; toi uu doc menu. Tu nap UI khi mo AVRoad. GPU va khoi dong lai chua kiem thu day du.",
+  "download_url": "https://github.com/tienhoaa/AVRoad/releases/tag/v2.1-rc.1",
+  "patch_download_url": "https://github.com/tienhoaa/AVRoad/releases/download/v2.1-rc.1/patch_2.1_rc1.zip",
+  "patch_sha256": "c5900f6ed44953e52acae6a80c9990e73724a7668e6c10334dec79e5da8233eb"
 }
