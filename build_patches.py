@@ -25,6 +25,7 @@ files_to_pack = [
     'AcObjClassImp.arx',
     'AcFdUi.arx',
     'acrender.arx',
+    'acetutil.arx',
     'TDTObjectsWrapper.arx',
     'TDTObjects17.dbx',
     'AlignmentDb17.dbx',
@@ -35,6 +36,7 @@ files_to_pack = [
 app_dir = r'C:\AVRoad_2026'
 
 target_zips = [
+    r'C:\TDT_RESEARCH\patch_1.7.zip',
     r'C:\TDT_RESEARCH\patch_1.6.zip',
     r'C:\TDT_RESEARCH\patch_1.5.zip',
     r'C:\TDT_RESEARCH\patch_1.4.zip',

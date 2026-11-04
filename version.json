@@ -1,8 +1,8 @@
 {
-  "version": "1.6",
+  "version": "1.7",
   "release_date": "2026-11-04",
-  "title": "AVRoad 2026 Solution - Chuẩn Hóa Menu AV_ & Phục Hồi Thuộc Tính Đối Tượng v1.6",
-  "changelog": "Bản cập nhật v1.6:\n- Đổi tên triệt để toàn bộ hệ thống menu chuẩn hóa đồng bộ tiền tố AV_ (AV_Khảo sát, AV_Road, AV_San nền, AV_Thiết kế kênh, AV_Địa chất, AV_Mô phỏng 3D, AV_ATGT-Vạch sơn)\n- Phục hồi 100% tính năng phím tắt Ctrl+1 (Properties Palette) hiển thị đầy đủ bảng thuộc tính đối tượng khi chọn và chỉnh sửa đúp chuột\n- Phục hồi chuẩn xác hộp thoại Layer Manager và các lệnh gốc AutoCAD\n- Tự động đăng ký COM server TDTObjectsWrapper, xóa bỏ hoàn toàn cảnh báo COM server\n- Tự động làm mới cache menu và nạp đầy đủ tiện ích Express Tools",
+  "title": "AVRoad 2026 Solution - Hoàn Thiện Lệnh CAD & Tự Động Nhắc Cập Nhật v1.7",
+  "changelog": "Bản cập nhật v1.7:\n- Tự động kiểm tra và hiển thị popup nhắc cập nhật ngay khi mở Hub khởi động AVRoad\n- Sửa dứt điểm 100% lệnh LAYER, PROPERTIES (Ctrl+1) và toàn bộ các lệnh CAD tiêu chuẩn\n- Tích hợp và tự động nạp trọn bộ Express Tools (XLIST, BURST, FLATTEN, ALIGNSPACE, BREAKLINE, RTEXT)\n- Tự động khôi phục và đăng ký biểu tượng icon file bản vẽ .DWG chuẩn khi mở bản vẽ\n- Loại bỏ hoàn toàn các thông báo rác và dòng thông tin TDT trong menu, giao diện thuần khiết chuẩn AVRoad 2026",
   "download_url": "https://github.com/tienhoaa/AVRoad/releases/latest",
-  "patch_download_url": "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/patch_1.6.zip"
+  "patch_download_url": "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/patch_1.7.zip"
 }

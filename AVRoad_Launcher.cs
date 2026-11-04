@@ -130,6 +130,7 @@ namespace AVRoadLauncher
                 {
                     Program.ConfigureHardwareAccelerationAndSmoothDrafting(appDir);
                     Program.RegisterAutoCADApplications(appDir);
+                    Program.RegisterDwgAssociation(appDir);
                     Program.PrepareProfile(appDir, argProfile, fontPath, plotStylePath, plotterPath);
                 }
                 catch { }
@@ -824,6 +825,7 @@ namespace AVRoadLauncher
             {
                 ConfigureHardwareAccelerationAndSmoothDrafting(appDir);
                     Program.RegisterAutoCADApplications(appDir);
+                    Program.RegisterDwgAssociation(appDir);
                 PrepareProfile(appDir, argProfile, fontPath, plotStylePath, plotterPath);
                 LaunchAutoCAD(appDir, checkUpdateOnStartup, directFile);
                 return;
@@ -963,6 +965,7 @@ namespace AVRoadLauncher
             // Configure Hardware Acceleration, Direct3D, Smooth Line Display, and Tessellations
             ConfigureHardwareAccelerationAndSmoothDrafting(appDir);
                     Program.RegisterAutoCADApplications(appDir);
+                    Program.RegisterDwgAssociation(appDir);
 
             string profilesKeyPath = @"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Profiles";
 
@@ -1893,6 +1896,82 @@ namespace AVRoadLauncher
                 catch { }
 
                 }
+            }
+            catch { }
+        }
+
+        [DllImport("shell32.dll")]
+        public static extern void SHChangeNotify(uint wEventId, uint uFlags, IntPtr dwItem1, IntPtr dwItem2);
+
+        public static void RegisterDwgAssociation(string appDir)
+        {
+            try
+            {
+                string acadExe = Path.Combine(appDir, "acad.exe");
+                string avroadExe = Path.Combine(appDir, "AVRoad.exe");
+
+                // 1. HKCU Classes .dwg
+                using (RegistryKey k = Registry.CurrentUser.CreateSubKey(@"Software\Classes\.dwg"))
+                {
+                    if (k != null)
+                    {
+                        k.SetValue("", "AutoCAD.Drawing.17", RegistryValueKind.String);
+                        k.SetValue("Content Type", "image/vnd.dwg", RegistryValueKind.String);
+                    }
+                }
+
+                // 2. HKCU Classes AutoCAD.Drawing.17
+                using (RegistryKey k = Registry.CurrentUser.CreateSubKey(@"Software\Classes\AutoCAD.Drawing.17"))
+                {
+                    if (k != null)
+                    {
+                        k.SetValue("", "AutoCAD Drawing", RegistryValueKind.String);
+                        using (RegistryKey ik = k.CreateSubKey("DefaultIcon"))
+                        {
+                            if (ik != null) ik.SetValue("", acadExe + ",1", RegistryValueKind.String);
+                        }
+                        using (RegistryKey ck = k.CreateSubKey(@"shell\open\command"))
+                        {
+                            if (ck != null) ck.SetValue("", "\"" + avroadExe + "\" \"%1\"", RegistryValueKind.String);
+                        }
+                    }
+                }
+
+                // 3. HKCR (if running with admin privileges)
+                try
+                {
+                    using (RegistryKey k = Registry.ClassesRoot.CreateSubKey(".dwg"))
+                    {
+                        if (k != null)
+                        {
+                            k.SetValue("", "AutoCAD.Drawing.17", RegistryValueKind.String);
+                            k.SetValue("Content Type", "image/vnd.dwg", RegistryValueKind.String);
+                        }
+                    }
+                    using (RegistryKey k = Registry.ClassesRoot.CreateSubKey("AutoCAD.Drawing.17"))
+                    {
+                        if (k != null)
+                        {
+                            k.SetValue("", "AutoCAD Drawing", RegistryValueKind.String);
+                            using (RegistryKey ik = k.CreateSubKey("DefaultIcon"))
+                            {
+                                if (ik != null) ik.SetValue("", acadExe + ",1", RegistryValueKind.String);
+                            }
+                            using (RegistryKey ck = k.CreateSubKey(@"shell\open\command"))
+                            {
+                                if (ck != null) ck.SetValue("", "\"" + avroadExe + "\" \"%1\"", RegistryValueKind.String);
+                            }
+                        }
+                    }
+                }
+                catch { }
+
+                // 4. Notify Windows Shell to refresh all file icons immediately
+                try
+                {
+                    SHChangeNotify(0x08000000, 0, IntPtr.Zero, IntPtr.Zero);
+                }
+                catch { }
             }
             catch { }
         }
