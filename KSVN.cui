@@ -17,13 +17,13 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
       <WorkspaceConfigRoot />
     </WorkspaceRoot>
   </Header>
-  <MenuGroup Name="AV_Khảo sát" DisplayName="AV_Khảo sát">
-    <MacroGroup Name="AV_Khảo sátMacros">
+  <MenuGroup Name="KSVN" DisplayName="KSVN">
+    <MacroGroup Name="KSVNMacros">
       <MenuMacro UID="MMU_0002">
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0002">Thông tin AVRoad 2026</Name>
+          <Name xlate="true" UID="XLS_0002">About TDT</Name>
           <Command>^C^ABOUTTDT </Command>
         </Macro>
       </MenuMacro>
@@ -1047,13 +1047,6 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
           <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
           <Alias>POP1</Alias>
           <Name xlate="true" UID="XLS_0001">&amp;AV_Khảo sát</Name>
-          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0001">
-            <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
-            <NameRef UID="XLS_0003" xlate="true">Thông tin AVRoad 2026</NameRef>
-            <MenuItem>
-              <MacroRef MenuMacroID="MMU_0002" />
-            </MenuItem>
-          </PopMenuItem>
           <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0002">
             <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
             <NameRef UID="XLS_0005" xlate="true">Khai báo lệnh tắt</NameRef>

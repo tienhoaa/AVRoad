@@ -471,7 +471,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0123">Thông tin AVRoad 2026</Name>
+          <Name xlate="true" UID="XLS_0123">About TDT</Name>
           <Command>^C^CABOUTTDT</Command>
         </Macro>
       </MenuMacro>
@@ -479,7 +479,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0125">Thông tin AVRoad 2026</Name>
+          <Name xlate="true" UID="XLS_0125">About TDT</Name>
           <Command>^C^C</Command>
         </Macro>
       </MenuMacro>
@@ -487,7 +487,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0127">Thông tin AVRoad 2026</Name>
+          <Name xlate="true" UID="XLS_0127">About TDT</Name>
           <Command>^C^CLDC</Command>
         </Macro>
       </MenuMacro>
@@ -495,7 +495,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0129">Thông tin AVRoad 2026</Name>
+          <Name xlate="true" UID="XLS_0129">About TDT</Name>
           <Command>^C^CDCTD</Command>
         </Macro>
       </MenuMacro>
@@ -503,7 +503,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0131">Thông tin AVRoad 2026</Name>
+          <Name xlate="true" UID="XLS_0131">About TDT</Name>
           <Command>^C^CDCTN</Command>
         </Macro>
       </MenuMacro>
@@ -511,7 +511,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0133">Thông tin AVRoad 2026</Name>
+          <Name xlate="true" UID="XLS_0133">About TDT</Name>
           <Command>^C^CCDT</Command>
         </Macro>
       </MenuMacro>
@@ -519,7 +519,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0135">Thông tin AVRoad 2026</Name>
+          <Name xlate="true" UID="XLS_0135">About TDT</Name>
           <Command>^C^CLDT</Command>
         </Macro>
       </MenuMacro>
@@ -527,7 +527,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0137">Thông tin AVRoad 2026</Name>
+          <Name xlate="true" UID="XLS_0137">About TDT</Name>
           <Command>^C^CHCC</Command>
         </Macro>
       </MenuMacro>
@@ -535,7 +535,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0139">Thông tin AVRoad 2026</Name>
+          <Name xlate="true" UID="XLS_0139">About TDT</Name>
           <Command>^C^CHCDM</Command>
         </Macro>
       </MenuMacro>
@@ -543,7 +543,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0141">Thông tin AVRoad 2026</Name>
+          <Name xlate="true" UID="XLS_0141">About TDT</Name>
           <Command>^C^CAI</Command>
         </Macro>
       </MenuMacro>
@@ -551,7 +551,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0143">Thông tin AVRoad 2026</Name>
+          <Name xlate="true" UID="XLS_0143">About TDT</Name>
           <Command>^C^CDSS</Command>
         </Macro>
       </MenuMacro>
@@ -559,7 +559,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0145">Thông tin AVRoad 2026</Name>
+          <Name xlate="true" UID="XLS_0145">About TDT</Name>
           <Command>^C^CCDD</Command>
         </Macro>
       </MenuMacro>
@@ -567,7 +567,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0147">Thông tin AVRoad 2026</Name>
+          <Name xlate="true" UID="XLS_0147">About TDT</Name>
           <Command>^C^CDNPL</Command>
         </Macro>
       </MenuMacro>
@@ -575,7 +575,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0149">Thông tin AVRoad 2026</Name>
+          <Name xlate="true" UID="XLS_0149">About TDT</Name>
           <Command>^C^CTL</Command>
         </Macro>
       </MenuMacro>
@@ -583,7 +583,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0151">Thông tin AVRoad 2026</Name>
+          <Name xlate="true" UID="XLS_0151">About TDT</Name>
           <Command>^C^CHCTL</Command>
         </Macro>
       </MenuMacro>
@@ -606,13 +606,6 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
           <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
           <Alias>POP1</Alias>
           <Name xlate="true" UID="XLS_0001">&amp;AV_Thiết kế kênh</Name>
-          <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0123">
-            <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
-            <NameRef UID="XLS_0123" xlate="true">Thông tin AVRoad 2026</NameRef>
-            <MenuItem>
-              <MacroRef MenuMacroID="MMU_0114" />
-            </MenuItem>
-          </PopMenuItem>
           <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0001">
             <ModifiedRev MajorVersion="17" MinorVersion="0" UserVersion="1" />
             <NameRef UID="XLS_0003" xlate="true">Dữ liệu bình đồ</NameRef>

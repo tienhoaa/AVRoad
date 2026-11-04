@@ -854,58 +854,9 @@ namespace AVRoadInstaller
                         {
                             if (appRoot == null) continue;
 
-                            // AcLayer
-                            using (RegistryKey k = appRoot.CreateSubKey("AcLayer"))
-                            {
-                                if (k != null)
-                                {
-                                    k.SetValue("LOADER", Path.Combine(appDir, "AcLayer.dll"), RegistryValueKind.String);
-                                    k.SetValue("DESCRIPTION", "AutoCAD Layer Manager", RegistryValueKind.String);
-                                    k.SetValue("LOADCTRLS", 76, RegistryValueKind.DWord);
-                                    k.SetValue("MANAGED", 1, RegistryValueKind.DWord);
-                                    using (RegistryKey c = k.CreateSubKey("Commands"))
-                                    {
-                                        if (c != null)
-                                        {
-                                            c.SetValue("LAYER", "LAYER", RegistryValueKind.String);
-                                            c.SetValue("CLASSICLAYER", "CLASSICLAYER", RegistryValueKind.String);
-                                            c.SetValue("LAYERCLOSE", "LAYERCLOSE", RegistryValueKind.String);
-                                            c.SetValue("LAYERPALETTE", "LAYERPALETTE", RegistryValueKind.String);
-                                        }
-                                    }
-                                    using (RegistryKey g = k.CreateSubKey("Groups"))
-                                    {
-                                        if (g != null) g.SetValue("AcLayer", "AcLayer", RegistryValueKind.String);
-                                    }
-                                }
-                            }
-
-                            // AcLayerTools
-                            using (RegistryKey k = appRoot.CreateSubKey("AcLayerTools"))
-                            {
-                                if (k != null)
-                                {
-                                    k.SetValue("LOADER", Path.Combine(appDir, "AcLayerTools.dll"), RegistryValueKind.String);
-                                    k.SetValue("DESCRIPTION", "AutoCAD Layer Tools", RegistryValueKind.String);
-                                    k.SetValue("LOADCTRLS", 14, RegistryValueKind.DWord);
-                                    k.SetValue("MANAGED", 1, RegistryValueKind.DWord);
-                                    using (RegistryKey c = k.CreateSubKey("Commands"))
-                                    {
-                                        if (c != null)
-                                        {
-                                            c.SetValue("LAYISO", "LAYISO", RegistryValueKind.String);
-                                            c.SetValue("LAYUNISO", "LAYUNISO", RegistryValueKind.String);
-                                            c.SetValue("LAYON", "LAYON", RegistryValueKind.String);
-                                            c.SetValue("LAYOFF", "LAYOFF", RegistryValueKind.String);
-                                            c.SetValue("LAYCUR", "LAYCUR", RegistryValueKind.String);
-                                            c.SetValue("LAYFRZ", "LAYFRZ", RegistryValueKind.String);
-                                            c.SetValue("LAYTHW", "LAYTHW", RegistryValueKind.String);
-                                            c.SetValue("LAYLCK", "LAYLCK", RegistryValueKind.String);
-                                            c.SetValue("LAYULK", "LAYULK", RegistryValueKind.String);
-                                        }
-                                    }
-                                }
-                            }
+                            // Clean up any old bogus AcLayer / AcLayerTools keys to prevent acmgd.dll error
+                            try { appRoot.DeleteSubKeyTree("AcLayer", false); } catch { }
+                            try { appRoot.DeleteSubKeyTree("AcLayerTools", false); } catch { }
 
                             // AcadUnits
                             using (RegistryKey k = appRoot.CreateSubKey("AcadUnits"))

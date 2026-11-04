@@ -2,33 +2,16 @@
 ;; AVRoad 2026 Solution - Startup Configuration
 ;; ========================================================
 
-(vl-load-com)
-
-;; Pre-load Essential AutoCAD Standard ARX Modules & Properties Manager
-(foreach arx '("oleaprot.arx" "Acpi.arx" "acopm.arx" "AcFdUi.arx" "AcOpmExt.arx" 
-               "AcDmPropertyEditors.arx" "AcDblClkEditPE.arx" "AcDblClkEdit.arx" 
-               "AcObjClassImp.arx" "units.arx" "AcDim.arx" "dwgaids.arx" 
-               "AcApp.arx" "AcArray.arx" "acblock.arx" "textfind.arx" 
-               "AcPurge.arx" "acmatch.arx" "appload.arx" "AcLayerP.arx" 
-               "AcTable.arx" "AcTp.arx" "laytrans.arx" "Laywalk.arx" "AcWipeout.arx")
-  (if (and (findfile arx) (not (member (strcase (vl-filename-base arx)) (mapcar 'strcase (arx)))))
-    (vl-catch-all-apply 'arxload (list arx nil))
-  )
-)
-
-;; Initialize Express Tools Autoloading
+;; Initialize Express Tools Autoloading cleanly
 (if (findfile "acetutil.arx")
-  (vl-catch-all-apply 'arxload (list "acetutil.arx" nil))
+  (arxload "acetutil.arx")
 )
 (if (findfile "acetauto.lsp")
-  (vl-catch-all-apply 'load (list "acetauto.lsp" nil))
+  (load "acetauto.lsp")
 )
 
-;; Command wrapper for Properties palette (Ctrl+1) as safe fallback
+;; Command wrappers for Properties palette (Ctrl+1)
 (defun c:properties ()
-  (if (and (findfile "acopm.arx") (not (member "ACOPM" (mapcar 'strcase (arx)))))
-    (vl-catch-all-apply 'arxload (list (findfile "acopm.arx") nil))
-  )
   (vl-cmdf "_.properties")
   (princ)
 )

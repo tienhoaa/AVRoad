@@ -53,7 +53,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0008">Tạo tuyến thăm dò từ đường pline hoặc tuyến đã có sẵn của AV_Road</Name>
+          <Name xlate="true" UID="XLS_0008">Tạo tuyến thăm dò từ đường pline hoặc tuyến đã có sẵn của VNRoad</Name>
           <Command>^C^CTTD </Command>
           <SmallImage Name="TTLK_16x16" />
           <LargeImage Name="TTLK_16x16" />
@@ -121,7 +121,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0022">Cập nhật cao độ lỗ khoan theo tim tuyến AV_Road</Name>
+          <Name xlate="true" UID="XLS_0022">Cập nhật cao độ lỗ khoan theo tim tuyến VNRoad</Name>
           <Command>^C^CCNLKTT</Command>
         </Macro>
       </MenuMacro>
@@ -129,7 +129,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0024">Vẽ mặt cắt địa chất lên trắc dọc AV_Road</Name>
+          <Name xlate="true" UID="XLS_0024">Vẽ mặt cắt địa chất lên trắc dọc VNRoad</Name>
           <Command>^C^CLK2TD</Command>
           <SmallImage Name="MCTT_16x16" />
           <LargeImage Name="MCTT_16x16" />
@@ -139,7 +139,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
         <Macro type="Any">
           <Revision MajorVersion="16" MinorVersion="2" UserVersion="1" />
           <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
-          <Name xlate="true" UID="XLS_0026">Tạo lỗ khoan theo tuyến AV_Khảo sát,AV_Road,KVN</Name>
+          <Name xlate="true" UID="XLS_0026">Tạo lỗ khoan theo tuyến KSVN,VNRoad,KVN</Name>
           <Command>^C^CLKTT</Command>
           <SmallImage Name="VeLKTheoTuyen_16x16" />
           <LargeImage Name="VeLKTheoTuyen_16x16" />
@@ -300,7 +300,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
           </PopMenuItem>
           <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0005">
             <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
-            <NameRef UID="XLS_0009" xlate="true">Tạo lỗ khoan theo tuyến AV_Khảo sát,AV_Road,KVN</NameRef>
+            <NameRef UID="XLS_0009" xlate="true">Tạo lỗ khoan theo tuyến KSVN,VNRoad,KVN</NameRef>
             <MenuItem>
               <MacroRef MenuMacroID="MMU_0026" />
             </MenuItem>
@@ -324,7 +324,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
           </PopMenuItem>
           <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0009">
             <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
-            <NameRef UID="XLS_0015" xlate="true">Tạo tuyến thăm dò từ đường pline hoặc tuyến đã có sẵn của AV_Khảo sát,AV_Road,KVN</NameRef>
+            <NameRef UID="XLS_0015" xlate="true">Tạo tuyến thăm dò từ đường pline hoặc tuyến đã có sẵn của KSVN,VNRoad,KVN</NameRef>
             <MenuItem>
               <MacroRef MenuMacroID="MMU_0008" />
             </MenuItem>
@@ -362,7 +362,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
           </PopMenuItem>
           <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0014">
             <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
-            <NameRef UID="XLS_0023" xlate="true">Cập nhật cao độ lỗ khoan theo tim tuyến AV_Khảo sát,AV_Road,KVN</NameRef>
+            <NameRef UID="XLS_0023" xlate="true">Cập nhật cao độ lỗ khoan theo tim tuyến KSVN,VNRoad,KVN</NameRef>
             <MenuItem>
               <MacroRef MenuMacroID="MMU_0022" />
             </MenuItem>
@@ -379,7 +379,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
           </PopMenuItem>
           <PopMenuItem IsSeparator="false" hasDiesel="false" UID="PMIU_0017">
             <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
-            <NameRef UID="XLS_0027" xlate="true">Vẽ mặt cắt địa chất lên trắc dọc AV_Khảo sát,AV_Road,KVN</NameRef>
+            <NameRef UID="XLS_0027" xlate="true">Vẽ mặt cắt địa chất lên trắc dọc KSVN,VNRoad,KVN</NameRef>
             <MenuItem>
               <MacroRef MenuMacroID="MMU_0024" />
             </MenuItem>
@@ -525,14 +525,14 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
           </ToolbarButton>
           <ToolbarButton IsSeparator="false" UID="TBBU_0006">
             <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
-            <Name xlate="true" UID="XLS_0056">Tạo lỗ khoan theo tuyến AV_Khảo sát,AV_Road,KVN</Name>
+            <Name xlate="true" UID="XLS_0056">Tạo lỗ khoan theo tuyến KSVN,VNRoad,KVN</Name>
             <MenuItem>
               <MacroRef MenuMacroID="MMU_0026" />
             </MenuItem>
           </ToolbarButton>
           <ToolbarButton IsSeparator="false" UID="TBBU_0007">
             <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
-            <Name xlate="true" UID="XLS_0057">Tạo tuyến thăm dò từ đường pline hoặc tuyến đã có sẵn của AV_Road</Name>
+            <Name xlate="true" UID="XLS_0057">Tạo tuyến thăm dò từ đường pline hoặc tuyến đã có sẵn của VNRoad</Name>
             <MenuItem>
               <MacroRef MenuMacroID="MMU_0008" />
             </MenuItem>
@@ -563,7 +563,7 @@ To access the Customize User Interface dialog box, click the Tools menu > Custom
           </ToolbarButton>
           <ToolbarButton IsSeparator="false" UID="TBBU_0012">
             <ModifiedRev MajorVersion="17" MinorVersion="2" UserVersion="1" />
-            <Name xlate="true" UID="XLS_0061">Vẽ mặt cắt địa chất lên trắc dọc AV_Road</Name>
+            <Name xlate="true" UID="XLS_0061">Vẽ mặt cắt địa chất lên trắc dọc VNRoad</Name>
             <MenuItem>
               <MacroRef MenuMacroID="MMU_0024" />
             </MenuItem>
