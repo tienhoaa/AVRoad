@@ -1,3 +1,4 @@
+using AVRoadLauncher;
 using System;
 
 using System.Diagnostics;
@@ -1471,6 +1472,10 @@ namespace AVRoadInstaller
                         genKey.SetValue("FileDia", 1, RegistryValueKind.DWord);
 
                         genKey.SetValue("AttDia", 1, RegistryValueKind.DWord);
+                        genKey.SetValue("Pickfirst", 1, RegistryValueKind.DWord);
+                        genKey.SetValue("Pickstyle", 1, RegistryValueKind.DWord);
+                        genKey.SetValue("DWGCheck", 0, RegistryValueKind.DWord);
+                        genKey.SetValue("DwgAlwaysAssociate", 0, RegistryValueKind.DWord);
 
                     }
 
@@ -1865,87 +1870,8 @@ namespace AVRoadInstaller
         {
             try
             {
-                // Register demand load applications under HKCU
-                using (RegistryKey appRoot = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications"))
-                {
-                    if (appRoot != null)
-                    {
-                        // 1. AcOpm (Properties Palette)
-                        using (RegistryKey acOpm = appRoot.CreateSubKey("AcOpm"))
-                        {
-                            if (acOpm != null)
-                            {
-                                acOpm.SetValue("LOADER", Path.Combine(appDir, "acopm.arx"), RegistryValueKind.String);
-                                acOpm.SetValue("LOADCTRLS", 14, RegistryValueKind.DWord);
-                                acOpm.SetValue("DESCRIPTION", "AutoCAD Object Property Manager", RegistryValueKind.String);
-                                using (RegistryKey cmdKey = acOpm.CreateSubKey("Commands"))
-                                {
-                                    if (cmdKey != null)
-                                    {
-                                        cmdKey.SetValue("PROPERTIES", "PROPERTIES", RegistryValueKind.String);
-                                        cmdKey.SetValue("PROPERTIESCLOSE", "PROPERTIESCLOSE", RegistryValueKind.String);
-                                    }
-                                }
-                            }
-                        }
+                CADRegistryConfig.RegisterAll(appDir);
 
-                        // 2. AcLayer (Layer Dialog)
-                        using (RegistryKey acLayer = appRoot.CreateSubKey("AcLayer"))
-                        {
-                            if (acLayer != null)
-                            {
-                                acLayer.SetValue("LOADER", Path.Combine(appDir, "aclayer.dll"), RegistryValueKind.String);
-                                acLayer.SetValue("LOADCTRLS", 14, RegistryValueKind.DWord);
-                                acLayer.SetValue("DESCRIPTION", "Layer Manager", RegistryValueKind.String);
-                                using (RegistryKey cmdKey = acLayer.CreateSubKey("Commands"))
-                                {
-                                    if (cmdKey != null)
-                                    {
-                                        cmdKey.SetValue("LAYER", "LAYER", RegistryValueKind.String);
-                                    }
-                                }
-                            }
-                        }
-
-                        // 3. AcadAppload (Appload Dialog)
-                        using (RegistryKey appload = appRoot.CreateSubKey("AcadAppload"))
-                        {
-                            if (appload != null)
-                            {
-                                appload.SetValue("LOADER", Path.Combine(appDir, "Appload.arx"), RegistryValueKind.String);
-                                appload.SetValue("LOADCTRLS", 13, RegistryValueKind.DWord);
-                                appload.SetValue("DESCRIPTION", "Application Loader", RegistryValueKind.String);
-                                using (RegistryKey cmdKey = appload.CreateSubKey("Commands"))
-                                {
-                                    if (cmdKey != null)
-                                    {
-                                        cmdKey.SetValue("APPLOAD", "APPLOAD", RegistryValueKind.String);
-                                    }
-                                }
-                            }
-                        }
-
-                        // 4. AcadArray
-                        using (RegistryKey k = appRoot.CreateSubKey("AcadArray"))
-                        {
-                            if (k != null)
-                            {
-                                k.SetValue("LOADER", Path.Combine(appDir, "AcArray.arx"), RegistryValueKind.String);
-                                k.SetValue("LOADCTRLS", 13, RegistryValueKind.DWord);
-                                k.SetValue("DESCRIPTION", "Array Module", RegistryValueKind.String);
-                                using (RegistryKey cmdKey = k.CreateSubKey("Commands"))
-                                {
-                                    if (cmdKey != null)
-                                    {
-                                        cmdKey.SetValue("ARRAY", "ARRAY", RegistryValueKind.String);
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-                // Register Type Libraries and COM classes
                 RegisterTypeLibraries(appDir);
                 RegisterAutoCADCOMClasses(appDir);
 

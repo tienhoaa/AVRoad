@@ -16,7 +16,11 @@ with zipfile.ZipFile(out_zip, 'w', compression=zipfile.ZIP_DEFLATED, compresslev
         dirs[:] = [d for d in dirs if d.lower() not in exclude_dirs]
         for f in files:
             fl = f.lower()
-            if fl in exclude_files or fl.endswith(('.bak', '.tmp', '.log', '.scr', '.old.exe')):
+            if fl in exclude_files:
+                continue
+            if fl.endswith(('.bak', '.tmp', '.log', '.old.exe')):
+                continue
+            if fl.endswith('.scr') and fl != 'defaults.scr':
                 continue
             full_path = os.path.join(root, f)
             rel_path = os.path.relpath(full_path, app_dir)
