@@ -1499,8 +1499,21 @@ namespace AVRoadLauncher
                     if (!mUrl.Success) mUrl = Regex.Match(remoteJson, "\"download_url\"\\s*:\\s*\"([^\"]+)\"");
                     if (mUrl.Success) patchUrl = mUrl.Groups[1].Value;
 
-                    // Show Toast Popup
-                    Application.Run(new UpdateToastForm(remoteVer, changelog, patchUrl, acadProc, appDir));
+                    // Show Update Dialog
+                    if (Application.MessageLoop)
+                    {
+                        using (UpdateToastForm form = new UpdateToastForm(remoteVer, changelog, patchUrl, acadProc, appDir))
+                        {
+                            form.ShowDialog();
+                        }
+                    }
+                    else
+                    {
+                        using (UpdateToastForm form = new UpdateToastForm(remoteVer, changelog, patchUrl, acadProc, appDir))
+                        {
+                            Application.Run(form);
+                        }
+                    }
                 }
                 else
                 {
