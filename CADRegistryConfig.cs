@@ -196,7 +196,7 @@ namespace AVRoadLauncher
             new CadAppDef { Name = "SceneOE", Loader = "AcSceneOE.dbx", LoadCtrls = 13, Description = "SceneOE", Managed = 0, Commands = null, Groups = null },
             new CadAppDef { Name = "SheetSetManagerWizard", Loader = "AcSmWizard.arx", LoadCtrls = 12, Description = "Sheet Set Manager Wizard Command Module", Managed = 0, Commands = new string[] { "NEWSHEETSET" }, Groups = new string[] { "SheetSetManagerWizard" } },
             new CadAppDef { Name = "WipeOut", Loader = "AcWipeoutObj17.dbx", LoadCtrls = 13, Description = "AcWipeoutObj", Managed = 0, Commands = null, Groups = null },
-            new CadAppDef { Name = "WSCommCntrAcCon", Loader = "WSCommCntrAcCon.arx", LoadCtrls = 2, Description = "WSCommCntrAcCon", Managed = 0, Commands = null, Groups = null },
+            // WSCommCntrAcCon disabled to prevent "Fail to get CommCntrController!" popup on clean Windows
         };
 
         public static void EnsureAcadExeConfig(string appDir)
@@ -373,10 +373,37 @@ namespace AVRoadLauncher
                         }
 
                         // Applications
+                        using (RegistryKey icKey = mainKey.CreateSubKey("InfoCenter"))
+                        {
+                            if (icKey != null) { icKey.SetValue("InfoCenterOn", 0, RegistryValueKind.DWord); icKey.SetValue("BalloonNotification", 0, RegistryValueKind.DWord); }
+                        }
+                        using (RegistryKey cmKey = mainKey.CreateSubKey(@"CadManagerControl\CommunicationCenter"))
+                        {
+                            if (cmKey != null) { cmKey.SetValue("EnableCommunicationCenter", 0, RegistryValueKind.DWord); cmKey.SetValue("MaintenancePackNotification", 0, RegistryValueKind.DWord); cmKey.SetValue("EnableOnlineContent", 0, RegistryValueKind.DWord); }
+                        }
+                        using (RegistryKey wsKey = mainKey.CreateSubKey(@"WebServices\CommunicationCenter"))
+                        {
+                            if (wsKey != null) { wsKey.SetValue("OutOfBoxWizardCompletedStep", 47, RegistryValueKind.DWord); wsKey.SetValue("EnableBubbleNotification", 0, RegistryValueKind.DWord); wsKey.SetValue("PollingFrequency", 0, RegistryValueKind.DWord); wsKey.SetValue("DataState", 0, RegistryValueKind.DWord); }
+                        }
+                        using (RegistryKey fpGen = mainKey.CreateSubKey(@"FixedProfile\General"))
+                        {
+                            if (fpGen != null)
+                            {
+                                string fixedAwsPath = Path.Combine(appDataEnuDir, @"Support\Profiles\FixedProfile.aws");
+                                fpGen.SetValue("ProfileStorage", fixedAwsPath, RegistryValueKind.String);
+                                fpGen.SetValue("ANSIHatch", "acad.pat", RegistryValueKind.String);
+                                fpGen.SetValue("ANSILinetype", "acad.lin", RegistryValueKind.String);
+                                fpGen.SetValue("ISOHatch", "acadiso.pat", RegistryValueKind.String);
+                                fpGen.SetValue("ISOLinetype", "acadiso.lin", RegistryValueKind.String);
+                                fpGen.SetValue("Measureinit", 0, RegistryValueKind.DWord);
+                                fpGen.SetValue("TaskBar", 0, RegistryValueKind.DWord);
+                            }
+                        }
                         using (RegistryKey appKey = mainKey.CreateSubKey("Applications"))
                         {
                             if (appKey != null)
                             {
+                                try { appKey.DeleteSubKeyTree("WSCommCntrAcCon", false); } catch { }
                                 foreach (var def in Applications)
                                 {
                                     using (RegistryKey k = appKey.CreateSubKey(def.Name))
@@ -584,6 +611,7 @@ namespace AVRoadLauncher
                         {
                             if (appKey != null)
                             {
+                                try { appKey.DeleteSubKeyTree("WSCommCntrAcCon", false); } catch { }
                                 foreach (var def in Applications)
                                 {
                                     using (RegistryKey k = appKey.CreateSubKey(def.Name))

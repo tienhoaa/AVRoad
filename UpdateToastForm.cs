@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Diagnostics;
 using System.Drawing;
 using System.IO;
@@ -116,6 +116,21 @@ namespace AVRoadLauncher
                 }
                 try
                 {
+                    if (cad != null && !cad.HasExited)
+                    {
+                        DialogResult dr = MessageBox.Show(this,
+                            "Cần đóng cửa sổ làm việc AVRoad/AutoCAD trước khi áp dụng bản cập nhật.\n\nBạn có muốn đóng AVRoad ngay để tiến hành cập nhật không?\n(Nếu đang có bản vẽ chưa lưu, vui lòng chọn 'No' để lưu bản vẽ trước)",
+                            "AVRoad 2026 - Cập Nhật Trực Tuyến",
+                            MessageBoxButtons.YesNo,
+                            MessageBoxIcon.Question);
+                        if (dr != DialogResult.Yes) return;
+                        try
+                        {
+                            cad.CloseMainWindow();
+                            if (!cad.WaitForExit(4000)) cad.Kill();
+                        }
+                        catch { }
+                    }
                     string updArgs = "\"/url:" + patchUrl + "\" \"/ver:" + version + "\" \"/sha:" + patchSha + "\"";
                     Process.Start(new ProcessStartInfo(exe, updArgs)
                     {

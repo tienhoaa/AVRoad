@@ -1,11 +1,11 @@
 {
-  "version": "2.1.0.2",
+  "version": "2.1.0.3",
   "release_date": "2026-11-05",
-  "title": "AVRoad 2.1 RC2 - Clean Windows & SinglePanel21 Fix",
+  "title": "AVRoad 2.1 RC2 (Hotfix v2.1.0.3) - Fix Properties Ctrl+1 & CommCenter trên máy sạch",
   "release_channel": "rc",
   "prerelease": false,
-  "changelog": "Bản cập nhật v2.1.0.2 (RC2 Clean Windows Fix):\\n- Giữ nguyên 100% giao diện SinglePanel21 RC2, 6 module, DLBD, menu AV_Road.\\n- Khắc phục cảnh báo 'This version of AutoCAD was not installed properly' trên máy Windows sạch chưa từng cài CAD7.\\n- Tự động cấu hình CLR .NET 4.0 (acad.exe.config) nạp acdbmgd.dll và SinglePanel21 trên Windows 10/11 không cần .NET 3.5.\\n- Bảo vệ Profile AVRoad không bị userdata.dll xóa trên máy sạch và hiển thị đầy đủ trong Installed Apps.",
+  "changelog": "Bản cập nhật v2.1.0.3 (RC2 Clean Windows Hotfix):\\n- Sửa dứt điểm lỗi hộp thoại 'Fail to get CommCntrController!' khi khởi động trên máy sạch.\\n- Sửa dứt điểm lỗi bảng Properties (Ctrl+1) bị trắng phau và phóng to ngang màn hình không resize được (đăng ký đầy đủ 223 CLSID COM acpi.arx, AcPEXCtl.arx, acopm.arx, axdb.dll & khóa FixedProfile.aws 300x500).\\n- Giữ nguyên 100% giao diện SinglePanel21 RC2, 6 module, DLBD, 7 menu AV_Road.",
   "download_url": "https://github.com/tienhoaa/AVRoad/releases/latest",
   "patch_download_url": "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/patch_2.1_rc2.zip",
-  "patch_sha256": "12b553b0ba5f941cd1d53c9c4474568c6e5be5f5b0d6317383c3f1cc7f9e20a7"
+  "patch_sha256": "dcce57f96c2fe30544bf60b0d17e6efa3982d953f2c38ad681aa2e06b4e9e0d8"
 }

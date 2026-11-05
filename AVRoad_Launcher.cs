@@ -1027,7 +1027,7 @@ namespace AVRoadLauncher
 
             {
 
-                g.DrawString("Phiên bản: AVRoad 2026 v1.8", fVer, bVer, 840, 526);
+                g.DrawString("Phiên bản: AVRoad 2026 v2.1 RC2", fVer, bVer, 820, 526);
 
             }
 
@@ -1538,6 +1538,7 @@ namespace AVRoadLauncher
                     if (RegistryScope.IsLimited) throw new InvalidOperationException("RC1 permits only the three HKCU COM values.");
                     CADRegistryConfig.WriteHklmKeys(appDir);
                     CADRegistryConfig.GrantUsersFullControl();
+                    try { Cad7ComRegistration.EnsureFullCad7ComClasses(appDir); } catch { }
                     return;
                 }
 
@@ -1580,27 +1581,29 @@ namespace AVRoadLauncher
                 }
             }
 
-            // If a DWG file was passed directly (via file association)
-            string directFile = "";
-            foreach (string a in args)
-            {
-                if (!a.StartsWith("/") && !a.StartsWith("-") && File.Exists(a) && (a.EndsWith(".dwg", StringComparison.OrdinalIgnoreCase) || a.EndsWith(".dxf", StringComparison.OrdinalIgnoreCase)))
+                // If a DWG file was passed directly (via file association) or /direct was specified
+                bool launchDirect = false;
+                string directFile = "";
+                foreach (string a in args)
                 {
-                    directFile = a;
-                    break;
+                    if (a.Equals("/direct", StringComparison.OrdinalIgnoreCase)) launchDirect = true;
+                    if (!a.StartsWith("/") && !a.StartsWith("-") && File.Exists(a) && (a.EndsWith(".dwg", StringComparison.OrdinalIgnoreCase) || a.EndsWith(".dxf", StringComparison.OrdinalIgnoreCase)))
+                    {
+                        directFile = a;
+                        break;
+                    }
                 }
-            }
 
-            if (!string.IsNullOrEmpty(directFile))
-            {
-                ConfigureHardwareAccelerationAndSmoothDrafting(appDir);
-                Program.RegisterAutoCADApplications(appDir);
-                Program.CleanPortableAssociations();
-                Program.FixPropertiesPalette(appDir);
-                PrepareProfile(appDir, argProfile, fontPath, plotStylePath, plotterPath);
-                LaunchAutoCAD(appDir, checkUpdateOnStartup, directFile);
-                return;
-            }
+                if (launchDirect || !string.IsNullOrEmpty(directFile))
+                {
+                    ConfigureHardwareAccelerationAndSmoothDrafting(appDir);
+                    Program.RegisterAutoCADApplications(appDir);
+                    Program.CleanPortableAssociations();
+                    Program.FixPropertiesPalette(appDir);
+                    PrepareProfile(appDir, argProfile, fontPath, plotStylePath, plotterPath);
+                    LaunchAutoCAD(appDir, checkUpdateOnStartup, directFile);
+                    return;
+                }
 
             // Launch Modern Startup Screen Hub
             Application.Run(new AVStartupForm(appDir, iniPath, fontPath, plotStylePath, plotterPath, argProfile, checkUpdateOnStartup));
@@ -2322,36 +2325,21 @@ namespace AVRoadLauncher
 
                             }
 
-                            using (RegistryKey appKey1 = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications\WSCommCntrAcCon"))
-
+                            using (RegistryKey appsRoot = Registry.CurrentUser.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications", true))
                             {
-
-                                if (appKey1 != null)
-
+                                if (appsRoot != null)
                                 {
-
-                                    appKey1.SetValue("LOADCTRLS", 0, RegistryValueKind.DWord);
-
-                                    appKey1.SetValue("LOADER", "", RegistryValueKind.String);
-
+                                    try { appsRoot.DeleteSubKeyTree("WSCommCntrAcCon", false); } catch { }
+                                    try { appsRoot.DeleteSubKeyTree("AcadAcLaunchNFW", false); } catch { }
                                 }
-
                             }
-
-                            using (RegistryKey appKey2 = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications\AcadAcLaunchNFW"))
-
+                            using (RegistryKey appsRootLM = Registry.LocalMachine.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications", true))
                             {
-
-                                if (appKey2 != null)
-
+                                if (appsRootLM != null)
                                 {
-
-                                    appKey2.SetValue("LOADCTRLS", 0, RegistryValueKind.DWord);
-
-                                    appKey2.SetValue("LOADER", "", RegistryValueKind.String);
-
+                                    try { appsRootLM.DeleteSubKeyTree("WSCommCntrAcCon", false); } catch { }
+                                    try { appsRootLM.DeleteSubKeyTree("AcadAcLaunchNFW", false); } catch { }
                                 }
-
                             }
 
                             using (RegistryKey tdtObjKey1 = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\ObjectDBX\R17.0\Applications\TDTObjects"))
@@ -2588,13 +2576,17 @@ namespace AVRoadLauncher
             try
             {
                 bool needsHklm = false;
+                string expectedAcpi = Path.Combine(appDir, "acpi.arx");
                 using (RegistryKey kAdsk = Registry.LocalMachine.OpenSubKey(@"Software\Autodesk"))
                 using (RegistryKey k = Registry.LocalMachine.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409"))
                 using (RegistryKey kUd = Registry.LocalMachine.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\UserData"))
                 using (RegistryKey kApp = Registry.LocalMachine.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications"))
+                using (RegistryKey kWs = Registry.LocalMachine.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications\WSCommCntrAcCon"))
+                using (RegistryKey kAcpi = Registry.LocalMachine.OpenSubKey(@"Software\Classes\CLSID\{31DBB451-9109-41EA-854C-B25905225AEA}\InProcServer32"))
                 {
                     if (kAdsk == null || !string.IsNullOrEmpty(kAdsk.GetValue("CurProd") as string) ||
-                        k == null || kUd == null || kApp == null ||
+                        k == null || kUd == null || kApp == null || kWs != null ||
+                        kAcpi == null || !string.Equals(kAcpi.GetValue("") as string, expectedAcpi, StringComparison.OrdinalIgnoreCase) ||
                         kUd.GetValue("{5783F2D7-5001-0409-0002-0060B0CE6BBA}") != null ||
                         k.GetValue("SerialNumber") == null ||
                         k.GetValue("Language") == null ||
@@ -2608,7 +2600,11 @@ namespace AVRoadLauncher
                 if (needsHklm)
                 {
                     bool ok = CADRegistryConfig.WriteHklmKeys(appDir);
-                    if (!ok)
+                    if (ok)
+                    {
+                        try { Cad7ComRegistration.EnsureFullCad7ComClasses(appDir); } catch { }
+                    }
+                    else
                     {
                         try
                         {
@@ -3402,7 +3398,9 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
                 "acax17enu.tlb", "axdb17enu.tlb", "AcAuthEntities17enu.tlb",
                 "AcMPolygon17enu.tlb", "AcObjClassImp17.tlb", "AcSmComponents17.tlb",
                 "AdComFolderWatch17.tlb", "vl16.tlb", "ACcolor.ocx",
-                "AcadLinetype.ocx", "HatchPattern.ocx", "TDTObjectsWrapper.arx"
+                "AcadLinetype.ocx", "HatchPattern.ocx", "TDTObjectsWrapper.arx",
+                "acpi.arx", "AcPEXCtl.arx", "AcEditSpinAtl.dll", "AcFocusCtrl16.dll",
+                "AcSceneCOM.dll", "AcTc.dll", "AcTcTools.arx", "AcSmNav.arx", "acETransmit16.tlb"
             };
             foreach (string file in tlbs)
             {
@@ -3604,7 +3602,8 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
 
             try
             {
-                CADRegistryConfig.RegisterAll(appDir);
+                CADRegistryConfig.RegisterAll(appDir);
+                try { Cad7ComRegistration.Apply(appDir, null); } catch { }
 
                 RegisterTypeLibraries(appDir);
                 RegisterAutoCADCOMClasses(appDir);
@@ -3735,29 +3734,48 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
                                 if (dock != null)
                                 {
                                     dock.SetAttribute("Orientation", "-1");
-                                    dock.SetAttribute("AllowDocking", "1");
+                                    dock.SetAttribute("AllowDocking", "0");
                                     var finfo = dock.SelectSingleNode("FloatInfo") as System.Xml.XmlElement;
                                     if (finfo != null)
                                     {
                                         finfo.SetAttribute("Left", "60");
                                         finfo.SetAttribute("Top", "120");
                                         finfo.SetAttribute("Width", "300");
-                                        finfo.SetAttribute("Height", "550");
+                                        finfo.SetAttribute("Height", "500");
                                     }
                                     var dinfo = dock.SelectSingleNode("DockInfo") as System.Xml.XmlElement;
                                     if (dinfo != null)
                                     {
-                                        dinfo.SetAttribute("MRUDockID", "59420");
+                                        dinfo.SetAttribute("MRUDockID", "0");
                                         dinfo.SetAttribute("Left", "0");
                                         dinfo.SetAttribute("Top", "0");
-                                        dinfo.SetAttribute("Width", "300");
-                                        dinfo.SetAttribute("Height", "550");
+                                        dinfo.SetAttribute("Width", "200");
+                                        dinfo.SetAttribute("Height", "300");
                                     }
                                     modified = true;
                                 }
                             }
                         }
                         if (modified) doc.Save(targetFixed);
+                        try
+                        {
+                            using (RegistryKey root = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry32))
+                            using (RegistryKey mainKey = root.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409"))
+                            {
+                                if (mainKey != null)
+                                {
+                                    using (RegistryKey fpGen = mainKey.CreateSubKey(@"FixedProfile\General"))
+                                    {
+                                        if (fpGen != null) fpGen.SetValue("ProfileStorage", targetFixed, RegistryValueKind.String);
+                                    }
+                                    using (RegistryKey appKey = mainKey.OpenSubKey("Applications", true))
+                                    {
+                                        if (appKey != null) { try { appKey.DeleteSubKeyTree("WSCommCntrAcCon", false); } catch { } }
+                                    }
+                                }
+                            }
+                        }
+                        catch { }
                     }
                     catch { }
                 }

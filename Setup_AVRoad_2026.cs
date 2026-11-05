@@ -1590,18 +1590,20 @@ namespace AVRoadInstaller
                 using (var id = System.Security.Principal.WindowsIdentity.GetCurrent())
                 {
                     var p = new System.Security.Principal.WindowsPrincipal(id);
-                    if (!p.IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator))
+                    bool skipElevate = (args != null && args.Length > 0 && args[0] == "/elevated");
+                    if (!skipElevate && !p.IsInRole(System.Security.Principal.WindowsBuiltInRole.Administrator))
                     {
                         ProcessStartInfo psi = new ProcessStartInfo();
                         psi.FileName = Application.ExecutablePath;
+                        psi.Arguments = "/elevated";
                         psi.Verb = "runas";
                         psi.UseShellExecute = true;
                         try
                         {
-                            Process.Start(psi);
+                            Process proc = Process.Start(psi);
+                            if (proc != null) return;
                         }
                         catch { }
-                        return;
                     }
                 }
             }
@@ -1636,7 +1638,9 @@ namespace AVRoadInstaller
                 "acax17enu.tlb", "axdb17enu.tlb", "AcAuthEntities17enu.tlb",
                 "AcMPolygon17enu.tlb", "AcObjClassImp17.tlb", "AcSmComponents17.tlb",
                 "AdComFolderWatch17.tlb", "vl16.tlb", "ACcolor.ocx",
-                "AcadLinetype.ocx", "HatchPattern.ocx", "TDTObjectsWrapper.arx"
+                "AcadLinetype.ocx", "HatchPattern.ocx", "TDTObjectsWrapper.arx",
+                "acpi.arx", "AcPEXCtl.arx", "AcEditSpinAtl.dll", "AcFocusCtrl16.dll",
+                "AcSceneCOM.dll", "AcTc.dll", "AcTcTools.arx", "AcSmNav.arx", "acETransmit16.tlb"
             };
             foreach (string file in tlbs)
             {
@@ -1850,7 +1854,8 @@ namespace AVRoadInstaller
 
             try
             {
-                CADRegistryConfig.RegisterAll(appDir);
+                CADRegistryConfig.RegisterAll(appDir);
+                try { Cad7ComRegistration.Apply(appDir, null); } catch { }
 
                 RegisterTypeLibraries(appDir);
                 RegisterAutoCADCOMClasses(appDir);
@@ -1981,29 +1986,48 @@ namespace AVRoadInstaller
                                 if (dock != null)
                                 {
                                     dock.SetAttribute("Orientation", "-1");
-                                    dock.SetAttribute("AllowDocking", "1");
+                                    dock.SetAttribute("AllowDocking", "0");
                                     var finfo = dock.SelectSingleNode("FloatInfo") as System.Xml.XmlElement;
                                     if (finfo != null)
                                     {
                                         finfo.SetAttribute("Left", "60");
                                         finfo.SetAttribute("Top", "120");
                                         finfo.SetAttribute("Width", "300");
-                                        finfo.SetAttribute("Height", "550");
+                                        finfo.SetAttribute("Height", "500");
                                     }
                                     var dinfo = dock.SelectSingleNode("DockInfo") as System.Xml.XmlElement;
                                     if (dinfo != null)
                                     {
-                                        dinfo.SetAttribute("MRUDockID", "59420");
+                                        dinfo.SetAttribute("MRUDockID", "0");
                                         dinfo.SetAttribute("Left", "0");
                                         dinfo.SetAttribute("Top", "0");
-                                        dinfo.SetAttribute("Width", "300");
-                                        dinfo.SetAttribute("Height", "550");
+                                        dinfo.SetAttribute("Width", "200");
+                                        dinfo.SetAttribute("Height", "300");
                                     }
                                     modified = true;
                                 }
                             }
                         }
                         if (modified) doc.Save(targetFixed);
+                        try
+                        {
+                            using (RegistryKey root = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry32))
+                            using (RegistryKey mainKey = root.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409"))
+                            {
+                                if (mainKey != null)
+                                {
+                                    using (RegistryKey fpGen = mainKey.CreateSubKey(@"FixedProfile\General"))
+                                    {
+                                        if (fpGen != null) fpGen.SetValue("ProfileStorage", targetFixed, RegistryValueKind.String);
+                                    }
+                                    using (RegistryKey appKey = mainKey.OpenSubKey("Applications", true))
+                                    {
+                                        if (appKey != null) { try { appKey.DeleteSubKeyTree("WSCommCntrAcCon", false); } catch { } }
+                                    }
+                                }
+                            }
+                        }
+                        catch { }
                     }
                     catch { }
                 }

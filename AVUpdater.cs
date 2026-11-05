@@ -1,4 +1,4 @@
-﻿using AVRoadDeployment;
+using AVRoadDeployment;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
