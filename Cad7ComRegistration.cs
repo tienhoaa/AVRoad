@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -10,9 +10,8 @@ namespace AVRoadDeployment
 {
     public static class RegistryScope
     {
-        // RC1 deliberately does not re-run legacy HKLM/ACL/type-library repairs.
-        // Clean-machine bootstrap beyond these three values is not yet approved/tested.
-        public static bool IsLimited { get { return true; } }
+        // Full clean-machine bootstrap enabled for standalone RC2 deployment.
+        public static bool IsLimited { get { return false; } }
     }
     // Only the three native factories verified against the matching CAD7 snapshot.
     public static class Cad7ComRegistration
@@ -157,7 +156,12 @@ namespace AVRoadDeployment
 
         public static void EnsureProductBaseline(string appDir, XmlDocument state)
         {
-            // 1. ProgramData folders
+            string appDataEnuDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu");
+            string localDataEnuDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu");
+            string appDataEnu = appDataEnuDir + @"\";
+            string localDataEnu = localDataEnuDir + @"\";
+
+            // 1. ProgramData, LocalAppData, and AppData folders on disk
             try
             {
                 string pdataEnu = @"C:\ProgramData\Autodesk\AutoCAD 2007\R17.0\enu";
@@ -167,11 +171,31 @@ namespace AVRoadDeployment
             }
             catch { }
 
+            try
+            {
+                Directory.CreateDirectory(localDataEnuDir);
+                Directory.CreateDirectory(Path.Combine(localDataEnuDir, "Template"));
+                Directory.CreateDirectory(Path.Combine(localDataEnuDir, "WebServices"));
+                Directory.CreateDirectory(appDataEnuDir);
+                Directory.CreateDirectory(Path.Combine(appDataEnuDir, "Support"));
+                Directory.CreateDirectory(Path.Combine(appDataEnuDir, @"Support\Profiles\AVRoad"));
+                Directory.CreateDirectory(Path.Combine(appDataEnuDir, @"Support\RegisteredTools"));
+                Directory.CreateDirectory(Path.Combine(appDataEnuDir, @"Support\icons"));
+                Directory.CreateDirectory(Path.Combine(appDataEnuDir, "Data Links"));
+                Directory.CreateDirectory(Path.Combine(appDataEnuDir, "Plotters"));
+                Directory.CreateDirectory(Path.Combine(appDataEnuDir, "Plot Styles"));
+            }
+            catch { }
+
             // 2. HKCU 32-bit product identity
             try
             {
                 using (RegistryKey root = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry32))
                 {
+                    using (RegistryKey kAdsk = root.CreateSubKey(@"Software\Autodesk"))
+                    {
+                        if (kAdsk != null) kAdsk.SetValue("CurProd", "AutoCAD", RegistryValueKind.String);
+                    }
                     using (RegistryKey kAcad = root.CreateSubKey(@"Software\Autodesk\AutoCAD"))
                     {
                         if (kAcad != null) kAcad.SetValue("CurVer", "R17.0", RegistryValueKind.String);
@@ -186,8 +210,6 @@ namespace AVRoadDeployment
                         {
                             mainKey.SetValue("Roaming", 1, RegistryValueKind.DWord);
                             mainKey.SetValue("ExtensionRootFolder", @"C:\ProgramData\Autodesk\AutoCAD 2007\R17.0\enu\", RegistryValueKind.String);
-                            string appDataEnu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu") + @"\";
-                            string localDataEnu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu") + @"\";
                             mainKey.SetValue("RoamableRootFolder", appDataEnu, RegistryValueKind.String);
                             mainKey.SetValue("LocalRootFolder", localDataEnu, RegistryValueKind.String);
                             mainKey.SetValue("Release", "17.0.54.110", RegistryValueKind.String);
@@ -204,6 +226,15 @@ namespace AVRoadDeployment
                             mainKey.SetValue("AdLMInfoPath", @"C:\ProgramData\Autodesk\AutoCAD 2007\R17.0\Adlm\", RegistryValueKind.String);
                             mainKey.SetValue("SerialNumber", "000-00000000", RegistryValueKind.String);
                             mainKey.SetValue("DefaultHelpFileName", "acad170", RegistryValueKind.String);
+                            mainKey.SetValue("AutoMigrate", 0, RegistryValueKind.DWord);
+                            using (RegistryKey adlm = mainKey.CreateSubKey("AdLM"))
+                            {
+                                if (adlm != null) adlm.SetValue("Type", 42, RegistryValueKind.DWord);
+                            }
+                            using (RegistryKey ud = mainKey.CreateSubKey("UserData"))
+                            {
+                                if (ud != null) ud.SetValue("{5783F2D7-5001-0409-0002-0060B0CE6BBA}", @"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409", RegistryValueKind.String);
+                            }
                         }
                     }
                     using (RegistryKey profKey = root.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Profiles"))
@@ -217,7 +248,7 @@ namespace AVRoadDeployment
             }
             catch { }
 
-            // 3. HKLM 32-bit product baseline (scoped, only if elevated, no GrantUsersFullControl)
+            // 3. HKLM 32-bit product baseline
             try
             {
                 using (RegistryKey rootLM = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32))
@@ -228,6 +259,10 @@ namespace AVRoadDeployment
                         {
                             state.DocumentElement.SetAttribute("hklmCreated", "true");
                         }
+                    }
+                    using (RegistryKey kAdskLM = rootLM.CreateSubKey(@"Software\Autodesk"))
+                    {
+                        if (kAdskLM != null) kAdskLM.SetValue("CurProd", "AutoCAD", RegistryValueKind.String);
                     }
                     using (RegistryKey kAcadLM = rootLM.CreateSubKey(@"Software\Autodesk\AutoCAD"))
                     {
@@ -243,8 +278,6 @@ namespace AVRoadDeployment
                         {
                             mainKeyLM.SetValue("Roaming", 1, RegistryValueKind.DWord);
                             mainKeyLM.SetValue("ExtensionRootFolder", @"C:\ProgramData\Autodesk\AutoCAD 2007\R17.0\enu\", RegistryValueKind.String);
-                            string appDataEnu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu") + @"\";
-                            string localDataEnu = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu") + @"\";
                             mainKeyLM.SetValue("RoamableRootFolder", appDataEnu, RegistryValueKind.String);
                             mainKeyLM.SetValue("LocalRootFolder", localDataEnu, RegistryValueKind.String);
                             mainKeyLM.SetValue("Release", "17.0.54.110", RegistryValueKind.String);
@@ -262,6 +295,15 @@ namespace AVRoadDeployment
                             if (mainKeyLM.GetValue("SerialNumber") == null)
                                 mainKeyLM.SetValue("SerialNumber", "000-00000000", RegistryValueKind.String);
                             mainKeyLM.SetValue("DefaultHelpFileName", "acad170", RegistryValueKind.String);
+                            mainKeyLM.SetValue("AutoMigrate", 0, RegistryValueKind.DWord);
+                            using (RegistryKey adlmLM = mainKeyLM.CreateSubKey("AdLM"))
+                            {
+                                if (adlmLM != null) adlmLM.SetValue("Type", 42, RegistryValueKind.DWord);
+                            }
+                            using (RegistryKey udLM = mainKeyLM.CreateSubKey("UserData"))
+                            {
+                                if (udLM != null) udLM.SetValue("{5783F2D7-5001-0409-0002-0060B0CE6BBA}", @"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409", RegistryValueKind.String);
+                            }
                         }
                     }
                 }
@@ -272,13 +314,14 @@ namespace AVRoadDeployment
                 {
                     using (RegistryKey rootLM = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32))
                     using (RegistryKey checkLM = rootLM.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409", false))
+                    using (RegistryKey checkUD = rootLM.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\UserData", false))
                     {
-                        if (checkLM == null || checkLM.GetValue("SerialNumber") == null || checkLM.GetValue("AcadLocation") == null)
+                        if (checkLM == null || checkUD == null || checkLM.GetValue("SerialNumber") == null || checkLM.GetValue("AcadLocation") == null)
                         {
                             string avExe = Path.Combine(appDir, "AVRoad.exe");
                             if (File.Exists(avExe))
                             {
-                                ProcessStartInfo psi = new ProcessStartInfo(avExe, "/prepare-only");
+                                ProcessStartInfo psi = new ProcessStartInfo(avExe, "/repair-hklm");
                                 psi.Verb = "runas";
                                 psi.UseShellExecute = true;
                                 using (Process p = Process.Start(psi))
@@ -295,7 +338,7 @@ namespace AVRoadDeployment
             // 4. AWS profile files in AppData
             try
             {
-                string appDataProfiles = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu\Support\Profiles");
+                string appDataProfiles = Path.Combine(appDataEnuDir, @"Support\Profiles");
                 if (!Directory.Exists(appDataProfiles)) Directory.CreateDirectory(appDataProfiles);
                 string avroadProfDir = Path.Combine(appDataProfiles, "AVRoad");
                 if (!Directory.Exists(avroadProfDir)) Directory.CreateDirectory(avroadProfDir);
@@ -341,7 +384,8 @@ namespace AVRoadDeployment
                 }
 
                 using (RegistryKey general = root.OpenSubKey(ProfilePath + @"\General", false))
-                    if (general == null) RunReg("import " + Quote(profileFile));
+                using (RegistryKey dw = root.OpenSubKey(ProfilePath + @"\Drawing Window", false))
+                    if (general == null || dw == null) RunReg("import " + Quote(profileFile));
 
                 using (RegistryKey general = root.CreateSubKey(ProfilePath + @"\General"))
                 {
@@ -401,6 +445,22 @@ namespace AVRoadDeployment
             string font = IniValue(ini, "FontPath");
             string plotStyles = ExistingOrDefault(IniValue(ini, "PlotStylePath"), Path.Combine(appDir, "Plot Styles"));
             string plotters = ExistingOrDefault(IniValue(ini, "PlotterPath"), Path.Combine(appDir, "Plotters"));
+            string appDataEnuDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu");
+            string localDataEnuDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu");
+            string tempDir = Path.GetTempPath();
+            if (!tempDir.EndsWith(@"\")) tempDir += @"\";
+            string docsDir = Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
+
+            try
+            {
+                Directory.CreateDirectory(localDataEnuDir);
+                Directory.CreateDirectory(Path.Combine(localDataEnuDir, "Template"));
+                Directory.CreateDirectory(appDataEnuDir);
+                Directory.CreateDirectory(Path.Combine(appDataEnuDir, "Data Links"));
+                Directory.CreateDirectory(Path.Combine(appDataEnuDir, @"support\icons"));
+            }
+            catch { }
+
             List<string> paths = new List<string>();
             AddDirectory(paths, appDir);
             AddDirectory(paths, font);
@@ -417,19 +477,71 @@ namespace AVRoadDeployment
             string help = Path.Combine(appDir, @"Help\acad.chm");
             if (!File.Exists(help)) help = Path.Combine(appDir, "acad.chm");
             general.SetValue("ACADHELP", help, RegistryValueKind.String);
+            general.SetValue("ACADLOGFILE", Path.Combine(localDataEnuDir, "acad.log"), RegistryValueKind.String);
+            general.SetValue("PlotLogPath", localDataEnuDir + @"\", RegistryValueKind.String);
+            general.SetValue("PlotToFilePath", docsDir, RegistryValueKind.String);
+            general.SetValue("DatabaseWorkSpacePath", Path.Combine(appDataEnuDir, "Data Links"), RegistryValueKind.String);
+            general.SetValue("SheetSetTemplatePath", Path.Combine(localDataEnuDir, "Template"), RegistryValueKind.String);
 
             using (RegistryKey root = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry32))
             {
                 using (RegistryKey menu = root.CreateSubKey(ProfilePath + @"\General Configuration"))
-                    if (menu != null) menu.SetValue("MenuFile", Path.Combine(appDir, @"Support\acad"), RegistryValueKind.String);
+                {
+                    if (menu != null)
+                    {
+                        menu.SetValue("MenuFile", Path.Combine(appDir, @"Support\acad"), RegistryValueKind.String);
+                        menu.SetValue("TempDirectory", tempDir, RegistryValueKind.String);
+                        menu.SetValue("PlotSpoolerDirectory", tempDir, RegistryValueKind.String);
+                        menu.SetValue("IconFilePath", Path.Combine(appDataEnuDir, @"support\icons"), RegistryValueKind.String);
+                    }
+                }
                 using (RegistryKey editor = root.CreateSubKey(ProfilePath + @"\Editor Configuration"))
                 {
                     if (editor != null)
                     {
                         editor.SetValue("FontMappingFile", Path.Combine(appDir, @"Support\acad.fmp"), RegistryValueKind.String);
                         editor.SetValue("CustomDictionary", Path.Combine(appDir, @"Support\sample.cus"), RegistryValueKind.String);
+                        editor.SetValue("SaveFilePath", tempDir, RegistryValueKind.String);
+                        editor.SetValue("XrefLoadPath", tempDir, RegistryValueKind.String);
                     }
                 }
+                using (RegistryKey profRoot = root.OpenSubKey(ProfilePath, true))
+                {
+                    if (profRoot != null) SanitizeUserPathsRecursive(profRoot, appDir);
+                }
+            }
+        }
+
+        private static void SanitizeUserPathsRecursive(RegistryKey key, string appDir)
+        {
+            if (key == null) return;
+            string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            foreach (string vName in key.GetValueNames())
+            {
+                try
+                {
+                    if (key.GetValueKind(vName) == RegistryValueKind.String)
+                    {
+                        string val = key.GetValue(vName) as string;
+                        if (!String.IsNullOrEmpty(val) && val.IndexOf(@"C:\Users\PC", StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            string replaced = val.Replace(@"C:\Users\PC", userProfile).Replace(@"c:\Users\PC", userProfile);
+                            key.SetValue(vName, replaced, RegistryValueKind.String);
+                        }
+                    }
+                }
+                catch { }
+            }
+            foreach (string subName in key.GetSubKeyNames())
+            {
+                try
+                {
+                    using (RegistryKey sub = key.OpenSubKey(subName, true))
+                    {
+                        SanitizeUserPathsRecursive(sub, appDir);
+                    }
+                }
+                catch { }
             }
         }
 

@@ -223,6 +223,24 @@ namespace AVRoadLauncher
         {
             try
             {
+                string appDataEnuDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu");
+                string localDataEnuDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu");
+                try
+                {
+                    Directory.CreateDirectory(localDataEnuDir);
+                    Directory.CreateDirectory(Path.Combine(localDataEnuDir, "Template"));
+                    Directory.CreateDirectory(Path.Combine(localDataEnuDir, "WebServices"));
+                    Directory.CreateDirectory(appDataEnuDir);
+                    Directory.CreateDirectory(Path.Combine(appDataEnuDir, "Support"));
+                }
+                catch { }
+
+                // Root Autodesk
+                using (RegistryKey kAdsk = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk"))
+                {
+                    if (kAdsk != null) kAdsk.SetValue("CurProd", "AutoCAD", RegistryValueKind.String);
+                }
+
                 // Root AutoCAD
                 using (RegistryKey kAcad = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD"))
                 {
@@ -258,13 +276,13 @@ namespace AVRoadLauncher
                         mainKey.SetValue("StandaloneNetworkType", 1, RegistryValueKind.DWord);
                         mainKey.SetValue("NetSupport", "TCP", RegistryValueKind.String);
                         mainKey.SetValue("AdLMInfoPath", @"C:\ProgramData\Autodesk\AutoCAD 2007\R17.0\Adlm\", RegistryValueKind.String);
-                        mainKey.SetValue("SerialNumber", "000-12345678", RegistryValueKind.String);
+                        mainKey.SetValue("SerialNumber", "000-00000000", RegistryValueKind.String);
                         mainKey.SetValue("DefaultHelpFileName", "acad170", RegistryValueKind.String);
                         mainKey.SetValue("EnablerURL", "http://webservices.autodesk.com/LiveEnabler17", RegistryValueKind.String);
                         mainKey.SetValue("Mgroup", "ACAD", RegistryValueKind.String);
                         mainKey.SetValue("NFWState", 1, RegistryValueKind.DWord);
                         mainKey.SetValue("NFWUpgradeStrings", "AutoCAD 2006;AutoCAD 2005;AutoCAD 2004", RegistryValueKind.String);
-                        mainKey.SetValue("AutoMigrate", 1, RegistryValueKind.DWord);
+                        mainKey.SetValue("AutoMigrate", 0, RegistryValueKind.DWord);
                         mainKey.SetValue("NIWSelection", 0, RegistryValueKind.DWord);
 
                         using (RegistryKey adlm = mainKey.CreateSubKey("AdLM"))
@@ -413,6 +431,12 @@ namespace AVRoadLauncher
                 }
                 catch { }
 
+                // CurProd under Autodesk
+                using (RegistryKey kAdsk = Registry.LocalMachine.CreateSubKey(@"Software\WOW6432Node\Autodesk"))
+                {
+                    if (kAdsk != null) kAdsk.SetValue("CurProd", "AutoCAD", RegistryValueKind.String);
+                }
+
                 // CurVer under Autodesk\AutoCAD
                 using (RegistryKey kAcad = Registry.LocalMachine.CreateSubKey(@"Software\WOW6432Node\Autodesk\AutoCAD"))
                 {
@@ -448,13 +472,13 @@ namespace AVRoadLauncher
                     hklmRoot.SetValue("StandaloneNetworkType", 1, RegistryValueKind.DWord);
                     hklmRoot.SetValue("NetSupport", "TCP", RegistryValueKind.String);
                     hklmRoot.SetValue("AdLMInfoPath", @"C:\ProgramData\Autodesk\AutoCAD 2007\R17.0\Adlm\", RegistryValueKind.String);
-                    hklmRoot.SetValue("SerialNumber", "000-12345678", RegistryValueKind.String);
+                    if (hklmRoot.GetValue("SerialNumber") == null) hklmRoot.SetValue("SerialNumber", "000-00000000", RegistryValueKind.String);
                     hklmRoot.SetValue("DefaultHelpFileName", "acad170", RegistryValueKind.String);
                     hklmRoot.SetValue("EnablerURL", "http://webservices.autodesk.com/LiveEnabler17", RegistryValueKind.String);
                     hklmRoot.SetValue("Mgroup", "ACAD", RegistryValueKind.String);
                     hklmRoot.SetValue("NFWState", 1, RegistryValueKind.DWord);
                     hklmRoot.SetValue("NFWUpgradeStrings", "AutoCAD 2006;AutoCAD 2005;AutoCAD 2004", RegistryValueKind.String);
-                    hklmRoot.SetValue("AutoMigrate", 1, RegistryValueKind.DWord);
+                    hklmRoot.SetValue("AutoMigrate", 0, RegistryValueKind.DWord);
                     hklmRoot.SetValue("NIWSelection", 0, RegistryValueKind.DWord);
 
                     using (RegistryKey adlm = hklmRoot.CreateSubKey("AdLM"))

@@ -55,11 +55,9 @@ namespace AVRoadUninstaller
             catch { }
 
             // 3. Remove Windows Registry Uninstall Entry
-            try
-            {
-                Registry.CurrentUser.DeleteSubKeyTree(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026", false);
-            }
-            catch { }
+            try { Registry.CurrentUser.DeleteSubKeyTree(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026", false); } catch { }
+            try { Registry.LocalMachine.DeleteSubKeyTree(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026", false); } catch { }
+            try { Registry.LocalMachine.DeleteSubKeyTree(@"Software\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026", false); } catch { }
 
             // 4. Delete app directory via a self-deleting cmd batch
             string batchPath = Path.Combine(Path.GetTempPath(), "remove_avroad.bat");

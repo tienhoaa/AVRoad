@@ -1861,9 +1861,9 @@ namespace AVRoadLauncher
         public static void PrepareProfile(string appDir, string argProfile, string fontPath, string plotStylePath, string plotterPath)
 
         {
+            try { if (!string.IsNullOrEmpty(argProfile) && File.Exists(argProfile)) Cad7ProfileBootstrap.Ensure(appDir, argProfile); } catch { }
             if (RegistryScope.IsLimited)
             {
-                Cad7ProfileBootstrap.Ensure(appDir, argProfile);
                 return;
             }
 
@@ -1994,7 +1994,7 @@ namespace AVRoadLauncher
 
             {
 
-                using (RegistryKey pk = Registry.CurrentUser.OpenSubKey(profilesKeyPath + @"\AVRoad"))
+                using (RegistryKey pk = Registry.CurrentUser.OpenSubKey(profilesKeyPath + @"\AVRoad\Drawing Window"))
 
                 {
 
@@ -2112,9 +2112,9 @@ namespace AVRoadLauncher
 
                                     rk.SetValue("Location", appDir);
 
-                                    rk.SetValue("ProductName", "AVRoad 2026");
+                                    rk.SetValue("ProductName", "AutoCAD 2007");
 
-                                    rk.SetValue("Release", "17.0");
+                                    rk.SetValue("Release", "17.0.54.110");
 
                                     rk.SetValue("CurVer", "ACAD-5001:409");
 
@@ -2144,7 +2144,7 @@ namespace AVRoadLauncher
 
                                     rk.SetValue("Location", appDir);
 
-                                    rk.SetValue("ProductName", "AVRoad 2026");
+                                    rk.SetValue("ProductName", "AutoCAD 2007");
 
                                 }
 
@@ -2162,7 +2162,7 @@ namespace AVRoadLauncher
 
                                     rk64.SetValue("Location", appDir);
 
-                                    rk64.SetValue("ProductName", "AVRoad 2026");
+                                    rk64.SetValue("ProductName", "AutoCAD 2007");
 
                                 }
 
@@ -2552,17 +2552,55 @@ namespace AVRoadLauncher
 
 
 
-                public static void EnsureSystemRegistryConfigured(string appDir)
+        public static void EnsureWindowsUninstallRegistered(string targetDir)
         {
+            try
+            {
+                string uninstExe = Path.Combine(targetDir, "Uninstall.exe");
+                if (!File.Exists(uninstExe)) return;
+                string uninstallSubKey = @"Software\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026";
+                using (RegistryKey uKey = Registry.CurrentUser.CreateSubKey(uninstallSubKey))
+                {
+                    if (uKey != null)
+                    {
+                        uKey.SetValue("DisplayName", "AVRoad 2026 Solution");
+                        uKey.SetValue("DisplayVersion", "2.1.0");
+                        uKey.SetValue("Publisher", "AV Technology CDE");
+                        uKey.SetValue("UninstallString", "\"" + uninstExe + "\"");
+                        uKey.SetValue("QuietUninstallString", "\"" + uninstExe + "\"");
+                        uKey.SetValue("DisplayIcon", Path.Combine(targetDir, "AVRoad.ico"));
+                        uKey.SetValue("InstallLocation", targetDir);
+                        uKey.SetValue("EstimatedSize", 314000, RegistryValueKind.DWord);
+                        uKey.SetValue("NoModify", 1, RegistryValueKind.DWord);
+                        uKey.SetValue("NoRepair", 1, RegistryValueKind.DWord);
+                    }
+                }
+            }
+            catch { }
+        }
+
+        public static void EnsureSystemRegistryConfigured(string appDir)
+        {
+            EnsureWindowsUninstallRegistered(appDir);
             if (RegistryScope.IsLimited) return;
 
             try
             {
                 bool needsHklm = false;
+                using (RegistryKey kAdsk = Registry.LocalMachine.OpenSubKey(@"Software\WOW6432Node\Autodesk"))
                 using (RegistryKey k = Registry.LocalMachine.OpenSubKey(@"Software\WOW6432Node\Autodesk\AutoCAD\R17.0\ACAD-5001:409"))
+                using (RegistryKey kUd = Registry.LocalMachine.OpenSubKey(@"Software\WOW6432Node\Autodesk\AutoCAD\R17.0\ACAD-5001:409\UserData"))
+                using (RegistryKey kApp = Registry.LocalMachine.OpenSubKey(@"Software\WOW6432Node\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications"))
                 {
-                    if (k == null || k.GetValue("Language") == null || k.GetValue("Release") == null)
+                    if (kAdsk == null || !string.Equals(kAdsk.GetValue("CurProd") as string, "AutoCAD", StringComparison.OrdinalIgnoreCase) ||
+                        k == null || kUd == null || kApp == null ||
+                        k.GetValue("SerialNumber") == null ||
+                        k.GetValue("Language") == null ||
+                        !string.Equals(k.GetValue("Release") as string, "17.0.54.110", StringComparison.OrdinalIgnoreCase) ||
+                        !string.Equals(k.GetValue("ProductName") as string, "AutoCAD 2007", StringComparison.OrdinalIgnoreCase))
+                    {
                         needsHklm = true;
+                    }
                 }
 
                 if (needsHklm)
@@ -2592,6 +2630,13 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
         {
             Cad7ComRegistration.Apply(appDir, null);
             EnsureSystemRegistryConfigured(appDir);
+            try
+            {
+                CADRegistryConfig.WriteHkcuKeys(appDir);
+                string argProf = Path.Combine(appDir, "AVRoad_Profile.arg");
+                if (File.Exists(argProf)) Cad7ProfileBootstrap.Ensure(appDir, argProf);
+            }
+            catch { }
 
             string acadExe = Path.Combine(appDir, "acad.exe");
 

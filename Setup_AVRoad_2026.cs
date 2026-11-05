@@ -1535,47 +1535,39 @@ namespace AVRoadInstaller
 
 
         private void RegisterWindowsUninstall(string targetDir)
-
         {
-            if (RegistryScope.IsLimited) return;
-
-
-            try
-
+            string uninstExe = Path.Combine(targetDir, "Uninstall.exe");
+            string uninstallSubKey = @"Software\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026";
+            RegistryKey[] roots = new RegistryKey[]
             {
-
-                string uninstExe = Path.Combine(targetDir, "Uninstall.exe");
-
-                using (RegistryKey uKey = Registry.CurrentUser.CreateSubKey(@"Software\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026"))
-
+                Registry.CurrentUser,
+                Registry.LocalMachine,
+                RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32)
+            };
+            foreach (RegistryKey root in roots)
+            {
+                if (root == null) continue;
+                try
                 {
-
-                    if (uKey != null)
-
+                    using (RegistryKey uKey = root.CreateSubKey(uninstallSubKey))
                     {
-
-                        uKey.SetValue("DisplayName", "AVRoad 2026 Solution");
-
-                        uKey.SetValue("DisplayVersion", "1.0");
-
-                        uKey.SetValue("Publisher", "AV Technology CDE");
-
-                        uKey.SetValue("UninstallString", "\"" + uninstExe + "\"");
-
-                        uKey.SetValue("DisplayIcon", Path.Combine(targetDir, "AVRoad.ico"));
-
-                        uKey.SetValue("InstallLocation", targetDir);
-
-                        uKey.SetValue("EstimatedSize", 314000, RegistryValueKind.DWord);
-
+                        if (uKey != null)
+                        {
+                            uKey.SetValue("DisplayName", "AVRoad 2026 Solution");
+                            uKey.SetValue("DisplayVersion", "2.1.0");
+                            uKey.SetValue("Publisher", "AV Technology CDE");
+                            uKey.SetValue("UninstallString", "\"" + uninstExe + "\"");
+                            uKey.SetValue("QuietUninstallString", "\"" + uninstExe + "\"");
+                            uKey.SetValue("DisplayIcon", Path.Combine(targetDir, "AVRoad.ico"));
+                            uKey.SetValue("InstallLocation", targetDir);
+                            uKey.SetValue("EstimatedSize", 314000, RegistryValueKind.DWord);
+                            uKey.SetValue("NoModify", 1, RegistryValueKind.DWord);
+                            uKey.SetValue("NoRepair", 1, RegistryValueKind.DWord);
+                        }
                     }
-
                 }
-
+                catch { }
             }
-
-            catch { }
-
         }
 
 
