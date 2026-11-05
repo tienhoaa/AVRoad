@@ -1,0 +1,613 @@
+<commands>
+  <group id="KSVN-PMU_0002" title="AV_Khảo sát">
+    <action menu="VNROAD" uid="MMU_0004" menuName="Khai báo lệnh tắt" command="TAT" title="Khai báo lệnh tắt" description="Khai báo lệnh tắt" />
+    <action menu="KSVN" uid="MMU_0005" menuName="Dữ liệu bình đồ" command="DLBD" title="Dữ liệu bình đồ" description="Dữ liệu bình đồ" />
+    <action menu="KSVN" uid="MMU_0130" menuName="Mặt cắt địa hình" command="MCDH" title="Mặt cắt địa hình" description="Mặt cắt địa hình" />
+    <action menu="KSVN" uid="MMU_0006" menuName="Tra cao độ nhiều mô hình" command="TCD" title="Tra cao độ nhiều mô hình" description="Tra cao độ nhiều mô hình" />
+    <action menu="KSVN" uid="MMU_0007" menuName="Tạo các điểm tại các đỉnh của đường pline,2dpline,3dpolyline" command="D2D" title="Tạo các điểm tại các đỉnh của đường pline,2dpline,3dpolyline" description="Tạo các điểm tại các đỉnh của đường pline,2dpline,3dpolyline" />
+    <action menu="KSVN" uid="MMU_0131" menuName="Tạo đường 3D từ đường 2D và mô hình địa hình" command="TD3D" title="Tạo đường 3D từ đường 2D và mô hình địa hình" description="Tạo đường 3D từ đường 2D và mô hình địa hình" />
+    <action menu="KSVN" uid="MMU_0008" menuName="Trích vùng bản đồ tạo tệp bản vẽ mới" command="TVBD" title="Trích vùng bản đồ tạo tệp bản vẽ mới" description="Trích vùng bản đồ tạo tệp bản vẽ mới" />
+    <group id="KSVN-PMU_0003" title="Điểm đo">
+      <action menu="KSVN" uid="MMU_0009" menuName="Cài đặt hiển thị điểm đo" command="CDD" title="Cài đặt hiển thị điểm đo" description="Cài đặt hiển thị điểm đo" />
+      <action menu="KSVN" uid="MMU_0010" menuName="Biên tập dữ liệu đo đạc" command="BTT" title="Biên tập dữ liệu đo đạc" description="Biên tập dữ liệu đo đạc" />
+      <action menu="KSVN" uid="MMU_0011" menuName="Nhập điểm từ Tệp toạ độ" command="DTD" title="Nhập điểm từ Tệp toạ độ" description="Nhập điểm từ Tệp toạ độ" />
+      <action menu="KSVN" uid="MMU_0012" menuName="Xuất điểm ra Tệp toạ độ" command="XTD" title="Xuất điểm ra Tệp toạ độ" description="Xuất điểm ra Tệp toạ độ" />
+      <action menu="KSVN" uid="MMU_0013" menuName="Chuyển điểm đo thành trạm máy" command="DDTM" title="Chuyển điểm đo thành trạm máy" description="Chuyển điểm đo thành trạm máy" />
+      <action menu="KSVN" uid="MMU_0014" menuName="Nâng hạ cao độ tập hợp điểm" command="NCD" title="Nâng hạ cao độ tập hợp điểm" description="Nâng hạ cao độ tập hợp điểm" />
+      <action menu="KSVN" uid="MMU_0015" menuName="Xoá điểm trong vùng" command="XD" title="Xoá điểm trong vùng" description="Xoá điểm trong vùng" />
+      <action menu="KSVN" uid="MMU_0016" menuName="Che điểm trong vùng" command="BTD" title="Che điểm trong vùng" description="Che điểm trong vùng" />
+      <action menu="KSVN" uid="MMU_0017" menuName="Nối điểm tự động" command="ND" title="Nối điểm tự động" description="Nối điểm tự động" />
+    </group>
+    <group id="KSVN-PMU_0004" title="Tuyến">
+      <action menu="KSVN" uid="MMU_0018" menuName="Nhập số liệu tuyến" command="NT" title="Nhập số liệu tuyến" description="Nhập số liệu tuyến; Tập tin &gt; Mở hỗ trợ NTD, giữ cọc có sẵn." />
+      <action menu="KSVN" uid="MMU_0019" menuName="Tạo tuyến" command="TT" title="Tạo tuyến" description="Tạo tuyến" />
+      <group id="KSVN-PMU_0005" title="Hiệu chỉnh tuyến">
+        <action menu="KSVN" uid="MMU_0020" menuName="Bố trí đường cong nằm" command="CN" title="Bố trí đường cong nằm" description="Bố trí đường cong nằm" />
+        <action menu="KSVN" uid="MMU_0021" menuName="Hiệu chỉnh tuyến" command="HCT" title="Hiệu chỉnh tuyến" description="Hiệu chỉnh tuyến; Phát sinh cọc nằm trong hộp thoại này." />
+        <action menu="KSVN" uid="MMU_0022" menuName="Chèn đỉnh tuyến" command="CDT" title="Chèn đỉnh tuyến" description="Chèn đỉnh tuyến" />
+        <action menu="KSVN" uid="MMU_0023" menuName="Loại đỉnh tuyến" command="LDT" title="Loại đỉnh tuyến" description="Loại đỉnh tuyến" />
+        <action menu="KSVN" uid="MMU_0024" menuName="Thay đoạn tuyên" command="TDT" title="Thay đoạn tuyên" description="Thay đoạn tuyên" />
+        <action menu="KSVN" uid="MMU_0025" menuName="Cập nhật tuyến" command="CNT" title="Cập nhật tuyến" description="Cập nhật tuyến" />
+        <action menu="KSVN" uid="MMU_0026" menuName="Đảo chiều tuyến" command="DCT" title="Đảo chiều tuyến" description="Đảo chiều tuyến" />
+        <action menu="KSVN" uid="MMU_0027" menuName="Định vị tuyến" command="DVT" title="Định vị tuyến" description="Định vị tuyến" />
+        <action menu="KSVN" uid="MMU_0028" menuName="Định vị điểm mia theo cọc" command="DVDM2" title="Định vị điểm mia theo cọc" description="Định vị điểm mia theo cọc" />
+        <action menu="KSVN" uid="MMU_0029" menuName="Hiệu chỉnh số liệu tuyến" command="SLT" title="Hiệu chỉnh số liệu tuyến" description="Hiệu chỉnh số liệu tuyến" />
+      </group>
+      <group id="KSVN-PMU_0006" title="Mặt bằng tuyến">
+        <action menu="KSVN" uid="MMU_0031" menuName="Bật điểm bình đồ tuyến" command="BDD" title="Bật điểm bình đồ tuyến" description="Bật điểm bình đồ tuyến" />
+        <action menu="KSVN" uid="MMU_0032" menuName="Cài đặt hiển thị thông số tuyến" command="DTST" title="Cài đặt hiển thị thông số tuyến" description="Cài đặt hiển thị thông số tuyến; cài đặt hiển thị thông số cọc/tuyến." />
+        <action menu="KSVN" uid="MMU_0033" menuName="Bật thông số tuyến" command="BTST" title="Bật thông số tuyến" description="Bật thông số tuyến" />
+        <action menu="KSVN" uid="MMU_0034" menuName="Tắt thông số tuyến" command="TTST" title="Tắt thông số tuyến" description="Tắt thông số tuyến" />
+        <action menu="KSVN" uid="MMU_0030" menuName="Che điểm bình đồ tuyến" command="TDBDT" title="Che điểm bình đồ tuyến" description="Che điểm bình đồ tuyến" />
+        <action menu="KSVN" uid="MMU_0035" menuName="Bán kính điền" command="BKD" title="Bán kính điền" description="Bán kính điền" />
+        <action menu="KSVN" uid="MMU_0036" menuName="Cập nhật điểm mia" command="CNMIA" title="Cập nhật điểm mia" description="Cập nhật điểm mia" />
+        <action menu="KSVN" uid="MMU_0037" menuName="Quay điểm mia theo phương cọc" command="RMIA" title="Quay điểm mia theo phương cọc" description="Quay điểm mia theo phương cọc" />
+        <action menu="KSVN" uid="MMU_0038" menuName="Công trình trên tuyến" command="CONG" title="Công trình trên tuyến" description="Công trình trên tuyến" />
+      </group>
+      <action menu="KSVN" uid="MMU_0039" menuName="Tìm cọc" command="TIM" title="Tìm cọc" description="Tìm cọc" />
+      <action menu="KSVN" uid="MMU_0040" menuName="Định nghĩa đường mã hiệu" command="DMH" title="Định nghĩa đường mã hiệu" description="Định nghĩa đường mã hiệu" />
+      <action menu="KSVN" uid="MMU_0041" menuName="Xuất số liệu tuyến" command="XSLT" title="Xuất số liệu tuyến" description="Xuất số liệu tuyến" />
+      <action menu="KSVN" uid="MMU_0042" menuName="Xoá tuyến" command="XT" title="Xoá tuyến" description="Xoá tuyến" />
+      <group id="KSVN-PMU_0007" title="Địa chất tuyến đường">
+        <action menu="KSVN" uid="MMU_0043" menuName="Khai báo lớp địa chất" command="LDC" title="Khai báo lớp địa chất" description="Khai báo lớp địa chất" />
+        <action menu="KSVN" uid="MMU_0044" menuName="Nhập lớp địa chất trắc dọc" command="DCTD" title="Nhập lớp địa chất trắc dọc" description="Nhập lớp địa chất trắc dọc" />
+        <action menu="KSVN" uid="MMU_0045" menuName="Nhập lớp địa chất trắc ngang" command="DCTN" title="Nhập lớp địa chất trắc ngang" description="Nhập lớp địa chất trắc ngang" />
+        <action menu="KSVN" uid="MMU_0046" menuName="Cập nhật địa chất trắc ngang từ địa chất trắc dọc" command="CNDCTD" title="Cập nhật địa chất trắc ngang từ địa chất trắc dọc" description="Cập nhật địa chất trắc ngang từ địa chất trắc dọc" />
+        <action menu="KSVN" uid="MMU_0047" menuName="Cập nhật địa chất từ trắc dọc sang trắc ngang" command="CNDCTN" title="Cập nhật địa chất từ trắc dọc sang trắc ngang" description="Cập nhật địa chất từ trắc dọc sang trắc ngang" />
+        <action menu="KSVN" uid="MMU_0128" menuName="Nhập địa chất TN theo lớp cập nhất lên TD" command="DCTTN" title="Nhập địa chất TN theo lớp cập nhất lên TD" description="Nhập địa chất TN theo lớp cập nhất lên TD" />
+      </group>
+      <group id="KSVN-PMU_0008" title="Lớp đường cũ">
+        <action menu="KSVN" uid="MMU_0048" menuName="Định nghĩa lớp đường cũ" command="DNLDC" title="Định nghĩa lớp đường cũ" description="Định nghĩa lớp đường cũ" />
+        <action menu="KSVN" uid="MMU_0049" menuName="Định nghĩa mép đường cũ trên bình đồ" command="DNDC" title="Định nghĩa mép đường cũ trên bình đồ" description="Định nghĩa mép đường cũ trên bình đồ" />
+        <action menu="KSVN" uid="MMU_0050" menuName="Vẽ lớp đường cũ" command="KLDC" title="Vẽ lớp đường cũ" description="Vẽ lớp đường cũ" />
+        <action menu="KSVN" uid="MMU_0051" menuName="Định nghĩa đường cũ trên trắc ngang" command="DNDCTN" title="Định nghĩa đường cũ trên trắc ngang" description="Định nghĩa đường cũ trên trắc ngang" />
+        <action menu="KSVN" uid="MMU_0052" menuName="Xoá lớp đường cũ" command="XLDC" title="Xoá lớp đường cũ" description="Xoá lớp đường cũ" />
+      </group>
+      <group id="KSVN-PMU_0009" title="Trắc dọc">
+        <action menu="KSVN" uid="MMU_0053" menuName="Vẽ trắc dọc tự nhiên" command="TD" title="Vẽ trắc dọc tự nhiên" description="Vẽ trắc dọc tự nhiên" />
+        <action menu="KSVN" uid="MMU_0054" menuName="Hiệu chỉnh cọc trên trắc dọc" command="HCC" title="Hiệu chỉnh cọc trên trắc dọc" description="Hiệu chỉnh cọc trên trắc dọc" />
+        <action menu="KSVN" uid="MMU_0055" menuName="Thay đổi mức so sánh trắc dọc" command="MSSTD" title="Thay đổi mức so sánh trắc dọc" description="Thay đổi mức so sánh trắc dọc" />
+      </group>
+      <group id="KSVN-PMU_0010" title="Trắc ngang">
+        <group id="KSVN-PMU_0011" title="Trắc ngang tự nhiên">
+          <action menu="KSVN" uid="MMU_0056" menuName="Vẽ trắc ngang tự nhiên" command="TN" title="Vẽ trắc ngang tự nhiên" description="Vẽ trắc ngang tự nhiên" />
+          <action menu="KSVN" uid="MMU_0057" menuName="Định nghĩa đường địa vật" command="AI" title="Định nghĩa đường địa vật" description="Định nghĩa đường địa vật" />
+          <action menu="KSVN" uid="MMU_0058" menuName="Chèn địa vật lên trắc ngang" command="DSS" title="Chèn địa vật lên trắc ngang" description="Chèn địa vật lên trắc ngang" />
+        </group>
+        <group id="KSVN-PMU_0012" title="Hiệu chỉnh trắc ngang">
+          <action menu="KSVN" uid="MMU_0059" menuName="Hiệu chỉnh điểm mia trắc ngang" command="HCDM" title="Hiệu chỉnh điểm mia trắc ngang" description="Hiệu chỉnh điểm mia trắc ngang" />
+          <action menu="KSVN" uid="MMU_0060" menuName="Thêm điểm mia" command="TDM" title="Thêm điểm mia" description="Thêm điểm mia" />
+          <action menu="KSVN" uid="MMU_0061" menuName="Loại điểm mia" command="LDM" title="Loại điểm mia" description="Loại điểm mia" />
+          <action menu="KSVN" uid="MMU_0062" menuName="Thay đổi mức so sánh trắc ngang" command="MSSTN" title="Thay đổi mức so sánh trắc ngang" description="Thay đổi mức so sánh trắc ngang" />
+          <action menu="KSVN" uid="MMU_0063" menuName="Cập nhật trắc ngang" command="CNTN" title="Cập nhật trắc ngang" description="Cập nhật trắc ngang" />
+          <action menu="KSVN" uid="MMU_0064" menuName="Xoá điểm mia trùng trên tuyến" command="XMIA" title="Xoá điểm mia trùng trên tuyến" description="Xoá điểm mia trùng trên tuyến" />
+        </group>
+      </group>
+    </group>
+    <group id="KSVN-PMU_0013" title="Bảng biểu">
+      <action menu="KSVN" uid="MMU_0065" menuName="Cài đặt thông số bảng biểu" command="CDB" title="Cài đặt thông số bảng biểu" description="Cài đặt thông số bảng biểu" />
+      <action menu="KSVN" uid="MMU_0066" menuName="Bảng cắm cong" command="XCC" title="Bảng cắm cong" description="Bảng cắm cong" />
+      <action menu="KSVN" uid="MMU_0067" menuName="Bảng yếu tố cong" command="XYTC" title="Bảng yếu tố cong" description="Bảng yếu tố cong" />
+      <action menu="KSVN" uid="MMU_0068" menuName="Bảng toạ độ cọc" command="XTDC" title="Bảng toạ độ cọc" description="Bảng toạ độ cọc" />
+      <action menu="KSVN" uid="MMU_0069" menuName="Bảng thống kê bán kính cong nằm" command="BBKCN" title="Bảng thống kê bán kính cong nằm" description="Bảng thống kê bán kính cong nằm" />
+    </group>
+    <group id="KSVN-PMU_0014" title="Địa vật">
+      <action menu="KSVN" uid="MMU_0070" menuName="Vẽ nhà" command="VN" title="Vẽ nhà" description="Vẽ nhà" />
+      <action menu="KSVN" uid="MMU_0071" menuName="Địa vật" command="VD" title="Địa vật" description="Địa vật" />
+      <action menu="KSVN" uid="MMU_0072" menuName="Đường" command="VDU" title="Đường" description="Đường" />
+      <action menu="KSVN" uid="MMU_0073" menuName="Vùng" command="VV" title="Vùng" description="Vùng" />
+      <action menu="KSVN" uid="MMU_0074" menuName="Taluy" command="TL" title="Taluy" description="Taluy" />
+      <action menu="KSVN" uid="MMU_0075" menuName="Hiệu chỉnh taluy" command="HCTL" title="Hiệu chỉnh taluy" description="Hiệu chỉnh taluy" />
+    </group>
+    <group id="KSVN-PMU_0015" title="Khung bản đồ">
+      <action menu="KSVN" uid="MMU_0076" menuName="Lưới toạ độ" command="TLTD" title="Lưới toạ độ" description="Lưới toạ độ" />
+      <action menu="KSVN" uid="MMU_0077" menuName="Điểm toạ độ" command="TDTD" title="Điểm toạ độ" description="Điểm toạ độ" />
+      <action menu="KSVN" uid="MMU_0078" menuName="Tạo khung bản đồ" command="TKBD" title="Tạo khung bản đồ" description="Tạo khung bản đồ" />
+      <group id="KSVN-PMU_0016" title="Phân mảnh bản đồ">
+        <action menu="KSVN" uid="MMU_0079" menuName="Tạo phân mảnh bản đồ" command="TPM" title="Tạo phân mảnh bản đồ" description="Tạo phân mảnh bản đồ" />
+        <action menu="KSVN" uid="MMU_0080" menuName="Tạo khung phân mảnh" command="TKPM" title="Tạo khung phân mảnh" description="Tạo khung phân mảnh" />
+      </group>
+      <action menu="KSVN" uid="MMU_0081" menuName="Khung bản đồ xiên" command="TKX" title="Khung bản đồ xiên" description="Khung bản đồ xiên" />
+      <group id="KSVN-PMU_0017" title="Hiệu chỉnh">
+        <action menu="KSVN" uid="MMU_0082" menuName="Lưới toạ độ" command="HLTD" title="Lưới toạ độ" description="Lưới toạ độ" />
+        <action menu="KSVN" uid="MMU_0083" menuName="Điểm toạ độ" command="HDTD" title="Điểm toạ độ" description="Điểm toạ độ" />
+        <action menu="KSVN" uid="MMU_0084" menuName="Phân mảnh bản đồ" command="HPM" title="Phân mảnh bản đồ" description="Phân mảnh bản đồ" />
+        <action menu="KSVN" uid="MMU_0085" menuName="Khung bản đồ" command="HKBD" title="Khung bản đồ" description="Khung bản đồ" />
+        <action menu="KSVN" uid="MMU_0086" menuName="Bản đồ xiên" command="HKX" title="Bản đồ xiên" description="Bản đồ xiên" />
+        <action menu="KSVN" uid="MMU_0087" menuName="Bật bản đồ" command="BBD" title="Bật bản đồ" description="Bật bản đồ" />
+        <action menu="KSVN" uid="MMU_0088" menuName="Tắt bản đồ" command="TBD" title="Tắt bản đồ" description="Tắt bản đồ" />
+      </group>
+    </group>
+    <group id="KSVN-PMU_0018" title="Tiện ích tối ưu hóa bản vẽ">
+      <action menu="KSVN" uid="MMU_0089" menuName="Loại đối tượng trùng (đường, điểm) trong bản vẽ" command="LDDT" title="Loại đối tượng trùng (đường, điểm) trong bản vẽ" description="Loại đối tượng trùng (đường, điểm) trong bản vẽ" />
+      <action menu="KSVN" uid="MMU_0090" menuName="Đánh dấu các đường pline, pline2d và các đỉnh 3dpolyline có cao độ bằng không" command="CD0" title="Đánh dấu các đường pline, pline2d và các đỉnh 3dpolyline có cao độ bằng không" description="Đánh dấu các đường pline, pline2d và các đỉnh 3dpolyline có cao độ bằng không" />
+    </group>
+    <group id="KSVN-PMU_0019" title="In ấn">
+      <action menu="KSVN" uid="MMU_0091" menuName="Tạo trắc dọc in" command="INTD" title="Tạo trắc dọc in" description="Tạo trắc dọc in" />
+      <action menu="KSVN" uid="MMU_0092" menuName="Tạo vùng chứa TN trong khung in" command="KIN" title="Tạo vùng chứa TN trong khung in" description="Tạo vùng chứa TN trong khung in" />
+      <action menu="KSVN" uid="MMU_0093" menuName="Tạo trang in trắc ngang theo khung in" command="INTN" title="Tạo trang in trắc ngang theo khung in" description="Tạo trang in trắc ngang theo khung in" />
+      <action menu="KSVN" uid="MMU_0094" menuName="Cắt bình đồ tuyến theo polyline" command="CAT" title="Cắt bình đồ tuyến theo polyline" description="Cắt bình đồ tuyến theo polyline" />
+    </group>
+    <group id="KSVN-PMU_0020" title="Tạo hatch người dùng">
+      <action menu="KSVN" uid="MMU_0096" menuName="Vẽ mẫu hatch" command="LHATCH" title="Vẽ mẫu hatch" description="Vẽ mẫu hatch" />
+      <action menu="KSVN" uid="MMU_0097" menuName="Ghi mẫu hatch ra tệp" command="THATCH" title="Ghi mẫu hatch ra tệp" description="Ghi mẫu hatch ra tệp" />
+    </group>
+    <group id="KSVN-PMU_0021" title="Tiện ích">
+      <group id="KSVN-PMU_0022" title="Chèn khối trên tuyến">
+        <action menu="KSVN" uid="MMU_0124" menuName="Định nghĩa khối" command="DNK" title="Định nghĩa khối" description="Định nghĩa khối" />
+        <action menu="KSVN" uid="MMU_0125" menuName="Chèn khối" command="CKTN" title="Chèn khối" description="Chèn khối" />
+      </group>
+      <group id="KSVN-PMU_0023" title="Tiện ích lớp">
+        <action menu="KSVN" uid="MMU_0120" menuName="Bật toàn bộ các lớp" command="11" title="Bật toàn bộ các lớp" description="Bật toàn bộ các lớp" />
+        <action menu="KSVN" uid="MMU_0121" menuName="Tắt lớp chứa đối tượng được chọn" command="22" title="Tắt lớp chứa đối tượng được chọn" description="Tắt lớp chứa đối tượng được chọn" />
+        <action menu="KSVN" uid="MMU_0122" menuName="Tắt lớp không chứa đối tượng được chọn" command="33" title="Tắt lớp không chứa đối tượng được chọn" description="Tắt lớp không chứa đối tượng được chọn" />
+        <action menu="KSVN" uid="MMU_0123" menuName="Xoá toàn bộ đối tượng của lớp" command="44" title="Xoá toàn bộ đối tượng của lớp" description="Xoá toàn bộ đối tượng của lớp" />
+      </group>
+      <group id="KSVN-PMU_0024" title="Tiện ích đường">
+        <action menu="KSVN" uid="MMU_0102" menuName="Định nghĩa đa tuyến dốc" command="DNPL" title="Định nghĩa đa tuyến dốc" description="Định nghĩa đa tuyến dốc" />
+        <action menu="KSVN" uid="MMU_0103" menuName="Vẽ đường 3Dpolyline theo độ dốc" command="PL3D" title="Vẽ đường 3Dpolyline theo độ dốc" description="Vẽ đường 3Dpolyline theo độ dốc" />
+        <action menu="KSVN" uid="MMU_0104" menuName="Tạo điểm đo tại các đỉnh của đường pline,2dpline,3dpolyline" command="D2D" title="Tạo điểm đo tại các đỉnh của đường pline,2dpline,3dpolyline" description="Tạo điểm đo tại các đỉnh của đường pline,2dpline,3dpolyline" />
+        <action menu="KSVN" uid="MMU_0105" menuName="Offset 3D Polyline" command="O3P" title="Offset 3D Polyline" description="Offset 3D Polyline" />
+        <action menu="KSVN" uid="MMU_0106" menuName="Nối các đường 3D Polyline" command="N3D" title="Nối các đường 3D Polyline" description="Nối các đường 3D Polyline" />
+        <action menu="KSVN" uid="MMU_0108" menuName="Hiệu chỉnh cao độ Polyline" command="EM" title="Hiệu chỉnh cao độ Polyline" description="Hiệu chỉnh cao độ Polyline" />
+        <action menu="KSVN" uid="MMU_0109" menuName="Chia cung" command="BA" title="Chia cung" description="Chia cung" />
+        <action menu="KSVN" uid="MMU_0110" menuName="Chuyển 2D, 3D Polyline sang Spline" command="P2S" title="Chuyển 2D, 3D Polyline sang Spline" description="Chuyển 2D, 3D Polyline sang Spline" />
+        <action menu="KSVN" uid="MMU_0111" menuName="Chuyển Spline sang 2D Polyline" command="S2P" title="Chuyển Spline sang 2D Polyline" description="Chuyển Spline sang 2D Polyline" />
+        <action menu="KSVN" uid="MMU_0112" menuName="Chuyển Spline sang 3D Polyline" command="S3P" title="Chuyển Spline sang 3D Polyline" description="Chuyển Spline sang 3D Polyline" />
+        <action menu="KSVN" uid="MMU_0113" menuName="Chuyển 2D Polyline sang 3D Polyline" command="P23" title="Chuyển 2D Polyline sang 3D Polyline" description="Chuyển 2D Polyline sang 3D Polyline" />
+        <action menu="KSVN" uid="MMU_0114" menuName="Chuyển 3D Polyline sang 2D Polyline" command="32P" title="Chuyển 3D Polyline sang 2D Polyline" description="Chuyển 3D Polyline sang 2D Polyline" />
+        <action menu="KSVN" uid="MMU_0115" menuName="Chuyển 2D Polyline thành polyline" command="2P" title="Chuyển 2D Polyline thành polyline" description="Chuyển 2D Polyline thành polyline" />
+        <action menu="KSVN" uid="MMU_0126" menuName="Thêm đỉnh 3Dpolyline" command="TDPL" title="Thêm đỉnh 3Dpolyline" description="Thêm đỉnh 3Dpolyline" />
+        <action menu="KSVN" uid="MMU_0127" menuName="Loại đỉnh 3Dpolyline" command="LDPL" title="Loại đỉnh 3Dpolyline" description="Loại đỉnh 3Dpolyline" />
+        <action menu="KSVN" uid="MMU_0116" menuName="Thêm đỉnh cho Polyline" command="TDPL" title="Thêm đỉnh cho Polyline" description="Thêm đỉnh cho Polyline" />
+        <action menu="KSVN" uid="MMU_0117" menuName="Loại đỉnh của Polyline" command="LDPL" title="Loại đỉnh của Polyline" description="Loại đỉnh của Polyline" />
+        <action menu="KSVN" uid="MMU_0118" menuName="Thêm đỉnh cho Spline" command="TDSPL" title="Thêm đỉnh cho Spline" description="Thêm đỉnh cho Spline" />
+        <action menu="KSVN" uid="MMU_0119" menuName="Loại đỉnh của Spline" command="TDSPL" title="Loại đỉnh của Spline" description="Loại đỉnh của Spline" />
+        <action menu="KSVN" uid="MMU_0129" menuName="Thay thế đoạn polyline" command="ThayPL" title="Thay thế đoạn polyline" description="Thay thế đoạn polyline" />
+      </group>
+      <group id="KSVN-PMU_0025" title="Tiện ích Text">
+        <action menu="KSVN" uid="MMU_0099" menuName="Chuyển toàn bộ text từ TCVN3 Sang unicode" command="V2U" title="Chuyển toàn bộ text từ TCVN3 Sang unicode" description="Chuyển toàn bộ text từ TCVN3 Sang unicode" />
+        <action menu="KSVN" uid="MMU_0100" menuName="Chuyển toàn bộ text từ unicode sang TCVN3" command="U2V" title="Chuyển toàn bộ text từ unicode sang TCVN3" description="Chuyển toàn bộ text từ unicode sang TCVN3" />
+        <action menu="KSVN" uid="MMU_0101" menuName="Nối tự động text rời rạc phần nguyên, phần thập phân thành điểm đo" command="JT" title="Nối tự động text rời rạc phần nguyên, phần thập phân thành điểm đo" description="Nối tự động text rời rạc phần nguyên, phần thập phân thành điểm đo" />
+      </group>
+    </group>
+  </group>
+  <group id="VNROAD-PMU_0002" title="AV_Road">
+    <action menu="VNROAD" uid="MMU_0004" menuName="Khai báo lệnh tắt" command="TAT" title="Khai báo lệnh tắt" description="Khai báo lệnh tắt" />
+    <action menu="VNROAD" uid="MMU_0005" menuName="Dữ liệu bình đồ" command="DLBD" title="Dữ liệu bình đồ" description="Dữ liệu bình đồ" />
+    <group id="VNROAD-PMU_0003" title="Tuyến">
+      <action menu="VNROAD" uid="MMU_0006" menuName="Nhập số liệu tuyến" command="NT" title="Nhập số liệu tuyến" description="Nhập số liệu tuyến; Tập tin &gt; Mở hỗ trợ NTD, giữ cọc có sẵn." />
+      <action menu="VNROAD" uid="MMU_0007" menuName="Tạo tuyến" command="TT" title="Tạo tuyến" description="Tạo tuyến" />
+      <action menu="VNROAD" uid="MMU_0010" menuName="Tạo tuyến phụ có trắc ngang theo trắc ngang tuyến chính" command="TTP" title="Tạo tuyến phụ có trắc ngang theo trắc ngang tuyến chính" description="Tạo tuyến phụ có trắc ngang theo trắc ngang tuyến chính" />
+      <action menu="VNROAD" uid="MMU_0011" menuName="Chọn tuyến làm tuyến hiện hành" command="THH" title="Chọn tuyến làm tuyến hiện hành" description="Chọn tuyến làm tuyến hiện hành" />
+      <action menu="VNROAD" uid="MMU_0008" menuName="Định nghĩa đường mã hiệu trên bình đồ" command="DMH" title="Định nghĩa đường mã hiệu trên bình đồ" description="Định nghĩa đường mã hiệu trên bình đồ" />
+      <action menu="VNROAD" uid="MMU_0009" menuName="Định nghĩa đường mặt bằng tuyến" command="DNDBD" title="Định nghĩa đường mặt bằng tuyến" description="Định nghĩa đường mặt bằng tuyến" />
+      <action menu="VNROAD" uid="MMU_0012" menuName="Tìm cọc" command="TIM" title="Tìm cọc" description="Tìm cọc" />
+      <action menu="VNROAD" uid="MMU_0013" menuName="Xuất số liệu tuyến" command="XSLT" title="Xuất số liệu tuyến" description="Xuất số liệu tuyến" />
+      <action menu="VNROAD" uid="MMU_0014" menuName="Xoá tuyến" command="XT" title="Xoá tuyến" description="Xoá tuyến" />
+    </group>
+    <group id="VNROAD-PMU_0004" title="Hiệu chỉnh tuyến">
+      <action menu="VNROAD" uid="MMU_0015" menuName="Bố trí đường cong nằm" command="CN" title="Bố trí đường cong nằm" description="Bố trí đường cong nằm" />
+      <action menu="VNROAD" uid="MMU_0016" menuName="Hiệu chỉnh tuyến" command="HCT" title="Hiệu chỉnh tuyến" description="Hiệu chỉnh tuyến; Phát sinh cọc nằm trong hộp thoại này." />
+      <action menu="VNROAD" uid="MMU_0017" menuName="Chèn đỉnh tuyến" command="CDT" title="Chèn đỉnh tuyến" description="Chèn đỉnh tuyến" />
+      <action menu="VNROAD" uid="MMU_0018" menuName="Loại đỉnh tuyến" command="LDT" title="Loại đỉnh tuyến" description="Loại đỉnh tuyến" />
+      <action menu="VNROAD" uid="MMU_0019" menuName="Thay đoạn tuyến" command="TDT" title="Thay đoạn tuyến" description="Thay đoạn tuyến" />
+      <action menu="VNROAD" uid="MMU_0020" menuName="Cập nhật tuyến" command="CNT" title="Cập nhật tuyến" description="Cập nhật tuyến" />
+      <action menu="VNROAD" uid="MMU_0021" menuName="Đảo chiều tuyến" command="DCT" title="Đảo chiều tuyến" description="Đảo chiều tuyến" />
+      <action menu="VNROAD" uid="MMU_0022" menuName="Định vị tuyến" command="DVT" title="Định vị tuyến" description="Định vị tuyến" />
+      <action menu="VNROAD" uid="MMU_0023" menuName="Định vị điểm mia theo cọc" command="DVDM2" title="Định vị điểm mia theo cọc" description="Định vị điểm mia theo cọc" />
+      <action menu="VNROAD" uid="MMU_0024" menuName="Hiệu chỉnh số liệu tuyến" command="SLT" title="Hiệu chỉnh số liệu tuyến" description="Hiệu chỉnh số liệu tuyến" />
+      <action menu="VNROAD" uid="MMU_0025" menuName="Bố trí tim quay siêu cao cho tuyến không có đoạn cong" command="TQSC" title="Bố trí tim quay siêu cao cho tuyến không có đoạn cong" description="Bố trí tim quay siêu cao cho tuyến không có đoạn cong" />
+      <action menu="VNROAD" uid="MMU_0026" menuName="Khai báo siêu cao theo lý trình" command="KBSC" title="Khai báo siêu cao theo lý trình" description="Khai báo siêu cao theo lý trình" />
+    </group>
+    <group id="VNROAD-PMU_0005" title="Địa chất tuyến đường">
+      <action menu="VNROAD" uid="MMU_0027" menuName="Khai báo lớp địa chất" command="LDC" title="Khai báo lớp địa chất" description="Khai báo lớp địa chất" />
+      <action menu="VNROAD" uid="MMU_0028" menuName="Nhập lớp địa chất trắc dọc" command="DCTD" title="Nhập lớp địa chất trắc dọc" description="Nhập lớp địa chất trắc dọc" />
+      <action menu="VNROAD" uid="MMU_0029" menuName="Nhập lớp địa chất trắc ngang" command="DCTN" title="Nhập lớp địa chất trắc ngang" description="Nhập lớp địa chất trắc ngang" />
+      <action menu="VNROAD" uid="MMU_0030" menuName="Cập nhật địa chất từ trắc ngang địa chất trắc dọc" command="CNDCTD" title="Cập nhật địa chất trắc ngang từ địa chất trắc dọc" description="Cập nhật địa chất từ trắc ngang địa chất trắc dọc" />
+      <action menu="VNROAD" uid="MMU_0031" menuName="Cập nhật địa chất từ trắc dọc sang trắc ngang" command="CNDCTN" title="Cập nhật địa chất từ trắc dọc sang trắc ngang" description="Cập nhật địa chất từ trắc dọc sang trắc ngang" />
+      <action menu="VNROAD" uid="MMU_0166" menuName="Nhập địa chất TN theo lớp cập nhật lên TD" command="DCTTN" title="Nhập địa chất TN theo lớp cập nhật lên TD" description="Nhập địa chất TN theo lớp cập nhật lên TD" />
+    </group>
+    <group id="VNROAD-PMU_0006" title="Lớp đường cũ">
+      <action menu="VNROAD" uid="MMU_0032" menuName="Định nghĩa lớp đường cũ" command="DNLDC" title="Định nghĩa lớp đường cũ" description="Định nghĩa lớp đường cũ" />
+      <action menu="VNROAD" uid="MMU_0033" menuName="Định nghĩa mép đường cũ trên bình đồ" command="DNDC" title="Định nghĩa mép đường cũ trên bình đồ" description="Định nghĩa mép đường cũ trên bình đồ" />
+      <action menu="VNROAD" uid="MMU_0034" menuName="Vẽ lớp đường cũ" command="KLDC" title="Vẽ lớp đường cũ" description="Vẽ lớp đường cũ" />
+      <action menu="VNROAD" uid="MMU_0035" menuName="Định nghĩa đường cũ trên trắc ngang" command="DNDCTN" title="Định nghĩa đường cũ trên trắc ngang" description="Định nghĩa đường cũ trên trắc ngang" />
+      <action menu="VNROAD" uid="MMU_0036" menuName="Xoá lớp đường cũ" command="XLDC" title="Xoá lớp đường cũ" description="Xoá lớp đường cũ" />
+    </group>
+    <group id="VNROAD-PMU_0007" title="Thảm gia cố đường cũ">
+      <action menu="VNROAD" uid="MMU_0037" menuName="Thảm gia cố đường cũ" command="RT" title="Thảm gia cố đường cũ" description="Thảm gia cố đường cũ" />
+      <action menu="VNROAD" uid="MMU_0038" menuName="Tạo đường thảm TD từ Thảm gia cố đường cũ trên trắc ngang" command="TDDRT" title="Tạo đường thảm TD từ Thảm gia cố đường cũ trên trắc ngang" description="Tạo đường thảm TD từ Thảm gia cố đường cũ trên trắc ngang" />
+    </group>
+    <group id="VNROAD-PMU_0008" title="Giải phóng mặt bằng">
+      <action menu="VNROAD" uid="MMU_0039" menuName="Chèn ký hiệu giải phóng mặt bằng vào trắc ngang" command="GPMB" title="Chèn ký hiệu giải phóng mặt bằng vào trắc ngang" description="Chèn ký hiệu giải phóng mặt bằng vào trắc ngang" />
+      <action menu="VNROAD" uid="MMU_0040" menuName="Vẽ đường giải phóng mặt bằng trên bình đồ" command="BDGPMB" title="Vẽ đường giải phóng mặt bằng trên bình đồ" description="Vẽ đường giải phóng mặt bằng trên bình đồ" />
+      <action menu="VNROAD" uid="MMU_0171" menuName="Thay đường polyline GPMB bằng đường polyline khác" command="Thaypl" title="Thay đường polyline GPMB bằng đường polyline khác" description="Thay đường polyline GPMB bằng đường polyline khác" />
+      <action menu="VNROAD" uid="MMU_0041" menuName="Cập nhật thay đổi đường giải phóng mặt bằng từ bình đồ lên trắc ngang" command="CNGPMB" title="Cập nhật thay đổi đường giải phóng mặt bằng từ bình đồ lên trắc ngang" description="Cập nhật thay đổi đường giải phóng mặt bằng từ bình đồ lên trắc ngang" />
+      <action menu="VNROAD" uid="MMU_0172" menuName="Chèn cọc GPMB trên bình đồ" command="CGPMB" title="Chèn cọc GPMB trên bình đồ" description="Chèn cọc GPMB trên bình đồ" />
+      <action menu="VNROAD" uid="MMU_0042" menuName="Xuất bảng toạ độ giải phóng mặt bằng" command="TDGPMB" title="Xuất bảng toạ độ giải phóng mặt bằng" description="Xuất bảng toạ độ giải phóng mặt bằng" />
+    </group>
+    <group id="VNROAD-PMU_0032" title="Lộ giới">
+      <action menu="VNROAD" uid="MMU_0176" menuName="Chèn ký hiệu lộ giới vào trắc ngang" command="LGTN" title="Chèn ký hiệu lộ giới vào trắc ngang" description="Chèn ký hiệu lộ giới vào trắc ngang" />
+      <action menu="VNROAD" uid="MMU_0177" menuName="Vẽ đường lộ giới trên bình đồ" command="BDLG" title="Vẽ đường lộ giới trên bình đồ" description="Vẽ đường lộ giới trên bình đồ" />
+      <action menu="VNROAD" uid="MMU_0178" menuName="Thay đường polyline lộ giới bằng đường polyline khác" command="Thaypl" title="Thay đường polyline lộ giới bằng đường polyline khác" description="Thay đường polyline lộ giới bằng đường polyline khác" />
+      <action menu="VNROAD" uid="MMU_0179" menuName="Cập nhật thay đổi đường lộ giới từ bình đồ lên trắc ngang" command="CNLG" title="Cập nhật thay đổi đường lộ giới từ bình đồ lên trắc ngang" description="Cập nhật thay đổi đường lộ giới từ bình đồ lên trắc ngang" />
+      <action menu="VNROAD" uid="MMU_0180" menuName="Chèn cọc Lộ giới trên bình đồ" command="CLG" title="Chèn cọc Lộ giới trên bình đồ" description="Chèn cọc Lộ giới trên bình đồ" />
+      <action menu="VNROAD" uid="MMU_0181" menuName="Xuất bảng toạ độ lộ giới" command="TDLG" title="Xuất bảng toạ độ lộ giới" description="Xuất bảng toạ độ lộ giới" />
+    </group>
+    <group id="VNROAD-PMU_0009" title="Trắc dọc">
+      <action menu="VNROAD" uid="MMU_0043" menuName="Vẽ trắc dọc tự nhiên" command="TD" title="Vẽ trắc dọc tự nhiên" description="Vẽ trắc dọc tự nhiên" />
+      <group id="VNROAD-PMU_0010" title="Hiệu chỉnh trắc dọc">
+        <action menu="VNROAD" uid="MMU_0053" menuName="Hiệu chỉnh cọc trên trắc dọc" command="HCC" title="Hiệu chỉnh cọc trên trắc dọc" description="Hiệu chỉnh cọc trên trắc dọc" />
+        <action menu="VNROAD" uid="MMU_0054" menuName="Thay đổi mức so sánh trắc dọc" command="MSSTD" title="Thay đổi mức so sánh trắc dọc" description="Thay đổi mức so sánh trắc dọc" />
+      </group>
+      <action menu="VNROAD" uid="MMU_0044" menuName="Chọn phương án thiết kế đường đỏ" command="PATK" title="Chọn phương án thiết kế đường đỏ" description="Chọn phương án thiết kế đường đỏ" />
+      <action menu="VNROAD" uid="MMU_0045" menuName="Chọn đường thiết kế" command="DTK" title="Chọn đường thiết kế" description="Chọn đường thiết kế" />
+      <action menu="VNROAD" uid="MMU_0046" menuName="Thiết kế trắc dọc" command="DD" title="Thiết kế trắc dọc" description="Thiết kế trắc dọc" />
+      <action menu="VNROAD" uid="MMU_0047" menuName="Bố trí đường cong đứng" command="CD" title="Bố trí đường cong đứng" description="Bố trí đường cong đứng" />
+      <action menu="VNROAD" uid="MMU_0048" menuName="Cập nhật cao độ thiết kế" command="CNDD" title="Cập nhật cao độ thiết kế" description="Cập nhật cao độ thiết kế" />
+      <action menu="VNROAD" uid="MMU_0049" menuName="Điền thiết kế trắc dọc" command="DIENTKTD" title="Điền thiết kế trắc dọc" description="Điền thiết kế trắc dọc" />
+      <group id="VNROAD-PMU_0011" title="Tiện ích thiết kế trắc dọc tối ưu">
+        <action menu="VNROAD" uid="MMU_0050" menuName="Xác định đường min bù vênh" command="MBV" title="Xác định đường min bù vênh" description="Xác định đường min bù vênh" />
+        <action menu="VNROAD" uid="MMU_0051" menuName="Xác định đường cân bằng đào đắp" command="CBDD" title="Xác định đường cân bằng đào đắp" description="Xác định đường cân bằng đào đắp" />
+        <action menu="VNROAD" uid="MMU_0052" menuName="Xác định đường không đào không đắp" command="MDAP" title="Xác định đường không đào không đắp" description="Xác định đường không đào không đắp" />
+      </group>
+    </group>
+    <group id="VNROAD-PMU_0012" title="Trắc ngang">
+      <group id="VNROAD-PMU_0013" title="Trắc ngang tự nhiên">
+        <action menu="VNROAD" uid="MMU_0055" menuName="Vẽ trắc ngang tự nhiên" command="TN" title="Vẽ trắc ngang tự nhiên" description="Vẽ trắc ngang tự nhiên" />
+        <action menu="VNROAD" uid="MMU_0056" menuName="Định nghĩa đường địa vật" command="AI" title="Định nghĩa đường địa vật" description="Định nghĩa đường địa vật" />
+        <action menu="VNROAD" uid="MMU_0057" menuName="Chèn địa vật lên trắc ngang" command="DSS" title="Chèn địa vật lên trắc ngang" description="Chèn địa vật lên trắc ngang" />
+      </group>
+      <group id="VNROAD-PMU_0014" title="Hiệu chỉnh trắc ngang tự nhiên">
+        <action menu="VNROAD" uid="MMU_0058" menuName="Hiệu chỉnh điểm mia trắc ngang" command="HCDM" title="Hiệu chỉnh điểm mia trắc ngang" description="Hiệu chỉnh điểm mia trắc ngang" />
+        <action menu="VNROAD" uid="MMU_0059" menuName="Thêm điểm mia" command="TDM" title="Thêm điểm mia" description="Thêm điểm mia" />
+        <action menu="VNROAD" uid="MMU_0060" menuName="Loại điểm mia tự động" command="LDM" title="Loại điểm mia tự động" description="Loại điểm mia tự động" />
+        <action menu="VNROAD" uid="MMU_0062" menuName="Cập nhật trắc ngang" command="CNTN" title="Cập nhật trắc ngang" description="Cập nhật trắc ngang" />
+        <action menu="VNROAD" uid="MMU_0063" menuName="Xoá điểm mia trùng trên tuyến" command="XMIA" title="Xoá điểm mia trùng trên tuyến" description="Xoá điểm mia trùng trên tuyến" />
+        <action menu="VNROAD" uid="MMU_0061" menuName="Thay đổi mức so sánh trắc ngang" command="MSSTN" title="Thay đổi mức so sánh trắc ngang" description="Thay đổi mức so sánh trắc ngang" />
+        <action menu="VNROAD" uid="MMU_0182" menuName="Mức so sánh trắc ngang in" command="MSSTNIN" title="Mức so sánh trắc ngang in" description="Mức so sánh trắc ngang in" />
+      </group>
+      <action menu="VNROAD" uid="MMU_0093" menuName="Thiết kế trắc ngang" command="TKTN" title="Thiết kế trắc ngang" description="Thiết kế trắc ngang" />
+      <action menu="VNROAD" uid="MMU_0094" menuName="Bạt tầm nhìn" command="BTN" title="Bạt tầm nhìn" description="Bạt tầm nhìn" />
+      <action menu="VNROAD" uid="MMU_0095" menuName="Thiết kế các lớp khuôn đường" command="TKAD" title="Thiết kế các lớp khuôn đường" description="Thiết kế các lớp khuôn đường" />
+      <action menu="VNROAD" uid="MMU_0096" menuName="Dịch thiết kế trắc ngang" command="DICHTKTN" title="Dịch thiết kế trắc ngang" description="Dịch thiết kế trắc ngang" />
+      <group id="VNROAD-PMU_0015" title="Định nghĩa thiết kế">
+        <action menu="VNROAD" uid="MMU_0064" menuName="Định nghĩa thiết kế trắc ngang" command="DNTK" title="Định nghĩa thiết kế trắc ngang" description="Định nghĩa thiết kế trắc ngang" />
+        <action menu="VNROAD" uid="MMU_0065" menuName="Sao chép đối tượng thiết kế trắc ngang" command="CPTK" title="Sao chép đối tượng thiết kế trắc ngang" description="Sao chép đối tượng thiết kế trắc ngang" />
+        <action menu="VNROAD" uid="MMU_0066" menuName="Định nghĩa taluy" command="DNTL2" title="Định nghĩa taluy" description="Định nghĩa taluy" />
+        <action menu="VNROAD" uid="MMU_0067" menuName="Định nghĩa taluy từ Polyline" command="DNTL" title="Định nghĩa taluy từ Polyline" description="Định nghĩa taluy từ Polyline" />
+        <action menu="VNROAD" uid="MMU_0068" menuName="Sao chép taluy" command="CPTL" title="Sao chép taluy" description="Sao chép taluy" />
+      </group>
+      <group id="VNROAD-PMU_0016" title="Vét bùn và đánh cấp">
+        <action menu="VNROAD" uid="MMU_0069" menuName="Vét bùn đánh cấp tự động" command="VBDCTD" title="Vét bùn đánh cấp tự động" description="Vét bùn đánh cấp tự động" />
+        <action menu="VNROAD" uid="MMU_0074" menuName="Vét hữu cơ tự động" command="VHCTD" title="Vét hữu cơ tự động" description="Vét hữu cơ tự động" />
+        <action menu="VNROAD" uid="MMU_0070" menuName="Khai báo vét bùn đánh cấp" command="TSVBDC" title="Khai báo vét bùn đánh cấp" description="Khai báo vét bùn đánh cấp" />
+        <action menu="VNROAD" uid="MMU_0071" menuName="Vét bùn" command="VBUN" title="Vét bùn" description="Vét bùn" />
+        <action menu="VNROAD" uid="MMU_0072" menuName="Vét hữu cơ" command="VHC" title="Vét hữu cơ" description="Vét hữu cơ" />
+        <action menu="VNROAD" uid="MMU_0073" menuName="Đánh cấp" command="DCAP" title="Đánh cấp" description="Đánh cấp" />
+      </group>
+      <group id="VNROAD-PMU_0017" title="Cống dọc, hộp kỹ thuật">
+        <action menu="VNROAD" uid="MMU_0075" menuName="Định nghĩa đường bao cống dọc, hộp kỹ thuật" command="BB" title="Định nghĩa đường bao cống dọc, hộp kỹ thuật" description="Định nghĩa đường bao cống dọc, hộp kỹ thuật" />
+        <action menu="VNROAD" uid="MMU_0076" menuName="Vẽ cống dọc trên trắc ngang" command="CDOC" title="Vẽ cống dọc trên trắc ngang" description="Vẽ cống dọc trên trắc ngang" />
+        <action menu="VNROAD" uid="MMU_0077" menuName="Vẽ hộp kỹ thuật lên trắc ngang" command="HKT" title="Vẽ hộp kỹ thuật lên trắc ngang" description="Vẽ hộp kỹ thuật lên trắc ngang" />
+      </group>
+      <group id="VNROAD-PMU_0018" title="Vải địa kỹ thuật">
+        <action menu="VNROAD" uid="MMU_0078" menuName="Định nghĩa các lớp vải địa kỹ thuật" command="DNVD" title="Định nghĩa các lớp vải địa kỹ thuật" description="Định nghĩa các lớp vải địa kỹ thuật" />
+        <action menu="VNROAD" uid="MMU_0079" menuName="Vẽ đường đỏ của các lớp vải địa kỹ thuật từ TN lên TD" command="DDVD" title="Vẽ đường đỏ của các lớp vải địa kỹ thuật từ TN lên TD" description="Vẽ đường đỏ của các lớp vải địa kỹ thuật từ TN lên TD" />
+      </group>
+      <group id="VNROAD-PMU_0019" title="Định nghĩa các đường lấn Ruộng, Vườn, Rừng">
+        <action menu="VNROAD" uid="MMU_0080" menuName="Định nghĩa các đối tượng lấn ruộng trên trắc ngang" command="LRUONG" title="Định nghĩa các đối tượng lấn ruộng trên trắc ngang" description="Định nghĩa các đối tượng lấn ruộng trên trắc ngang" />
+        <action menu="VNROAD" uid="MMU_0081" menuName="Định nghĩa lấn vườn" command="LVUON" title="Định nghĩa lấn vườn" description="Định nghĩa lấn vườn" />
+        <action menu="VNROAD" uid="MMU_0082" menuName="Định nghĩa phát rừng" command="PR2" title="Định nghĩa phát rừng" description="Định nghĩa phát rừng" />
+      </group>
+      <action menu="VNROAD" uid="MMU_0097" menuName="Đắp rải thảm trên đường mới" command="RTM" title="Đắp rải thảm trên đường mới" description="Đắp rải thảm trên đường mới" />
+      <action menu="VNROAD" uid="MMU_0098" menuName="Điền thiết kế trắc ngang" command="DIENTKTN" title="Điền thiết kế trắc ngang" description="Điền thiết kế trắc ngang" />
+      <action menu="VNROAD" uid="MMU_0099" menuName="Điền cao độ và khoảng cách tại vị trí bất kỳ" command="DCD" title="Điền cao độ và khoảng cách tại vị trí bất kỳ" description="Điền cao độ và khoảng cách tại vị trí bất kỳ" />
+      <group id="VNROAD-PMU_0020" title="Thiết kế trắc ngang nâng cao">
+        <action menu="VNROAD" uid="MMU_0083" menuName="Sao chép các đối tượng bất kỳ trên trắc ngang" command="CTK" title="Sao chép các đối tượng bất kỳ trên trắc ngang" description="Sao chép các đối tượng bất kỳ trên trắc ngang" />
+        <action menu="VNROAD" uid="MMU_0084" menuName="Thay lớp đất" command="TLD" title="Thay lớp đất" description="Thay lớp đất" />
+        <action menu="VNROAD" uid="MMU_0085" menuName="Đắp bọc" command="DB" title="Đắp bọc" description="Đắp bọc" />
+        <action menu="VNROAD" uid="MMU_0086" menuName="Tạo khuôn taluy" command="KTL" title="Tạo khuôn taluy" description="Tạo khuôn taluy" />
+        <action menu="VNROAD" uid="MMU_0087" menuName="Vẽ đường đắp lên trắc ngang" command="KTLD" title="Vẽ đường đắp lên trắc ngang" description="Vẽ đường đắp lên trắc ngang" />
+        <action menu="VNROAD" uid="MMU_0088" menuName="Định nghĩa các đường thay lớp đất" command="DNLDY" title="Định nghĩa các đường thay lớp đất" description="Định nghĩa các đường thay lớp đất" />
+        <action menu="VNROAD" uid="MMU_0089" menuName="Định nghĩa các đường đắp trên trắc ngang" command="DNKVB" title="Định nghĩa các đường đắp trên trắc ngang" description="Định nghĩa các đường đắp trên trắc ngang" />
+        <action menu="VNROAD" uid="MMU_0090" menuName="Tạo đối tượng đắp tải" command="DAPTAI" title="Tạo đối tượng đắp tải" description="Tạo đối tượng đắp tải" />
+        <action menu="VNROAD" uid="MMU_0091" menuName="Tạo đường đắp và đường vét bùn trên trắc ngang" command="KVB" title="Tạo đường đắp và đường vét bùn trên trắc ngang" description="Tạo đường đắp và đường vét bùn trên trắc ngang" />
+        <action menu="VNROAD" uid="MMU_0092" menuName="Xoá thiết kế trắc ngang" command="XTKTN" title="Xoá thiết kế trắc ngang" description="Xoá thiết kế trắc ngang" />
+      </group>
+      <group id="VNROAD-PMU_0030" title="Đắp gia tải">
+        <action menu="VNROAD" uid="MMU_0167" menuName="Vẽ đối tượng đắp gia tải" command="DAPTAITN" title="Vẽ đối tượng đắp gia tải" description="Vẽ đối tượng đắp gia tải" />
+        <action menu="VNROAD" uid="MMU_0168" menuName="Vẽ vải địa kỹ thuật" command="VAIDIATN" title="Vẽ vải địa kỹ thuật" description="Vẽ vải địa kỹ thuật" />
+      </group>
+    </group>
+    <group id="VNROAD-PMU_0021" title="Đào đắp">
+      <action menu="VNROAD" uid="MMU_0101" menuName="Tính diện tích" command="DAODAP" title="Tính diện tích" description="Tính diện tích" />
+      <action menu="VNROAD" uid="MMU_0102" menuName="Lập bảng khối lượng" command="BTH" title="Lập bảng khối lượng" description="Lập bảng khối lượng" />
+      <action menu="VNROAD" uid="MMU_0103" menuName="Cập nhật bảng khi thay đổi giá trị diện tích điền trên trắc ngang" command="CNB" title="Cập nhật bảng khi thay đổi giá trị diện tích điền trên trắc ngang" description="Cập nhật bảng khi thay đổi giá trị diện tích điền trên trắc ngang" />
+      <action menu="VNROAD" uid="MMU_0104" menuName="Tự định nghĩa  diện tích theo các mã người dùng" command="DNDT" title="Tự định nghĩa  diện tích theo các mã người dùng" description="Tự định nghĩa  diện tích theo các mã người dùng" />
+    </group>
+    <group id="VNROAD-PMU_0022" title="Mặt bằng tuyến">
+      <action menu="VNROAD" uid="MMU_0105" menuName="Cài đặt hiện thị điểm đo" command="CDD" title="Cài đặt hiện thị điểm đo" description="Cài đặt hiện thị điểm đo" />
+      <action menu="VNROAD" uid="MMU_0106" menuName="Che điểm bình đồ tuyến" command="TDBDT" title="Che điểm bình đồ tuyến" description="Che điểm bình đồ tuyến" />
+      <action menu="VNROAD" uid="MMU_0107" menuName="Bật điểm bình đồ tuyến" command="BDD" title="Bật điểm bình đồ tuyến" description="Bật điểm bình đồ tuyến" />
+      <action menu="VNROAD" uid="MMU_0108" menuName="Cài đặt hiển thị thông số tuyến" command="DTST" title="Cài đặt hiển thị thông số tuyến" description="Cài đặt hiển thị thông số tuyến; cài đặt hiển thị thông số cọc/tuyến." />
+      <action menu="VNROAD" uid="MMU_0109" menuName="Bật thông số tuyến" command="BTST" title="Bật thông số tuyến" description="Bật thông số tuyến" />
+      <action menu="VNROAD" uid="MMU_0110" menuName="Tắt thông số tuyến" command="TTST" title="Tắt thông số tuyến" description="Tắt thông số tuyến" />
+      <action menu="VNROAD" uid="MMU_0111" menuName="Công trình trên tuyến" command="CONG" title="Công trình trên tuyến" description="Công trình trên tuyến" />
+      <action menu="VNROAD" uid="MMU_0112" menuName="Bán kính điền" command="BKD" title="Bán kính điền" description="Bán kính điền" />
+      <action menu="VNROAD" uid="MMU_0113" menuName="Điểm cao độ tuyến" command="DCDT" title="Điểm cao độ tuyến" description="Điểm cao độ tuyến" />
+      <action menu="VNROAD" uid="MMU_0114" menuName="Cập nhật điểm mia" command="CNMIA" title="Cập nhật điểm mia" description="Cập nhật điểm mia" />
+      <action menu="VNROAD" uid="MMU_0115" menuName="Xây dựng các đường bình đồ tuyến" command="DUONGBD" title="Xây dựng các đường bình đồ tuyến" description="Xây dựng các đường bình đồ tuyến" />
+      <action menu="VNROAD" uid="MMU_0116" menuName="Vẽ mặt bằng taluy" command="TALUY2D" title="Vẽ mặt bằng taluy" description="Vẽ mặt bằng taluy" />
+      <action menu="VNROAD" uid="MMU_0117" menuName="Rải taluy" command="TL" title="Rải taluy" description="Rải taluy" />
+      <action menu="VNROAD" uid="MMU_0118" menuName="Hiệu chỉnh taluy" command="HCTL" title="Hiệu chỉnh taluy" description="Hiệu chỉnh taluy" />
+      <action menu="VNROAD" uid="MMU_0119" menuName="Xây dựng 3D tuyến" command="TUYEN3D" title="Xây dựng 3D tuyến" description="Xây dựng 3D tuyến" />
+      <action menu="VNROAD" uid="MMU_0121" menuName="Tra cao độ nhiều mô hình" command="TCD" title="Tra cao độ nhiều mô hình" description="Tra cao độ nhiều mô hình" />
+      <action menu="VNROAD" uid="MMU_0122" menuName="Quay điểm mia theo phương cọc" command="RMIA" title="Quay điểm mia theo phương cọc" description="Quay điểm mia theo phương cọc" />
+      <action menu="VNROAD" uid="MMU_0170" menuName="Vẽ khuôn lên bình đồ tuyến" command="VKBD" title="Vẽ khuôn lên bình đồ tuyến" description="Vẽ khuôn lên bình đồ tuyến" />
+      <action menu="VNROAD" uid="MMU_0183" menuName="Xuất bảng cao độ vỉa hè" command="XCDVH" title="Xuất bảng cao độ vỉa hè" description="Xuất bảng cao độ vỉa hè" />
+    </group>
+    <group id="VNROAD-PMU_0023" title="Bảng biểu">
+      <action menu="VNROAD" uid="MMU_0124" menuName="Cài đặt thông số bảng biểu" command="CDB" title="Cài đặt thông số bảng biểu" description="Cài đặt thông số bảng biểu" />
+      <action menu="VNROAD" uid="MMU_0125" menuName="Bảng cắm cong" command="XCC" title="Bảng cắm cong" description="Bảng cắm cong" />
+      <action menu="VNROAD" uid="MMU_0126" menuName="Bảng yếu tố cong" command="XYTC" title="Bảng yếu tố cong" description="Bảng yếu tố cong" />
+      <action menu="VNROAD" uid="MMU_0127" menuName="Bảng tọa độ cọc" command="XTDC" title="Bảng tọa độ cọc" description="Bảng tọa độ cọc" />
+      <action menu="VNROAD" uid="MMU_0128" menuName="Bảng thống kê bán kính cong nằm" command="BBKCN" title="Bảng thống kê bán kính cong nằm" description="Bảng thống kê bán kính cong nằm" />
+      <action menu="VNROAD" uid="MMU_0129" menuName="Bảng thống kê dốc dọc thiết kế" command="BDDD" title="Bảng thống kê dốc dọc thiết kế" description="Bảng thống kê dốc dọc thiết kế" />
+      <action menu="VNROAD" uid="MMU_0130" menuName="Lập bảng thống kê rãnh" command="TKR" title="Lập bảng thống kê rãnh" description="Lập bảng thống kê rãnh" />
+      <action menu="VNROAD" uid="MMU_0132" menuName="Lập bảng thống kê cọc tiêu, ray" command="RGD" title="Lập bảng thống kê cọc tiêu, ray" description="Lập bảng thống kê cọc tiêu, ray" />
+      <action menu="VNROAD" uid="MMU_0169" menuName="Bảng thống kế hố ga" command="BTKHG" title="Bảng thống kế hố ga" description="Bảng thống kế hố ga" />
+    </group>
+    <group id="VNROAD-PMU_0024" title="In ấn">
+      <action menu="VNROAD" uid="MMU_0133" menuName="Tạo trắc dọc in" command="INTD" title="Tạo trắc dọc in" description="Tạo trắc dọc in" />
+      <action menu="VNROAD" uid="MMU_0134" menuName="Tạo vùng chứa TN trong khung in" command="KIN" title="Tạo vùng chứa TN trong khung in" description="Tạo vùng chứa TN trong khung in" />
+      <action menu="VNROAD" uid="MMU_0135" menuName="Tạo trang in trắc ngang theo khung in" command="INTN" title="Tạo trang in trắc ngang theo khung in" description="Tạo trang in trắc ngang theo khung in" />
+      <action menu="VNROAD" uid="MMU_0136" menuName="Cắt bình đồ tuyến theo Polyline" command="CAT" title="Cắt bình đồ tuyến theo Polyline" description="Cắt bình đồ tuyến theo Polyline" />
+      <action menu="VNROAD" uid="MMU_0137" menuName="Đổi khoảng đầu cờ theo cao độ thiết kế TN đào hoặc cao độ tự nhiên TN đắp" command="KCDC" title="Đổi khoảng đầu cờ theo cao độ thiết kế TN đào hoặc cao độ tự nhiên TN đắp" description="Đổi khoảng đầu cờ theo cao độ thiết kế TN đào hoặc cao độ tự nhiên TN đắp" />
+    </group>
+    <group id="VNROAD-PMU_0025" title="Tiện ích">
+      <group id="VNROAD-PMU_0026" title="Chèn khối trên tuyến">
+        <action menu="VNROAD" uid="MMU_0138" menuName="Định nghĩa khối" command="DNK" title="Định nghĩa khối" description="Định nghĩa khối" />
+        <action menu="VNROAD" uid="MMU_0139" menuName="Chèn khối" command="CKTN" title="Chèn khối" description="Chèn khối" />
+      </group>
+      <group id="VNROAD-PMU_0027" title="Tiện ích lớp">
+        <action menu="VNROAD" uid="MMU_0143" menuName="Bật toàn bộ các lớp" command="11" title="Bật toàn bộ các lớp" description="Bật toàn bộ các lớp" />
+        <action menu="VNROAD" uid="MMU_0144" menuName="Tắt lớp chứa đối tượng được chọn" command="22" title="Tắt lớp chứa đối tượng được chọn" description="Tắt lớp chứa đối tượng được chọn" />
+        <action menu="VNROAD" uid="MMU_0145" menuName="Tắt lớp không chứa đối tượng được chọn" command="33" title="Tắt lớp không chứa đối tượng được chọn" description="Tắt lớp không chứa đối tượng được chọn" />
+        <action menu="VNROAD" uid="MMU_0146" menuName="Xoá toàn bộ đối tượng của lớp" command="44" title="Xoá toàn bộ đối tượng của lớp" description="Xoá toàn bộ đối tượng của lớp" />
+      </group>
+      <group id="VNROAD-PMU_0028" title="Tiện ích đường">
+        <action menu="VNROAD" uid="MMU_0147" menuName="Định nghĩa đa tuyến dốc" command="DNPL" title="Định nghĩa đa tuyến dốc" description="Định nghĩa đa tuyến dốc" />
+        <action menu="VNROAD" uid="MMU_0148" menuName="Offset 3D Polyline" command="O3P" title="Offset 3D Polyline" description="Offset 3D Polyline" />
+        <action menu="VNROAD" uid="MMU_0149" menuName="Nối các đường 3D Polyline" command="N3D" title="Nối các đường 3D Polyline" description="Nối các đường 3D Polyline" />
+        <action menu="VNROAD" uid="MMU_0150" menuName="Gán cao độ nhiều Polyline" command="GCD" title="Gán cao độ nhiều Polyline" description="Gán cao độ nhiều Polyline" />
+        <action menu="VNROAD" uid="MMU_0151" menuName="Hiệu chỉnh cao độ Polyline" command="EM" title="Hiệu chỉnh cao độ Polyline" description="Hiệu chỉnh cao độ Polyline" />
+        <action menu="VNROAD" uid="MMU_0152" menuName="Chia cung" command="BA" title="Chia cung" description="Chia cung" />
+        <action menu="VNROAD" uid="MMU_0153" menuName="Chuyển 2D, 3D Polyline sang Spline" command="P2S" title="Chuyển 2D, 3D Polyline sang Spline" description="Chuyển 2D, 3D Polyline sang Spline" />
+        <action menu="VNROAD" uid="MMU_0154" menuName="Chuyển Spline sang 2D Polyline" command="S2P" title="Chuyển Spline sang 2D Polyline" description="Chuyển Spline sang 2D Polyline" />
+        <action menu="VNROAD" uid="MMU_0155" menuName="Chuyển Spline sang 3D Polyline" command="S3P" title="Chuyển Spline sang 3D Polyline" description="Chuyển Spline sang 3D Polyline" />
+        <action menu="VNROAD" uid="MMU_0156" menuName="Chuyển 2D Polyline sang 3D Polyline" command="P23" title="Chuyển 2D Polyline sang 3D Polyline" description="Chuyển 2D Polyline sang 3D Polyline" />
+        <action menu="VNROAD" uid="MMU_0157" menuName="Chuyển 3D Polyline sang 2D Polyline" command="32P" title="Chuyển 3D Polyline sang 2D Polyline" description="Chuyển 3D Polyline sang 2D Polyline" />
+        <action menu="VNROAD" uid="MMU_0158" menuName="Chuyển 2D Polyline thành polyline" command="2P" title="Chuyển 2D Polyline thành polyline" description="Chuyển 2D Polyline thành polyline" />
+        <action menu="VNROAD" uid="MMU_0159" menuName="Thêm đỉnh cho Polyline" command="TDPL" title="Thêm đỉnh cho Polyline" description="Thêm đỉnh cho Polyline" />
+        <action menu="VNROAD" uid="MMU_0160" menuName="Loại đỉnh của Polyline" command="LDPL" title="Loại đỉnh của Polyline" description="Loại đỉnh của Polyline" />
+        <action menu="VNROAD" uid="MMU_0161" menuName="Thêm đỉnh cho Spline" command="TDSPL" title="Thêm đỉnh cho Spline" description="Thêm đỉnh cho Spline" />
+        <action menu="VNROAD" uid="MMU_0162" menuName="Loại đỉnh của Spline" command="TDSPL" title="Loại đỉnh của Spline" description="Loại đỉnh của Spline" />
+      </group>
+      <group id="VNROAD-PMU_0029" title="Tiện ích Text">
+        <action menu="VNROAD" uid="MMU_0163" menuName="Chuyển toàn bộ text từ TCVN3 Sang unicode" command="V2U" title="Chuyển toàn bộ text từ TCVN3 Sang unicode" description="Chuyển toàn bộ text từ TCVN3 Sang unicode" />
+        <action menu="VNROAD" uid="MMU_0164" menuName="Chuyển toàn bộ text từ unicode sang TCVN3" command="U2V" title="Chuyển toàn bộ text từ unicode sang TCVN3" description="Chuyển toàn bộ text từ unicode sang TCVN3" />
+        <action menu="VNROAD" uid="MMU_0165" menuName="Nối tự động text rời rạc phần nguyên, phần thập phân thành điểm đo" command="JT" title="Nối tự động text rời rạc phần nguyên, phần thập phân thành điểm đo" description="Nối tự động text rời rạc phần nguyên, phần thập phân thành điểm đo" />
+      </group>
+    </group>
+    <group id="VNROAD-PMU_0031" title="Cọc cát,Bấc thấm">
+      <action menu="VNROAD" uid="MMU_0173" menuName="Chèn cọc cát" command="CCC" title="Chèn cọc cát,hiệu chỉnh..." description="Chèn cọc cát" />
+      <action menu="VNROAD" uid="MMU_0174" menuName="Lập bảng tổng hợp khối lượng cọc cát trên tuyến" command="TKCC" title="Lập bảng tổng hợp khối lượng cọc cát trên tuyến" description="Lập bảng tổng hợp khối lượng cọc cát trên tuyến" />
+      <action menu="VNROAD" uid="MMU_0175" menuName="Chèn bấc thấm" command="CBT" title="Chèn bấc thấm" description="Chèn bấc thấm" />
+    </group>
+  </group>
+  <group id="SANNEN-PMU_0002" title="AV_San nền">
+    <action menu="SANNEN" uid="MMU_0082" menuName="Dữ liệu bình đồ" command="DLBD" title="Dữ liệu bình đồ" description="Dữ liệu bình đồ" />
+    <action menu="SANNEN" uid="MMU_0084" menuName="Cài đặt hiển thị điểm đo" command="CDD" title="Cài đặt hiển thị điểm đo" description="Cài đặt hiển thị điểm đo" />
+    <group id="SANNEN-PMU_0004" title="Mô hình địa hình">
+      <action menu="SANNEN" uid="MMU_0002" menuName="Xây dựng mô hình lưới" command="DD_DH" title="Xây dựng mô hình lưới" description="Xây dựng mô hình lưới" />
+      <action menu="SANNEN" uid="MMU_0004" menuName="Vẽ đường đồng mức thiết kế" command="DD_DuongDongmuc" title="Vẽ đường đồng mức thiết kế" description="Vẽ đường đồng mức thiết kế" />
+      <action menu="SANNEN" uid="MMU_0006" menuName="Vẽ mặt cắt địa hình" command="DD_MATCAT" title="Vẽ mặt cắt địa hình" description="Vẽ mặt cắt địa hình" />
+    </group>
+    <action menu="SANNEN" uid="MMU_0008" menuName="Cài đặt tỷ lệ khối" command="DD_CAIDAT" title="Cài đặt tỷ lệ khối" description="Cài đặt tỷ lệ khối" />
+    <action menu="SANNEN" uid="MMU_0010" menuName="Tạo lưới" command="DD_TAOLUOI" title="Tạo lưới" description="Tạo lưới" />
+    <action menu="SANNEN" uid="MMU_0012" menuName="Xác định vùng đào đắp" command="DD_DinhnghiaVungDaoDap" title="Xác định vùng đào đắp" description="Xác định vùng đào đắp" />
+    <action menu="SANNEN" uid="MMU_0014" menuName="Gán cao độ nút lưới" command="DD_GANCAODONUTLUOI" title="Gán cao độ nốt lưới" description="Gán cao độ nút lưới" />
+    <action menu="SANNEN" uid="MMU_0016" menuName="Tính đào đắp" command="DD_TINHDAODAP" title="Tính đào đắp" description="Tính đào đắp" />
+    <action menu="SANNEN" uid="MMU_0018" menuName="Tạo mặt 3D thiết kế" command="DD_mat3d" title="Tạo mặt 3D thiết kế" description="Tạo mặt 3D thiết kế" />
+    <group id="SANNEN-PMU_0006" title="Thiết kế san nền">
+      <action menu="SANNEN" uid="MMU_0020" menuName="Offset 3D" command="DD_O3P" title="Offset 3D" description="Offset 3D" />
+      <action menu="SANNEN" uid="MMU_0022" menuName="Thiết kế hướng dốc" command="DD_TKHD" title="Thiết kế hướng dốc" description="Thiết kế hướng dốc" />
+      <action menu="SANNEN" uid="MMU_0024" menuName="Tạo đường đồng mức thiết kế" command="DD_TaoDMTK" title="Tạo đường đồng mức thiết kế" description="Tạo đường đồng mức thiết kế" />
+      <action menu="SANNEN" uid="MMU_0026" menuName="Cập nhật chênh cao" command="DD_CapnhatChenhcao" title="Cập nhật chênh cao" description="Cập nhật chênh cao" />
+      <action menu="SANNEN" uid="MMU_0028" menuName="Nâng cao độ thiết kế" command="DD_NangCDTK" title="Nâng cao độ thiết kế" description="Nâng cao độ thiết kế" />
+      <action menu="SANNEN" uid="MMU_0030" menuName="Hiệu chỉnh cao độ đối tượng" command="EM" title="Hiệu chỉnh cao độ đối tượng" description="Hiệu chỉnh cao độ đối tượng" />
+      <action menu="SANNEN" uid="MMU_0032" menuName="Chuyển 3D, 2D Polyline -&gt; Spline" command="P2S" title="Chuyển 3D,2D Polyline -&gt; Spline" description="Chuyển 3D, 2D Polyline -&gt; Spline" />
+      <action menu="SANNEN" uid="MMU_0034" menuName="Chuyển Spline -&gt; Polyline" command="S2P" title="Chuyển Spline -&gt; Polyline" description="Chuyển Spline -&gt; Polyline" />
+      <action menu="SANNEN" uid="MMU_0036" menuName="Chuyển Spline -&gt; 3D Polyline" command="S3P" title="Chuyển Spline -&gt; 3D Polyline" description="Chuyển Spline -&gt; 3D Polyline" />
+      <action menu="SANNEN" uid="MMU_0074" menuName="Lập trục mặt cắt" command="DD_TMC" title="Lập trục mặt cắt" description="Lập trục mặt cắt" />
+      <action menu="SANNEN" uid="MMU_0076" menuName="Vẽ toàn bộ mặt cắt" command="DD_DACS" title="Vẽ toàn bộ mặt cắt" description="Vẽ toàn bộ mặt cắt" />
+      <action menu="SANNEN" uid="MMU_0078" menuName="Bảng khôi lượng đào đắp theo trục mặt cắt" command="DD_CSAT" title="Lập bảng khối lượng đào đắp theo trục mặt cắt" description="Bảng khôi lượng đào đắp theo trục mặt cắt" />
+    </group>
+    <group id="SANNEN-PMU_0008" title="Thiết kế taluy">
+      <action menu="SANNEN" uid="MMU_0038" menuName="Tạo ranh giới taluy" command="DD_TAORANHGIOITALUY" title="Tạo ranh giới taluy" description="Tạo ranh giới taluy" />
+      <action menu="SANNEN" uid="MMU_0040" menuName="Thiết kế taluy" command="DD_TKTL" title="Thiết kế taluy" description="Thiết kế taluy" />
+      <action menu="SANNEN" uid="MMU_0042" menuName="Tính đào đắp taluy" command="DD_TINHDAODAPTL" title="Tính đào đắp taluy" description="Tính đào đắp taluy" />
+      <action menu="SANNEN" uid="MMU_0044" menuName="Tạo mặt cắt Taluy" command="DD_MATCATTALUY" title="Tạo mặt cắt taluy" description="Tạo mặt cắt Taluy" />
+      <action menu="SANNEN" uid="MMU_0046" menuName="Thể hiện mặt bằng taluy" command="DD_Taluy2d" title="Thể hiện mặt bằng taluy" description="Thể hiện mặt bằng taluy" />
+    </group>
+    <group id="SANNEN-PMU_0010" title="Bảng biểu">
+      <action menu="SANNEN" uid="MMU_0048" menuName="Bảng đào đắp" command="DD_BANGDAODAP" title="Bảng đào đắp" description="Bảng đào đắp" />
+      <action menu="SANNEN" uid="MMU_0050" menuName="Bảng đào đắp taluy" command="DD_BangDaoDapTL" title="Bảng đào đắp taluy" description="Bảng đào đắp taluy" />
+      <action menu="SANNEN" uid="MMU_0052" menuName="Bảng tổng hợp khối lượng" command="DD_BangTHDAODAP" title="Bảng tổng hợp khối lượng" description="Bảng tổng hợp khối lượng" />
+      <action menu="SANNEN" uid="MMU_0054" menuName="Bảng đào đắp ô lưới" command="DD_Bangdaodapo" title="Bảng đào đắp ô lưới" description="Bảng đào đắp ô lưới" />
+      <action menu="SANNEN" uid="MMU_0070" menuName="Bảng tổng hợp khối lượng nhiều lô" command="DD_BangTHDDCL" title="Bảng tổng hợp khối lượng nhiều lô" description="Bảng tổng hợp khối lượng nhiều lô" />
+      <action menu="SANNEN" uid="MMU_0072" menuName="Bảng tổng hợp khối lượng taluy nhiều lô" command="DD_BangTHDDTLCL" title="Bảng tổng hợp khối lượng taluy nhiều lô" description="Bảng tổng hợp khối lượng taluy nhiều lô" />
+      <action menu="SANNEN" uid="MMU_0089" menuName="Tạo bảng thông tin tính toán san nền" command="DD_TBTTSN" title="Tạo bảng thông tin tính toán san nền" description="Tạo bảng thông tin tính toán san nền" />
+      <action menu="SANNEN" uid="MMU_0088" menuName="Tạo bảng tọa độ nút lưới" command="DD_TBTDNL" title="Tạo bảng tọa độ nút lưới" description="Tạo bảng tọa độ nút lưới" />
+    </group>
+    <group id="SANNEN-PMU_0012" title="Phụ trợ">
+      <action menu="SANNEN" uid="MMU_0058" menuName="Cộng ô" command="DD_MC" title="Cộng ô" description="Cộng ô" />
+      <action menu="SANNEN" uid="MMU_0060" menuName="Xóa ô đã cộng" command="DD_BoCongO" title="Xóa ô đã cộng" description="Xóa ô đã cộng" />
+      <action menu="SANNEN" uid="MMU_0062" menuName="Lập trục" command="DD_LAPTRUC" title="Lập trục" description="Lập trục" />
+      <action menu="SANNEN" uid="MMU_0064" menuName="Cộng text" command="DD_Congchu" title="Cộng text" description="Cộng text" />
+      <action menu="SANNEN" uid="MMU_0066" menuName="Trừ text" command="DD_Truchu" title="Trừ  text" description="Trừ text" />
+    </group>
+    <action menu="SANNEN" uid="MMU_0068" menuName="Xóa lưới" command="DD_XOALUOI" title="Xóa lưới" description="Xóa lưới" />
+    <action menu="SANNEN" uid="MMU_0087" menuName="Vẽ lại các biên lô theo mẫu đã hiệu chỉnh" command="DD_CNNBLTM" title="Vẽ lại các biên lô theo mẫu đã hiệu chỉnh" description="Vẽ lại các biên lô theo mẫu đã hiệu chỉnh" />
+    <action menu="SANNEN" uid="MMU_0086" menuName="Cập nhật biên lô" command="DD_UGBNI" title="Cập nhật biên lô" description="Cập nhật biên lô" />
+    <action menu="SANNEN" uid="MMU_0085" menuName="Thay đổi tỷ lệ Block" command="DD_Blockscale" title="Thay đổi tỷ lệ Block" description="Thay đổi tỷ lệ Block" />
+  </group>
+  <group id="KVN-PMU_0002" title="AV_Kênh">
+    <action menu="KVN" uid="MMU_0002" menuName="Dữ liệu bình đồ" command="DLBD" title="Dữ liệu bình đồ" description="Dữ liệu bình đồ" />
+    <group id="KVN-PMU_0125" title="Địa chất tuyến kênh">
+      <action menu="KVN" uid="MMU_0118" menuName="About TDT" command="LDC" title="Khai báo lớp địa chất" description="About TDT" />
+      <action menu="KVN" uid="MMU_0120" menuName="About TDT" command="DCTD" title="Nhập lớp địa chất trắc dọc" description="About TDT" />
+      <action menu="KVN" uid="MMU_0122" menuName="About TDT" command="DCTN" title="Nhập lớp địa chất trắc ngang" description="About TDT" />
+    </group>
+    <group id="KVN-PMU_0004" title="Tuyến">
+      <action menu="KVN" uid="MMU_0004" menuName="Nhập số liệu tuyến" command="NT" title="Nhập số liệu tuyến" description="Nhập số liệu tuyến; Tập tin &gt; Mở hỗ trợ NTD, giữ cọc có sẵn." />
+      <action menu="KVN" uid="MMU_0006" menuName="Tạo tuyến" command="TT" title="Tạo tuyến" description="Tạo tuyến" />
+      <action menu="KVN" uid="MMU_0008" menuName="Bố trí đường cong" command="CN" title="Bố trí đường cong" description="Bố trí đường cong" />
+      <action menu="KVN" uid="MMU_0010" menuName="Hiệu chỉnh tuyến" command="HCT" title="Hiệu chỉnh tuyến" description="Hiệu chỉnh tuyến; Phát sinh cọc nằm trong hộp thoại này." />
+      <action menu="KVN" uid="MMU_0124" menuName="About TDT" command="CDT" title="Chèn đỉnh tuyến" description="About TDT" />
+      <action menu="KVN" uid="MMU_0126" menuName="About TDT" command="LDT" title="Loại đỉnh tuyến" description="About TDT" />
+      <action menu="KVN" uid="MMU_0108" menuName="Tắt điểm bình đồ tuyến" command="TDBDT" title="Che điểm bình đồ tuyến" description="Tắt điểm bình đồ tuyến" />
+      <action menu="KVN" uid="MMU_0110" menuName="Bật điểm bình đồ tuyến" command="BDD" title="Bật điểm bình đồ tuyến" description="Bật điểm bình đồ tuyến" />
+      <action menu="KVN" uid="MMU_0112" menuName="Định vị tuyến" command="DVT" title="Định vị tuyến" description="Định vị tuyến" />
+      <group id="KVN-PMU_0006" title="Trắc dọc">
+        <action menu="KVN" uid="MMU_0014" menuName="Vẽ trắc dọc tự nhiên" command="TD" title="Vẽ trắc dọc tự nhiên" description="Vẽ trắc dọc tự nhiên" />
+        <action menu="KVN" uid="MMU_0128" menuName="About TDT" command="HCC" title="Hiệu chỉnh cọc trên trắc dọc" description="About TDT" />
+        <action menu="KVN" uid="MMU_0016" menuName="Thay đổi mức so sánh" command="MSSTD" title="Thay đổi mức so sánh" description="Thay đổi mức so sánh" />
+        <action menu="KVN" uid="MMU_0020" menuName="Tạo trắc dọc in" command="TDIN" title="Tạo trắc dọc in" description="Tạo trắc dọc in" />
+      </group>
+      <group id="KVN-PMU_0008" title="Trắc ngang">
+        <action menu="KVN" uid="MMU_0022" menuName="Vẽ trắc ngang tự nhiên" command="TN" title="Vẽ trắc ngang tự nhiên" description="Vẽ trắc ngang tự nhiên" />
+        <action menu="KVN" uid="MMU_0130" menuName="About TDT" command="HCDM" title="Hiệu chỉnh điểm mia trắc ngang" description="About TDT" />
+        <action menu="KVN" uid="MMU_0024" menuName="Loại điểm mia tự động" command="LDM" title="Loại điểm mia tự động" description="Loại điểm mia tự động" />
+        <action menu="KVN" uid="MMU_0026" menuName="Thêm điểm mia tự động" command="TDM" title="Thêm điểm mia tự động" description="Thêm điểm mia tự động" />
+        <action menu="KVN" uid="MMU_0028" menuName="Thay đổi mức so sánh trắc ngang" command="MSSTN" title="Thay đổi mức so sánh trắc ngang" description="Thay đổi mức so sánh trắc ngang" />
+        <action menu="KVN" uid="MMU_0030" menuName="Thay mẫu bảng trắc ngang" command="TMBTN" title="Thay mẫu bảng trắc ngang" description="Thay mẫu bảng trắc ngang" />
+        <action menu="KVN" uid="MMU_0132" menuName="About TDT" command="AI" title="Định nghĩa đường địa vật trên bình đồ" description="About TDT" />
+        <action menu="KVN" uid="MMU_0134" menuName="About TDT" command="DSS" title="Chèn địa vật lên trắc ngang" description="About TDT" />
+      </group>
+      <group id="KVN-PMU_0010" title="Thông số tuyến">
+        <action menu="KVN" uid="MMU_0136" menuName="About TDT" command="CDD" title="Cài đặt hiển thị điểm đo" description="About TDT" />
+        <action menu="KVN" uid="MMU_0032" menuName="Cài đặt thông số tuyến" command="DTST" title="Cài đặt thông số tuyến" description="Cài đặt thông số tuyến; cài đặt hiển thị thông số cọc/tuyến." />
+        <action menu="KVN" uid="MMU_0034" menuName="Bật thông số tuyến" command="BTST" title="Bật thông số tuyến" description="Bật thông số tuyến" />
+        <action menu="KVN" uid="MMU_0036" menuName="Tắt thông số tuyến" command="TTST" title="Tắt thông số tuyến" description="Tắt thông số tuyến" />
+      </group>
+      <group id="KVN-PMU_0012" title="Bảng biểu">
+        <action menu="KVN" uid="MMU_0038" menuName="Bảng tọa độ cọc" command="XTDC" title="Bảng tọa độ cọc" description="Bảng tọa độ cọc" />
+        <action menu="KVN" uid="MMU_0040" menuName="Bảng cắm cong" command="XCC" title="Bảng cắm cong" description="Bảng cắm cong" />
+        <action menu="KVN" uid="MMU_0042" menuName="Bảng yếu tố cong" command="XYTC" title="Bảng yếu tố cong" description="Bảng yếu tố cong" />
+      </group>
+      <action menu="KVN" uid="MMU_0044" menuName="Xuất số liệu tuyến" command="XSLT" title="Xuất số liệu tuyến" description="Xuất số liệu tuyến" />
+    </group>
+    <group id="KVN-PMU_0014" title="Thiết kế kênh">
+      <action menu="KVN" uid="MMU_0046" menuName="Thiết kế trắc dọc" command="KDD" title="Thiết kế trắc dọc" description="Thiết kế trắc dọc" />
+      <action menu="KVN" uid="MMU_0048" menuName="Cập nhật đường thiết kế" command="CNDD" title="Cập nhật đường thiết kế" description="Cập nhật đường thiết kế" />
+      <action menu="KVN" uid="MMU_0050" menuName="Thiết kế trắc ngang" command="KTKTN" title="Thiết kế trắc ngang" description="Thiết kế trắc ngang" />
+      <action menu="KVN" uid="MMU_0052" menuName="Dịch thiết kế trắc ngang" command="DTKTN" title="Dịch thiết kế trắc ngang" description="Dịch thiết kế trắc ngang" />
+      <action menu="KVN" uid="MMU_0054" menuName="Định nghĩa thiết kế trắc ngang" command="KDNTK" title="Định nghĩa thiết kế trắc ngang" description="Định nghĩa thiết kế trắc ngang" />
+      <action menu="KVN" uid="MMU_0056" menuName="Copy thiết kế trắc ngang" command="KCPTK" title="Copy thiết kế trắc ngang" description="Copy thiết kế trắc ngang" />
+      <action menu="KVN" uid="MMU_0058" menuName="Vét bùn" command="VBUN" title="Vét bùn" description="Vét bùn" />
+      <action menu="KVN" uid="MMU_0060" menuName="Đánh cấp" command="DCAP" title="Đánh cấp" description="Đánh cấp" />
+      <action menu="KVN" uid="MMU_0062" menuName="Thêm điểm cho taluy thiết kế" command="PTL" title="Thêm điểm cho taluy thiết kế" description="Thêm điểm cho taluy thiết kế" />
+      <action menu="KVN" uid="MMU_0064" menuName="Copy taluy thiết kế" command="KCPTL" title="Copy taluy thiết kế" description="Copy taluy thiết kế" />
+      <action menu="KVN" uid="MMU_0066" menuName="Điền thiết kế trắc ngang" command="KDTK" title="Điền thiết kế trắc ngang" description="Điền thiết kế trắc ngang" />
+      <action menu="KVN" uid="MMU_0143" menuName="Điền Thiết kế trắc dọc" command="KDIENTKTD" title="Điền Thiết kế trắc dọc" description="Điền Thiết kế trắc dọc" />
+      <action menu="KVN" uid="MMU_0068" menuName="Xây dựng các đường bình đồ tuyến kênh" command="KTKBD" title="Xây dựng các đường bình đồ tuyến kênh" description="Xây dựng các đường bình đồ tuyến kênh" />
+      <action menu="KVN" uid="MMU_0070" menuName="Lập bảng thông số tính kênh" command="BTK" title="Lập bảng thông số tính kênh" description="Lập bảng thông số tính kênh" />
+      <action menu="KVN" uid="MMU_0072" menuName="Tính diện tích đào đắp" command="KDAODAP" title="Tính diện tích đào đắp" description="Tính diện tích đào đắp" />
+      <action menu="KVN" uid="MMU_0074" menuName="Lập bảng diện tích" command="KBTH" title="Lập bảng diện tích" description="Lập bảng diện tích" />
+      <action menu="KVN" uid="MMU_0076" menuName="Xây dựng mô hình 3D tuyến kênh" command="PC" title="Xây dựng mô hình 3D tuyến" description="Xây dựng mô hình 3D tuyến kênh" />
+      <action menu="KVN" uid="MMU_0140" menuName="About TDT" command="TL" title="Rải taluy" description="About TDT" />
+      <action menu="KVN" uid="MMU_0142" menuName="About TDT" command="HCTL" title="Hiệu chỉnh taluy" description="About TDT" />
+    </group>
+    <group id="KVN-PMU_0016" title="Tiện ích">
+      <group id="KVN-PMU_0018" title="Tiện ích lớp">
+        <action menu="KVN" uid="MMU_0078" menuName="Bật toàn bộ các lớp" command="11" title="Bật toàn bộ các lớp" description="Bật toàn bộ các lớp" />
+        <action menu="KVN" uid="MMU_0080" menuName="Tắt lớp chưa đối tượng được chọn" command="22" title="Tắt lớp chứa đối tượng được chọn" description="Tắt lớp chưa đối tượng được chọn" />
+        <action menu="KVN" uid="MMU_0082" menuName="Tắt lớp không chứa đối tượng được chọn" command="33" title="Tắt lớp không chứa đối tượng được chọn" description="Tắt lớp không chứa đối tượng được chọn" />
+        <action menu="KVN" uid="MMU_0084" menuName="Xóa toàn bộ đối tượng của lớp" command="44" title="Xóa toàn bộ đối tượng của lớp" description="Xóa toàn bộ đối tượng của lớp" />
+      </group>
+      <group id="KVN-PMU_0020" title="Tiện ích đường">
+        <action menu="KVN" uid="MMU_0138" menuName="About TDT" command="DNPL" title="Định nghĩa đa tuyến dốc" description="About TDT" />
+        <action menu="KVN" uid="MMU_0086" menuName="Offset 3D Polyline" command="O3P" title="Offset 3D Polyline" description="Offset 3D Polyline" />
+        <action menu="KVN" uid="MMU_0088" menuName="Nối các đường 3D Polyline" command="N3P" title="Nối các đường 3D Polyline" description="Nối các đường 3D Polyline" />
+        <action menu="KVN" uid="MMU_0090" menuName="Gán cao độ nhiều Polyline" command="GCD" title="Gán cao độ nhiều Polyline" description="Gán cao độ nhiều Polyline" />
+        <action menu="KVN" uid="MMU_0092" menuName="Hiệu chỉnh cao độ Polyline" command="EZ" title="Hiệu chỉnh cao độ Polyline" description="Hiệu chỉnh cao độ Polyline" />
+        <action menu="KVN" uid="MMU_0094" menuName="Chuyển 2D,3D Polyline -&gt; Spline" command="P2S" title="Chuyển 2D,3D Polyline -&gt; Spline" description="Chuyển 2D,3D Polyline -&gt; Spline" />
+        <action menu="KVN" uid="MMU_0096" menuName="Chuyển Spline -&gt; 2D Polyline" command="S2P" title="Chuyển Spline -&gt; 2D Polyline" description="Chuyển Spline -&gt; 2D Polyline" />
+        <action menu="KVN" uid="MMU_0098" menuName="Chuyển Spline -&gt; 3D Polyline" command="S3P" title="Chuyển Spline -&gt; 3D Polyline" description="Chuyển Spline -&gt; 3D Polyline" />
+        <action menu="KVN" uid="MMU_0100" menuName="Thêm đỉnh cho Polyline" command="TDPL" title="Thêm đỉnh cho Polyline" description="Thêm đỉnh cho Polyline" />
+        <action menu="KVN" uid="MMU_0102" menuName="Loại đỉnh của Polyline" command="LDPL" title="Loại đỉnh của Polyline" description="Loại đỉnh của Polyline" />
+        <action menu="KVN" uid="MMU_0104" menuName="Thêm đỉnh cho Spline" command="TDSPL" title="Thêm đỉnh cho Spline" description="Thêm đỉnh cho Spline" />
+        <action menu="KVN" uid="MMU_0106" menuName="Loại đỉnh của Spline" command="LDSPL" title="Loại đỉnh của Spline" description="Loại đỉnh của Spline" />
+      </group>
+    </group>
+  </group>
+  <group id="DCCT-PMU_0002" title="AV_Địa chất">
+    <action menu="DCCT" uid="MMU_0002" menuName="Khai báo bảng mã các lớp địa chất" command="KBM" title="Khai báo bảng mã các lớp địa chất" description="Khai báo bảng mã các lớp địa chất" />
+    <action menu="DCCT" uid="MMU_0004" menuName="Nhập sửa dữ liệu lỗ khoan" command="DLLK" title="Nhập sửa dữ liệu lỗ khoan" description="Nhập sửa dữ liệu lỗ khoan" />
+    <action menu="DCCT" uid="MMU_0006" menuName="Vẽ lỗ khoan ra bản vẽ" command="VLK" title="Vẽ lỗ khoan ra bản vẽ" description="Vẽ lỗ khoan ra bản vẽ" />
+    <action menu="DCCT" uid="MMU_0026" menuName="Tạo lỗ khoan theo tuyến KSVN,VNRoad,KVN" command="LKTT" title="Tạo lỗ khoan theo tuyến KSVN,VNRoad,KVN" description="Tạo lỗ khoan theo tuyến KSVN,VNRoad,KVN" />
+    <action menu="DCCT" uid="MMU_0028" menuName="Hiệu chỉnh thể hiện lỗ khoan trên bình đồ" command="HCLK" title="Hiệu chỉnh thể hiện lỗ khoan trên bình đồ" description="Hiệu chỉnh thể hiện lỗ khoan trên bình đồ" />
+    <action menu="DCCT" uid="MMU_0040" menuName="Hiệu chỉnh cao độ lỗ khoan" command="HCCD" title="Hiệu chỉnh cao độ lỗ khoan" description="Hiệu chỉnh cao độ lỗ khoan" />
+    <action menu="DCCT" uid="MMU_0008" menuName="Tạo tuyến thăm dò từ đường pline hoặc tuyến đã có sẵn của VNRoad" command="TTD" title="Tạo tuyến thăm dò từ đường pline hoặc tuyến đã có sẵn của KSVN,VNRoad,KVN" description="Tạo tuyến thăm dò từ đường pline hoặc tuyến đã có sẵn của VNRoad" />
+    <action menu="DCCT" uid="MMU_0010" menuName="Gán lỗ khoan vào tuyến" command="GLK" title="Gán nhiều lỗ khoan vào tuyến theo khoảng cách 2 bên tuyến" description="Gán lỗ khoan vào tuyến" />
+    <action menu="DCCT" uid="MMU_0051" menuName="Gán  lỗ khoan vào tuyến  theo lựa chọn" command="GLK1" title="Gán  lỗ khoan vào tuyến  theo lựa chọn" description="Gán  lỗ khoan vào tuyến  theo lựa chọn" />
+    <action menu="DCCT" uid="MMU_0012" menuName="Loại bỏ lỗ khoan đã gán vào tuyến" command="BGLK" title="Loại bỏ lỗ khoan đã gán vào tuyến" description="Loại bỏ lỗ khoan đã gán vào tuyến" />
+    <action menu="DCCT" uid="MMU_0020" menuName="Cập nhật cao độ lỗ khoan theo địa hình" command="CNLKTDH" title="Cập nhật cao độ lỗ khoan theo địa hình" description="Cập nhật cao độ lỗ khoan theo địa hình" />
+    <action menu="DCCT" uid="MMU_0022" menuName="Cập nhật cao độ lỗ khoan theo tim tuyến VNRoad" command="CNLKTT" title="Cập nhật cao độ lỗ khoan theo tim tuyến KSVN,VNRoad,KVN" description="Cập nhật cao độ lỗ khoan theo tim tuyến VNRoad" />
+    <action menu="DCCT" uid="MMU_0014" menuName="Vẽ mặt cắt" command="MCDC" title="Vẽ mặt cắt" description="Vẽ mặt cắt" />
+    <action menu="DCCT" uid="MMU_0024" menuName="Vẽ mặt cắt địa chất lên trắc dọc VNRoad" command="LK2TD" title="Vẽ mặt cắt địa chất lên trắc dọc KSVN,VNRoad,KVN" description="Vẽ mặt cắt địa chất lên trắc dọc VNRoad" />
+    <action menu="DCCT" uid="MMU_0030" menuName="Hiệu chỉnh mặt cắt" command="DCCT_HCMC" title="Hiệu chỉnh mặt cắt" description="Hiệu chỉnh mặt cắt" />
+    <action menu="DCCT" uid="MMU_0034" menuName="Tô hatch mặt cắt" command="THMC" title="Tô hatch mặt cắt" description="Tô hatch mặt cắt" />
+    <action menu="DCCT" uid="MMU_0036" menuName="Thay thế 1 đoạn polyline bằng 1 đoạn khác" command="TDL" title="Thay thế 1 đoạn polyline bằng 1 đoạn khác" description="Thay thế 1 đoạn polyline bằng 1 đoạn khác" />
+    <action menu="DCCT" uid="MMU_0042" menuName="Cập nhật thay đổi xuống trắc ngang khi chỉnh sửa địa chất trên trắc dọc" command="CNDCTN" title="Cập nhật thay đổi xuống trắc ngang khi chỉnh sửa địa chất trên trắc dọc" description="Cập nhật thay đổi xuống trắc ngang khi chỉnh sửa địa chất trên trắc dọc" />
+    <action menu="DCCT" uid="MMU_0044" menuName="Cập nhật thay đổi xuống trắc dọc khi chỉnh sửa địa chất trên trắc ngang" command="CNDCTD" title="Cập nhật thay đổi xuống trắc dọc khi chỉnh sửa địa chất trên trắc ngang" description="Cập nhật thay đổi xuống trắc dọc khi chỉnh sửa địa chất trên trắc ngang" />
+    <action menu="DCCT" uid="MMU_0046" menuName="Định nghĩa điểm địa chất(DC1,DC2) trên bình đồ" command="DDCBD" title="Định nghĩa điểm địa chất(DC1,DC2) trên bình đồ" description="Định nghĩa điểm địa chất(DC1,DC2) trên bình đồ" />
+    <action menu="DCCT" uid="MMU_0048" menuName="Định nghĩa điểm địa chất(DC1,DC2) trên trắc ngang" command="DDC" title="Định nghĩa điểm địa chất(DC1,DC2) trên trắc ngang" description="Định nghĩa điểm địa chất(DC1,DC2) trên trắc ngang" />
+    <action menu="DCCT" uid="MMU_0050" menuName="Vẽ đường địa chất  trắc dọc khi định nghĩa các đường địa chất trắc ngang từ layer" command="DCTTN" title="Vẽ đường địa chất  trắc dọc khi định nghĩa các đường địa chất trắc ngang từ layer" description="Vẽ đường địa chất  trắc dọc khi định nghĩa các đường địa chất trắc ngang từ layer" />
+    <action menu="DCCT" uid="MMU_0052" menuName="Hiệu chỉnh vẽ lỗ khoan trên trắc ngang" command="HCLKTN" title="Vẽ, Hiệu chỉnh lỗ khoan trên các trắc ngang" description="Hiệu chỉnh vẽ lỗ khoan trên trắc ngang" />
+    <action menu="DCCT" uid="MMU_0016" menuName="Định nghĩa cấu trúc file hình trụ lỗ khoan" command="DNHT" title="Định nghĩa cấu trúc file hình trụ lỗ khoan" description="Định nghĩa cấu trúc file hình trụ lỗ khoan" />
+    <action menu="DCCT" uid="MMU_0018" menuName="Hình trụ lỗ khoan" command="HTLK" title="Hình trụ lỗ khoan" description="Hình trụ lỗ khoan" />
+    <action menu="DCCT" uid="MMU_0032" menuName="Cài đặt các file mẫu sử dụng" command="DCCT_TS" title="Cài đặt các file mẫu sử dụng" description="Cài đặt các file mẫu sử dụng" />
+  </group>
+  <group id="RM-PMU_0002" title="AV_ATGT">
+    <group id="RM-PMU_0004" title="BIển báo">
+      <action menu="RM" uid="MMU_0002" menuName="Cài đặt biển báo" command="CDBB" title="Cài đặt biển báo" description="Cài đặt biển báo" />
+      <action menu="RM" uid="MMU_0045" menuName="Tạo tuyến biển báo" command="TTBB" title="Tạo tuyến biển báo" description="Tạo tuyến biển báo" />
+      <action menu="RM" uid="MMU_0046" menuName="Hiệu chỉnh tuyến biển báo" command="HCTBB" title="Hiệu chỉnh tuyến biển báo" description="Hiệu chỉnh tuyến biển báo" />
+      <action menu="RM" uid="MMU_0004" menuName="Quản lý Biển báo giao thông" command="BBGT" title="Quản lý Biển báo giao thông" description="Quản lý Biển báo giao thông" />
+      <action menu="RM" uid="MMU_0008" menuName="Cập nhật lý trình biển báo" command="CNLTBB" title="Cập nhật lý trình biển báo" description="Cập nhật lý trình biển báo" />
+      <action menu="RM" uid="MMU_0010" menuName="Thống kê biển báo giao thông" command="TKBBGT" title="Thống kê biển báo giao thông" description="Thống kê biển báo giao thông" />
+    </group>
+    <group id="RM-PMU_0006" title="Vạch sơn">
+      <action menu="RM" uid="MMU_0043" menuName="Đặt tham số..." command="TSRM" title="Đặt tham số..." description="Đặt tham số..." />
+      <action menu="RM" uid="MMU_0012" menuName="Chèn mũi tên chỉ hướng" command="IST" title="Chèn mũi tên chỉ hướng" description="Chèn mũi tên chỉ hướng" />
+      <action menu="RM" uid="MMU_0014" menuName="Vạch kẻ đường" command="DLIN" title="Vạch kẻ đường" description="Vạch kẻ đường" />
+      <action menu="RM" uid="MMU_0016" menuName="Vạch xác định đảo phân chia dòng xe" command="DHAT" title="Vạch xác định đảo phân chia dòng xe" description="Vạch xác định đảo phân chia dòng xe" />
+      <action menu="RM" uid="MMU_0018" menuName="Vạch phân chia dòng, làn" command="DCHE" title="Vạch phân chia dòng, làn" description="Vạch phân chia dòng, làn" />
+      <action menu="RM" uid="MMU_0020" menuName="Vạch kẻ nhập dòng" command="DCHE1" title="Vạch kẻ nhập dòng" description="Vạch kẻ nhập dòng" />
+      <action menu="RM" uid="MMU_0022" menuName="Vạch người đi bộ qua đường" command="DCRO" title="Vạch người đi bộ qua đường" description="Vạch người đi bộ qua đường" />
+      <action menu="RM" uid="MMU_0024" menuName="Vạch xác định vị trí dừng xe" command="DGIV" title="Vạch xác định vị trí dừng xe" description="Vạch xác định vị trí dừng xe" />
+      <action menu="RM" uid="MMU_0026" menuName="Vạch xe đạp qua đường" command="DBYC" title="Vạch xe đạp qua đường" description="Vạch xe đạp qua đường" />
+      <action menu="RM" uid="MMU_0028" menuName="Vạch dừng đỗ các phương tiện giao thông cộng" command="DBUS" title="Vạch dừng đỗ phương tiện giao thông công cộng" description="Vạch dừng đỗ các phương tiện giao thông cộng" />
+      <action menu="RM" uid="MMU_0030" menuName="Vạch kẻ kiểu mắt võng" command="DJUN" title="Vạch kẻ kiểu mắt võng" description="Vạch kẻ kiểu mắt võng" />
+      <action menu="RM" uid="MMU_0032" menuName="Hiệu chỉnh đối tượng" command="DEdit" title="Hiệu chỉnh đối tượng" description="Hiệu chỉnh đối tượng" />
+      <action menu="RM" uid="MMU_0034" menuName="Cắt các đối tượng(TRIM)" command="DTrim" title="Cắt các đối tượng(TRIM)" description="Cắt các đối tượng(TRIM)" />
+      <action menu="RM" uid="MMU_0036" menuName="Lập bảng thống kê các đối tượng vạch sơn" command="DQuan" title="Lập bảng thống kê các đối tượng vạch sơn" description="Lập bảng thống kê các đối tượng vạch sơn" />
+      <action menu="RM" uid="MMU_0038" menuName="Tô vạch sơn" command="DFILL" title="Tô vạch sơn" description="Tô vạch sơn" />
+      <action menu="RM" uid="MMU_0040" menuName="Không tô vạch sơn" command="DOut" title="Không tô vạch sơn" description="Không tô vạch sơn" />
+    </group>
+  </group>
+</commands>

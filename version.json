@@ -1,11 +1,11 @@
 {
-  "version": "2.1.0.3",
+  "version": "2.2.1.0",
   "release_date": "2026-11-05",
-  "title": "AVRoad 2.1 RC2 (Hotfix v2.1.0.3) - Fix Properties Ctrl+1 & CommCenter trên máy sạch",
+  "title": "AVRoad 2.2.1 RC1 - Giao diện thanh công cụ trái & Tự động kết nối DLBD",
   "release_channel": "rc",
-  "prerelease": false,
-  "changelog": "Bản cập nhật v2.1.0.3 (RC2 Clean Windows Hotfix):\\n- Sửa dứt điểm lỗi hộp thoại 'Fail to get CommCntrController!' khi khởi động trên máy sạch.\\n- Sửa dứt điểm lỗi bảng Properties (Ctrl+1) bị trắng phau và phóng to ngang màn hình không resize được (đăng ký đầy đủ 223 CLSID COM acpi.arx, AcPEXCtl.arx, acopm.arx, axdb.dll & khóa FixedProfile.aws 300x500).\\n- Giữ nguyên 100% giao diện SinglePanel21 RC2, 6 module, DLBD, 7 menu AV_Road.",
-  "download_url": "https://github.com/tienhoaa/AVRoad/releases/latest",
-  "patch_download_url": "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/patch_2.1_rc2.zip",
-  "patch_sha256": "dcce57f96c2fe30544bf60b0d17e6efa3982d953f2c38ad681aa2e06b4e9e0d8"
+  "prerelease": true,
+  "changelog": "- Tự động kết nối và hiển thị thanh giao diện bên trái (DLBD ở trên, 6 nhóm công cụ ở dưới) ngay khi khởi động CAD.\n- Bổ sung cơ chế retry thông minh cho kết nối DLBD, tránh mất giao diện khi CAD tải chậm.\n- Nút Ẩn/Hiện DLBD mở rộng tối đa không gian làm việc cho các lệnh thiết kế.\n- Tích hợp toàn diện bản sửa lỗi máy sạch (hộp thoại CommCenter & bảng Properties Ctrl+1).",
+  "download_url": "https://github.com/tienhoaa/AVRoad/releases/tag/v2.2.1-rc.1",
+  "patch_download_url": "https://github.com/tienhoaa/AVRoad/releases/download/v2.2.1-rc.1/patch_2.2.1_rc1.zip",
+  "patch_sha256": "5a2a404062da31b288c6324e810a29d57105777587d5c866111d000ec9897aa0"
 }

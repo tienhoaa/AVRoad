@@ -1,0 +1,20 @@
+﻿[
+    {
+        "menu":  "KSVN",
+        "uid":  "MMU_0107",
+        "title":  "Gán cao độ nhiều Polyline",
+        "reason":  "Original menu macro is empty; no command invented"
+    },
+    {
+        "menu":  "DCCT",
+        "uid":  "MMU_0038",
+        "title":  "Toolbar",
+        "reason":  "Toolbar visibility or empty About macro, not a design command"
+    },
+    {
+        "menu":  "RM",
+        "uid":  "MMU_0042",
+        "title":  "Thanh công cụ",
+        "reason":  "Toolbar visibility or empty About macro, not a design command"
+    }
+]
