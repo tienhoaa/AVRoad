@@ -1,11 +1,11 @@
 {
   "version": "2.2.1.0",
   "release_date": "2026-11-05",
-  "title": "AVRoad 2.2.1 RC1 - Giao diện thanh công cụ trái & Tự động kết nối DLBD",
-  "release_channel": "rc",
-  "prerelease": true,
-  "changelog": "- Tự động kết nối và hiển thị thanh giao diện bên trái (DLBD ở trên, 6 nhóm công cụ ở dưới) ngay khi khởi động CAD.\n- Bổ sung cơ chế retry thông minh cho kết nối DLBD, tránh mất giao diện khi CAD tải chậm.\n- Nút Ẩn/Hiện DLBD mở rộng tối đa không gian làm việc cho các lệnh thiết kế.\n- Tích hợp toàn diện bản sửa lỗi máy sạch (hộp thoại CommCenter & bảng Properties Ctrl+1).",
-  "download_url": "https://github.com/tienhoaa/AVRoad/releases/tag/v2.2.1-rc.1",
-  "patch_download_url": "https://github.com/tienhoaa/AVRoad/releases/download/v2.2.1-rc.1/patch_2.2.1_rc1.zip",
-  "patch_sha256": "5a2a404062da31b288c6324e810a29d57105777587d5c866111d000ec9897aa0"
+  "title": "AVRoad 2.2.1 - Cập nhật Giao diện cột trái tự động & Sửa lỗi máy sạch",
+  "release_channel": "stable",
+  "prerelease": false,
+  "changelog": "- Tự động mở và gắn kết cột giao diện bên trái (DLBD ở trên, 6 nhóm công cụ thiết kế ở dưới) khi khởi động.\n- Bổ sung cơ chế retry thông minh cho kết nối DLBD khi CAD tải chậm.\n- Nút Ẩn/Hiện DLBD mở rộng không gian làm việc cho các lệnh thiết kế.\n- Tích hợp toàn diện bản sửa lỗi máy sạch (hộp thoại CommCenter & bảng Properties Ctrl+1).",
+  "download_url": "https://github.com/tienhoaa/AVRoad/releases/latest",
+  "patch_download_url": "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/patch_2.1_rc2.zip",
+  "patch_sha256": "4c4678ac914ae69982d78d92a734ac2a172d40fbddc5b64a98f603502bac3f2d"
 }
