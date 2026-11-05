@@ -1,4 +1,4 @@
-﻿using AVRoadDeployment;
+using AVRoadDeployment;
 using System;
 
 using System.Collections.Generic;
@@ -2657,6 +2657,44 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
 
             psi.WorkingDirectory = appDir;
 
+            // Only the AVRoad-owned UI module is loaded; existing CAD/TDT startup is preserved.
+            string uiModule = Path.Combine(appDir, "UI21", "AVRoad.SinglePanel21.dll");
+            foreach (string uiName in new string[] { "AVRoad.SinglePanel21.dll", "commands.xml" })
+            {
+                using (Stream embeddedUi = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("UI21." + uiName))
+                {
+                    if (embeddedUi == null) continue;
+                    using (MemoryStream bytes = new MemoryStream())
+                    {
+                        embeddedUi.CopyTo(bytes);
+                        byte[] expected = bytes.ToArray();
+                        string destination = Path.Combine(appDir, "UI21", uiName);
+                        bool matches = false;
+                        using (System.Security.Cryptography.SHA256 sha = System.Security.Cryptography.SHA256.Create())
+                            if (File.Exists(destination)) matches = Convert.ToBase64String(sha.ComputeHash(File.ReadAllBytes(destination))) == Convert.ToBase64String(sha.ComputeHash(expected));
+                        if (!matches)
+                        {
+                            Directory.CreateDirectory(Path.GetDirectoryName(destination));
+                            if (File.Exists(destination) && !File.Exists(destination + ".pre-v21")) File.Copy(destination, destination + ".pre-v21");
+                            string temporary = destination + ".new";
+                            File.WriteAllBytes(temporary, expected);
+                            if (File.Exists(destination)) File.Replace(temporary, destination, null); else File.Move(temporary, destination);
+                        }
+                    }
+                }
+            }
+            if (File.Exists(uiModule))
+            {
+                string startupDir = Path.Combine(Path.GetTempPath(), "AVRoadUI21");
+                Directory.CreateDirectory(startupDir);
+                string startupScript = Path.Combine(startupDir, "startup-" + Guid.NewGuid().ToString("N") + ".scr");
+                string moduleForCad = uiModule.Replace('\\', '/').Replace("\"", "");
+                File.WriteAllText(startupScript,
+                    "(command \"_.NETLOAD\" \"" + moduleForCad + "\")\r\nAVROADUI21\r\n(princ)\r\n",
+                    System.Text.Encoding.ASCII);
+                psi.Arguments += " /b \"" + startupScript + "\"";
+            }
+
             psi.UseShellExecute = false;
 
 
@@ -2973,9 +3011,11 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
 
 
 
-                string checkUrl = "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version.json";
-
                 string iniPath = Path.Combine(appDir, "AVRoad.ini");
+
+                string channel = "Stable";
+
+                string customUrl = null;
 
                 if (File.Exists(iniPath))
 
@@ -2985,13 +3025,67 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
 
                     {
 
-                        if (line.StartsWith("UpdateUrl=", StringComparison.OrdinalIgnoreCase))
+                        if (line.StartsWith("UpdateChannel=", StringComparison.OrdinalIgnoreCase))
 
                         {
 
-                            checkUrl = line.Substring(10).Trim();
+                            channel = line.Substring(14).Trim();
 
                         }
+
+                        else if (line.StartsWith("UpdateUrl=", StringComparison.OrdinalIgnoreCase))
+
+                        {
+
+                            customUrl = line.Substring(10).Trim();
+
+                        }
+
+                    }
+
+                }
+
+                string checkUrl = "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version.json";
+
+                if (string.Equals(channel, "RC", StringComparison.OrdinalIgnoreCase))
+
+                {
+
+                    if (string.IsNullOrEmpty(customUrl) || customUrl.EndsWith("/version.json", StringComparison.OrdinalIgnoreCase))
+
+                    {
+
+                        checkUrl = "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version-2.0-rc.json";
+
+                    }
+
+                    else
+
+                    {
+
+                        checkUrl = customUrl;
+
+                    }
+
+                }
+
+                else
+
+                {
+
+                    if (string.IsNullOrEmpty(customUrl) || customUrl.EndsWith("/version-2.0-rc.json", StringComparison.OrdinalIgnoreCase))
+
+                    {
+
+                        checkUrl = "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version.json";
+
+                    }
+
+                    else
+
+                    {
+
+                        checkUrl = customUrl;
 
                     }
 
@@ -3092,7 +3186,9 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
 
                     {
 
-                        MessageBox.Show("AVRoad 2026 hiện đang là phiên bản mới nhất (" + localVer + ").\nHệ thống đã được cập nhật đầy đủ và ổn định.", "AVRoad 2026 Solution", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        string chInfo = string.Equals(channel, "RC", StringComparison.OrdinalIgnoreCase) ? " (Kênh Thử nghiệm RC)" : " (Kênh Chính thức Stable)";
+
+                        MessageBox.Show("AVRoad 2026 hiện đang là phiên bản mới nhất (" + localVer + chInfo + ").\nHệ thống đã được cập nhật đầy đủ và ổn định.", "AVRoad 2026 Solution", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                     }
 
@@ -3142,9 +3238,25 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
 
                     int lv = 0;
 
-                    if (i < rParts.Length) int.TryParse(rParts[i], out rv);
+                    if (i < rParts.Length)
 
-                    if (i < lParts.Length) int.TryParse(lParts[i], out lv);
+                    {
+
+                        Match m = Regex.Match(rParts[i], @"\d+");
+
+                        if (m.Success) int.TryParse(m.Value, out rv);
+
+                    }
+
+                    if (i < lParts.Length)
+
+                    {
+
+                        Match m = Regex.Match(lParts[i], @"\d+");
+
+                        if (m.Success) int.TryParse(m.Value, out lv);
+
+                    }
 
                     if (rv > lv) return true;
 

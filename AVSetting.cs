@@ -17,6 +17,7 @@ namespace AVSettingApp
         private TextBox txtPlotter;
         private CheckBox chkAutoStart;
         private CheckBox chkCheckUpdate;
+        private ComboBox cboUpdateChannel;
         private Image logoImg = null;
         private string appDir;
         private string iniPath;
@@ -39,7 +40,7 @@ namespace AVSettingApp
             }
 
             this.Text = "AVRoad 2026 - Cấu Hình & Tối Ưu Hệ Thống";
-            this.Size = new Size(720, 560);
+            this.Size = new Size(720, 605);
             this.StartPosition = FormStartPosition.CenterScreen;
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
@@ -150,9 +151,9 @@ namespace AVSettingApp
             // Group 2: Tùy Chọn & Tối Ưu
             GroupBox grpOpt = new GroupBox()
             {
-                Text = "  2. Tùy chọn Khởi động & Tối ưu hiệu năng  ",
+                Text = "  2. Tùy chọn Khởi động & Kênh Cập Nhật  ",
                 Location = new Point(20, y),
-                Size = new Size(660, 115),
+                Size = new Size(660, 155),
                 Font = new Font("Segoe UI", 9.5f, FontStyle.Bold),
                 ForeColor = Color.FromArgb(15, 23, 42)
             };
@@ -161,7 +162,7 @@ namespace AVSettingApp
             chkAutoStart = new CheckBox()
             {
                 Text = "Tự động vào thẳng AVRoad từ các lần sau (Giữ SHIFT khi mở nếu muốn vào lại màn hình này)",
-                Location = new Point(18, 28),
+                Location = new Point(18, 25),
                 AutoSize = true,
                 Checked = true,
                 Font = new Font("Segoe UI", 9.25f, FontStyle.Regular),
@@ -169,18 +170,51 @@ namespace AVSettingApp
             };
             chkCheckUpdate = new CheckBox()
             {
-                Text = "Tự động kiểm tra bản vá từ GitHub ở góc màn hình khi khởi động (Thông báo toast tiện lợi)",
-                Location = new Point(18, 58),
+                Text = "Tự động kiểm tra bản vá từ GitHub ở góc màn hình khi khởi động (Toast notification)",
+                Location = new Point(18, 52),
                 AutoSize = true,
                 Checked = true,
                 Font = new Font("Segoe UI", 9.25f, FontStyle.Regular),
                 ForeColor = Color.FromArgb(30, 41, 59)
             };
+
+            Label lblChannel = new Label()
+            {
+                Text = "Kênh cập nhật:",
+                Location = new Point(18, 83),
+                AutoSize = true,
+                Font = new Font("Segoe UI", 9f, FontStyle.Regular),
+                ForeColor = Color.FromArgb(30, 41, 59)
+            };
+            cboUpdateChannel = new ComboBox()
+            {
+                Location = new Point(115, 80),
+                Size = new Size(330, 25),
+                DropDownStyle = ComboBoxStyle.DropDownList,
+                Font = new Font("Segoe UI", 9f)
+            };
+            cboUpdateChannel.Items.Add("Chính thức (Stable v1.9 - Khuyến nghị)");
+            cboUpdateChannel.Items.Add("Thử nghiệm (Release Candidate - RC v2.0)");
+            cboUpdateChannel.SelectedIndex = 0;
+
+            Button btnCheckNow = new Button()
+            {
+                Text = "Kiểm Tra Ngay...",
+                Location = new Point(455, 79),
+                Size = new Size(130, 27),
+                Font = new Font("Segoe UI", 8.5f, FontStyle.Bold),
+                BackColor = Color.FromArgb(226, 232, 240),
+                FlatStyle = FlatStyle.Flat,
+                Cursor = Cursors.Hand
+            };
+            btnCheckNow.FlatAppearance.BorderSize = 0;
+            btnCheckNow.Click += (s, e) => CheckOnlineUpdateGUI();
+
             Button btnClearCache = new Button()
             {
                 Text = "Dọn Cache & Tối Ưu CAD",
-                Location = new Point(18, 82),
-                Size = new Size(160, 26),
+                Location = new Point(18, 116),
+                Size = new Size(170, 26),
                 Font = new Font("Segoe UI", 8.5f),
                 BackColor = Color.FromArgb(241, 245, 249),
                 FlatStyle = FlatStyle.Flat,
@@ -192,9 +226,9 @@ namespace AVSettingApp
                 MessageBox.Show("Đã làm sạch bộ đệm tạm và tối ưu nhân AVCAD Engine!", "Thông Báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
             };
 
-            grpOpt.Controls.AddRange(new Control[] { chkAutoStart, chkCheckUpdate, btnClearCache });
+            grpOpt.Controls.AddRange(new Control[] { chkAutoStart, chkCheckUpdate, lblChannel, cboUpdateChannel, btnCheckNow, btnClearCache });
 
-            y += 128;
+            y += 168;
 
             // Action Buttons
             Button btnSaveAndRun = new Button()
@@ -288,6 +322,7 @@ namespace AVSettingApp
 
         private void LoadSettings()
         {
+            string channel = "Stable";
             txtPlotStyle.Text = Path.Combine(appDir, "Plot Styles");
             txtPlotter.Text = Path.Combine(appDir, "Plotters");
             txtFont.Text = "";
@@ -305,6 +340,7 @@ namespace AVSettingApp
                             string v = l.Substring(eq + 1).Trim();
                             if (k == "AutoStart") chkAutoStart.Checked = (v == "1");
                             if (k == "CheckUpdateOnStartup") chkCheckUpdate.Checked = (v == "1");
+                            if (k == "UpdateChannel") channel = v;
                             if (k == "FontPath") txtFont.Text = v;
                             if (k == "PlotStylePath") txtPlotStyle.Text = v;
                             if (k == "PlotterPath") txtPlotter.Text = v;
@@ -313,6 +349,8 @@ namespace AVSettingApp
                 }
                 catch { }
             }
+
+            if (cboUpdateChannel != null) cboUpdateChannel.SelectedIndex = string.Equals(channel, "RC", StringComparison.OrdinalIgnoreCase) ? 1 : 0;
 
             if (string.IsNullOrEmpty(txtFont.Text))
             {
@@ -341,10 +379,17 @@ namespace AVSettingApp
             {
                 using (StreamWriter sw = new StreamWriter(iniPath, false, System.Text.Encoding.UTF8))
                 {
+                    string channel = (cboUpdateChannel != null && cboUpdateChannel.SelectedIndex == 1) ? "RC" : "Stable";
+                    string updateUrl = (channel == "RC")
+                        ? "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version-2.0-rc.json"
+                        : "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version.json";
+
                     sw.WriteLine("[AVSetting]");
                     sw.WriteLine("Configured=1");
                     sw.WriteLine("AutoStart=" + (chkAutoStart.Checked ? "1" : "0"));
                     sw.WriteLine("CheckUpdateOnStartup=" + (chkCheckUpdate.Checked ? "1" : "0"));
+                    sw.WriteLine("UpdateChannel=" + channel);
+                    sw.WriteLine("UpdateUrl=" + updateUrl);
                     sw.WriteLine("FontPath=" + txtFont.Text.Trim());
                     sw.WriteLine("PlotStylePath=" + txtPlotStyle.Text.Trim());
                     sw.WriteLine("PlotterPath=" + txtPlotter.Text.Trim());
@@ -469,9 +514,16 @@ namespace AVSettingApp
                     if (mLocal.Success) localVer = mLocal.Groups[1].Value;
                 }
 
-                string checkUrl = "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version.json";
+                bool isRc = (cboUpdateChannel != null && cboUpdateChannel.SelectedIndex == 1);
+                string channelName = isRc ? "Thử nghiệm (RC)" : "Chính thức (Stable)";
+                string checkUrl = isRc
+                    ? "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version-2.0-rc.json"
+                    : "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version.json";
+
                 ServicePointManager.SecurityProtocol = (SecurityProtocolType)3072; // TLS 1.2
-                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(checkUrl);
+                string fetchUrl = checkUrl + (checkUrl.Contains("?") ? "&" : "?") + "t=" + DateTime.UtcNow.Ticks;
+                HttpWebRequest req = (HttpWebRequest)WebRequest.Create(fetchUrl);
+                req.CachePolicy = new System.Net.Cache.RequestCachePolicy(System.Net.Cache.RequestCacheLevel.BypassCache);
                 req.UserAgent = "AVRoad-Client";
                 req.Timeout = 6000;
 
@@ -495,38 +547,38 @@ namespace AVSettingApp
                 if (mChange.Success) changelog = mChange.Groups[1].Value.Replace("\\n", "\n");
 
                 string patchUrl = "";
-                Match mUrl = Regex.Match(remoteJson, "\"download_url\"\\s*:\\s*\"([^\"]+)\"");
+                Match mUrl = Regex.Match(remoteJson, "\"patch_download_url\"\\s*:\\s*\"([^\"]+)\"");
+                if (!mUrl.Success) mUrl = Regex.Match(remoteJson, "\"download_url\"\\s*:\\s*\"([^\"]+)\"");
                 if (mUrl.Success) patchUrl = mUrl.Groups[1].Value;
+
+                string patchSha = "";
+                Match shaMatch = Regex.Match(remoteJson, "\"patch_sha256\"\\s*:\\s*\"([a-fA-F0-9]{64})\"");
+                if (shaMatch.Success) patchSha = shaMatch.Groups[1].Value;
 
                 bool isNewer = IsNewer(remoteVer, localVer);
 
                 if (isNewer)
                 {
                     DialogResult dr = MessageBox.Show(
-                        string.Format("Đã tìm thấy bản cập nhật mới v{0} trên GitHub!\n(Phiên bản hiện tại của bạn: v{1})\n\nNội dung bản vá:\n{2}\n\nBạn có muốn mở trình tải bản vá (AVUpdater) để cập nhật ngay không?", remoteVer, localVer, changelog),
+                        string.Format("Đã tìm thấy bản cập nhật mới v{0} trên kênh {1}!\n(Phiên bản hiện tại của bạn: v{2})\n\nNội dung bản vá:\n{3}\n\nBạn có muốn mở trình tải bản vá (AVUpdater) để cập nhật ngay không?", remoteVer, channelName, localVer, changelog),
                         "Có Bản Cập Nhật Mới - AVRoad 2026",
                         MessageBoxButtons.YesNo,
                         MessageBoxIcon.Information);
 
                     if (dr == DialogResult.Yes)
                     {
-                        LaunchUpdater(patchUrl, remoteVer);
+                        SaveSettings();
+                        LaunchUpdater(patchUrl, remoteVer, patchSha);
                         this.Close();
                     }
                 }
                 else
                 {
-                    DialogResult dr = MessageBox.Show(
-                        string.Format("Bạn đang sử dụng phiên bản mới nhất: v{0}!\n\nKết nối máy chủ GitHub (tienhoaa/AVRoad): THÀNH CÔNG (100% OK).\nHiện chưa có bản vá mới hơn.\n\n[Thử Nghiệm Tính Năng]: Bạn có muốn mở trình tải bản vá (AVUpdater) để kiểm tra thử màn hình cập nhật không?", localVer),
+                    MessageBox.Show(
+                        string.Format("Bạn đang sử dụng phiên bản: v{0}!\nKênh cập nhật: {1}.\n\nKết nối GitHub Releases: THÀNH CÔNG (100% OK).\nHiện tại không có bản cập nhật mới hơn trên kênh này.", localVer, channelName),
                         "Kiểm Tra Cập Nhật - AVRoad 2026",
-                        MessageBoxButtons.YesNo,
+                        MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
-
-                    if (dr == DialogResult.Yes)
-                    {
-                        LaunchUpdater(patchUrl, remoteVer);
-                        this.Close();
-                    }
                 }
             }
             catch (Exception ex)
@@ -535,14 +587,16 @@ namespace AVSettingApp
             }
         }
 
-        private void LaunchUpdater(string patchUrl, string remoteVer)
+        private void LaunchUpdater(string patchUrl, string remoteVer, string patchSha)
         {
-            string updaterExe = Path.Combine(appDir, "AVUpdater.exe");
+            string updaterExe = Path.Combine(appDir, "AVUpdater.v2.exe");
+            if (!File.Exists(updaterExe)) updaterExe = Path.Combine(appDir, "AVUpdater.exe");
             if (File.Exists(updaterExe))
             {
                 string args = "";
                 if (!string.IsNullOrEmpty(patchUrl)) args += " \"/url:" + patchUrl + "\"";
                 if (!string.IsNullOrEmpty(remoteVer)) args += " \"/ver:" + remoteVer + "\"";
+                if (!string.IsNullOrEmpty(patchSha)) args += " \"/sha:" + patchSha + "\"";
 
                 Process.Start(new ProcessStartInfo()
                 {
@@ -564,8 +618,16 @@ namespace AVSettingApp
                 {
                     int rv = 0;
                     int lv = 0;
-                    if (i < rParts.Length) int.TryParse(rParts[i], out rv);
-                    if (i < lParts.Length) int.TryParse(lParts[i], out lv);
+                    if (i < rParts.Length)
+                    {
+                        Match m = Regex.Match(rParts[i], @"\d+");
+                        if (m.Success) int.TryParse(m.Value, out rv);
+                    }
+                    if (i < lParts.Length)
+                    {
+                        Match m = Regex.Match(lParts[i], @"\d+");
+                        if (m.Success) int.TryParse(m.Value, out lv);
+                    }
                     if (rv > lv) return true;
                     if (rv < lv) return false;
                 }
@@ -573,6 +635,8 @@ namespace AVSettingApp
             catch { }
             return false;
         }
+
+
 
         [STAThread]
         public static void Main()

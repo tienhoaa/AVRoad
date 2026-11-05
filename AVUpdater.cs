@@ -201,6 +201,7 @@ namespace AVRoadUpdater
                 try
                 {
                     AppendLog("Bắt đầu tiến trình cập nhật...");
+                    string channel = "Stable";
 
                     try
                     {
@@ -235,16 +236,44 @@ namespace AVRoadUpdater
                         SetStatus("Đang kiểm tra bản vá từ GitHub...", "Kết nối máy chủ GitHub Releases...");
                         AppendLog("Đang truy vấn thông tin bản vá từ GitHub...");
 
-                        string checkUrl = "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version.json";
                         string iniPath = Path.Combine(appDir, "AVRoad.ini");
+                                                string customUrl = null;
                         if (File.Exists(iniPath))
                         {
                             foreach (string line in File.ReadAllLines(iniPath))
                             {
-                                if (line.StartsWith("UpdateUrl=", StringComparison.OrdinalIgnoreCase))
+                                if (line.StartsWith("UpdateChannel=", StringComparison.OrdinalIgnoreCase))
                                 {
-                                    checkUrl = line.Substring(10).Trim();
+                                    channel = line.Substring(14).Trim();
                                 }
+                                else if (line.StartsWith("UpdateUrl=", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    customUrl = line.Substring(10).Trim();
+                                }
+                            }
+                        }
+
+                        string checkUrl = "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version.json";
+                        if (string.Equals(channel, "RC", StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (string.IsNullOrEmpty(customUrl) || customUrl.EndsWith("/version.json", StringComparison.OrdinalIgnoreCase))
+                            {
+                                checkUrl = "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version-2.0-rc.json";
+                            }
+                            else
+                            {
+                                checkUrl = customUrl;
+                            }
+                        }
+                        else
+                        {
+                            if (string.IsNullOrEmpty(customUrl) || customUrl.EndsWith("/version-2.0-rc.json", StringComparison.OrdinalIgnoreCase))
+                            {
+                                checkUrl = "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version.json";
+                            }
+                            else
+                            {
+                                checkUrl = customUrl;
                             }
                         }
 
@@ -275,6 +304,25 @@ namespace AVRoadUpdater
                         SetStatus("Không tìm thấy bản vá", "Vui lòng thử lại sau hoặc tải trực tiếp từ GitHub.");
                         EnableCloseButton();
                         return;
+                    }
+
+                    // 2b. Ensure expected SHA256 if missing
+                    if (string.IsNullOrEmpty(expectedPatchSha))
+                    {
+                        try
+                        {
+                            string checkJsonUrl = string.Equals(channel, "RC", StringComparison.OrdinalIgnoreCase)
+                                ? "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version-2.0-rc.json"
+                                : "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/version.json";
+                            using (WebClient wcSha = new WebClient())
+                            {
+                                wcSha.Headers.Add("User-Agent", "AVRoad-Updater");
+                                string j = wcSha.DownloadString(checkJsonUrl);
+                                Match m = Regex.Match(j, "\"patch_sha256\"\\s*:\\s*\"([a-fA-F0-9]{64})\"");
+                                if (m.Success) expectedPatchSha = m.Groups[1].Value;
+                            }
+                        }
+                        catch { }
                     }
 
                     // 3. Download Patch
@@ -331,7 +379,7 @@ namespace AVRoadUpdater
                     SetStatus("Đang áp dụng bản vá...", "Đang trích xuất và cập nhật các tệp tin...");
                     AppendLog("Bắt đầu trích xuất các tệp tin bản vá...");
 
-                    string rollback = PatchTransaction.Apply(tempZipPath, appDir, expectedPatchSha, true);
+                    string rollback = PatchTransaction.Apply(tempZipPath, appDir, expectedPatchSha, false);
                     AppendLog("Rollback: " + rollback);
 
                     // Clean temp zip
@@ -433,7 +481,7 @@ namespace AVRoadUpdater
                 Directory.CreateDirectory(temp);
                 string runner = Path.Combine(temp, "AVUpdater.v2.exe");
                 File.Copy(Application.ExecutablePath, runner);
-                File.Copy(Path.Combine(original, "AVRoad.Deployment.dll"), Path.Combine(temp, "AVRoad.Deployment.dll"));
+                string dep = Path.Combine(original, "AVRoad.Deployment.dll"); if (File.Exists(dep)) File.Copy(dep, Path.Combine(temp, "AVRoad.Deployment.dll"));
                 string forwarded = String.Join(" ", Array.ConvertAll(args, a => "\"" + a.Replace("\"", "\\\"") + "\""));
                 Process.Start(new ProcessStartInfo(runner, forwarded + " /detached \"/appdir:" + original + "\"") { WorkingDirectory = temp });
                 return;
