@@ -1,11 +1,11 @@
 {
-  "version": "2.0.0.1",
+  "version": "2.1.0.2",
   "release_date": "2026-11-05",
-  "title": "AVRoad 2.0 RC1",
+  "title": "AVRoad 2.1 RC2 - Clean Windows & SinglePanel21 Fix",
   "release_channel": "rc",
-  "prerelease": true,
-  "changelog": "RC1: ba COM HKCU 32-bit cho Properties/QSELECT; checksum SHA-256 va rollback. Loi dong CAD F49Dh con ton tai; chua du bang chung cai moi/nang cap legacy.",
-  "download_url": "https://github.com/tienhoaa/AVRoad/releases/tag/v2.0-rc.1",
-  "patch_download_url": "https://github.com/tienhoaa/AVRoad/releases/download/v2.0-rc.1/patch_2.0_rc1.zip",
-  "patch_sha256": "ac1fdc6381cc213ce4b130e857833db5b55bc5c5f8ba35173163833237e59c30"
+  "prerelease": false,
+  "changelog": "Bản cập nhật v2.1.0.2 (RC2 Clean Windows Fix):\\n- Giữ nguyên 100% giao diện SinglePanel21 RC2, 6 module, DLBD, menu AV_Road.\\n- Khắc phục cảnh báo 'This version of AutoCAD was not installed properly' trên máy Windows sạch chưa từng cài CAD7.\\n- Tự động cấu hình CLR .NET 4.0 (acad.exe.config) nạp acdbmgd.dll và SinglePanel21 trên Windows 10/11 không cần .NET 3.5.\\n- Bảo vệ Profile AVRoad không bị userdata.dll xóa trên máy sạch và hiển thị đầy đủ trong Installed Apps.",
+  "download_url": "https://github.com/tienhoaa/AVRoad/releases/latest",
+  "patch_download_url": "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/patch_2.1_rc2.zip",
+  "patch_sha256": "12b553b0ba5f941cd1d53c9c4474568c6e5be5f5b0d6317383c3f1cc7f9e20a7"
 }

@@ -1,8 +1,11 @@
 {
-  "version": "1.9",
-  "release_date": "2026-11-04",
-  "title": "AVRoad 2026 Solution - Khôi Phục Hoàn Toàn CAD 2007 Gốc & Khắc Phục Properties v1.9",
-  "changelog": "Bản cập nhật v1.9:\n- Khôi phục chuẩn gốc 100% AutoCAD 2007: bổ sung đầy đủ toàn bộ 441 tệp tin gốc (adui17res.dll, Autodesk Interop .NET, font SHX, resource DLLs...)\n- Khắc phục triệt để thanh Properties (Ctrl+1): tự động thiết lập cửa sổ nổi nhỏ gọn (300x500), chống dính/dock đỉnh màn hình gây choán không gian vẽ\n- Chặn vĩnh viễn cảnh báo DWG Check (AutoCAD is no longer default application), giữ nguyên 100% liên kết file .dwg mặc định của máy tính (AutoCAD 2026/2024...)\n- Loại bỏ hoàn toàn ACAD.lsp lạ và gỡ bỏ các khóa registry gây lỗi acmgd.dll hay xung đột Express Tools (ALIGNSPACE, QLATTACH, XLIST hoạt động trơn tru)",
+  "version": "2.1.0.2",
+  "release_date": "2026-11-05",
+  "title": "AVRoad 2.1 RC2 - Clean Windows & SinglePanel21 Fix",
+  "release_channel": "rc",
+  "prerelease": false,
+  "changelog": "Bản cập nhật v2.1.0.2 (RC2 Clean Windows Fix):\\n- Giữ nguyên 100% giao diện SinglePanel21 RC2, 6 module, DLBD, menu AV_Road.\\n- Khắc phục cảnh báo 'This version of AutoCAD was not installed properly' trên máy Windows sạch chưa từng cài CAD7.\\n- Tự động cấu hình CLR .NET 4.0 (acad.exe.config) nạp acdbmgd.dll và SinglePanel21 trên Windows 10/11 không cần .NET 3.5.\\n- Bảo vệ Profile AVRoad không bị userdata.dll xóa trên máy sạch và hiển thị đầy đủ trong Installed Apps.",
   "download_url": "https://github.com/tienhoaa/AVRoad/releases/latest",
-  "patch_download_url": "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/patch_1.9.zip"
+  "patch_download_url": "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/patch_2.1_rc2.zip",
+  "patch_sha256": "12b553b0ba5f941cd1d53c9c4474568c6e5be5f5b0d6317383c3f1cc7f9e20a7"
 }

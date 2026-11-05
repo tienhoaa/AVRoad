@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
@@ -326,7 +326,14 @@ namespace AVRoadLauncher
 
                         using (RegistryKey ud = mainKey.CreateSubKey("UserData"))
                         {
-                            if (ud != null) ud.DeleteValue("{5783F2D7-5001-0409-0002-0060B0CE6BBA}", false);
+                            if (ud != null)
+                            {
+                                ud.DeleteValue("{5783F2D7-5001-0409-0002-0060B0CE6BBA}", false);
+                                using (RegistryKey udSub = ud.CreateSubKey("{5783F2D7-5001-0409-0002-0060B0CE6BBA}"))
+                                {
+                                    if (udSub != null) udSub.SetValue("Version", "17.0.54.0", RegistryValueKind.String);
+                                }
+                            }
                         }
 
                         string drvPath = Path.Combine(appDir, "drv");
