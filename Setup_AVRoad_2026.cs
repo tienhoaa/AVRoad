@@ -1,4 +1,4 @@
-﻿using AVRoadDeployment;
+using AVRoadDeployment;
 using AVRoadLauncher;
 using System;
 
@@ -957,6 +957,8 @@ namespace AVRoadInstaller
 
 
                     // Auto-install VC++ 2005 runtime if needed (fixes Side-by-Side error on clean machines)
+                    Cad7ProfileBootstrap.ValidateExport(Path.Combine(targetDir, "AVRoad_Profile.arg"));
+                    Cad7ProfileBootstrap.Ensure(targetDir, Path.Combine(targetDir, "AVRoad_Profile.arg"));
 
                     string vcRedist = Path.Combine(targetDir, "vcredist_x86.exe");
 
@@ -1668,7 +1670,12 @@ namespace AVRoadInstaller
 
         public static void RegisterAutoCADCOMClasses(string appDir)
         {
-            if (RegistryScope.IsLimited) { Cad7ComRegistration.Apply(appDir, null); return; }
+            if (RegistryScope.IsLimited) {
+                Cad7ComRegistration.Apply(appDir, null);
+                string argProfile = Path.Combine(appDir, "AVRoad_Profile.arg");
+                if (File.Exists(argProfile)) Cad7ProfileBootstrap.Ensure(appDir, argProfile);
+                return;
+            }
 
             try
             {
@@ -1842,7 +1849,12 @@ namespace AVRoadInstaller
 
         public static void RegisterAutoCADApplications(string appDir)
         {
-            if (RegistryScope.IsLimited) { Cad7ComRegistration.Apply(appDir, null); return; }
+            if (RegistryScope.IsLimited) {
+                Cad7ComRegistration.Apply(appDir, null);
+                string argProfile = Path.Combine(appDir, "AVRoad_Profile.arg");
+                if (File.Exists(argProfile)) Cad7ProfileBootstrap.Ensure(appDir, argProfile);
+                return;
+            }
 
             try
             {

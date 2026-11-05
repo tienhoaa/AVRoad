@@ -1861,7 +1861,11 @@ namespace AVRoadLauncher
         public static void PrepareProfile(string appDir, string argProfile, string fontPath, string plotStylePath, string plotterPath)
 
         {
-            if (RegistryScope.IsLimited) return;
+            if (RegistryScope.IsLimited)
+            {
+                Cad7ProfileBootstrap.Ensure(appDir, argProfile);
+                return;
+            }
 
 
             // Configure Hardware Acceleration, Direct3D, Smooth Line Display, and Tessellations
