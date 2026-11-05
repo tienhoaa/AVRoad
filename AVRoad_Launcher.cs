@@ -2582,18 +2582,20 @@ namespace AVRoadLauncher
         public static void EnsureSystemRegistryConfigured(string appDir)
         {
             EnsureWindowsUninstallRegistered(appDir);
+            CADRegistryConfig.EnsureAcadExeConfig(appDir);
             if (RegistryScope.IsLimited) return;
 
             try
             {
                 bool needsHklm = false;
-                using (RegistryKey kAdsk = Registry.LocalMachine.OpenSubKey(@"Software\WOW6432Node\Autodesk"))
-                using (RegistryKey k = Registry.LocalMachine.OpenSubKey(@"Software\WOW6432Node\Autodesk\AutoCAD\R17.0\ACAD-5001:409"))
-                using (RegistryKey kUd = Registry.LocalMachine.OpenSubKey(@"Software\WOW6432Node\Autodesk\AutoCAD\R17.0\ACAD-5001:409\UserData"))
-                using (RegistryKey kApp = Registry.LocalMachine.OpenSubKey(@"Software\WOW6432Node\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications"))
+                using (RegistryKey kAdsk = Registry.LocalMachine.OpenSubKey(@"Software\Autodesk"))
+                using (RegistryKey k = Registry.LocalMachine.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409"))
+                using (RegistryKey kUd = Registry.LocalMachine.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\UserData"))
+                using (RegistryKey kApp = Registry.LocalMachine.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Applications"))
                 {
-                    if (kAdsk == null || !string.Equals(kAdsk.GetValue("CurProd") as string, "AutoCAD", StringComparison.OrdinalIgnoreCase) ||
+                    if (kAdsk == null || !string.IsNullOrEmpty(kAdsk.GetValue("CurProd") as string) ||
                         k == null || kUd == null || kApp == null ||
+                        kUd.GetValue("{5783F2D7-5001-0409-0002-0060B0CE6BBA}") != null ||
                         k.GetValue("SerialNumber") == null ||
                         k.GetValue("Language") == null ||
                         !string.Equals(k.GetValue("Release") as string, "17.0.54.110", StringComparison.OrdinalIgnoreCase) ||

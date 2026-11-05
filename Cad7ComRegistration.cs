@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Security.Cryptography;
+using System.Text;
 using System.Xml;
 using Microsoft.Win32;
 
@@ -154,8 +155,31 @@ namespace AVRoadDeployment
             if (!hasGeneral) throw new InvalidDataException("AVRoad profile export has no General profile section");
         }
 
+        public static void EnsureAcadExeConfig(string appDir)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(appDir) || !Directory.Exists(appDir)) return;
+                string cfgPath = Path.Combine(appDir, "acad.exe.config");
+                string desired = "<?xml version=\"1.0\" encoding=\"utf-8\"?>\r\n<configuration>\r\n   <startup useLegacyV2RuntimeActivationPolicy=\"true\">\r\n      <supportedRuntime version=\"v2.0.50727\"/>\r\n      <supportedRuntime version=\"v4.0\"/>\r\n   </startup>\r\n</configuration>\r\n";
+                bool needsWrite = !File.Exists(cfgPath);
+                if (!needsWrite)
+                {
+                    string cur = File.ReadAllText(cfgPath);
+                    if (cur.IndexOf("useLegacyV2RuntimeActivationPolicy=\"true\"", StringComparison.OrdinalIgnoreCase) < 0 ||
+                        cur.IndexOf("version=\"v4.0\"", StringComparison.OrdinalIgnoreCase) < 0)
+                    {
+                        needsWrite = true;
+                    }
+                }
+                if (needsWrite) File.WriteAllText(cfgPath, desired, Encoding.UTF8);
+            }
+            catch { }
+        }
+
         public static void EnsureProductBaseline(string appDir, XmlDocument state)
         {
+            EnsureAcadExeConfig(appDir);
             string appDataEnuDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu");
             string localDataEnuDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu");
             string appDataEnu = appDataEnuDir + @"\";
@@ -187,11 +211,16 @@ namespace AVRoadDeployment
             }
             catch { }
 
-            // 2. HKCU 32-bit product identity
+            // 2. HKCU 32-bit product identity & .dwt class registration
             try
             {
                 using (RegistryKey root = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry32))
                 {
+                    using (RegistryKey kDwt = root.CreateSubKey(@"Software\Classes\.dwt"))
+                    {
+                        if (kDwt != null && string.IsNullOrEmpty(kDwt.GetValue("") as string))
+                            kDwt.SetValue("", "AutoCADTemplate.17", RegistryValueKind.String);
+                    }
                     using (RegistryKey kAdsk = root.CreateSubKey(@"Software\Autodesk"))
                     {
                         if (kAdsk != null) kAdsk.SetValue("CurProd", "AutoCAD", RegistryValueKind.String);
@@ -233,7 +262,7 @@ namespace AVRoadDeployment
                             }
                             using (RegistryKey ud = mainKey.CreateSubKey("UserData"))
                             {
-                                if (ud != null) ud.SetValue("{5783F2D7-5001-0409-0002-0060B0CE6BBA}", @"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409", RegistryValueKind.String);
+                                if (ud != null) ud.DeleteValue("{5783F2D7-5001-0409-0002-0060B0CE6BBA}", false);
                             }
                         }
                     }
@@ -262,7 +291,7 @@ namespace AVRoadDeployment
                     }
                     using (RegistryKey kAdskLM = rootLM.CreateSubKey(@"Software\Autodesk"))
                     {
-                        if (kAdskLM != null) kAdskLM.SetValue("CurProd", "AutoCAD", RegistryValueKind.String);
+                        if (kAdskLM != null) kAdskLM.SetValue("CurProd", "", RegistryValueKind.String);
                     }
                     using (RegistryKey kAcadLM = rootLM.CreateSubKey(@"Software\Autodesk\AutoCAD"))
                     {
@@ -302,7 +331,7 @@ namespace AVRoadDeployment
                             }
                             using (RegistryKey udLM = mainKeyLM.CreateSubKey("UserData"))
                             {
-                                if (udLM != null) udLM.SetValue("{5783F2D7-5001-0409-0002-0060B0CE6BBA}", @"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409", RegistryValueKind.String);
+                                if (udLM != null) udLM.DeleteValue("{5783F2D7-5001-0409-0002-0060B0CE6BBA}", false);
                             }
                         }
                     }
@@ -316,7 +345,7 @@ namespace AVRoadDeployment
                     using (RegistryKey checkLM = rootLM.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409", false))
                     using (RegistryKey checkUD = rootLM.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\UserData", false))
                     {
-                        if (checkLM == null || checkUD == null || checkLM.GetValue("SerialNumber") == null || checkLM.GetValue("AcadLocation") == null)
+                        if (checkLM == null || checkUD == null || checkUD.GetValue("{5783F2D7-5001-0409-0002-0060B0CE6BBA}") != null || checkLM.GetValue("SerialNumber") == null || checkLM.GetValue("AcadLocation") == null)
                         {
                             string avExe = Path.Combine(appDir, "AVRoad.exe");
                             if (File.Exists(avExe))
@@ -385,7 +414,7 @@ namespace AVRoadDeployment
 
                 using (RegistryKey general = root.OpenSubKey(ProfilePath + @"\General", false))
                 using (RegistryKey dw = root.OpenSubKey(ProfilePath + @"\Drawing Window", false))
-                    if (general == null || dw == null) RunReg("import " + Quote(profileFile));
+                    if (general == null || dw == null || string.IsNullOrEmpty(general.GetValue("MenuFile") as string)) RunReg("import " + Quote(profileFile));
 
                 using (RegistryKey general = root.CreateSubKey(ProfilePath + @"\General"))
                 {
