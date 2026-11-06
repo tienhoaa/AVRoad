@@ -7,5 +7,5 @@
   "changelog": "Bản cập nhật v2.2.2 (AVRoad 2.2):\n- Bổ sung menu 'AV_Tiện ích' xổ xuống bên trái tích hợp In nhanh Model/Layout (lệnh MPL) và Chuyển đổi Font chữ toàn diện (lệnh CHUYENDOIFONT, CFT, CFU, CFV, CFK, CF+, CF-, CFX).\n- Tạo sẵn thư mục Support\\Tools để dễ dàng nạp thêm các tiện ích DLL, VLX, Lisp sưu tầm.\n- Bổ sung tùy chọn cỡ chữ (Nhỏ 9pt / Vừa 11pt / Lớn 13pt) ngay góc trái trên cùng, tự co giãn mượt mà cho laptop màn hình độ phân giải thấp (1366x768 / HD).\n- Thiết kế lại hệ thống icon vector chuyên biệt, sắc nét cho toàn bộ thanh menu bên trái.\n- Tối ưu tăng tốc Direct3D 9 và Windows High Performance GPU cho toàn bộ card màn hình rời (NVIDIA GTX/RTX, AMD Radeon, Intel Arc), chống giật lag pan/zoom.\n- Sửa dứt điểm lỗi Ctrl+1 (Properties) chập chờn / không hiện thông tin đối tượng.\n- Xóa triệt để hiện tượng trùng lặp 2 dòng AVRoad trong Windows Installed Apps / Control Panel.",
   "download_url": "https://github.com/tienhoaa/AVRoad/releases/latest",
   "patch_download_url": "https://raw.githubusercontent.com/tienhoaa/AVRoad/main/patch_2.1_rc2.zip",
-  "patch_sha256": "df0fe3bfddf4a43458167a2e3fa58e183922688938974ff175cdc14ad3820fac"
+  "patch_sha256": "6600ac3439aa5ac18a48ed6d479845e639072c50f3c2094bb95115c9de2210d9"
 }

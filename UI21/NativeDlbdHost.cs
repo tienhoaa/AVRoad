@@ -37,6 +37,7 @@ internal sealed class NativeDlbdHost : NativeWindow, IDisposable {
     [DllImport("user32.dll")] static extern uint GetWindowThreadProcessId(IntPtr handle,out uint process);
     [DllImport("user32.dll")] static extern int GetDlgCtrlID(IntPtr handle);
     [DllImport("user32.dll",CharSet=CharSet.Unicode)] static extern int GetClassName(IntPtr handle,StringBuilder value,int maximum);
+    [DllImport("user32.dll",CharSet=CharSet.Unicode)] static extern int GetWindowText(IntPtr handle,StringBuilder value,int maximum);
     [DllImport("user32.dll")] static extern bool IsWindow(IntPtr handle);
     [DllImport("user32.dll")] static extern bool IsWindowVisible(IntPtr handle);
     [DllImport("user32.dll")] static extern bool ShowWindow(IntPtr handle,int command);
@@ -65,14 +66,14 @@ internal sealed class NativeDlbdHost : NativeWindow, IDisposable {
         currentFontHandle=currentFont.ToHfont();
         try {
             AssignHandle(parent);
-            toggleData.Text="Ẩn DLBD ▲";
-            toggleData.AccessibleName="Ẩn hoặc hiện Dữ liệu bình đồ";
+            toggleData.Text="\u1ea8n DLBD  \u25b2";
+            toggleData.AccessibleName="\u1ea8n ho\u1eb7c hi\u1ec7n D\u1eef li\u1ec7u b\u00ecnh \u0111\u1ed3";
             toggleData.Font=new Font("Segoe UI",9.5F);
             toggleData.FlatStyle=FlatStyle.Flat;
             toggleData.BackColor=Color.FromArgb(237,241,244);
             toggleData.Click+=delegate {
                 dataCollapsed=!dataCollapsed;
-                toggleData.Text=dataCollapsed?"Hiện DLBD ▼":"Ẩn DLBD ▲";
+                toggleData.Text=dataCollapsed?"\u0048i\u1ec7n DLBD  \u25bc":"\u1ea8n DLBD  \u25b2";
                 RefreshLayout();
             };
             panel.Visible=true;
@@ -174,24 +175,25 @@ internal sealed class NativeDlbdHost : NativeWindow, IDisposable {
             uint proc; GetWindowThreadProcessId(top,out proc);
             if(proc!=currentProcess || !IsWindowVisible(top)) return true;
             StringBuilder name=new StringBuilder(256);
+            StringBuilder textBuf=new StringBuilder(256);
             EnumChildWindows(top,delegate(IntPtr child,IntPtr cp) {
                 if(!IsWindowVisible(child)) return true;
                 GetClassName(child,name,name.Capacity);
                 if(name.ToString()=="SysTreeView32") {
-                    IntPtr root=SendMessage(child,GetRoot,IntPtr.Zero,IntPtr.Zero);
-                    if(root!=IntPtr.Zero) {
-                        TreeItem item=new TreeItem();
-                        item.Mask=1; // TVIF_TEXT
-                        item.Item=root;
-                        item.Text=Marshal.AllocHGlobal(512);
-                        item.MaxText=255;
-                        try {
-                            ReadItem(child,GetItem,IntPtr.Zero,ref item);
-                            string text=Marshal.PtrToStringUni(item.Text);
-                            if(text!=null && text.IndexOf("Dữ liệu",StringComparison.OrdinalIgnoreCase)>=0) {
-                                result=child; return false;
-                            }
-                        } finally { Marshal.FreeHGlobal(item.Text); }
+                    // Check parent chain for AfxControlBar80u or "Dữ liệu bình đồ" / DLBD dockbar
+                    IntPtr cur=GetParent(child);
+                    for(int depth=0; depth<5 && cur!=IntPtr.Zero; depth++) {
+                        GetClassName(cur,name,name.Capacity);
+                        string cls=name.ToString();
+                        GetWindowText(cur,textBuf,textBuf.Capacity);
+                        string t=textBuf.ToString();
+                        if(t.IndexOf("DLBD",StringComparison.OrdinalIgnoreCase)>=0 ||
+                           t.IndexOf("li",StringComparison.OrdinalIgnoreCase)>=0 ||
+                           (cls.IndexOf("AfxControlBar",StringComparison.OrdinalIgnoreCase)>=0 && t.IndexOf("Command",StringComparison.OrdinalIgnoreCase)<0)) {
+                            result=child;
+                            return false;
+                        }
+                        cur=GetParent(cur);
                     }
                 }
                 return true;

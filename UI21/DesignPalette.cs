@@ -65,6 +65,7 @@ public sealed class DesignCommands : IExtensionApplication {
     }
     [CommandMethod("AVROADUI21",CommandFlags.Session)] public void ShowDefault() {
         try { AcApp.SetSystemVariable("PICKFIRST", 1); } catch { }
+        try { AcApp.DocumentManager.MdiActiveDocument.SendStringToExecute("DLBD\n",true,false,false); } catch { }
         string id="VNROAD-PMU_0002";
         try { string saved=File.ReadAllText(Path.Combine(Home,"last-page.txt")).Trim(); if(Page(saved)!=null) id=saved; } catch { }
         ShowPage(id);
@@ -102,12 +103,12 @@ public sealed class DesignCommands : IExtensionApplication {
                 if(panel!=null && !panel.IsDisposed) panel.SyncDlbdFont(host);
                 attachTimer.Stop(); queued=false; pendingLogged=false;
                 DesignPanel.Log("HOST_ATTACHED","One native DLBD panel; data above, design tools below");
-            } else if(!queued && attempts>=8) {
+            } else if((attempts % 4 == 0 || attempts == 1) && attempts <= 32) {
                 Document doc=AcApp.DocumentManager.MdiActiveDocument;
-                if(doc==null) return;
-                queued=true;
-                doc.SendStringToExecute("DLBD\n",true,false,false);
-                DesignPanel.Log("DLBD_REQUESTED","Requested once after CAD startup; waiting for native DLBD window");
+                if(doc!=null) {
+                    doc.SendStringToExecute("DLBD\n",true,false,false);
+                    DesignPanel.Log("DLBD_REQUESTED","Attempt " + attempts + ": requesting DLBD window");
+                }
             }
         } catch(System.Exception ex) {
             attachTimer.Interval=1000;

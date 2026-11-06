@@ -1019,21 +1019,30 @@ namespace AVRoadLauncher
 
 
 
-            // 6. Draw Version Label
-
+                        // 6. Draw Version Label
             using (Font fVer = new Font("Segoe UI", 8.5f, FontStyle.Regular))
-
             using (Brush bVer = new SolidBrush(Color.FromArgb(148, 163, 184)))
-
             {
-
-                g.DrawString("Phiên bản: AVRoad 2026 v2.1 RC2", fVer, bVer, 820, 526);
-
+                string verStr = "v2.2.2";
+                try
+                {
+                    string vj = Path.Combine(appDir, "version.json");
+                    if (File.Exists(vj))
+                    {
+                        var m = System.Text.RegularExpressions.Regex.Match(File.ReadAllText(vj), "\"version\"\\s*:\\s*\"([^\"]+)\"");
+                        if (m.Success)
+                        {
+                            string raw = m.Groups[1].Value.Trim();
+                            if (raw.EndsWith(".0") && raw.Split('.').Length >= 4)
+                                raw = raw.Substring(0, raw.Length - 2);
+                            verStr = "v" + raw;
+                        }
+                    }
+                }
+                catch { }
+                g.DrawString("Phi\u00EAn b\u1EA3n: AVRoad 2026 " + verStr, fVer, bVer, 780, 526);
             }
-
         }
-
-
 
         private GraphicsPath CreateRoundedRect(Rectangle r, int radius)
 
@@ -2806,15 +2815,47 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
                 }
             }
 
+                        // Ensure Support/acad2007doc.lsp has autoload hooks for Tools
+            try
+            {
+                string lspPath = Path.Combine(appDir, "Support", "acad2007doc.lsp");
+                if (File.Exists(lspPath))
+                {
+                    string lspContent = File.ReadAllText(lspPath);
+                    if (lspContent.IndexOf("c:mpl", StringComparison.OrdinalIgnoreCase) < 0)
+                    {
+                        string lspAppend = "\r\n;;; AVRoad 2026 Autoload Tools\r\n(vl-load-com)\r\n" +
+                            "(defun c:mpl () (load \"" + toolsDir.Replace('\\', '/') + "/MPL_inModelLayout.vlx\" nil) (if c:mpl (c:mpl)) (princ))\r\n" +
+                            "(defun c:chuyendoifont () (load \"" + toolsDir.Replace('\\', '/') + "/convertfont.vlx\" nil) (if c:chuyendoifont (c:chuyendoifont)) (princ))\r\n" +
+                            "(defun c:cft () (if (null c:chuyendoifont) (c:chuyendoifont)) (if c:cft (c:cft)) (princ))\r\n" +
+                            "(defun c:cfv () (if (null c:chuyendoifont) (c:chuyendoifont)) (if c:cfv (c:cfv)) (princ))\r\n" +
+                            "(defun c:cfu () (if (null c:chuyendoifont) (c:chuyendoifont)) (if c:cfu (c:cfu)) (princ))\r\n" +
+                            "(defun c:cfk () (if (null c:chuyendoifont) (c:chuyendoifont)) (if c:cfk (c:cfk)) (princ))\r\n" +
+                            "(defun c:cf+ () (if (null c:chuyendoifont) (c:chuyendoifont)) (if c:cf+ (c:cf+)) (princ))\r\n" +
+                            "(defun c:cf- () (if (null c:chuyendoifont) (c:chuyendoifont)) (if c:cf- (c:cf-)) (princ))\r\n" +
+                            "(defun c:cfx () (if (null c:chuyendoifont) (c:chuyendoifont)) (if c:cfx (c:cfx)) (princ))\r\n";
+                        File.AppendAllText(lspPath, lspAppend);
+                    }
+                }
+            }
+            catch { }
+
             if (File.Exists(uiModule))
             {
                 string startupDir = Path.Combine(Path.GetTempPath(), "AVRoadUI21");
                 Directory.CreateDirectory(startupDir);
                 string startupScript = Path.Combine(startupDir, "startup-" + Guid.NewGuid().ToString("N") + ".scr");
                 string moduleForCad = uiModule.Replace('\\', '/').Replace("\"", "");
-                File.WriteAllText(startupScript,
-                    "(command \"_.NETLOAD\" \"" + moduleForCad + "\")\r\nAVROADUI21\r\n(princ)\r\n",
-                    System.Text.Encoding.ASCII);
+                string toolsDirCad = toolsDir.Replace('\\', '/').Replace("\"", "");
+                string startupScriptContent = 
+                    "(command \"DLBD\")\r\n" +
+                    "(vl-load-com)\r\n" +
+                    "(load \"" + toolsDirCad + "/MPL_inModelLayout.vlx\" nil)\r\n" +
+                    "(load \"" + toolsDirCad + "/convertfont.vlx\" nil)\r\n" +
+                    "(command \"_.NETLOAD\" \"" + moduleForCad + "\")\r\n" +
+                    "AVROADUI21\r\n" +
+                    "(princ)\r\n";
+                File.WriteAllText(startupScript, startupScriptContent, System.Text.Encoding.ASCII);
                 psi.Arguments += " /b \"" + startupScript + "\"";
             }
 
