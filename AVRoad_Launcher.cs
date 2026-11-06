@@ -1671,7 +1671,7 @@ namespace AVRoadLauncher
 
                         rk.SetValue("ContextHelp", "", RegistryValueKind.String);
 
-                        rk.SetValue("FirstRun", 1, RegistryValueKind.DWord);
+                        rk.SetValue("FirstRun", 0, RegistryValueKind.DWord);
 
                         rk.SetValue("Flags", 4721767, RegistryValueKind.DWord); // HW Accel + Smooth lines + Geometry
 
@@ -2547,20 +2547,68 @@ namespace AVRoadLauncher
                 string uninstExe = Path.Combine(targetDir, "Uninstall.exe");
                 if (!File.Exists(uninstExe)) return;
                 string uninstallSubKey = @"Software\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026";
-                using (RegistryKey uKey = Registry.CurrentUser.CreateSubKey(uninstallSubKey))
+                
+                bool registeredInMachine = false;
+                try
                 {
-                    if (uKey != null)
+                    using (RegistryKey lmKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).CreateSubKey(uninstallSubKey))
                     {
-                        uKey.SetValue("DisplayName", "AVRoad 2026 Solution");
-                        uKey.SetValue("DisplayVersion", "2.1.0");
-                        uKey.SetValue("Publisher", "AV Technology CDE");
-                        uKey.SetValue("UninstallString", "\"" + uninstExe + "\"");
-                        uKey.SetValue("QuietUninstallString", "\"" + uninstExe + "\"");
-                        uKey.SetValue("DisplayIcon", Path.Combine(targetDir, "AVRoad.ico"));
-                        uKey.SetValue("InstallLocation", targetDir);
-                        uKey.SetValue("EstimatedSize", 314000, RegistryValueKind.DWord);
-                        uKey.SetValue("NoModify", 1, RegistryValueKind.DWord);
-                        uKey.SetValue("NoRepair", 1, RegistryValueKind.DWord);
+                        if (lmKey != null)
+                        {
+                            lmKey.SetValue("DisplayName", "AVRoad 2026 Solution");
+                            lmKey.SetValue("DisplayVersion", "2.2.2.0");
+                            lmKey.SetValue("Publisher", "AV Technology CDE");
+                            lmKey.SetValue("UninstallString", "\"" + uninstExe + "\"");
+                            lmKey.SetValue("QuietUninstallString", "\"" + uninstExe + "\"");
+                            lmKey.SetValue("DisplayIcon", Path.Combine(targetDir, "AVRoad.ico"));
+                            lmKey.SetValue("InstallLocation", targetDir);
+                            lmKey.SetValue("EstimatedSize", 314000, RegistryValueKind.DWord);
+                            lmKey.SetValue("NoModify", 1, RegistryValueKind.DWord);
+                            lmKey.SetValue("NoRepair", 1, RegistryValueKind.DWord);
+                            registeredInMachine = true;
+                        }
+                    }
+                }
+                catch { }
+
+                if (registeredInMachine)
+                {
+                    try { Registry.CurrentUser.DeleteSubKeyTree(uninstallSubKey, false); } catch { }
+                }
+                else
+                {
+                    bool machineExists = false;
+                    try
+                    {
+                        using (RegistryKey chk = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(uninstallSubKey))
+                        {
+                            if (chk != null) machineExists = true;
+                        }
+                    }
+                    catch { }
+
+                    if (!machineExists)
+                    {
+                        using (RegistryKey uKey = Registry.CurrentUser.CreateSubKey(uninstallSubKey))
+                        {
+                            if (uKey != null)
+                            {
+                                uKey.SetValue("DisplayName", "AVRoad 2026 Solution");
+                                uKey.SetValue("DisplayVersion", "2.2.2.0");
+                                uKey.SetValue("Publisher", "AV Technology CDE");
+                                uKey.SetValue("UninstallString", "\"" + uninstExe + "\"");
+                                uKey.SetValue("QuietUninstallString", "\"" + uninstExe + "\"");
+                                uKey.SetValue("DisplayIcon", Path.Combine(targetDir, "AVRoad.ico"));
+                                uKey.SetValue("InstallLocation", targetDir);
+                                uKey.SetValue("EstimatedSize", 314000, RegistryValueKind.DWord);
+                                uKey.SetValue("NoModify", 1, RegistryValueKind.DWord);
+                                uKey.SetValue("NoRepair", 1, RegistryValueKind.DWord);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        try { Registry.CurrentUser.DeleteSubKeyTree(uninstallSubKey, false); } catch { }
                     }
                 }
             }
@@ -2730,6 +2778,34 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
                     }
                 }
             }
+
+            // Unpack custom tools (MPL_inModelLayout.vlx, convertfont.vlx)
+            string toolsDir = Path.Combine(appDir, "Support", "Tools");
+            Directory.CreateDirectory(toolsDir);
+            foreach (string toolName in new string[] { "MPL_inModelLayout.vlx", "convertfont.vlx" })
+            {
+                using (Stream embeddedTool = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Tools." + toolName))
+                {
+                    if (embeddedTool == null) continue;
+                    string dstTool = Path.Combine(toolsDir, toolName);
+                    if (!File.Exists(dstTool))
+                    {
+                        using (FileStream fs = File.Create(dstTool)) { embeddedTool.CopyTo(fs); }
+                    }
+                }
+            }
+
+            // Unpack enriched GPU Certification Database for modern GPUs
+            using (Stream embeddedDrv = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Drv.AdskHwCertificationDatabase.xml"))
+            {
+                if (embeddedDrv != null)
+                {
+                    string dstDrv = Path.Combine(appDir, "drv", "AdskHwCertificationDatabase.xml");
+                    Directory.CreateDirectory(Path.GetDirectoryName(dstDrv));
+                    using (FileStream fs = File.Create(dstDrv)) { embeddedDrv.CopyTo(fs); }
+                }
+            }
+
             if (File.Exists(uiModule))
             {
                 string startupDir = Path.Combine(Path.GetTempPath(), "AVRoadUI21");
@@ -3602,7 +3678,8 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
 
             try
             {
-                CADRegistryConfig.RegisterAll(appDir);
+                CADRegistryConfig.RegisterAll(appDir);
+
                 try { Cad7ComRegistration.Apply(appDir, null); } catch { }
 
                 RegisterTypeLibraries(appDir);

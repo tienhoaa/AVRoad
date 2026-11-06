@@ -1538,23 +1538,44 @@ namespace AVRoadInstaller
         {
             string uninstExe = Path.Combine(targetDir, "Uninstall.exe");
             string uninstallSubKey = @"Software\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026";
-            RegistryKey[] roots = new RegistryKey[]
+            
+            bool registeredInMachine = false;
+            try
             {
-                Registry.CurrentUser,
-                Registry.LocalMachine,
-                RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32)
-            };
-            foreach (RegistryKey root in roots)
+                using (RegistryKey lm = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).CreateSubKey(uninstallSubKey))
+                {
+                    if (lm != null)
+                    {
+                        lm.SetValue("DisplayName", "AVRoad 2026 Solution");
+                        lm.SetValue("DisplayVersion", "2.2.2.0");
+                        lm.SetValue("Publisher", "AV Technology CDE");
+                        lm.SetValue("UninstallString", "\"" + uninstExe + "\"");
+                        lm.SetValue("QuietUninstallString", "\"" + uninstExe + "\"");
+                        lm.SetValue("DisplayIcon", Path.Combine(targetDir, "AVRoad.ico"));
+                        lm.SetValue("InstallLocation", targetDir);
+                        lm.SetValue("EstimatedSize", 314000, RegistryValueKind.DWord);
+                        lm.SetValue("NoModify", 1, RegistryValueKind.DWord);
+                        lm.SetValue("NoRepair", 1, RegistryValueKind.DWord);
+                        registeredInMachine = true;
+                    }
+                }
+            }
+            catch { }
+
+            if (registeredInMachine)
             {
-                if (root == null) continue;
+                try { Registry.CurrentUser.DeleteSubKeyTree(uninstallSubKey, false); } catch { }
+            }
+            else
+            {
                 try
                 {
-                    using (RegistryKey uKey = root.CreateSubKey(uninstallSubKey))
+                    using (RegistryKey uKey = Registry.CurrentUser.CreateSubKey(uninstallSubKey))
                     {
                         if (uKey != null)
                         {
                             uKey.SetValue("DisplayName", "AVRoad 2026 Solution");
-                            uKey.SetValue("DisplayVersion", "2.1.0");
+                            uKey.SetValue("DisplayVersion", "2.2.2.0");
                             uKey.SetValue("Publisher", "AV Technology CDE");
                             uKey.SetValue("UninstallString", "\"" + uninstExe + "\"");
                             uKey.SetValue("QuietUninstallString", "\"" + uninstExe + "\"");
@@ -1569,8 +1590,6 @@ namespace AVRoadInstaller
                 catch { }
             }
         }
-
-
 
         [STAThread]
         public static void Main(string[] args)
@@ -1854,7 +1873,8 @@ namespace AVRoadInstaller
 
             try
             {
-                CADRegistryConfig.RegisterAll(appDir);
+                CADRegistryConfig.RegisterAll(appDir);
+
                 try { Cad7ComRegistration.Apply(appDir, null); } catch { }
 
                 RegisterTypeLibraries(appDir);

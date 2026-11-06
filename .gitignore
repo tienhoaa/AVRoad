@@ -31,3 +31,5 @@ payload.zip
 
 # v2 RC staging, test copies, installers and payload (Release assets only)
 /release-v2/
+
+*.mnr

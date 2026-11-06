@@ -1,12 +1,15 @@
-﻿using System;
+using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
 namespace AVRoad.SinglePanel21 {
 internal static class ToolIcons {
-    internal static readonly string[] Keys={"survey","road","grading","canal","geology","traffic","terrain","profile","section","table","edit","delete","pick","calc","folder","command","search"};
+    internal static readonly string[] Keys={"survey","road","grading","canal","geology","traffic","terrain","profile","section","table","edit","delete","pick","calc","folder","command","search","print","font","tool"};
     internal static string Kind(string title,bool group) {
         string s=title.ToLowerInvariant();
+        if(s.Contains("in ấn")||s.Contains("in nhanh")||s.Contains("mpl")||s.Contains("in ") || s.StartsWith("in")) return "print";
+        if(s.Contains("font")||s.Contains("chữ")||s.Contains("text")||s.Contains("bảng mã")||s.Contains("unicode")||s.Contains("vni")||s.Contains("tcvn")) return "font";
+        if(s.Contains("tiện ích")||s.Contains("công cụ")||s.Contains("sưu tầm")||s.Contains("appload")||s.Contains("tool")) return "tool";
         if(s.Contains("biển báo")||s.Contains("vạch")||s.Contains("giao thông")) return "traffic";
         if(s.Contains("lỗ khoan")||s.Contains("địa chất")) return "geology";
         if(s.Contains("kênh")||s.Contains("thủy")) return "canal";
@@ -33,9 +36,29 @@ internal static class ToolIcons {
             if(kind=="grading"||kind=="edit"||kind=="folder") c=Color.FromArgb(177,126,40);
             if(kind=="profile"||kind=="calc") c=Color.FromArgb(117,92,160);
             if(kind=="delete") c=Color.FromArgb(184,72,67);
+            if(kind=="print") c=Color.FromArgb(28,126,214);
+            if(kind=="font") c=Color.FromArgb(120,60,180);
+            if(kind=="tool") c=Color.FromArgb(217,119,6);
             using(Pen p=new Pen(c,1.8F)) using(SolidBrush b=new SolidBrush(Color.FromArgb(30,c))) {
                 p.StartCap=LineCap.Round; p.EndCap=LineCap.Round; p.LineJoin=LineJoin.Round;
-                if(kind=="canal") {
+                if(kind=="print") {
+                    g.FillRectangle(b,7,2,10,6); g.DrawRectangle(p,7,2,10,6);
+                    g.FillRectangle(b,3,7,18,10); g.DrawRectangle(p,3,7,18,10);
+                    g.FillRectangle(b,6,13,12,8); g.DrawRectangle(p,6,13,12,8);
+                    g.DrawLine(p,8,16,16,16); g.DrawLine(p,8,18,14,18);
+                    using(SolidBrush dot=new SolidBrush(c)) g.FillEllipse(dot,17,9,2,2);
+                } else if(kind=="font") {
+                    g.DrawLines(p,new PointF[]{new PointF(4,20),new PointF(11,3),new PointF(13,3),new PointF(20,20)});
+                    g.DrawLine(p,7,14,17,14);
+                    using(Pen bar=new Pen(c,2F)) g.DrawLine(bar,3,21,21,21);
+                } else if(kind=="tool") {
+                    PointF[] wrenchPts={
+                        new PointF(6,20),new PointF(4,18),new PointF(12,10),new PointF(11,7),
+                        new PointF(13,4),new PointF(16,4),new PointF(15,7),new PointF(17,9),
+                        new PointF(20,8),new PointF(20,11),new PointF(17,13),new PointF(14,12)
+                    };
+                    g.FillPolygon(b,wrenchPts); g.DrawPolygon(p,wrenchPts);
+                } else if(kind=="canal") {
                     g.DrawLines(p,new PointF[]{new PointF(2,6),new PointF(7,18),new PointF(17,18),new PointF(22,6)});
                     g.DrawBezier(p,6,11,9,7,15,15,19,11); g.DrawLine(p,9,15,15,15);
                 } else if(kind=="geology") {

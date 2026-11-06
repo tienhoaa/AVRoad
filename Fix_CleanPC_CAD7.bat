@@ -133,13 +133,15 @@ if exist "%APP_DIR%\AVRoad_Profile.arg" (
 
 :: 7. Đăng ký Uninstall vào Windows Installed Apps / Control Panel
 reg add "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026" /v "DisplayName" /t REG_SZ /d "AVRoad 2026 Solution" /f >nul
-reg add "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026" /v "DisplayVersion" /t REG_SZ /d "2.1.0.2" /f >nul
+reg add "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026" /v "DisplayVersion" /t REG_SZ /d "2.2.2.0" /f >nul
 reg add "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026" /v "Publisher" /t REG_SZ /d "AV Technology CDE" /f >nul
 reg add "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026" /v "UninstallString" /t REG_SZ /d "\"%APP_DIR%\Uninstall.exe\"" /f >nul
 reg add "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026" /v "DisplayIcon" /t REG_SZ /d "%APP_DIR%\AVRoad.ico" /f >nul
 reg add "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026" /v "InstallLocation" /t REG_SZ /d "%APP_DIR%" /f >nul
 reg add "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026" /v "NoModify" /t REG_DWORD /d 1 /f >nul
 reg add "HKLM\SOFTWARE\WOW6432Node\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026" /v "NoRepair" /t REG_DWORD /d 1 /f >nul
+reg delete "HKCU\Software\Microsoft\Windows\CurrentVersion\Uninstall\AVRoad2026" /f >nul 2>&1
+reg add "HKCU\Software\Microsoft\DirectX\UserGpuPreferences" /v "%APP_DIR%\acad.exe" /t REG_SZ /d "GpuPreference=2;" /f >nul 2>&1
 
 echo [6/6] Đã đăng ký bộ gỡ cài đặt vào Windows Installed Apps.
 echo ============================================================================

@@ -119,7 +119,7 @@ namespace AVRoadDeployment
                 string escapedDir = appDir.Replace("\\", "\\\\");
                 string body = template.Replace("__AVROAD_DIR__", escapedDir);
 
-                foreach (string rootHive in new string[] { @"HKEY_CURRENT_USER\Software\Classes", @"HKEY_LOCAL_MACHINE\Software\WOW6432Node\Classes" })
+                foreach (string rootHive in new string[] { @"HKEY_CURRENT_USER\Software\Classes", @"HKEY_LOCAL_MACHINE\Software\Classes" })
                 {
                     string tempReg = Path.Combine(Path.GetTempPath(), "avroad-com-" + Guid.NewGuid().ToString("N") + ".reg");
                     try

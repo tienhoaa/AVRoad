@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Runtime.InteropServices;
@@ -17,8 +17,8 @@ internal sealed class NativeDlbdHost : NativeWindow, IDisposable {
     readonly Rect originalBounds,originalClient;
     readonly IntPtr originalFont,originalImages;
     readonly int originalRowHeight;
-    readonly Font font=new Font("Segoe UI",12F);
-    readonly IntPtr fontHandle;
+    Font currentFont=new Font("Segoe UI",11F);
+    IntPtr currentFontHandle;
     ImageList images;
     readonly List<Bitmap> iconBitmaps=new List<Bitmap>();
     bool disposed,layingOut;
@@ -29,7 +29,8 @@ internal sealed class NativeDlbdHost : NativeWindow, IDisposable {
     [StructLayout(LayoutKind.Sequential)] struct Rect { internal int Left,Top,Right,Bottom; }
     [StructLayout(LayoutKind.Sequential)] struct TreeItem {
         internal uint Mask; internal IntPtr Item; internal uint State,StateMask;
-        internal IntPtr Text; internal int MaxText,Image,SelectedImage,Children; internal IntPtr Parameter;
+        internal IntPtr Text; internal int MaxText,Image,SelectedImage,Children;
+        internal IntPtr Parameter;
     }
     [DllImport("user32.dll")] static extern bool EnumWindows(EnumWindow callback,IntPtr parameter);
     [DllImport("user32.dll")] static extern bool EnumChildWindows(IntPtr parent,EnumWindow callback,IntPtr parameter);
@@ -52,41 +53,21 @@ internal sealed class NativeDlbdHost : NativeWindow, IDisposable {
     [DllImport("comctl32.dll")] static extern int ImageList_GetImageCount(IntPtr handle);
     [DllImport("comctl32.dll")] static extern IntPtr ImageList_GetIcon(IntPtr handle,int index,uint flags);
 
-    internal static IntPtr FindDataTree() {
-        IntPtr found=IntPtr.Zero;
-        uint current=(uint)System.Diagnostics.Process.GetCurrentProcess().Id;
-        EnumWindow check=delegate(IntPtr h,IntPtr p) {
-            uint owner; GetWindowThreadProcessId(h,out owner);
-            if(owner!=current || GetDlgCtrlID(h)!=1029 || !IsWindowVisible(h)) return true;
-            StringBuilder type=new StringBuilder(64); GetClassName(h,type,type.Capacity);
-            if(type.ToString()!="SysTreeView32") return true;
-            IntPtr root=SendMessage(h,GetRoot,IntPtr.Zero,IntPtr.Zero);
-            TreeItem item; string text;
-            if(TryRead(h,root,out item,out text) && text=="Điểm đo") { found=h; return false; }
-            return true;
-        };
-        EnumWindows(delegate(IntPtr h,IntPtr p) {
-            uint owner; GetWindowThreadProcessId(h,out owner);
-            if(owner==current) { check(h,p); if(found==IntPtr.Zero) EnumChildWindows(h,check,IntPtr.Zero); }
-            return found==IntPtr.Zero;
-        },IntPtr.Zero);
-        return found;
-    }
-
-    internal NativeDlbdHost(IntPtr treeHandle,DesignPanel designPanel) {
-        tree=treeHandle; panel=designPanel; parent=GetParent(tree);
-        if(parent==IntPtr.Zero) throw new InvalidOperationException("DLBD has no native content container.");
-        GetWindowRect(tree,out originalBounds); MapWindowPoints(IntPtr.Zero,parent,ref originalBounds,2);
+    internal NativeDlbdHost(IntPtr dataTree,DesignPanel designPanel) {
+        tree=dataTree; panel=designPanel; parent=GetParent(tree);
+        GetWindowRect(parent,out originalClient);
+        GetWindowRect(tree,out originalBounds);
+        MapWindowPoints(IntPtr.Zero,parent,ref originalBounds,2);
         GetClientRect(parent,out originalClient);
         originalFont=SendMessage(tree,GetFont,IntPtr.Zero,IntPtr.Zero);
         originalImages=SendMessage(tree,GetImages,IntPtr.Zero,IntPtr.Zero);
         originalRowHeight=SendMessage(tree,GetHeight,IntPtr.Zero,IntPtr.Zero).ToInt32();
-        fontHandle=font.ToHfont();
+        currentFontHandle=currentFont.ToHfont();
         try {
             AssignHandle(parent);
             toggleData.Text="Ẩn DLBD ▲";
             toggleData.AccessibleName="Ẩn hoặc hiện Dữ liệu bình đồ";
-            toggleData.Font=new Font("Segoe UI",10F);
+            toggleData.Font=new Font("Segoe UI",9.5F);
             toggleData.FlatStyle=FlatStyle.Flat;
             toggleData.BackColor=Color.FromArgb(237,241,244);
             toggleData.Click+=delegate {
@@ -94,66 +75,29 @@ internal sealed class NativeDlbdHost : NativeWindow, IDisposable {
                 toggleData.Text=dataCollapsed?"Hiện DLBD ▼":"Ẩn DLBD ▲";
                 RefreshLayout();
             };
-            toggleData.CreateControl();
-            SetParent(toggleData.Handle,parent);
-            toggleData.Visible=true;
-            panel.Dock=DockStyle.None;
-            panel.CreateControl();
-            SetParent(panel.Handle,parent);
             panel.Visible=true;
-            SendMessage(tree,SetFont,fontHandle,new IntPtr(1));
-            SendMessage(tree,SetHeight,new IntPtr(32),IntPtr.Zero);
-            StyleIcons();
+            SetParent(toggleData.Handle,parent);
+            SetParent(panel.Handle,parent);
+            SendMessage(tree,SetFont,currentFontHandle,new IntPtr(1));
+            SendMessage(tree,SetHeight,new IntPtr(26),IntPtr.Zero);
+            ApplyModernIcons();
             RefreshLayout();
         } catch { Dispose(); throw; }
     }
-    internal bool IsAttached { get { return !disposed && IsWindow(parent) && IsWindow(tree); } }
-    internal bool IsVisible { get { return IsAttached && IsWindowVisible(parent); } }
-
-    static bool TryRead(IntPtr tree,IntPtr node,out TreeItem item,out string text) {
-        item=new TreeItem(); text="";
-        if(node==IntPtr.Zero) return false;
-        IntPtr buffer=Marshal.AllocHGlobal(1024);
+    internal bool IsAttached { get { return !disposed && IsWindow(tree) && IsWindow(parent); } }
+    internal bool IsVisible { get { return IsAttached && IsWindowVisible(tree); } }
+    internal void ApplyFontSize(float sizePt, int rowHeight) {
+        if(!IsAttached || disposed) return;
         try {
-            item.Mask=1|2|0x20; item.Item=node; item.Text=buffer; item.MaxText=512;
-            Marshal.WriteInt16(buffer,0);
-            if(ReadItem(tree,GetItem,IntPtr.Zero,ref item)==IntPtr.Zero) return false;
-            text=Marshal.PtrToStringUni(buffer); return true;
-        } finally { Marshal.FreeHGlobal(buffer); item.Text=IntPtr.Zero; }
+            IntPtr oldHandle = currentFontHandle;
+            currentFont = new Font("Segoe UI", sizePt);
+            currentFontHandle = currentFont.ToHfont();
+            SendMessage(tree, SetFont, currentFontHandle, new IntPtr(1));
+            SendMessage(tree, SetHeight, new IntPtr(rowHeight), IntPtr.Zero);
+            if(oldHandle != IntPtr.Zero) DeleteObject(oldHandle);
+            RefreshLayout();
+        } catch { }
     }
-
-    void StyleIcons() {
-        if(originalImages==IntPtr.Zero) return;
-        int count=ImageList_GetImageCount(originalImages);
-        if(count<=0 || count>512) return;
-        images=new ImageList(); images.ImageSize=new Size(24,24); images.ColorDepth=ColorDepth.Depth32Bit;
-        for(int i=0;i<count;i++) {
-            IntPtr native=ImageList_GetIcon(originalImages,i,0);
-            Bitmap bitmap;
-            if(native==IntPtr.Zero) bitmap=ToolIcons.Create("folder",24);
-            else {
-                try { using(Icon original=Icon.FromHandle(native)) bitmap=original.ToBitmap(); }
-                finally { DestroyIcon(native); }
-            }
-            iconBitmaps.Add(bitmap); images.Images.Add(bitmap);
-        }
-        IntPtr node=SendMessage(tree,GetRoot,IntPtr.Zero,IntPtr.Zero);
-        while(node!=IntPtr.Zero) {
-            TreeItem item; string text;
-            if(TryRead(tree,node,out item,out text)) {
-                string kind=text=="Điểm đo"?"survey":text=="Mô hình địa hình"?"terrain":text=="Lưới tuyến"?"road":text=="Khung bản đồ"?"table":null;
-                if(kind!=null) {
-                    foreach(int index in new int[]{item.Image,item.SelectedImage}) if(index>=0 && index<count) {
-                        Bitmap bitmap=ToolIcons.Create(kind,24); iconBitmaps.Add(bitmap); images.Images[index]=bitmap;
-                    }
-                }
-            }
-            node=SendMessage(tree,GetRoot,new IntPtr(1),node); // TVGN_NEXT
-        }
-        // Preserve every native image index, including images for dynamic TDT data.
-        SendMessage(tree,SetImages,IntPtr.Zero,images.Handle);
-    }
-
     internal void RefreshLayout() {
         if(!IsAttached || layingOut) return;
         layingOut=true;
@@ -164,22 +108,40 @@ internal sealed class NativeDlbdHost : NativeWindow, IDisposable {
             int bottomMargin=Math.Max(0,originalClient.Bottom-originalBounds.Bottom);
             int width=Math.Max(1,client.Right-left-rightMargin);
             int height=Math.Max(1,client.Bottom-top-bottomMargin);
-            int buttonHeight=Math.Min(30,height);
+            int buttonHeight=Math.Min(28,height);
             toggleData.SetBounds(left,top,width,buttonHeight);
             int dataHeight=dataCollapsed?0:Math.Max(1,height/3-buttonHeight);
             ShowWindow(tree,dataCollapsed?0:5);
-            SetWindowPos(tree,IntPtr.Zero,left,top+buttonHeight,width,Math.Max(1,dataHeight),NoActivate|NoZOrder);
-            int toolsTop=buttonHeight+dataHeight+5;
-            panel.SetBounds(left,top+toolsTop,width,Math.Max(1,height-toolsTop));
-            DesignPanel.Log("LAYOUT_ACTUAL","DLBD="+dataHeight+";Tools="+panel.Height+";Total="+height);
+            SetWindowPos(tree,IntPtr.Zero,left,top+buttonHeight,width,dataHeight,NoActivate|NoZOrder);
+            int toolsTop=top+buttonHeight+dataHeight+4;
+            int toolsHeight=Math.Max(1,height-(buttonHeight+dataHeight+4));
+            SetWindowPos(panel.Handle,IntPtr.Zero,left,toolsTop,width,toolsHeight,NoActivate|NoZOrder);
+            panel.Invalidate(true);
         } finally { layingOut=false; }
     }
-
-    protected override void WndProc(ref Message message) {
-        base.WndProc(ref message);
-        if(message.Msg==5 && !disposed) RefreshLayout(); // layout after the TDT WM_SIZE handler
+    void ApplyModernIcons() {
+        if(originalImages==IntPtr.Zero) return;
+        int count=ImageList_GetImageCount(originalImages);
+        if(count<=0) return;
+        images=new ImageList(); images.ImageSize=new Size(16,16); images.ColorDepth=ColorDepth.Depth32Bit;
+        iconBitmaps.Clear();
+        for(int i=0;i<count;i++) {
+            IntPtr hIcon=ImageList_GetIcon(originalImages,i,0);
+            if(hIcon!=IntPtr.Zero) {
+                using(Icon icon=Icon.FromHandle(hIcon)) {
+                    Bitmap bmp=icon.ToBitmap();
+                    iconBitmaps.Add(bmp);
+                    images.Images.Add(bmp);
+                }
+                DestroyIcon(hIcon);
+            }
+        }
+        SendMessage(tree,SetImages,IntPtr.Zero,images.Handle);
     }
-
+    protected override void WndProc(ref Message m) {
+        base.WndProc(ref m);
+        if(m.Msg==5 || m.Msg==0x0047) RefreshLayout(); // WM_SIZE or WM_WINDOWPOSCHANGED
+    }
     public void Dispose() {
         if(disposed) return;
         disposed=true;
@@ -199,11 +161,44 @@ internal sealed class NativeDlbdHost : NativeWindow, IDisposable {
             int height=Math.Max(1,client.Bottom-originalBounds.Top-Math.Max(0,originalClient.Bottom-originalBounds.Bottom));
             SetWindowPos(tree,IntPtr.Zero,originalBounds.Left,originalBounds.Top,width,height,NoActivate|NoZOrder);
         }
-        if(images!=null) images.Dispose();
-        foreach(Bitmap bitmap in iconBitmaps) bitmap.Dispose();
-        if(fontHandle!=IntPtr.Zero) DeleteObject(fontHandle);
-        font.Dispose();
-        DesignPanel.Log("HOST_DETACHED","Native tree style and full bounds restored");
+        if(images!=null) { images.Dispose(); images=null; }
+        foreach(Bitmap b in iconBitmaps) b.Dispose();
+        iconBitmaps.Clear();
+        if(currentFontHandle!=IntPtr.Zero) { DeleteObject(currentFontHandle); currentFontHandle=IntPtr.Zero; }
+        if(currentFont!=null) { currentFont.Dispose(); currentFont=null; }
+    }
+    internal static IntPtr FindDataTree() {
+        uint currentProcess=(uint)System.Diagnostics.Process.GetCurrentProcess().Id;
+        IntPtr result=IntPtr.Zero;
+        EnumWindows(delegate(IntPtr top,IntPtr p) {
+            uint proc; GetWindowThreadProcessId(top,out proc);
+            if(proc!=currentProcess || !IsWindowVisible(top)) return true;
+            StringBuilder name=new StringBuilder(256);
+            EnumChildWindows(top,delegate(IntPtr child,IntPtr cp) {
+                if(!IsWindowVisible(child)) return true;
+                GetClassName(child,name,name.Capacity);
+                if(name.ToString()=="SysTreeView32") {
+                    IntPtr root=SendMessage(child,GetRoot,IntPtr.Zero,IntPtr.Zero);
+                    if(root!=IntPtr.Zero) {
+                        TreeItem item=new TreeItem();
+                        item.Mask=1; // TVIF_TEXT
+                        item.Item=root;
+                        item.Text=Marshal.AllocHGlobal(512);
+                        item.MaxText=255;
+                        try {
+                            ReadItem(child,GetItem,IntPtr.Zero,ref item);
+                            string text=Marshal.PtrToStringUni(item.Text);
+                            if(text!=null && text.IndexOf("Dữ liệu",StringComparison.OrdinalIgnoreCase)>=0) {
+                                result=child; return false;
+                            }
+                        } finally { Marshal.FreeHGlobal(item.Text); }
+                    }
+                }
+                return true;
+            },IntPtr.Zero);
+            return result==IntPtr.Zero;
+        },IntPtr.Zero);
+        return result;
     }
 }
 }

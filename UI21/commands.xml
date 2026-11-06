@@ -610,4 +610,23 @@
       <action menu="RM" uid="MMU_0040" menuName="Không tô vạch sơn" command="DOut" title="Không tô vạch sơn" description="Không tô vạch sơn" />
     </group>
   </group>
+  <group id="TIENICH-PMU_0001" title="AV_Tiện ích">
+    <group id="TIENICH-PMU_0002" title="In ấn nhanh (Model &amp; Layout)">
+      <action menu="CUSTOM" uid="MMU_9001" menuName="In nhanh Model và Layout" command="MPL" title="In nhanh Model và Layout" description="In nhanh hàng loạt bản vẽ trong Model và Layout (Lệnh: MPL)" />
+    </group>
+    <group id="TIENICH-PMU_0003" title="Chuyển đổi Font chữ">
+      <action menu="CUSTOM" uid="MMU_9002" menuName="Bảng chuyển đổi font toàn diện" command="CHUYENDOIFONT" title="Bảng chuyển đổi font toàn diện" description="Mở hộp thoại chuyển đổi font và bảng mã (Lệnh: CHUYENDOIFONT)" />
+      <action menu="CUSTOM" uid="MMU_9003" menuName="Chuyển font Text đang chọn" command="CFT" title="Chuyển font Text đang chọn" description="Chuyển đổi font cho đối tượng Text/MText đang chọn (Lệnh: CFT)" />
+      <action menu="CUSTOM" uid="MMU_9004" menuName="Chuyển sang bảng mã VNI" command="CFV" title="Chuyển sang bảng mã VNI" description="Chuyển bảng mã Text sang VNI (Lệnh: CFV)" />
+      <action menu="CUSTOM" uid="MMU_9005" menuName="Chuyển sang bảng mã Unicode" command="CFU" title="Chuyển sang bảng mã Unicode" description="Chuyển bảng mã Text sang Unicode (Lệnh: CFU)" />
+      <action menu="CUSTOM" uid="MMU_9006" menuName="Chuyển sang bảng mã TCVN3 (ABC)" command="CFK" title="Chuyển sang bảng mã TCVN3 (ABC)" description="Chuyển bảng mã Text sang TCVN3 / ABC (Lệnh: CFK)" />
+      <action menu="CUSTOM" uid="MMU_9007" menuName="Tăng kích thước chữ (+)" command="CF+" title="Tăng kích thước chữ (+)" description="Tăng nhanh chiều cao chữ Text (Lệnh: CF+)" />
+      <action menu="CUSTOM" uid="MMU_9008" menuName="Giảm kích thước chữ (-)" command="CF-" title="Giảm kích thước chữ (-)" description="Giảm nhanh chiều cao chữ Text (Lệnh: CF-)" />
+      <action menu="CUSTOM" uid="MMU_9009" menuName="Phá khối Text / Sửa lỗi font" command="CFX" title="Phá khối Text / Sửa lỗi font" description="Phá vỡ khối text bị lỗi font (Lệnh: CFX)" />
+    </group>
+    <group id="TIENICH-PMU_0004" title="Tiện ích sưu tầm">
+      <action menu="CUSTOM" uid="TI_0010" menuName="Mở thư mục Tools sưu tầm" command="OPENTOOLSDIR" title="Mở thư mục Tools sưu tầm" description="Mở thư mục Support\Tools để thả thêm DLL, VLX, Lisp sưu tầm" />
+      <action menu="CUSTOM" uid="TI_0011" menuName="Nạp tiện ích bên ngoài (AppLoad)" command="APPLOAD" title="Nạp tiện ích bên ngoài (AppLoad)" description="Mở hộp thoại nạp ứng dụng APPLOAD của AutoCAD" />
+    </group>
+  </group>
 </commands>

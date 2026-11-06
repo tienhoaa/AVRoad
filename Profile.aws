@@ -1,45 +1,199 @@
+<?xml version='1.0' encoding='utf-8'?>
 <Profile>
 	<Name>AVRoad</Name>
-	<Description></Description>
+	<Description />
 	<StorageRoot>
 		<ToolPaletteScheme>
 			<ToolPaletteSets>
-				<ToolPaletteSet><CAdUiDockControlBar Orientation="-1" AllowDocking="1"><FloatInfo Left="773" Top="101" Width="172" Height="598"/><DockInfo Left="1594" Top="102" Width="172" Height="368" MRUDockID="0"/></CAdUiDockControlBar><CAdUiPaletteSet ActivePaletteIndex="0" TitleBarLocation="1" AutoRollup="0" Name="TOOL PALETTES - ALL PALETTES" Style="126" Opacity="100" Visible="0"/><CAcTcUiToolPaletteSet ID="{B17B40A6-2761-4BCC-BC48-2B8A465AA5EB}"><ToolPalettes><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{D6BC41CF-FCAA-4FF7-8CDD-64D952C632E0}"><ToolSource><Palette ID="{D6BC41CF-FCAA-4FF7-8CDD-64D952C632E0}">Modeling</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder><Tool ID="{9D7A9A9F-320F-4E3B-9266-E7C0D28C3F2C}"/><Tool ID="{AB741E04-A733-4A8F-9947-295DAED23DD8}"/><Tool ID="{76A00F1F-7C75-4AA7-AF87-B43616D15C12}"/><Tool ID="{A56082F6-E82C-4975-9A01-BDA82930B56E}"/><Tool ID="{DA699A7F-E281-4DDC-82F2-30CCE5D3DBCA}"/><Tool ID="{21A4A999-5FF8-489F-A588-DD4F7B538E55}"/><Tool ID="{13367C5B-9D4D-4BEA-B868-879A7387CDBB}"/><Tool ID="{74A5539F-5A37-411C-BEC9-49FEC3BC9AD3}"/></ToolOrder></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{A0CCA60A-AB56-4EFD-83A5-8764BC08CDA8}"><ToolSource><Palette ID="{A0CCA60A-AB56-4EFD-83A5-8764BC08CDA8}">Annotation</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{498DE575-CB69-4B2A-A12B-33012D265464}"><ToolSource><Palette ID="{498DE575-CB69-4B2A-A12B-33012D265464}">Architectural</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{5B6AC051-A4D1-4191-A86C-DFD866841B64}"><ToolSource><Palette ID="{5B6AC051-A4D1-4191-A86C-DFD866841B64}">Mechanical</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{EA899C91-EF57-45F1-9CEB-2CE79A3B09EC}"><ToolSource><Palette ID="{EA899C91-EF57-45F1-9CEB-2CE79A3B09EC}">Electrical</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{1BAC5354-C9CD-42E2-BD35-300929BC6140}"><ToolSource><Palette ID="{1BAC5354-C9CD-42E2-BD35-300929BC6140}">Civil/Structural</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{3D96B628-B9A6-4BE7-9A54-4063288C5CE6}"><ToolSource><Palette ID="{3D96B628-B9A6-4BE7-9A54-4063288C5CE6}">Hatches</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>458752</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{4BE848C7-50A4-41BF-929E-ECE60FE5422F}"><ToolSource><Palette ID="{4BE848C7-50A4-41BF-929E-ECE60FE5422F}">Command Tools</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{8331A300-122F-4425-A7FF-467A42D79166}"><ToolSource><Palette ID="{8331A300-122F-4425-A7FF-467A42D79166}">Draw</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{2DCDEF9A-7358-4CA4-837C-9AC674AE5317}"><ToolSource><Palette ID="{2DCDEF9A-7358-4CA4-837C-9AC674AE5317}">Modify</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{68FCC725-A6B5-4A14-99C4-053CE9FF9325}"><ToolSource><Palette ID="{68FCC725-A6B5-4A14-99C4-053CE9FF9325}">Concrete - Materials Sample</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{A38BC6F2-6EC6-4558-BAAA-E031CC533BC8}"><ToolSource><Palette ID="{A38BC6F2-6EC6-4558-BAAA-E031CC533BC8}">Doors and Windows - Materials Sample</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{60763613-F7D6-41D4-BBBF-750DBB622295}"><ToolSource><Palette ID="{60763613-F7D6-41D4-BBBF-750DBB622295}">Fabric - Materials Sample</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{B01DAE07-D43D-45A7-9A2E-2908D89505A2}"><ToolSource><Palette ID="{B01DAE07-D43D-45A7-9A2E-2908D89505A2}">Finishes - Materials Sample</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{84C58344-3962-4ABF-9010-D6139359DA54}"><ToolSource><Palette ID="{84C58344-3962-4ABF-9010-D6139359DA54}">Flooring - Materials Sample</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{4EADC391-4DB5-4F1E-B1AB-DC83B902F207}"><ToolSource><Palette ID="{4EADC391-4DB5-4F1E-B1AB-DC83B902F207}">Masonry - Materials Sample</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{2D450476-FFD3-47B6-A635-7636ECDE86B8}"><ToolSource><Palette ID="{2D450476-FFD3-47B6-A635-7636ECDE86B8}">Metals - Materials Sample</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{6B1EF87E-251F-4894-99B4-2AB3D3E44DBF}"><ToolSource><Palette ID="{6B1EF87E-251F-4894-99B4-2AB3D3E44DBF}">Woods and Plastics - Materials Sample</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{0937C731-E045-4C09-8487-7E84CB5DB6DC}"><ToolSource><Palette ID="{0937C731-E045-4C09-8487-7E84CB5DB6DC}">Lights</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{07E218EF-7B2F-4BE5-9C28-39565D0E477A}"><ToolSource><Palette ID="{07E218EF-7B2F-4BE5-9C28-39565D0E477A}">Cameras</Palette></ToolSource><Image SizeCX="32" SizeCY="32"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1"/><CAcTcUiToolPalette><CatalogView ID="{775C6DF8-BCB6-48BA-8F98-9D4621E908F5}"><ToolSource><Palette ID="{775C6DF8-BCB6-48BA-8F98-9D4621E908F5}">Visual Styles</Palette></ToolSource><Image SizeCX="64" SizeCY="64"/><Style>491522</Style><ToolOrder/></CatalogView></CAcTcUiToolPalette></ToolPalette></ToolPalettes><ToolPaletteGroup><Name resource="157" src="AcTcUiRes.dll"/><ActivePaletteIndex>-1</ActivePaletteIndex><Contents><ToolPaletteGroup><Name resource="156" src="AcTcUiRes.dll"/><ActivePaletteIndex>0</ActivePaletteIndex><Contents><ToolPalette ID="{A0CCA60A-AB56-4EFD-83A5-8764BC08CDA8}"/><ToolPalette ID="{498DE575-CB69-4B2A-A12B-33012D265464}"/><ToolPalette ID="{5B6AC051-A4D1-4191-A86C-DFD866841B64}"/><ToolPalette ID="{EA899C91-EF57-45F1-9CEB-2CE79A3B09EC}"/><ToolPalette ID="{1BAC5354-C9CD-42E2-BD35-300929BC6140}"/></Contents></ToolPaletteGroup><ToolPaletteGroup><Name resource="155" src="AcTcUiRes.dll"/><ActivePaletteIndex>0</ActivePaletteIndex><Contents><ToolPalette ID="{3D96B628-B9A6-4BE7-9A54-4063288C5CE6}"/><ToolPalette ID="{4BE848C7-50A4-41BF-929E-ECE60FE5422F}"/></Contents></ToolPaletteGroup><ToolPaletteGroup><Name resource="164" src="AcTcUiRes.dll"/><ActivePaletteIndex>0</ActivePaletteIndex><Contents><ToolPalette ID="{D6BC41CF-FCAA-4FF7-8CDD-64D952C632E0}"/><ToolPalette ID="{8331A300-122F-4425-A7FF-467A42D79166}"/><ToolPalette ID="{2DCDEF9A-7358-4CA4-837C-9AC674AE5317}"/></Contents></ToolPaletteGroup><ToolPaletteGroup><Name resource="165" src="AcTcUiRes.dll"/><ActivePaletteIndex>0</ActivePaletteIndex><Contents><ToolPalette ID="{68FCC725-A6B5-4A14-99C4-053CE9FF9325}"/><ToolPalette ID="{A38BC6F2-6EC6-4558-BAAA-E031CC533BC8}"/><ToolPalette ID="{60763613-F7D6-41D4-BBBF-750DBB622295}"/><ToolPalette ID="{B01DAE07-D43D-45A7-9A2E-2908D89505A2}"/><ToolPalette ID="{84C58344-3962-4ABF-9010-D6139359DA54}"/><ToolPalette ID="{4EADC391-4DB5-4F1E-B1AB-DC83B902F207}"/><ToolPalette ID="{2D450476-FFD3-47B6-A635-7636ECDE86B8}"/><ToolPalette ID="{6B1EF87E-251F-4894-99B4-2AB3D3E44DBF}"/></Contents></ToolPaletteGroup><ToolPaletteGroup><Name resource="169" src="AcTcUiRes.dll"/><ActivePaletteIndex>0</ActivePaletteIndex></ToolPaletteGroup><ToolPaletteGroup><Name resource="166" src="AcTcUiRes.dll"/><ActivePaletteIndex>0</ActivePaletteIndex><Contents><ToolPalette ID="{0937C731-E045-4C09-8487-7E84CB5DB6DC}"/></Contents></ToolPaletteGroup><ToolPaletteGroup><Name resource="168" src="AcTcUiRes.dll"/><ActivePaletteIndex>0</ActivePaletteIndex><Contents><ToolPalette ID="{07E218EF-7B2F-4BE5-9C28-39565D0E477A}"/></Contents></ToolPaletteGroup><ToolPaletteGroup><Name resource="167" src="AcTcUiRes.dll"/><ActivePaletteIndex>0</ActivePaletteIndex><Contents><ToolPalette ID="{775C6DF8-BCB6-48BA-8F98-9D4621E908F5}"/></Contents></ToolPaletteGroup></Contents></ToolPaletteGroup></CAcTcUiToolPaletteSet></ToolPaletteSet></ToolPaletteSets>
+				<ToolPaletteSet><CAdUiDockControlBar Orientation="-1" AllowDocking="1"><FloatInfo Left="773" Top="101" Width="172" Height="598" /><DockInfo Left="1594" Top="102" Width="172" Height="368" MRUDockID="0" /></CAdUiDockControlBar><CAdUiPaletteSet ActivePaletteIndex="0" TitleBarLocation="1" AutoRollup="0" Name="TOOL PALETTES - ALL PALETTES" Style="126" Opacity="100" Visible="0" /><CAcTcUiToolPaletteSet ID="{B17B40A6-2761-4BCC-BC48-2B8A465AA5EB}"><ToolPalettes><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{D6BC41CF-FCAA-4FF7-8CDD-64D952C632E0}"><ToolSource><Palette ID="{D6BC41CF-FCAA-4FF7-8CDD-64D952C632E0}">Modeling</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder><Tool ID="{9D7A9A9F-320F-4E3B-9266-E7C0D28C3F2C}" /><Tool ID="{AB741E04-A733-4A8F-9947-295DAED23DD8}" /><Tool ID="{76A00F1F-7C75-4AA7-AF87-B43616D15C12}" /><Tool ID="{A56082F6-E82C-4975-9A01-BDA82930B56E}" /><Tool ID="{DA699A7F-E281-4DDC-82F2-30CCE5D3DBCA}" /><Tool ID="{21A4A999-5FF8-489F-A588-DD4F7B538E55}" /><Tool ID="{13367C5B-9D4D-4BEA-B868-879A7387CDBB}" /><Tool ID="{74A5539F-5A37-411C-BEC9-49FEC3BC9AD3}" /></ToolOrder></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{A0CCA60A-AB56-4EFD-83A5-8764BC08CDA8}"><ToolSource><Palette ID="{A0CCA60A-AB56-4EFD-83A5-8764BC08CDA8}">Annotation</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{498DE575-CB69-4B2A-A12B-33012D265464}"><ToolSource><Palette ID="{498DE575-CB69-4B2A-A12B-33012D265464}">Architectural</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{5B6AC051-A4D1-4191-A86C-DFD866841B64}"><ToolSource><Palette ID="{5B6AC051-A4D1-4191-A86C-DFD866841B64}">Mechanical</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{EA899C91-EF57-45F1-9CEB-2CE79A3B09EC}"><ToolSource><Palette ID="{EA899C91-EF57-45F1-9CEB-2CE79A3B09EC}">Electrical</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{1BAC5354-C9CD-42E2-BD35-300929BC6140}"><ToolSource><Palette ID="{1BAC5354-C9CD-42E2-BD35-300929BC6140}">Civil/Structural</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{3D96B628-B9A6-4BE7-9A54-4063288C5CE6}"><ToolSource><Palette ID="{3D96B628-B9A6-4BE7-9A54-4063288C5CE6}">Hatches</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>458752</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{4BE848C7-50A4-41BF-929E-ECE60FE5422F}"><ToolSource><Palette ID="{4BE848C7-50A4-41BF-929E-ECE60FE5422F}">Command Tools</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{8331A300-122F-4425-A7FF-467A42D79166}"><ToolSource><Palette ID="{8331A300-122F-4425-A7FF-467A42D79166}">Draw</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{2DCDEF9A-7358-4CA4-837C-9AC674AE5317}"><ToolSource><Palette ID="{2DCDEF9A-7358-4CA4-837C-9AC674AE5317}">Modify</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{68FCC725-A6B5-4A14-99C4-053CE9FF9325}"><ToolSource><Palette ID="{68FCC725-A6B5-4A14-99C4-053CE9FF9325}">Concrete - Materials Sample</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{A38BC6F2-6EC6-4558-BAAA-E031CC533BC8}"><ToolSource><Palette ID="{A38BC6F2-6EC6-4558-BAAA-E031CC533BC8}">Doors and Windows - Materials Sample</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{60763613-F7D6-41D4-BBBF-750DBB622295}"><ToolSource><Palette ID="{60763613-F7D6-41D4-BBBF-750DBB622295}">Fabric - Materials Sample</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{B01DAE07-D43D-45A7-9A2E-2908D89505A2}"><ToolSource><Palette ID="{B01DAE07-D43D-45A7-9A2E-2908D89505A2}">Finishes - Materials Sample</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{84C58344-3962-4ABF-9010-D6139359DA54}"><ToolSource><Palette ID="{84C58344-3962-4ABF-9010-D6139359DA54}">Flooring - Materials Sample</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{4EADC391-4DB5-4F1E-B1AB-DC83B902F207}"><ToolSource><Palette ID="{4EADC391-4DB5-4F1E-B1AB-DC83B902F207}">Masonry - Materials Sample</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{2D450476-FFD3-47B6-A635-7636ECDE86B8}"><ToolSource><Palette ID="{2D450476-FFD3-47B6-A635-7636ECDE86B8}">Metals - Materials Sample</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{6B1EF87E-251F-4894-99B4-2AB3D3E44DBF}"><ToolSource><Palette ID="{6B1EF87E-251F-4894-99B4-2AB3D3E44DBF}">Woods and Plastics - Materials Sample</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{0937C731-E045-4C09-8487-7E84CB5DB6DC}"><ToolSource><Palette ID="{0937C731-E045-4C09-8487-7E84CB5DB6DC}">Lights</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{07E218EF-7B2F-4BE5-9C28-39565D0E477A}"><ToolSource><Palette ID="{07E218EF-7B2F-4BE5-9C28-39565D0E477A}">Cameras</Palette></ToolSource><Image SizeCX="32" SizeCY="32" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette><ToolPalette><CAdUiPalette PaletteStyle="1" /><CAcTcUiToolPalette><CatalogView ID="{775C6DF8-BCB6-48BA-8F98-9D4621E908F5}"><ToolSource><Palette ID="{775C6DF8-BCB6-48BA-8F98-9D4621E908F5}">Visual Styles</Palette></ToolSource><Image SizeCX="64" SizeCY="64" /><Style>491522</Style><ToolOrder /></CatalogView></CAcTcUiToolPalette></ToolPalette></ToolPalettes><ToolPaletteGroup><Name resource="157" src="AcTcUiRes.dll" /><ActivePaletteIndex>-1</ActivePaletteIndex><Contents><ToolPaletteGroup><Name resource="156" src="AcTcUiRes.dll" /><ActivePaletteIndex>0</ActivePaletteIndex><Contents><ToolPalette ID="{A0CCA60A-AB56-4EFD-83A5-8764BC08CDA8}" /><ToolPalette ID="{498DE575-CB69-4B2A-A12B-33012D265464}" /><ToolPalette ID="{5B6AC051-A4D1-4191-A86C-DFD866841B64}" /><ToolPalette ID="{EA899C91-EF57-45F1-9CEB-2CE79A3B09EC}" /><ToolPalette ID="{1BAC5354-C9CD-42E2-BD35-300929BC6140}" /></Contents></ToolPaletteGroup><ToolPaletteGroup><Name resource="155" src="AcTcUiRes.dll" /><ActivePaletteIndex>0</ActivePaletteIndex><Contents><ToolPalette ID="{3D96B628-B9A6-4BE7-9A54-4063288C5CE6}" /><ToolPalette ID="{4BE848C7-50A4-41BF-929E-ECE60FE5422F}" /></Contents></ToolPaletteGroup><ToolPaletteGroup><Name resource="164" src="AcTcUiRes.dll" /><ActivePaletteIndex>0</ActivePaletteIndex><Contents><ToolPalette ID="{D6BC41CF-FCAA-4FF7-8CDD-64D952C632E0}" /><ToolPalette ID="{8331A300-122F-4425-A7FF-467A42D79166}" /><ToolPalette ID="{2DCDEF9A-7358-4CA4-837C-9AC674AE5317}" /></Contents></ToolPaletteGroup><ToolPaletteGroup><Name resource="165" src="AcTcUiRes.dll" /><ActivePaletteIndex>0</ActivePaletteIndex><Contents><ToolPalette ID="{68FCC725-A6B5-4A14-99C4-053CE9FF9325}" /><ToolPalette ID="{A38BC6F2-6EC6-4558-BAAA-E031CC533BC8}" /><ToolPalette ID="{60763613-F7D6-41D4-BBBF-750DBB622295}" /><ToolPalette ID="{B01DAE07-D43D-45A7-9A2E-2908D89505A2}" /><ToolPalette ID="{84C58344-3962-4ABF-9010-D6139359DA54}" /><ToolPalette ID="{4EADC391-4DB5-4F1E-B1AB-DC83B902F207}" /><ToolPalette ID="{2D450476-FFD3-47B6-A635-7636ECDE86B8}" /><ToolPalette ID="{6B1EF87E-251F-4894-99B4-2AB3D3E44DBF}" /></Contents></ToolPaletteGroup><ToolPaletteGroup><Name resource="169" src="AcTcUiRes.dll" /><ActivePaletteIndex>0</ActivePaletteIndex></ToolPaletteGroup><ToolPaletteGroup><Name resource="166" src="AcTcUiRes.dll" /><ActivePaletteIndex>0</ActivePaletteIndex><Contents><ToolPalette ID="{0937C731-E045-4C09-8487-7E84CB5DB6DC}" /></Contents></ToolPaletteGroup><ToolPaletteGroup><Name resource="168" src="AcTcUiRes.dll" /><ActivePaletteIndex>0</ActivePaletteIndex><Contents><ToolPalette ID="{07E218EF-7B2F-4BE5-9C28-39565D0E477A}" /></Contents></ToolPaletteGroup><ToolPaletteGroup><Name resource="167" src="AcTcUiRes.dll" /><ActivePaletteIndex>0</ActivePaletteIndex><Contents><ToolPalette ID="{775C6DF8-BCB6-48BA-8F98-9D4621E908F5}" /></Contents></ToolPaletteGroup></Contents></ToolPaletteGroup></CAcTcUiToolPaletteSet></ToolPaletteSet></ToolPaletteSets>
 		</ToolPaletteScheme>
 		<AuthorPaletteScheme>
 			<ToolPaletteSets>
 				<ToolPaletteSet>
 					<CAdUiDockControlBar Orientation="-1" AllowDocking="1">
-						<FloatInfo Left="50" Top="150" Width="172" Height="433"/>
-						<DockInfo Left="0" Top="0" Width="172" Height="393" MRUDockID="0"/>
+						<FloatInfo Left="50" Top="150" Width="172" Height="433" />
+						<DockInfo Left="0" Top="0" Width="172" Height="393" MRUDockID="0" />
 					</CAdUiDockControlBar>
-					<CAdUiPaletteSet ActivePaletteIndex="0" TitleBarLocation="0" AutoRollup="0" Name="" Style="126" Opacity="100" Visible="1"/>
+					<CAdUiPaletteSet ActivePaletteIndex="0" TitleBarLocation="0" AutoRollup="0" Name="" Style="126" Opacity="100" Visible="1" />
 					<CAcTcUiToolPaletteSet ID="{1783040D-79F6-44ea-9779-CE4FD0C232A8}">
-						<ItemName resource="149" src="AcTcUiRes.dll"/>
+						<ItemName resource="149" src="AcTcUiRes.dll" />
 					</CAcTcUiToolPaletteSet>
 				</ToolPaletteSet>
 			</ToolPaletteSets>
 		</AuthorPaletteScheme>
 		<Dashboard>
 			<CAcDaPanelSet>
-				<CAcDaPanel ID="PNL_0001" Visible="0"/>
+				<CAcDaPanel ID="PNL_0001" Visible="0" />
 				<CAcDaPanel ID="PNL_0002" Visible="1">
-					<ToolPaletteGroupName resource="164" src="AcTcUiRes.dll"/>
+					<ToolPaletteGroupName resource="164" src="AcTcUiRes.dll" />
 				</CAcDaPanel>
 				<CAcDaPanel ID="PNL_0003" Visible="1">
-					<ToolPaletteGroupName resource="168" src="AcTcUiRes.dll"/>
+					<ToolPaletteGroupName resource="168" src="AcTcUiRes.dll" />
 				</CAcDaPanel>
 				<CAcDaPanel ID="PNL_0004" Visible="1">
-					<ToolPaletteGroupName resource="167" src="AcTcUiRes.dll"/>
+					<ToolPaletteGroupName resource="167" src="AcTcUiRes.dll" />
 				</CAcDaPanel>
 				<CAcDaPanel ID="PNL_0005" Visible="1">
-					<ToolPaletteGroupName resource="166" src="AcTcUiRes.dll"/>
+					<ToolPaletteGroupName resource="166" src="AcTcUiRes.dll" />
 				</CAcDaPanel>
 				<CAcDaPanel ID="PNL_0006" Visible="1">
-					<ToolPaletteGroupName resource="165" src="AcTcUiRes.dll"/>
+					<ToolPaletteGroupName resource="165" src="AcTcUiRes.dll" />
 				</CAcDaPanel>
-				<CAcDaPanel ID="PNL_0007" Visible="1"/>
+				<CAcDaPanel ID="PNL_0007" Visible="1" />
 			</CAcDaPanelSet>
 		</Dashboard>
 	</StorageRoot>
-</Profile>
+<Tool CLSID="{6D32A2D9-832E-11D2-A83C-0060B0872C0B}">
+            <CAdUiDockControlBar Orientation="-1" AllowDocking="0">
+              <FloatInfo Left="60" Top="120" Width="300" Height="500" />
+              <DockInfo Left="0" Top="0" Width="200" Height="300" MRUDockID="0" />
+            </CAdUiDockControlBar>
+            <CAdUiPaletteSet ActivePaletteIndex="0" TitleBarLocation="0" AutoRollup="0" Name="PROPERTIES" Style="46" Opacity="100" Visible="0" />
+            <PROP_STATE>
+              <PALETTE PALETTE_NAME="Design">
+                <STYLE FLAGS="1375797431" COLUMNWIDTH="0.45045045045045" />
+                <OBJECT NAME="{ABBE3F83-D585-4A50-9B69-198B0F566F2E}">
+                  <CATEGORY NAME="General-12" STATE="-1" />
+                  <CATEGORY NAME="Misc-2" STATE="0" />
+                  <CATEGORY NAME="Lines &amp; Arrows-22" STATE="0" />
+                  <CATEGORY NAME="Text-9" STATE="0" />
+                  <CATEGORY NAME="Fit-21" STATE="0" />
+                  <CATEGORY NAME="Primary Units-19" STATE="0" />
+                  <CATEGORY NAME="Alternate Units-20" STATE="0" />
+                  <CATEGORY NAME="Tolerances-23" STATE="0" />
+                </OBJECT>
+                <OBJECT NAME="{BF4CC07E-E9BB-40D6-873F-855B211033B9}">
+                  <CATEGORY NAME="General-12" STATE="-1" />
+                  <CATEGORY NAME="Misc-2" STATE="0" />
+                  <CATEGORY NAME="Lines &amp; Arrows-22" STATE="0" />
+                  <CATEGORY NAME="Text-9" STATE="0" />
+                  <CATEGORY NAME="Fit-21" STATE="0" />
+                  <CATEGORY NAME="Primary Units-19" STATE="0" />
+                  <CATEGORY NAME="Alternate Units-20" STATE="0" />
+                  <CATEGORY NAME="Tolerances-23" STATE="0" />
+                </OBJECT>
+                <OBJECT NAME="{E9C07CEC-7B82-49E4-BBA2-7533B88E9D64}">
+                  <CATEGORY NAME="General-12" STATE="-1" />
+                  <CATEGORY NAME="3D Visualization-31" STATE="-1" />
+                  <CATEGORY NAME="Geometry5" STATE="-1" />
+                  <CATEGORY NAME="Misc-2" STATE="-1" />
+                  <CATEGORY NAME="Thông số tuyến1" STATE="-1" />
+                </OBJECT>
+                <OBJECT NAME="{1E8A29BA-827D-4031-A4A3-AE7999B402F6}">
+                  <CATEGORY NAME="General-12" STATE="-1" />
+                  <CATEGORY NAME="3D Visualization-31" STATE="-1" />
+                  <CATEGORY NAME="Geometry5" STATE="-1" />
+                  <CATEGORY NAME="Misc-2" STATE="-1" />
+                  <CATEGORY NAME="General0" STATE="-1" />
+                  <CATEGORY NAME="Attributes2941" STATE="-1" />
+                  <CATEGORY NAME="Custom2942" STATE="-1" />
+                  <CATEGORY NAME="Thông số tuyến1" STATE="-1" />
+                </OBJECT>
+                <OBJECT NAME="{D66873EA-AAE5-41CC-8DD2-8CE3228E9F89}">
+                  <CATEGORY NAME="General-12" STATE="-1" />
+                  <CATEGORY NAME="3D Visualization-31" STATE="-1" />
+                  <CATEGORY NAME="Thông số tuyến1" STATE="-1" />
+                </OBJECT>
+                <OBJECT NAME="{2BCA857B-A18B-4AFA-B183-CC0E49C12058}">
+                  <CATEGORY NAME="General-12" STATE="-1" />
+                  <CATEGORY NAME="Geometry5" STATE="-1" />
+                  <CATEGORY NAME="3D Visualization-31" STATE="-1" />
+                </OBJECT>
+                <OBJECT NAME="{B2A579E0-A797-40B1-8AEE-A8F6404719F8}">
+                  <CATEGORY NAME="General-12" STATE="-1" />
+                  <CATEGORY NAME="3D Visualization-31" STATE="-1" />
+                  <CATEGORY NAME="Geometry5" STATE="-1" />
+                  <CATEGORY NAME="Misc-2" STATE="-1" />
+                  <CATEGORY NAME="General0" STATE="-1" />
+                </OBJECT>
+                <OBJECT NAME="{2C74F89E-7421-46B4-BA54-F86F1BD9F237}">
+                  <CATEGORY NAME="General-12" STATE="-1" />
+                  <CATEGORY NAME="Misc-2" STATE="0" />
+                  <CATEGORY NAME="Lines &amp; Arrows-22" STATE="0" />
+                  <CATEGORY NAME="Text-9" STATE="0" />
+                  <CATEGORY NAME="Fit-21" STATE="0" />
+                  <CATEGORY NAME="Primary Units-19" STATE="0" />
+                  <CATEGORY NAME="Alternate Units-20" STATE="0" />
+                  <CATEGORY NAME="Tolerances-23" STATE="0" />
+                </OBJECT>
+                <OBJECT NAME="{46C56738-39C6-4240-8B9B-008CCD769A84}">
+                  <CATEGORY NAME="General-12" STATE="-1" />
+                  <CATEGORY NAME="3D Visualization-31" STATE="-1" />
+                  <CATEGORY NAME="Geometry5" STATE="-1" />
+                  <CATEGORY NAME="Misc-2" STATE="-1" />
+                  <CATEGORY NAME="Thông số tuyến1" STATE="-1" />
+                </OBJECT>
+                <OBJECT NAME="{85452F88-5071-492E-B850-2E3C586DCBD8}">
+                  <CATEGORY NAME="General-12" STATE="-1" />
+                  <CATEGORY NAME="Misc-2" STATE="0" />
+                  <CATEGORY NAME="Lines &amp; Arrows-22" STATE="0" />
+                  <CATEGORY NAME="Text-9" STATE="0" />
+                  <CATEGORY NAME="Fit-21" STATE="0" />
+                  <CATEGORY NAME="Primary Units-19" STATE="0" />
+                  <CATEGORY NAME="Alternate Units-20" STATE="0" />
+                  <CATEGORY NAME="Tolerances-23" STATE="0" />
+                </OBJECT>
+                <OBJECT NAME="{BBF6A206-CB04-479D-96AE-349E1E83319A}">
+                  <CATEGORY NAME="General-12" STATE="-1" />
+                  <CATEGORY NAME="Misc-2" STATE="0" />
+                  <CATEGORY NAME="Lines &amp; Arrows-22" STATE="0" />
+                  <CATEGORY NAME="Text-9" STATE="0" />
+                  <CATEGORY NAME="Fit-21" STATE="0" />
+                  <CATEGORY NAME="Primary Units-19" STATE="0" />
+                  <CATEGORY NAME="Alternate Units-20" STATE="0" />
+                  <CATEGORY NAME="Tolerances-23" STATE="0" />
+                  <CATEGORY NAME="3D Visualization-31" STATE="-1" />
+                </OBJECT>
+                <OBJECT NAME="{8AA16DFC-DFC6-4B51-8FA2-A5D812BE33BF}">
+                  <CATEGORY NAME="General-12" STATE="-1" />
+                  <CATEGORY NAME="3D Visualization-31" STATE="-1" />
+                  <CATEGORY NAME="Geometry5" STATE="-1" />
+                  <CATEGORY NAME="Thông số tuyến1" STATE="-1" />
+                </OBJECT>
+                <OBJECT NAME="{44A52280-AE56-490D-890C-89FB7279ED6B}">
+                  <CATEGORY NAME="General-12" STATE="-1" />
+                  <CATEGORY NAME="Misc-2" STATE="0" />
+                  <CATEGORY NAME="Lines &amp; Arrows-22" STATE="0" />
+                  <CATEGORY NAME="Text-9" STATE="0" />
+                  <CATEGORY NAME="Fit-21" STATE="0" />
+                  <CATEGORY NAME="Primary Units-19" STATE="0" />
+                  <CATEGORY NAME="Alternate Units-20" STATE="0" />
+                  <CATEGORY NAME="Tolerances-23" STATE="0" />
+                </OBJECT>
+                <OBJECT NAME="ZeroSelect">
+                  <CATEGORY NAME="General0" STATE="-1" />
+                  <CATEGORY NAME="3D Visualization0" STATE="-1" />
+                  <CATEGORY NAME="Layout0" STATE="-1" />
+                  <CATEGORY NAME="Plot style0" STATE="-1" />
+                  <CATEGORY NAME="View0" STATE="-1" />
+                  <CATEGORY NAME="Misc0" STATE="-1" />
+                </OBJECT>
+                <OBJECT NAME="{9906CDFC-DB2C-4126-9422-13139B148495}">
+                  <CATEGORY NAME="General-12" STATE="-1" />
+                  <CATEGORY NAME="3D Visualization-31" STATE="-1" />
+                  <CATEGORY NAME="Text-9" STATE="-1" />
+                  <CATEGORY NAME="Geometry5" STATE="-1" />
+                </OBJECT>
+                <OBJECT NAME="{D86B6C47-11F2-4D95-B635-EA575F0892FC}">
+                  <CATEGORY NAME="General-12" STATE="-1" />
+                  <CATEGORY NAME="Misc-2" STATE="0" />
+                  <CATEGORY NAME="Lines &amp; Arrows-22" STATE="0" />
+                  <CATEGORY NAME="Text-9" STATE="0" />
+                  <CATEGORY NAME="Fit-21" STATE="0" />
+                  <CATEGORY NAME="Primary Units-19" STATE="0" />
+                  <CATEGORY NAME="Alternate Units-20" STATE="0" />
+                  <CATEGORY NAME="Tolerances-23" STATE="0" />
+                </OBJECT>
+                <OBJECT NAME="{BC71DEA1-D6FB-48B8-AB06-D151C81BBCDD}">
+                  <CATEGORY NAME="General-12" STATE="-1" />
+                  <CATEGORY NAME="Misc-2" STATE="0" />
+                  <CATEGORY NAME="Lines &amp; Arrows-22" STATE="0" />
+                  <CATEGORY NAME="Text-9" STATE="0" />
+                  <CATEGORY NAME="Fit-21" STATE="0" />
+                  <CATEGORY NAME="Primary Units-19" STATE="0" />
+                  <CATEGORY NAME="Tolerances-23" STATE="0" />
+                </OBJECT>
+              </PALETTE>
+            </PROP_STATE>
+          </Tool>
+          </Profile>
