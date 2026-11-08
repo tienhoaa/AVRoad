@@ -47,6 +47,26 @@ namespace AVRoad.Security
         }
 
         /// <summary>
+        /// Kiểm tra hệ thống đã có bản quyền hợp lệ hay chưa.
+        /// </summary>
+        public static bool IsLicensed
+        {
+            get
+            {
+                return IsActiveLicenseValid();
+            }
+        }
+
+        /// <summary>
+        /// Kiểm tra xem bản quyền máy hiện tại có hợp lệ, đúng HWID, đúng sản phẩm AVRoad và còn hạn hay không.
+        /// </summary>
+        public static bool IsActiveLicenseValid()
+        {
+            LicenseValidationResult res = ValidateLicense(false);
+            return res != null && res.IsValid;
+        }
+
+        /// <summary>
         /// Khởi tạo và kích hoạt kiểm tra thu hồi ngầm (chỉ chạy 1 lần khi CAD khởi động).
         /// </summary>
         public static void Initialize()
@@ -156,16 +176,20 @@ namespace AVRoad.Security
                     return false;
                 }
 
-                // Kiểm tra đúng định danh phần mềm AVRoad 2026 / TDT 9.1
+                // Kiểm tra đúng định danh phần mềm AVRoad 2026 / TDT 9.1 hoặc Trọn gói ALL
                 if (!string.IsNullOrEmpty(licData.SoftwareCode))
                 {
-                    if (!string.Equals(licData.SoftwareCode, "AVROAD_TDT91", StringComparison.OrdinalIgnoreCase))
+                    bool isAvRoad = string.Equals(licData.SoftwareCode, "AVROAD_TDT91", StringComparison.OrdinalIgnoreCase) ||
+                                    string.Equals(licData.SoftwareCode, "TDT_ROAD", StringComparison.OrdinalIgnoreCase) ||
+                                    string.Equals(licData.SoftwareCode, "ALL", StringComparison.OrdinalIgnoreCase);
+
+                    if (!isAvRoad)
                     {
                         message = string.Format("Tập tin bản quyền này được cấp cho '{0}' ({1}), không tương thích với AVRoad 2026 (TDT 9.1).", licData.Product, licData.SoftwareCode);
                         return false;
                     }
                 }
-                else if (!string.IsNullOrEmpty(licData.Product) && licData.Product.IndexOf("Civil", StringComparison.OrdinalIgnoreCase) >= 0)
+                else if (!string.IsNullOrEmpty(licData.Product) && licData.Product.IndexOf("Civil", StringComparison.OrdinalIgnoreCase) >= 0 && licData.Product.IndexOf("Road", StringComparison.OrdinalIgnoreCase) < 0 && licData.Product.IndexOf("TDT", StringComparison.OrdinalIgnoreCase) < 0)
                 {
                     message = "Tập tin bản quyền này dành cho AV_Civil, không áp dụng cho AVRoad 2026 (TDT 9.1).";
                     return false;
@@ -239,72 +263,100 @@ namespace AVRoad.Security
 
         private static LicenseValidationResult PerformValidation()
         {
-            // Nếu đã bị thu hồi / đánh dấu outdated
+            // 1. Nếu đã bị thu hồi / đánh dấu outdated
             if (IsRevoked)
             {
                 return LicenseValidationResult.Outdated(LicenseStatus.Revoked, _revocationReason);
             }
 
-            // Nếu có file bản quyền tường minh thì thẩm định theo file
-            if (File.Exists(LicenseFilePath))
+            // 2. Chốt chặn bắt buộc: Phải có file bản quyền .avlic
+            if (!File.Exists(LicenseFilePath))
             {
-                try
-                {
-                    string json = File.ReadAllText(LicenseFilePath, Encoding.UTF8);
-                    if (!string.IsNullOrEmpty(json))
-                    {
-                        string payload = SimpleJson.ExtractRawProperty(json, "payload");
-                        string signature = SimpleJson.ExtractRawProperty(json, "signature");
-
-                        if (!string.IsNullOrEmpty(payload) && !string.IsNullOrEmpty(signature))
-                        {
-                            if (CryptoHelper.VerifySignature(payload, signature))
-                            {
-                                Dictionary<string, object> dict = SimpleJson.DeserializeObject(payload);
-                                if (dict != null)
-                                {
-                                    LicenseData data = LicenseData.FromDictionary(dict);
-                                    if (data != null)
-                                    {
-                                        // Kiểm tra định danh phần mềm
-                                        if (!string.IsNullOrEmpty(data.SoftwareCode) && !string.Equals(data.SoftwareCode, "AVROAD_TDT91", StringComparison.OrdinalIgnoreCase))
-                                        {
-                                            return LicenseValidationResult.Outdated(LicenseStatus.InvalidSignature, "Bản quyền không khớp với AVRoad 2026 (TDT 9.1).");
-                                        }
-
-                                        string currentHwid = HardwareIdentifier.GetHardwareId();
-                                        if (string.Equals(data.HardwareId, "*", StringComparison.OrdinalIgnoreCase) ||
-                                            string.Equals(data.HardwareId, currentHwid, StringComparison.OrdinalIgnoreCase))
-                                        {
-                                            if (data.ExpiryDate.HasValue && !data.IsPerpetual && DateTime.Now > data.ExpiryDate.Value)
-                                            {
-                                                return LicenseValidationResult.Outdated(LicenseStatus.Expired, string.Format("Đã hết hạn vào ngày {0:dd/MM/yyyy}.", data.ExpiryDate.Value));
-                                            }
-
-                                            int days = data.ExpiryDate.HasValue ? (int)(data.ExpiryDate.Value - DateTime.Now).TotalDays : 9999;
-                                            return LicenseValidationResult.Success(data, days);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                catch { }
+                return LicenseValidationResult.NotActivated("Phần mềm chưa được kích hoạt bản quyền. Vui lòng đăng ký mã máy.");
             }
 
-            // Stealth mode mặc định: Cho phép sử dụng bình thường 100% nếu không bị đưa vào danh sách thu hồi
-            LicenseData defaultData = new LicenseData();
-            defaultData.CustomerName = "Người dùng AVRoad";
-            defaultData.LicenseType = "Commercial";
-            defaultData.HardwareId = HardwareIdentifier.GetHardwareId();
-            defaultData.Modules = new List<string>(new string[] { "ALL" });
-            return LicenseValidationResult.Success(defaultData, 9999);
+            try
+            {
+                string json = File.ReadAllText(LicenseFilePath, Encoding.UTF8);
+                if (string.IsNullOrEmpty(json) || string.IsNullOrEmpty(json.Trim()))
+                {
+                    return LicenseValidationResult.Fail(LicenseStatus.NotFound, "Tập tin bản quyền rỗng.");
+                }
+
+                string payload = SimpleJson.ExtractRawProperty(json, "payload");
+                string signature = SimpleJson.ExtractRawProperty(json, "signature");
+
+                if (string.IsNullOrEmpty(payload) || string.IsNullOrEmpty(signature))
+                {
+                    return LicenseValidationResult.Fail(LicenseStatus.InvalidSignature, "Tập tin không chứa đầy đủ payload hoặc chữ ký số.");
+                }
+
+                if (!CryptoHelper.VerifySignature(payload, signature))
+                {
+                    return LicenseValidationResult.Fail(LicenseStatus.InvalidSignature, "Chữ ký số RSA không hợp lệ hoặc tập tin đã bị chỉnh sửa.");
+                }
+
+                Dictionary<string, object> dict = SimpleJson.DeserializeObject(payload);
+                if (dict == null)
+                {
+                    return LicenseValidationResult.Fail(LicenseStatus.Error, "Không thể đọc dữ liệu bản quyền trong payload.");
+                }
+
+                LicenseData data = LicenseData.FromDictionary(dict);
+                if (data == null)
+                {
+                    return LicenseValidationResult.Fail(LicenseStatus.Error, "Dữ liệu bản quyền không hợp lệ.");
+                }
+
+                // 3. Kiểm tra định danh phần mềm (AVRoad 2026 / TDT 9.1 hoặc Trọn gói ALL)
+                if (!string.IsNullOrEmpty(data.SoftwareCode))
+                {
+                    bool isAvRoad = string.Equals(data.SoftwareCode, "AVROAD_TDT91", StringComparison.OrdinalIgnoreCase) ||
+                                    string.Equals(data.SoftwareCode, "TDT_ROAD", StringComparison.OrdinalIgnoreCase) ||
+                                    string.Equals(data.SoftwareCode, "ALL", StringComparison.OrdinalIgnoreCase);
+
+                    if (!isAvRoad)
+                    {
+                        return LicenseValidationResult.Fail(LicenseStatus.Error, string.Format("Bản quyền này được cấp cho '{0}' ({1}), không tương thích với AVRoad 2026 (TDT 9.1).", data.Product, data.SoftwareCode));
+                    }
+                }
+                else if (!string.IsNullOrEmpty(data.Product))
+                {
+                    if (data.Product.IndexOf("Civil", StringComparison.OrdinalIgnoreCase) >= 0 &&
+                        data.Product.IndexOf("Road", StringComparison.OrdinalIgnoreCase) < 0 &&
+                        data.Product.IndexOf("TDT", StringComparison.OrdinalIgnoreCase) < 0)
+                    {
+                        return LicenseValidationResult.Fail(LicenseStatus.Error, "Bản quyền này dành cho AV_Civil, không áp dụng cho AVRoad 2026 (TDT 9.1).");
+                    }
+                }
+
+                // 4. Kiểm tra đúng Mã máy (HWID)
+                string currentHwid = HardwareIdentifier.GetHardwareId();
+                if (!string.Equals(data.HardwareId, "*", StringComparison.OrdinalIgnoreCase) &&
+                    !string.Equals(data.HardwareId, currentHwid, StringComparison.OrdinalIgnoreCase))
+                {
+                    return LicenseValidationResult.Fail(LicenseStatus.InvalidHardware, string.Format("Bản quyền này được cấp cho thiết bị khác ({0}). Mã máy này là {1}.", data.HardwareId, currentHwid));
+                }
+
+                // 5. Kiểm tra thời hạn bản quyền
+                if (data.ExpiryDate.HasValue && !data.IsPerpetual && DateTime.Now > data.ExpiryDate.Value)
+                {
+                    return LicenseValidationResult.Fail(LicenseStatus.Expired, string.Format("Bản quyền đã hết hạn vào ngày {0:dd/MM/yyyy}.", data.ExpiryDate.Value));
+                }
+
+                int days = data.ExpiryDate.HasValue ? (int)(data.ExpiryDate.Value - DateTime.Now).TotalDays : 9999;
+                return LicenseValidationResult.Success(data, days);
+            }
+            catch (Exception ex)
+            {
+                return LicenseValidationResult.Fail(LicenseStatus.Error, "Lỗi kiểm tra bản quyền: " + ex.Message);
+            }
         }
 
         public static bool IsModuleAuthorized(string moduleName)
         {
-            return !IsRevoked;
+            if (IsRevoked) return false;
+            return IsActiveLicenseValid();
         }
 
         public static bool IsCommandAuthorized(string commandName)
@@ -323,7 +375,10 @@ namespace AVRoad.Security
                 return true;
             }
 
-            return !IsRevoked;
+            if (IsRevoked) return false;
+            if (!IsActiveLicenseValid()) return false;
+
+            return true;
         }
 
         public static bool EnsureAuthorized(string moduleName)
@@ -331,6 +386,12 @@ namespace AVRoad.Security
             if (IsRevoked)
             {
                 NotifyOutdated();
+                return false;
+            }
+
+            if (!IsActiveLicenseValid())
+            {
+                LicenseDialog.ShowActivationDialog();
                 return false;
             }
 

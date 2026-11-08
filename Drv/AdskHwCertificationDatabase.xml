@@ -1,0 +1,1311 @@
+<?xml version='1.0' encoding='utf-8'?>
+<ptxml version="1.1.1.1">
+  <generated date="3/3/2006" />
+  <lookupTables>
+    <productLookup>
+      <product name="AutoCAD">
+        <version name="R17.0" displayName="AutoCAD 2007" />
+      </product>
+    </productLookup>
+    <osLookup>
+      <os name="WinXP" displayName="XP Pro" />
+      <os name="Win2K" displayName="2000" />
+    </osLookup>
+    <effectLookup>
+      <effect name="gooch" displayName="Gooch hardware shader" />
+      <effect name="shadows" displayName="Full shadow display" />
+      <effect name="AALines" displayName="Smooth line display" />
+    </effectLookup>
+    <driverLookup>
+  
+  <driver manufacturer="3Dlabs" name="6.14.0010.0" url="http://www.3dlabs.com/support/drivers/" />
+  <driver manufacturer="3Dlabs" name="6.6.0002.66" url="http://www.3dlabs.com/support/drivers/" />
+  <driver manufacturer="ATI" name="6.14.0010.6561" url="http://www.ati.com/" />
+  <driver manufacturer="ATI" name="6.14.0010.6599" url="http://download.autodesk.com/prodsupp/inventor/Graphics/ati/Unified/2K_XP/8.223%20WHQL%20Post%2002-22-06\8.223-060207a3-031013C-WHQL-32-ISV-ATI.zip" />
+  <driver manufacturer="ATI" name="6.14.0010.6546" url="http://www.ati.com/" />
+  <driver manufacturer="ATI" name="6.14.0010.6583" url="http://www.ati.com/" />
+  <driver manufacturer="Matrox" name="6.12.0001.1950" url="http://download.autodesk.com/prodsupp/inventor/Graphics/matrox/GXXX/2K_XP/5.95.005/2kxp_595_005.exe" />
+  <driver manufacturer="Matrox" name="6.13.0001.1984" url="http://download.autodesk.com/prodsupp/inventor/Graphics/matrox/Par_MilP/2K-XP/1.10.01.002 Post 11-01-05/xp2k_110_01_002_hf_whql.exe" />
+  <driver manufacturer="Matrox" name="6.13.0001.2038" url="http://download.autodesk.com/prodsupp/inventor/Graphics/matrox/Par_MilP/2K-XP/1.11.00.114 HF WHQL Post 01-17-06/xp2k_111_00_114_hf_whql.exe" />
+  <driver manufacturer="NVIDIA" name="6.14.0010.8167" url="http://download.autodesk.com/prodsupp/inventor/Graphics/nv/Win2K-XP/81.67 WHQL 11-21-05/81.67_forceware_winxp2k_english_whql.exe" />
+  <driver manufacturer="NVIDIA" name="6.14.0010.8195" url="http://www.nvidia.com/" />
+  <driver manufacturer="NVIDIA" name="6.14.0010.8391" url="http://www.nvidia.com/" />
+<driver manufacturer="NVIDIA" name="32.0.0015.9186" url="http://www.nvidia.com/" /><driver manufacturer="NVIDIA" name="32.0.15.9186" url="http://www.nvidia.com/" /></driverLookup>
+</lookupTables>
+  <manufacturer name="3Dlabs">
+    <card name="3Dlabs Wildcat VP880 Pro" chipType="Wildcat VP880 Pro" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.0">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+      <cardDriver testedOn="6.14.0010.1">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="3Dlabs Wildcat4 7210" chipType="Wildcat4 7210" logoCertified="false">
+      <cardDriver testedOn="6.6.0002.66">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. The cursor or dialogs leave trails in the viewport. Lines are not visible while dragging.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. The cursor or dialogs leave trails in the viewport. Lines are not visible while dragging.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+  </manufacturer>
+  <manufacturer name="ALL-IN-WONDER">
+    <workaroundManufacturer key="AALineFix" value="true" />
+    <card name="ALL-IN-WONDER 9600 SERIES" chipType="9600 SERIES" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.6583">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver. Graphics hardware designed for gaming. ATI refers to driver 6.14.0010.6583 as Catalyst 5.11.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver. Graphics hardware designed for gaming. ATI refers to driver 6.14.0010.6583 as Catalyst 5.11.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+  </manufacturer>
+  <manufacturer name="ATI">
+    <card name="Generic Modern AMD GPU" chipType="Radeon" logoCertified="true"><cardDriver testedOn="ALL"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="*"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="31.0.15.5186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="30.0.14.7111"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><card name="AMD Radeon Graphics" chipType="Radeon Graphics" logoCertified="true"><cardDriver testedOn="ALL"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="*"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="31.0.15.5186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="30.0.14.7111"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><card name="AMD Radeon RX 580" chipType="Radeon RX 580" logoCertified="true"><cardDriver testedOn="ALL"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="*"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="31.0.15.5186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="30.0.14.7111"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><card name="AMD Radeon RX 6600" chipType="Radeon RX 6600" logoCertified="true"><cardDriver testedOn="ALL"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="*"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="31.0.15.5186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="30.0.14.7111"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><workaroundManufacturer key="AALineFix" value="true" />
+    <card name="ATI Fire GL 8800 Video Accelerator" chipType="Fire GL 8800 Video Accelerator" logoCertified="false">
+      <cardDriver testedOn="6.12.0010.3051">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="ATI FireGL V3100" chipType="FireGL V3100" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.6561">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+      <cardDriver testedOn="6.14.0010.6599">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="ATI FireGL V3200" chipType="FireGL V3200" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.6599">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="ATI FireGL V5000" chipType="FireGL V5000" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.6561">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+      <cardDriver testedOn="6.14.0010.6599">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="ATI FireGL V5100" chipType="FireGL V5100" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.6599">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="ATI FireGL V7100" chipType="FireGL V7100" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.6561">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+      <cardDriver testedOn="6.14.0010.6599">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="ATI FireGL V7300" chipType="FireGL V7300" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.6599">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="ATI FireGL V7350" chipType="FireGL V7350" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.6599">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="ATI FireGL X1" chipType="FireGL X1" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.6561">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+      <cardDriver testedOn="6.14.0010.6599">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="ATI FireGL X2 AGP Pro" chipType="FireGL X2 AGP Pro" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.6561">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+      <cardDriver testedOn="6.14.0010.6599">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="ATI FireGL X3-256" chipType="FireGL X3-256" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.6561">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+      <cardDriver testedOn="6.14.0010.6599">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="ATI MOBILITY FIRE GL T2" chipType="MOBILITY FIRE GL T2" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.6546">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+      <cardDriver testedOn="6.14.0010.6599">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="ATI MOBILITY FireGL V3200  " chipType="MOBILITY FireGL V3200  " logoCertified="true">
+      <cardDriver testedOn="6.14.0010.6561">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+      <cardDriver testedOn="6.14.0010.6599">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6599 as ATI FireGL Unified Driver Version 8.223.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+  </manufacturer>
+  <manufacturer name="Intel">
+    <card name="Generic Modern Intel GPU" chipType="Intel Graphics" logoCertified="true"><cardDriver testedOn="ALL"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="*"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="31.0.15.5186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="30.0.14.7111"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><card name="Intel(R) UHD Graphics" chipType="UHD Graphics" logoCertified="true"><cardDriver testedOn="ALL"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="*"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="31.0.15.5186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="30.0.14.7111"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><card name="Intel(R) Arc(TM) Graphics" chipType="Arc Graphics" logoCertified="true"><cardDriver testedOn="ALL"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="*"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="31.0.15.5186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="30.0.14.7111"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><card name="Intel(R) Iris(R) Xe Graphics" chipType="Iris Xe Graphics" logoCertified="true"><cardDriver testedOn="ALL"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="*"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="31.0.15.5186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="30.0.14.7111"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><card name="Intel Corporation 845 Embedded Graphics Driver" chipType="Corporation 845 Embedded Graphics Driver" logoCertified="false">
+      <cardDriver testedOn="6.14.0001.704">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="Intel Corporation 915G/915GV/910GL Embedded Graphics Driver Function 0" chipType="Corporation 915G/915GV/910GL Embedded Graphics Driver Function 0" logoCertified="false">
+      <cardDriver testedOn="6.14.0001.704">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+  </manufacturer>
+  <manufacturer name="Intel(R)">
+    <card name="Intel(R) 82845G Graphics Controller" chipType="82845G Graphics Controller" logoCertified="false">
+      <cardDriver testedOn="6.13.0001.3264">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="Intel(R) 82845G/GL/GE/PE/GV Graphics Controller" chipType="82845G/GL/GE/PE/GV Graphics Controller" logoCertified="false">
+      <cardDriver testedOn="6.13.0001.3413">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+      <cardDriver testedOn="6.14.0010.3865">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+      <cardDriver testedOn="6.14.0010.4342">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="Intel(R) 82915G/GV/910GL Express Chipset Family" chipType="82915G/GV/910GL Express Chipset Family" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.3865">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+      <cardDriver testedOn="6.14.0010.3943">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+  </manufacturer>
+  <manufacturer name="Matrox">
+    <card name="Matrox Millennium G450 DVI - English" chipType="Millennium G450 DVI - English" logoCertified="false">
+      <cardDriver testedOn="6.12.0001.1950">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Rollover Highlight is intermittent. Dashboard icons are incorrectly displayed. Matrox refers to driver 6.12.0001.1950 as 5.95.005.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Rollover Highlight is intermittent. Dashboard icons are incorrectly displayed. Matrox refers to driver 6.12.0001.1950 as 5.95.005.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="Matrox Millennium P650" chipType="Millennium P650" logoCertified="false">
+      <cardDriver testedOn="6.13.0001.1984">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.1984 as 1.10.01.002 SE.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.1984 as 1.10.01.002 SE.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+      <cardDriver testedOn="6.13.0001.2038">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Vendor" os="WinXP" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.2038 as 1.11.00.114 HF.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Vendor" os="Win2K" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.2038 as 1.11.00.114 HF.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="Matrox Millennium P650 PCIe 128" chipType="Millennium P650 PCIe 128" logoCertified="false">
+      <cardDriver testedOn="6.13.0001.2038">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Vendor" os="WinXP" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.2038 as 1.11.00.114 HF.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Vendor" os="Win2K" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.2038 as 1.11.00.114 HF.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="Matrox Millennium P750" chipType="Millennium P750" logoCertified="false">
+      <cardDriver testedOn="6.13.0001.2038">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Vendor" os="WinXP" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.2038 as 1.11.00.114 HF.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Vendor" os="Win2K" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.2038 as 1.11.00.114 HF.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="Matrox Parhelia 128MB" chipType="Parhelia 128MB" logoCertified="false">
+      <cardDriver testedOn="6.13.0001.1984">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.1984 as 1.10.01.002 SE.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.1984 as 1.10.01.002 SE.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+      <cardDriver testedOn="6.13.0001.2038">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Vendor" os="WinXP" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.2038 as 1.11.00.114 HF.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Vendor" os="Win2K" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.2038 as 1.11.00.114 HF.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="Matrox Parhelia 256MB" chipType="Parhelia 256MB" logoCertified="false">
+      <cardDriver testedOn="6.13.0001.2038">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Vendor" os="WinXP" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.2038 as 1.11.00.114 HF.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Vendor" os="Win2K" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.2038 as 1.11.00.114 HF.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="Matrox Parhelia DL256 PCI" chipType="Parhelia DL256 PCI" logoCertified="false">
+      <cardDriver testedOn="6.13.0001.2038">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Vendor" os="WinXP" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.2038 as 1.11.00.114 HF.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Vendor" os="Win2K" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.2038 as 1.11.00.114 HF.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="Matrox Parhelia PCI" chipType="Parhelia PCI" logoCertified="false">
+      <cardDriver testedOn="6.13.0001.2038">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Vendor" os="WinXP" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.2038 as 1.11.00.114 HF.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Vendor" os="Win2K" status="Failed" overallStatus="2" comments="Matrox refers to driver 6.13.0001.2038 as 1.11.00.114 HF.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+  </manufacturer>
+  <manufacturer name="NEC">
+    <card name="NEC TE6" chipType="TE6" logoCertified="false">
+      <cardDriver testedOn="6.14.0001.0">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Vendor" os="WinXP" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Vendor" os="Win2K" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+  </manufacturer>
+  <manufacturer name="NVIDIA">
+    <card name="Generic Modern NVIDIA GPU" chipType="GeForce" logoCertified="true"><cardDriver testedOn="ALL"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="*"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="31.0.15.5186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="30.0.14.7111"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><card name="NVIDIA GeForce GTX 1060" chipType="GeForce GTX 1060" logoCertified="true"><cardDriver testedOn="ALL"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="*"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="31.0.15.5186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="30.0.14.7111"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><card name="NVIDIA GeForce GTX 1050" chipType="GeForce GTX 1050" logoCertified="true"><cardDriver testedOn="ALL"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="*"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="31.0.15.5186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="30.0.14.7111"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><card name="NVIDIA GeForce GTX 1650" chipType="GeForce GTX 1650" logoCertified="true"><cardDriver testedOn="ALL"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="*"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="31.0.15.5186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="30.0.14.7111"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><card name="NVIDIA GeForce RTX 4060" chipType="GeForce RTX 4060" logoCertified="true"><cardDriver testedOn="ALL"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="*"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="31.0.15.5186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="30.0.14.7111"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><card name="NVIDIA GeForce RTX 3060" chipType="GeForce RTX 3060" logoCertified="true"><cardDriver testedOn="ALL"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="*"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="31.0.15.5186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="30.0.14.7111"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><card name="NVIDIA GeForce RTX 3050" chipType="GeForce RTX 3050" logoCertified="true"><cardDriver testedOn="ALL"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="*"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="31.0.15.5186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver><cardDriver testedOn="30.0.14.7111"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><card name="NVIDIA GeForce" chipType="GeForce" logoCertified="true"><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><card name="GeForce RTX 2060" chipType="GeForce RTX 2060" logoCertified="true"><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><card name="NVIDIA GeForce RTX 2060" chipType="GeForce RTX 2060" logoCertified="true"><cardDriver testedOn="32.0.15.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><card name="NVIDIA GeForce RTX 2060" chipType="GeForce RTX 2060" logoCertified="true"><cardDriver testedOn="32.0.0015.9186"><product name="AutoCAD" version="R17.0" buildNum="0"><certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified><certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="Certified High Performance Graphics Hardware"><effect name="gooch" status="1" driver="ALL" /><effect name="shadows" status="1" driver="ALL" /><effect name="AALines" status="1" driver="ALL" /></certified></product></cardDriver></card><workaroundManufacturer key="Shadow7756Crash" value="true" />
+    <card name="NVIDIA GeForce 256" chipType="GeForce 256" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.7189">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="2" comments="Graphics hardware designed for gaming.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="2" comments="Graphics hardware designed for gaming.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA GeForce 6600 GT " chipType="GeForce 6600 GT " logoCertified="false">
+      <cardDriver testedOn="6.14.0010.8195">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Grips are incorrectly displayed. Graphics hardware designed for gaming.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Grips are incorrectly displayed. Graphics hardware designed for gaming.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA GeForce 6800 " chipType="GeForce 6800 " logoCertified="false">
+      <cardDriver testedOn="6.14.0010.8195">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Grips are incorrectly displayed. Graphics hardware designed for gaming.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Grips are incorrectly displayed. Graphics hardware designed for gaming.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA GeForce FX 5200" chipType="GeForce FX 5200" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.8195">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Grips are incorrectly displayed. Graphics hardware designed for gaming.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Grips are incorrectly displayed. Graphics hardware designed for gaming.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA GeForce2 GTS/GeForce2 Pro" chipType="GeForce2 GTS/GeForce2 Pro" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.7189">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="2" comments="Graphics hardware designed for gaming.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="2" comments="Graphics hardware designed for gaming.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA GeForce2 MX/MX 400" chipType="GeForce2 MX/MX 400" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.7189">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="2" comments="Graphics hardware designed for gaming.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="2" comments="Graphics hardware designed for gaming.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA GeForce3" chipType="GeForce3" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.8195">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. The cursor or dialogs leave trails in the viewport. Graphics hardware designed for gaming.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. The cursor or dialogs leave trails in the viewport. Graphics hardware designed for gaming.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA GeForce4 MX 420" chipType="GeForce4 MX 420" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.8195">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="2" comments="Graphics hardware designed for gaming.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="2" comments="Graphics hardware designed for gaming.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA GeForce4 MX440 8XAGP" chipType="GeForce4 MX440 8XAGP" logoCertified="false">
+      <cardDriver testedOn="6.14.0001.4303">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver. Graphics hardware designed for gaming.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver. Graphics hardware designed for gaming.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro FX 1000" chipType="Quadro FX 1000" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro FX 1100" chipType="Quadro FX 1100" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro FX 1300" chipType="Quadro FX 1300" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro FX 1400" chipType="Quadro FX 1400" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro FX 3000" chipType="Quadro FX 3000" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro FX 3400/4400" chipType="Quadro FX 3400/4400" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro FX 3450/4000 SDI" chipType="Quadro FX 3450/4000 SDI" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro FX 4500" chipType="Quadro FX 4500" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro FX 500/FX 600" chipType="Quadro FX 500/FX 600" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro FX 540" chipType="Quadro FX 540" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro FX 700" chipType="Quadro FX 700" logoCertified="true">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro NVS 285" chipType="Quadro NVS 285" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Rollover Highlight is intermittent. Grips are incorrectly displayed. Dragging objects leaves artifacts on screen.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Rollover Highlight is intermittent. Grips are incorrectly displayed. Dragging objects leaves artifacts on screen.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro PCI-E Series" chipType="Quadro PCI-E Series" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Rollover Highlight is intermittent. Grips are incorrectly displayed. Dragging objects leaves artifacts on screen. The viewport is not refreshed after closing dialogs. The PCI-E Series card is commonly known as NVS 280.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Rollover Highlight is intermittent. Grips are incorrectly displayed. Dragging objects leaves artifacts on screen. The viewport is not refreshed after closing dialogs. The PCI-E Series card is commonly known as NVS 280.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro4 380 XGL" chipType="Quadro4 380 XGL" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="2" comments="">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="2" comments="">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro4 550 XGL" chipType="Quadro4 550 XGL" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="2" comments="">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="2" comments="">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro4 700 XGL" chipType="Quadro4 700 XGL" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro4 750 XGL" chipType="Quadro4 750 XGL" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro4 900 XGL" chipType="Quadro4 900 XGL" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="NVIDIA Quadro4 980 XGL" chipType="Quadro4 980 XGL" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.8167">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="1" comments="">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+  </manufacturer>
+  <manufacturer name="Radeon">
+    <workaroundManufacturer key="AALineFix" value="true" />
+    <card name="RADEON 9200" chipType="9200" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.6583">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Grips are incorrectly displayed. The cursor or dialogs leave trails in the viewport. Dragging objects leaves artifacts on screen. Smooth line display is disabled due to performance and stability problems. Graphics hardware designed for gaming. ATI refers to driver 6.14.0010.6583 as Catalyst 5.11.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Grips are incorrectly displayed. The cursor or dialogs leave trails in the viewport. Dragging objects leaves artifacts on screen. Smooth line display is disabled due to performance and stability problems. Graphics hardware designed for gaming. ATI refers to driver 6.14.0010.6583 as Catalyst 5.11.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="RADEON 9600 SERIES" chipType="9600 SERIES" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.6387">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver. Graphics hardware designed for gaming.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver. Graphics hardware designed for gaming.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="RADEON 9800 XT" chipType="9800 XT" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.6583">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Graphics hardware designed for gaming. ATI refers to driver 6.14.0010.6583 as Catalyst 5.11.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Graphics hardware designed for gaming. ATI refers to driver 6.14.0010.6583 as Catalyst 5.11.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="Radeon X1800 Series" chipType="X1800 Series" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.6587">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="2" comments="Smooth line display is disabled due to performance and stability problems. Graphics hardware designed for gaming.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="2" comments="Smooth line display is disabled due to performance and stability problems. Graphics hardware designed for gaming.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="RADEON X300 Series" chipType="X300 Series" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.6525">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="2" comments="Smooth line display is disabled due to performance and stability problems. Graphics hardware designed for gaming.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="2" comments="Smooth line display is disabled due to performance and stability problems. Graphics hardware designed for gaming.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="RADEON X300/X550 Series" chipType="X300/X550 Series" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.6583">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6583 as Catalyst 5.11.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Smooth line display is disabled due to performance and stability problems. ATI refers to driver 6.14.0010.6583 as Catalyst 5.11.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+    <card name="RADEON X800 Series " chipType="X800 Series " logoCertified="false">
+      <cardDriver testedOn="6.14.0010.6583">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Smooth line display is disabled due to performance and stability problems. Graphics hardware designed for gaming. ATI refers to driver 6.14.0010.6583 as Catalyst 5.11.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Passed" overallStatus="2" comments="Selection Window fill color is not visible or displays artifacts. Smooth line display is disabled due to performance and stability problems. Graphics hardware designed for gaming. ATI refers to driver 6.14.0010.6583 as Catalyst 5.11.">
+            <effect name="gooch" status="1" driver="ALL" />
+            <effect name="shadows" status="1" driver="ALL" />
+            <effect name="AALines" status="1" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+  </manufacturer>
+  <manufacturer name="XGI">
+    <card name="XGI Volari Z7 v1.02.04_Dell" chipType="Volari Z7 v1.02.04_Dell" logoCertified="false">
+      <cardDriver testedOn="6.14.0010.1020">
+        <product name="AutoCAD" version="R17.0" buildNum="0">
+          <certified by="Autodesk" os="WinXP" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+          <certified by="Autodesk" os="Win2K" status="Failed" overallStatus="3" comments="Hardware Acceleration is not supported for this card/driver.">
+            <effect name="gooch" status="3" driver="ALL" />
+            <effect name="shadows" status="3" driver="ALL" />
+            <effect name="AALines" status="3" driver="OGL" />
+          </certified>
+        </product>
+      </cardDriver>
+    </card>
+  </manufacturer>
+</ptxml>

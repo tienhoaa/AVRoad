@@ -1,3 +1,4 @@
+using AVRoad.Security;
 using AVRoadDeployment;
 using System;
 
@@ -947,7 +948,7 @@ namespace AVRoadLauncher
 
                     else if (i == 2) newsText = "Đồ họa Direct3D 9 & Khử răng cưa nét vẽ mượt";
 
-                    else if (i == 3) newsText = "Tích hợp trung tâm AV Setting ngay trên Hub";
+                    else if (i == 3) newsText = "Đăng ký & Kích hoạt bản quyền (Offline 100%)";
 
 
 
@@ -1040,6 +1041,14 @@ namespace AVRoadLauncher
                     }
                 }
                 catch { }
+                // License Status Badge
+                bool isLic = LicenseManager.IsActiveLicenseValid();
+                string licBadge = isLic ? "● Đã kích hoạt bản quyền" : "● Chưa kích hoạt bản quyền";
+                Color licCol = isLic ? Color.FromArgb(45, 212, 191) : Color.FromArgb(248, 113, 113);
+                using (Brush bLic = new SolidBrush(licCol))
+                {
+                    g.DrawString(licBadge, fVer, bLic, 540, 526);
+                }
                 g.DrawString("Phi\u00EAn b\u1EA3n: AVRoad 2026 " + verStr, fVer, bVer, 780, 526);
             }
         }
@@ -1354,12 +1363,26 @@ namespace AVRoadLauncher
 
                 // News Click
 
-                if (hoveredNews >= 0)
+                if (hoveredNews == 3)
+
+                {
+
+                    LicenseDialog.ShowActivationDialog(this);
+
+                }
+
+                else if (hoveredNews >= 0)
 
                 {
 
                     OpenAboutOrUpdate();
 
+                }
+
+                // License Badge Click (X: 520 - 750, Y: 518 - 542)
+                if (e.X >= 520 && e.X <= 750 && e.Y >= 518 && e.Y <= 542)
+                {
+                    LicenseDialog.ShowActivationDialog(this);
                 }
 
             }
@@ -1371,6 +1394,22 @@ namespace AVRoadLauncher
         private void LaunchCAD(string dwgPath)
 
         {
+
+            if (!LicenseManager.IsActiveLicenseValid())
+
+            {
+
+                LicenseDialog.ShowActivationDialog(this);
+
+                if (!LicenseManager.IsActiveLicenseValid())
+
+                {
+
+                    return; // Chặn mở CAD, giữ nguyên giao diện Launcher!
+
+                }
+
+            }
 
             this.Hide();
 
@@ -1605,6 +1644,15 @@ namespace AVRoadLauncher
 
                 if (launchDirect || !string.IsNullOrEmpty(directFile))
                 {
+                    if (!LicenseManager.IsActiveLicenseValid())
+                    {
+                        LicenseDialog.ShowActivationDialog();
+                        if (!LicenseManager.IsActiveLicenseValid())
+                        {
+                            return; // Chặn mở CAD khi mở file trực tiếp mà chưa có key
+                        }
+                    }
+
                     ConfigureHardwareAccelerationAndSmoothDrafting(appDir);
                     Program.RegisterAutoCADApplications(appDir);
                     Program.CleanPortableAssociations();
@@ -2683,6 +2731,15 @@ namespace AVRoadLauncher
 public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, string dwgPath = "")
 
         {
+            if (!LicenseManager.IsActiveLicenseValid())
+            {
+                LicenseDialog.ShowActivationDialog();
+                if (!LicenseManager.IsActiveLicenseValid())
+                {
+                    return;
+                }
+            }
+
             Cad7ComRegistration.Apply(appDir, null);
             EnsureSystemRegistryConfigured(appDir);
             try

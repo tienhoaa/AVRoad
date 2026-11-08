@@ -77,6 +77,10 @@ public sealed class DesignCommands : IExtensionApplication {
     }
     [CommandMethod("AVROADUI21",CommandFlags.Session)] public void ShowDefault() {
         try { AcApp.SetSystemVariable("PICKFIRST", 1); } catch { }
+        if (!LicenseManager.IsActiveLicenseValid()) {
+            ShowActivationPrompt();
+            if (!LicenseManager.IsActiveLicenseValid()) return;
+        }
         try { AcApp.DocumentManager.MdiActiveDocument.SendStringToExecute("DLBD\n",true,false,false); } catch { }
         string id="VNROAD-PMU_0002";
         try { string saved=File.ReadAllText(Path.Combine(Home,"last-page.txt")).Trim(); if(Page(saved)!=null) id=saved; } catch { }
@@ -106,6 +110,10 @@ public sealed class DesignCommands : IExtensionApplication {
         if(attempts>=24) {
             attachTimer.Interval=1000;
             if(!pendingLogged) { pendingLogged=true; DesignPanel.Log("ATTACH_WAIT","DLBD is not visible yet; continuing to watch for it"); }
+        }
+        if (!LicenseManager.IsActiveLicenseValid()) {
+            attachTimer.Stop();
+            return;
         }
         try {
             IntPtr tree=NativeDlbdHost.FindDataTree();
@@ -196,16 +204,53 @@ public sealed class DesignCommands : IExtensionApplication {
         return false;
     }
 
+    static bool _activationPromptShowing = false;
+    static DateTime _lastPromptTime = DateTime.MinValue;
+
     static void OnDocumentLockModeChanged(object sender, DocumentLockModeChangedEventArgs e) {
         try {
-            if (LicenseManager.IsRevoked) {
-                string cmd = (e.GlobalCommandName ?? string.Empty).Trim().ToUpperInvariant();
-                if (IsBlockedCommand(cmd)) {
+            string cmd = (e.GlobalCommandName ?? string.Empty).Trim().ToUpperInvariant();
+            if (string.IsNullOrEmpty(cmd)) return;
+
+            if (IsBlockedCommand(cmd)) {
+                if (LicenseManager.IsRevoked) {
                     e.Veto();
                     LicenseManager.NotifyOutdated();
+                    return;
+                }
+
+                if (!LicenseManager.IsActiveLicenseValid()) {
+                    e.Veto();
+
+                    try {
+                        Document doc = AcApp.DocumentManager.MdiActiveDocument;
+                        if (doc != null) {
+                            doc.Editor.WriteMessage(string.Format("\n[AVRoad] LỆNH '{0}' BỊ CHẶN: Bản quyền phần mềm chưa được kích hoạt!\n", cmd));
+                        }
+                    } catch { }
+
+                    if (!_activationPromptShowing && (DateTime.Now - _lastPromptTime).TotalSeconds > 2) {
+                        _activationPromptShowing = true;
+                        _lastPromptTime = DateTime.Now;
+                        try {
+                            ShowActivationPrompt();
+                        } finally {
+                            _activationPromptShowing = false;
+                        }
+                    }
                 }
             }
         } catch { }
+    }
+
+    public static void ShowActivationPrompt() {
+        try {
+            using (LicenseDialog dlg = new LicenseDialog()) {
+                AcApp.ShowModalDialog(dlg);
+            }
+        } catch {
+            LicenseDialog.ShowActivationDialog();
+        }
     }
 
     [CommandMethod("AV_LICENSE")]
@@ -476,6 +521,11 @@ public sealed class DesignPanel : UserControl {
 
     void Execute(ActionItem item) {
         Document document=AcApp.DocumentManager.MdiActiveDocument; if(document==null || item==null) return;
+        if (!LicenseManager.IsActiveLicenseValid()) {
+            detail.Text = "Chưa kích hoạt bản quyền! Vui lòng nạp key để sử dụng.";
+            DesignCommands.ShowActivationPrompt();
+            return;
+        }
         if(!item.Available || !Verify(item,true)) { detail.Text="Mapping không khớp menu đang cài. Không gọi lệnh."; return; }
         if(Convert.ToInt32(AcApp.GetSystemVariable("CMDACTIVE"))!=0) { detail.Text="Hoàn thành lệnh đang chạy, hoặc nhấn Esc trong CAD rồi chọn lại."; return; }
         try {

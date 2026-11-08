@@ -11,6 +11,47 @@ namespace AVRoad.Security
     /// </summary>
     public class LicenseDialog : Form
     {
+        private static bool _isShowingDialog = false;
+
+        /// <summary>
+        /// Hiển thị hộp thoại GetKey / Kích hoạt bản quyền dưới dạng modal độc lập.
+        /// Tự động chặn mở nhiều hộp thoại trùng lặp.
+        /// </summary>
+        public static void ShowActivationDialog()
+        {
+            ShowActivationDialog(null);
+        }
+
+        /// <summary>
+        /// Hiển thị hộp thoại GetKey / Kích hoạt bản quyền gắn với cửa sổ cha.
+        /// </summary>
+        public static void ShowActivationDialog(IWin32Window owner)
+        {
+            if (_isShowingDialog) return;
+            _isShowingDialog = true;
+            try
+            {
+                using (LicenseDialog dlg = new LicenseDialog())
+                {
+                    dlg.StartPosition = (owner != null) ? FormStartPosition.CenterParent : FormStartPosition.CenterScreen;
+                    if (owner != null)
+                    {
+                        dlg.ShowDialog(owner);
+                    }
+                    else
+                    {
+                        dlg.TopMost = true;
+                        dlg.ShowDialog();
+                    }
+                }
+            }
+            catch { }
+            finally
+            {
+                _isShowingDialog = false;
+            }
+        }
+
         private TextBox txtHwid;
         private Button btnCopyHwid;
 
@@ -354,6 +395,7 @@ namespace AVRoad.Security
                     bool ok = LicenseManager.ImportLicense(ofd.FileName, out msg);
                     if (ok)
                     {
+                        this.DialogResult = DialogResult.OK;
                         MessageBox.Show(msg, "Kích hoạt thành công", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
                     else
@@ -397,6 +439,15 @@ namespace AVRoad.Security
                         txtCustomerName.Text = result.Data.CustomerName;
                     }
                 }
+
+                if (btnClose != null)
+                {
+                    btnClose.Text = "Hoàn tất";
+                    btnClose.BackColor = Color.FromArgb(16, 185, 129);
+                    btnClose.ForeColor = Color.White;
+                    btnClose.Font = new Font("Segoe UI", 9f, FontStyle.Bold);
+                    btnClose.FlatAppearance.BorderSize = 0;
+                }
             }
             else
             {
@@ -413,9 +464,18 @@ namespace AVRoad.Security
                 else
                 {
                     lblStatusTitle.Text = "● CHƯA KÍCH HOẠT BẢN QUYỀN";
-                    lblStatusDesc.Text = "Nhập Họ tên và bấm [Xuất yêu cầu (.avreq)] gửi Quản trị viên cấp phép.";
-                    lblDetailsCustomer.Text = "Sau khi nhận file .avlic, bấm nút [Kích hoạt bằng file] bên dưới.";
-                    lblDetailsExpiry.Text = "Trạng thái: Máy mới cài đặt lần đầu (Chưa kích hoạt)";
+                    lblStatusDesc.Text = "Phần mềm chưa được kích hoạt bản quyền. Vui lòng đăng ký mã máy.";
+                    lblDetailsCustomer.Text = "Nhập Họ tên, bấm [Xuất yêu cầu (.avreq)] gửi Zalo Admin nhận file key.";
+                    lblDetailsExpiry.Text = "Sau khi nhận key, bấm nút [Kích hoạt bằng file (.avlic)] bên dưới.";
+                }
+
+                if (btnClose != null)
+                {
+                    btnClose.Text = "Đóng";
+                    btnClose.BackColor = Color.White;
+                    btnClose.ForeColor = Color.FromArgb(30, 41, 59);
+                    btnClose.Font = new Font("Segoe UI", 8.5f, FontStyle.Regular);
+                    btnClose.FlatAppearance.BorderSize = 1;
                 }
             }
         }

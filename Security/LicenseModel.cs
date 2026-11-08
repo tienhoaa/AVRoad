@@ -275,5 +275,23 @@ namespace AVRoad.Security
             res._message = "Phần mềm đã cũ, bạn vui lòng cập nhật phiên bản mới để tiếp tục sử dụng.";
             return res;
         }
+
+        public static LicenseValidationResult Fail(LicenseStatus status, string message)
+        {
+            LicenseValidationResult res = new LicenseValidationResult();
+            res._isValid = false;
+            res._status = status;
+            res._message = message;
+            return res;
+        }
+
+        public static LicenseValidationResult NotActivated(string message)
+        {
+            LicenseValidationResult res = new LicenseValidationResult();
+            res._isValid = false;
+            res._status = LicenseStatus.NotFound;
+            res._message = !string.IsNullOrEmpty(message) ? message : "Phần mềm chưa được kích hoạt bản quyền.";
+            return res;
+        }
     }
 }
