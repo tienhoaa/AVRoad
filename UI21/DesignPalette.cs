@@ -147,7 +147,7 @@ public sealed class DesignCommands : IExtensionApplication {
         blockedCommands = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
 
         string[] coreTdt = new string[] {
-            "TT", "TKAD", "DAODAP", "KMC", "HMC", "TN", "TD", "DCCT", "DLBD",
+            "TT", "TKAD", "DAODAP", "KMC", "HMC", "TN", "TD", "DCCT",
             "VBD", "CDTN", "CDTD", "KC", "GMC", "NDTN", "TDTN", "XLS", "CBSP",
             "LTN", "LTD", "KMT", "DTK", "TKT", "PLT", "MC", "LMC", "APG", "APMC",
             "HCT", "TBN", "TBD", "BTT", "DTD", "XTD", "DDTM", "NCD", "XD", "BTD",
@@ -229,14 +229,21 @@ public sealed class DesignCommands : IExtensionApplication {
                         }
                     } catch { }
 
-                    if (!_activationPromptShowing && (DateTime.Now - _lastPromptTime).TotalSeconds > 2) {
+                    if (!_activationPromptShowing && (DateTime.Now - _lastPromptTime).TotalSeconds > 3) {
                         _activationPromptShowing = true;
                         _lastPromptTime = DateTime.Now;
-                        try {
-                            ShowActivationPrompt();
-                        } finally {
-                            _activationPromptShowing = false;
-                        }
+                        System.Windows.Forms.Timer t = new System.Windows.Forms.Timer();
+                        t.Interval = 200;
+                        t.Tick += delegate {
+                            t.Stop();
+                            t.Dispose();
+                            try {
+                                ShowActivationPrompt();
+                            } finally {
+                                _activationPromptShowing = false;
+                            }
+                        };
+                        t.Start();
                     }
                 }
             }
