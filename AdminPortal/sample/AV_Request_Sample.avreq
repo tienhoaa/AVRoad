@@ -1,0 +1,14 @@
+{
+  "app_name": "AV_Civil",
+  "product": "AV_Civil",
+  "software_code": "AV_CIVIL",
+  "request_version": "1.1",
+  "customer_name": "Nguyễn Văn Hưng",
+  "company": "Công ty CP Tư vấn Thiết kế Hạ tầng Giao thông AV",
+  "phone": "0912345678",
+  "email": "hung.civil@example.com",
+  "machine_name": "DESKTOP-CIVIL3D",
+  "os_version": "Microsoft Windows 11 Pro 64-bit (10.0.22631)",
+  "hwid": "AV-7A8B-9C0D-1E2F-3A4B",
+  "request_date": "2026-11-08T16:00:00Z"
+}

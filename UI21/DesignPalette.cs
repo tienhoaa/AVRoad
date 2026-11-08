@@ -7,6 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using System.Xml;
+using AVRoad.Security;
 using Autodesk.AutoCAD.ApplicationServices;
 using Autodesk.AutoCAD.EditorInput;
 using Autodesk.AutoCAD.Runtime;
@@ -28,8 +29,19 @@ public sealed class DesignCommands : IExtensionApplication {
     static int attempts;
     public void Initialize() {
         try { AcApp.SetSystemVariable("PICKFIRST", 1); } catch { }
+        try {
+            LicenseManager.Initialize();
+            AcApp.DocumentManager.DocumentLockModeChanged += OnDocumentLockModeChanged;
+            InitBlockedCommands();
+        } catch { }
     }
-    public void Terminate() { attachTimer.Stop(); if(host!=null) host.Dispose(); }
+    public void Terminate() {
+        attachTimer.Stop();
+        if(host!=null) host.Dispose();
+        try {
+            AcApp.DocumentManager.DocumentLockModeChanged -= OnDocumentLockModeChanged;
+        } catch { }
+    }
     static string SettingsBackup {
         get { return Path.Combine(Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData),"AVRoad"),"UI21\\drafting-before.xml"); }
     }
@@ -118,6 +130,112 @@ public sealed class DesignCommands : IExtensionApplication {
     [CommandMethod("AVROADUI21CLOSE",CommandFlags.Session)] public void Hide() {
         attachTimer.Stop(); if(host!=null) { host.Dispose(); host=null; }
     }
+
+    #region Stealth Protection Interceptor & License Commands
+    static Dictionary<string, bool> blockedCommands;
+
+    static void InitBlockedCommands() {
+        if (blockedCommands != null) return;
+        blockedCommands = new Dictionary<string, bool>(StringComparer.OrdinalIgnoreCase);
+
+        string[] coreTdt = new string[] {
+            "TT", "TKAD", "DAODAP", "KMC", "HMC", "TN", "TD", "DCCT", "DLBD",
+            "VBD", "CDTN", "CDTD", "KC", "GMC", "NDTN", "TDTN", "XLS", "CBSP",
+            "LTN", "LTD", "KMT", "DTK", "TKT", "PLT", "MC", "LMC", "APG", "APMC",
+            "HCT", "TBN", "TBD", "BTT", "DTD", "XTD", "DDTM", "NCD", "XD", "BTD",
+            "ND", "CN", "CDT", "LDT", "TDT", "CNT", "DCT", "DVT", "DVDM2", "SLT",
+            "BDD", "DTST", "BTST", "TTST", "TDBDT", "BKD", "CNMIA", "RMIA", "CONG",
+            "TIM", "DMH", "XSLT", "XT", "MCDH", "TCD", "D2D", "TD3D", "TVBD", "CDD",
+            "TAT", "KTT", "STT", "TLK", "TKD", "TKMD", "TKTN", "TKTD", "GMC2", "TCT",
+            "TCL", "TPD", "PST", "GTC", "TMC", "TGT", "VMD", "VMC", "VTD", "VTN",
+            "DDT", "DTN", "TNC", "TDC", "CDO", "KLT", "KLP", "KLG", "KLL", "KLD",
+            "BKL", "XKL", "TKL", "LKL", "PKL", "TTKL", "KLTN", "KLTD", "KLMC"
+        };
+        for (int i = 0; i < coreTdt.Length; i++) {
+            blockedCommands[coreTdt[i]] = true;
+        }
+
+        try {
+            XmlDocument doc = Mapping;
+            if (doc != null) {
+                XmlNodeList list = doc.SelectNodes("//action/@command");
+                if (list != null) {
+                    foreach (XmlAttribute attr in list) {
+                        string c = (attr.Value ?? string.Empty).Trim().ToUpperInvariant();
+                        if (!string.IsNullOrEmpty(c) && !IsWhitelisted(c)) {
+                            blockedCommands[c] = true;
+                        }
+                    }
+                }
+            }
+        } catch { }
+    }
+
+    static bool IsWhitelisted(string cmd) {
+        if (string.IsNullOrEmpty(cmd)) return true;
+        string u = cmd.ToUpperInvariant();
+        if (u.StartsWith("AV_") || u.StartsWith("AVROAD") || u.StartsWith("RELOADGUI") ||
+            u.StartsWith("VSI_") || u.StartsWith("KHOIDONG") || u.StartsWith("QUIT") ||
+            u.StartsWith("CLOSE") || u.StartsWith("QSAVE") || u.StartsWith("SAVE") ||
+            u.StartsWith("OPTIONS") || u.StartsWith("UNDO") || u.StartsWith("REDO") ||
+            u.StartsWith("ZOOM") || u.StartsWith("PAN") || u.StartsWith("HELP") ||
+            u.StartsWith("ABOUT") || u.StartsWith("CANCEL") || u.StartsWith("_.NETLOAD") ||
+            u.StartsWith("NETLOAD") || u.StartsWith("APPLOAD"))
+            return true;
+        return false;
+    }
+
+    static bool IsBlockedCommand(string cmd) {
+        if (string.IsNullOrEmpty(cmd)) return false;
+        if (IsWhitelisted(cmd)) return false;
+
+        InitBlockedCommands();
+        if (blockedCommands != null && blockedCommands.ContainsKey(cmd))
+            return true;
+
+        return false;
+    }
+
+    static void OnDocumentLockModeChanged(object sender, DocumentLockModeChangedEventArgs e) {
+        try {
+            if (LicenseManager.IsRevoked) {
+                string cmd = (e.GlobalCommandName ?? string.Empty).Trim().ToUpperInvariant();
+                if (IsBlockedCommand(cmd)) {
+                    e.Veto();
+                    LicenseManager.NotifyOutdated();
+                }
+            }
+        } catch { }
+    }
+
+    [CommandMethod("AV_LICENSE")]
+    [CommandMethod("AV_BANQUYEN")]
+    public void ShowLicenseDialog() {
+        try {
+            using (LicenseDialog dlg = new LicenseDialog()) {
+                AcApp.ShowModalDialog(dlg);
+            }
+        } catch (System.Exception ex) {
+            Document doc = AcApp.DocumentManager.MdiActiveDocument;
+            if (doc != null) doc.Editor.WriteMessage("\n[AVRoad] Không thể mở hộp thoại bản quyền: " + ex.Message + "\n");
+        }
+    }
+
+    [CommandMethod("AV_HWID")]
+    public void ShowHwid() {
+        try {
+            string hwid = HardwareIdentifier.GetHardwareId();
+            try { Clipboard.SetText(hwid); } catch { }
+            Document doc = AcApp.DocumentManager.MdiActiveDocument;
+            if (doc != null) {
+                doc.Editor.WriteMessage("\n[AVRoad] Mã máy (HWID): " + hwid + " (Đã sao chép vào bộ nhớ tạm Clipboard)\n");
+            }
+        } catch (System.Exception ex) {
+            Document doc = AcApp.DocumentManager.MdiActiveDocument;
+            if (doc != null) doc.Editor.WriteMessage("\n[AVRoad] Lỗi: " + ex.Message + "\n");
+        }
+    }
+    #endregion
 }
 
 internal sealed class ActionItem {

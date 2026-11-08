@@ -1,0 +1,2466 @@
+<!DOCTYPE html>
+<html lang="vi" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <title>AV License Manager - Quản Lý Bản Quyền AV Civil 3D</title>
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              50: '#ecfeff',
+              100: '#cffafe',
+              200: '#a5f3fc',
+              300: '#67e8f9',
+              400: '#22d3ee',
+              500: '#06b6d4',
+              600: '#0891b2',
+              700: '#0e7490',
+              800: '#155e75',
+              900: '#164e63',
+              950: '#083344',
+            },
+            github: {
+              50: '#f6f8fa',
+              800: '#24292f',
+              900: '#1f2428',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* Custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0f172a;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+    
+    /* Touch target comfort */
+    button, input, select, textarea {
+      touch-action: manipulation;
+    }
+
+    /* Safe area padding for notch devices */
+    .safe-top {
+      padding-top: env(safe-area-inset-top, 0px);
+    }
+    .safe-bottom {
+      padding-bottom: env(safe-area-inset-bottom, 0px);
+    }
+  </style>
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col font-sans antialiased selection:bg-brand-500 selection:text-white">
+
+  <!-- ==================== AUTHENTICATION OVERLAY ==================== -->
+  <div id="authOverlay" class="fixed inset-0 z-50 bg-slate-950/95 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="w-full max-w-md bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl p-6 sm:p-8 relative">
+      <div class="text-center mb-6">
+        <div class="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-tr from-brand-600 to-indigo-600 text-white shadow-lg shadow-brand-500/20 mb-4">
+          <i data-lucide="shield-check" class="w-9 h-9"></i>
+        </div>
+        <h2 class="text-2xl font-bold text-white tracking-tight">AV License Manager</h2>
+        <p class="text-sm text-slate-400 mt-1">Cổng Quản Trị & Ký Số Bản Quyền AV Civil 3D</p>
+      </div>
+
+      <form id="authForm" class="space-y-4" onsubmit="handleAuthSubmit(event)">
+        <div>
+          <label class="block text-xs font-semibold uppercase tracking-wider text-slate-400 mb-1">Mật khẩu Quản trị</label>
+          <div class="relative">
+            <input type="password" id="authPasswordInput" required placeholder="Nhập mật khẩu..." 
+              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl text-white placeholder-slate-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent text-sm">
+            <button type="button" onclick="togglePasswordVisibility('authPasswordInput', this)" 
+              class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white p-1">
+              <i data-lucide="eye" class="w-4 h-4"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="flex items-center justify-between text-sm">
+          <label class="flex items-center gap-2 cursor-pointer text-slate-300 select-none">
+            <input type="checkbox" id="authRememberCheckbox" checked class="rounded bg-slate-800 border-slate-700 text-brand-500 focus:ring-brand-500 w-4 h-4">
+            <span>Ghi nhớ trên thiết bị này</span>
+          </label>
+        </div>
+
+        <button type="submit" 
+          class="w-full py-3.5 px-4 bg-gradient-to-r from-brand-600 to-indigo-600 hover:from-brand-500 hover:to-indigo-500 text-white font-semibold rounded-xl shadow-lg shadow-brand-500/25 transition duration-150 flex items-center justify-center gap-2">
+          <i data-lucide="lock" class="w-4 h-4"></i>
+          <span>Mở Khóa Quản Trị</span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ==================== MAIN APPLICATION CONTAINER ==================== -->
+  <div id="appContainer" class="flex-1 flex flex-col min-h-screen">
+    
+    <!-- Top Header Bar -->
+    <header class="sticky top-0 z-40 bg-slate-900/90 backdrop-blur-md border-b border-slate-800 safe-top">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          
+          <!-- Logo & Brand -->
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-600 to-indigo-600 flex items-center justify-center text-white shadow-md shadow-brand-500/20">
+              <i data-lucide="shield" class="w-5 h-5"></i>
+            </div>
+            <div>
+              <div class="flex items-center gap-2">
+                <span class="font-bold text-base sm:text-lg text-white tracking-tight">AV Civil 3D</span>
+                <span class="text-[10px] font-semibold bg-brand-500/20 text-brand-300 border border-brand-500/30 px-2 py-0.5 rounded-full uppercase tracking-wider">License Manager</span>
+              </div>
+              <p class="text-xs text-slate-400 hidden sm:block">Ký số RSA-2048 & Đồng bộ GitHub Blacklist</p>
+            </div>
+          </div>
+
+          <!-- Quick Status & Actions -->
+          <div class="flex items-center gap-2 sm:gap-3">
+            
+            <!-- GitHub Sync Badge -->
+            <button onclick="switchTab('settings')" id="headerGithubBadge" 
+              class="flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-medium border transition bg-slate-800 border-slate-700 text-slate-300 hover:border-slate-600">
+              <i data-lucide="github" class="w-3.5 h-3.5"></i>
+              <span class="hidden sm:inline" id="headerGithubText">GitHub: tienhoaa/AV_Releases</span>
+              <span class="sm:hidden">GitHub</span>
+            </button>
+
+            <!-- RSA Key Badge -->
+            <button onclick="switchTab('keys')" id="headerKeyBadge" 
+              class="flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium border transition bg-amber-500/10 border-amber-500/30 text-amber-300 hover:bg-amber-500/20">
+              <span class="w-2 h-2 rounded-full bg-amber-400 animate-pulse"></span>
+              <span class="hidden sm:inline" id="headerKeyText">Khóa RSA</span>
+              <span class="sm:hidden" id="headerKeyTextShort">RSA</span>
+            </button>
+
+            <!-- Lock / Logout Button -->
+            <button onclick="handleLogout()" title="Khóa màn hình" 
+              class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition">
+              <i data-lucide="log-out" class="w-5 h-5"></i>
+            </button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Desktop Nav Tabs (Hidden on mobile) -->
+      <div class="hidden md:block border-t border-slate-800/80 bg-slate-900/50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav class="flex space-x-2 py-2">
+            <button onclick="switchTab('issue')" id="nav-desktop-issue" 
+              class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 bg-brand-500/15 text-brand-300 border border-brand-500/30">
+              <i data-lucide="file-key" class="w-4 h-4"></i>
+              <span>Cấp Bản Quyền</span>
+            </button>
+            <button onclick="switchTab('registry')" id="nav-desktop-registry" 
+              class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+              <i data-lucide="folder-check" class="w-4 h-4"></i>
+              <span>Danh Sách Đã Cấp</span>
+              <span id="registryCountBadge" class="ml-1 px-1.5 py-0.2 bg-slate-800 text-slate-400 rounded-full text-xs">0</span>
+            </button>
+            <button onclick="switchTab('keys')" id="nav-desktop-keys" 
+              class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+              <i data-lucide="key-round" class="w-4 h-4"></i>
+              <span>Quản Lý Khóa RSA</span>
+            </button>
+            <button onclick="switchTab('settings')" id="nav-desktop-settings" 
+              class="tab-btn px-4 py-2 rounded-lg text-sm font-medium transition flex items-center gap-2 text-slate-400 hover:text-slate-200 hover:bg-slate-800">
+              <i data-lucide="settings" class="w-4 h-4"></i>
+              <span>GitHub & Cài Đặt</span>
+            </button>
+          </nav>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content Area -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 sm:p-6 lg:p-8 mb-20 md:mb-8">
+
+      <!-- ==================== TAB 1: ISSUE LICENSE (CẤP BẢN QUYỀN) ==================== -->
+      <section id="tab-issue" class="space-y-6">
+        
+        <!-- Header Banner -->
+        <div class="bg-gradient-to-r from-slate-900 via-slate-900 to-brand-950/40 border border-slate-800 rounded-2xl p-4 sm:p-6 shadow-sm">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <h1 class="text-xl sm:text-2xl font-bold text-white flex items-center gap-2.5">
+                <i data-lucide="award" class="w-6 h-6 text-brand-400"></i>
+                Cấp Giấy Phép Bản Quyền (License Generator)
+              </h1>
+              <p class="text-sm text-slate-400 mt-1">Kéo thả file yêu cầu <code class="text-brand-300">AV_Request.avreq</code>, chọn gói tính năng và ký số bảo mật RSA-2048.</p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button onclick="loadSampleRequest()" type="button" 
+                class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-medium rounded-lg border border-slate-700 flex items-center gap-1.5 transition">
+                <i data-lucide="file-code" class="w-3.5 h-3.5 text-brand-400"></i>
+                Dùng Dữ Liệu Mẫu
+              </button>
+              <button onclick="resetLicenseForm()" type="button" 
+                class="px-3 py-1.5 bg-slate-800/60 hover:bg-slate-700/60 text-slate-400 hover:text-slate-200 text-xs font-medium rounded-lg border border-slate-700/60 flex items-center gap-1.5 transition">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                Làm mới
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Software / Product Switcher Tabs -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 shadow-sm">
+          <div class="flex items-center justify-between mb-3 px-1">
+            <span class="text-xs font-semibold uppercase tracking-wider text-slate-400 flex items-center gap-2">
+              <i data-lucide="layers" class="w-4 h-4 text-brand-400"></i>
+              Chọn Phần Mềm Cần Cấp Bản Quyền
+            </span>
+            <span id="activeProductBadge" class="text-xs px-2.5 py-0.5 rounded-full font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30">
+              AVRoad 2026 (TDT 9.1)
+            </span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <!-- Product Tab 1: AVRoad 2026 (TDT 9.1) -->
+            <button type="button" id="tabProductAvroad" onclick="selectProduct('AVROAD_TDT91')" 
+              class="product-tab active flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-blue-500 bg-blue-500/10 text-blue-300 font-semibold text-xs sm:text-sm transition-all duration-200 shadow-sm cursor-pointer">
+              <span class="text-xl">🛣️</span>
+              <div class="text-left">
+                <div class="font-bold text-white">AVRoad 2026 (TDT 9.1)</div>
+                <div class="text-[11px] text-blue-300/80 font-mono">Mã: AVROAD_TDT91</div>
+              </div>
+            </button>
+
+            <!-- Product Tab 2: AV_Civil -->
+            <button type="button" id="tabProductAvcivil" onclick="selectProduct('AV_CIVIL')" 
+              class="product-tab flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-slate-800 bg-slate-950/60 hover:bg-slate-800/50 text-slate-400 font-semibold text-xs sm:text-sm transition-all duration-200 cursor-pointer">
+              <span class="text-xl">🏗️</span>
+              <div class="text-left">
+                <div class="font-bold text-slate-200">AV_Civil (Civil 3D)</div>
+                <div class="text-[11px] text-slate-500 font-mono">Mã: AV_CIVIL</div>
+              </div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 2-Column Responsive Layout -->
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+          <!-- Left Column: Input Form (7 cols on desktop) -->
+          <div class="lg:col-span-7 space-y-6">
+            
+            <!-- Step 1: Upload / Drag Drop .avreq -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm">
+              <div class="flex items-center justify-between mb-3">
+                <h2 class="text-sm font-semibold uppercase tracking-wider text-brand-400 flex items-center gap-2">
+                  <span class="w-5 h-5 rounded-full bg-brand-500/20 text-brand-300 text-xs flex items-center justify-center font-bold">1</span>
+                  Yêu Cầu Cấp Phép (Request File)
+                </h2>
+                <span class="text-xs text-slate-500">.avreq / .json</span>
+              </div>
+
+              <!-- Dropzone -->
+              <div id="dropzone" 
+                ondragover="handleDragOver(event)" 
+                ondragleave="handleDragLeave(event)" 
+                ondrop="handleFileDrop(event)"
+                onclick="document.getElementById('fileInput').click()"
+                class="border-2 border-dashed border-slate-700 hover:border-brand-500 hover:bg-brand-500/5 rounded-xl p-6 text-center cursor-pointer transition-all duration-200 group">
+                <input type="file" id="fileInput" accept=".avreq,.json,.txt" class="hidden" onchange="handleFileSelect(event)">
+                <div class="w-12 h-12 rounded-xl bg-slate-800 group-hover:bg-brand-500/20 text-slate-400 group-hover:text-brand-300 mx-auto flex items-center justify-center transition-colors mb-3">
+                  <i data-lucide="upload-cloud" class="w-6 h-6"></i>
+                </div>
+                <p class="text-sm font-medium text-slate-200">
+                  <span class="text-brand-400 underline decoration-brand-500 underline-offset-2">Bấm chọn file</span> hoặc kéo thả <code class="text-xs bg-slate-800 px-1.5 py-0.5 rounded text-brand-300">AV_Request.avreq</code> vào đây
+                </p>
+                <p class="text-xs text-slate-500 mt-1">Hỗ trợ nhận diện tự động Mã HWID, Tên máy tính và Tên khách hàng</p>
+              </div>
+
+              <!-- Quick Paste text box trigger -->
+              <div class="mt-3 flex items-center justify-end">
+                <button type="button" onclick="togglePasteArea()" class="text-xs text-brand-400 hover:text-brand-300 flex items-center gap-1">
+                  <i data-lucide="clipboard-paste" class="w-3.5 h-3.5"></i>
+                  <span>Dán nội dung JSON trực tiếp từ tin nhắn Zalo</span>
+                </button>
+              </div>
+
+              <!-- Collapsible Paste Textarea -->
+              <div id="pasteArea" class="hidden mt-3 space-y-2">
+                <textarea id="pasteJsonInput" rows="3" placeholder='Dán chuỗi JSON hoặc nội dung file .avreq vào đây...' 
+                  class="w-full px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs font-mono text-slate-200 placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-brand-500"></textarea>
+                <button type="button" onclick="handlePasteParse()" class="w-full py-2 bg-slate-800 hover:bg-slate-700 text-xs font-medium text-white rounded-lg transition">
+                  Xử lý dữ liệu vừa dán
+                </button>
+              </div>
+            </div>
+
+            <!-- Step 2: Extracted Device & Customer Details -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm space-y-4">
+              <h2 class="text-sm font-semibold uppercase tracking-wider text-brand-400 flex items-center gap-2">
+                <span class="w-5 h-5 rounded-full bg-brand-500/20 text-brand-300 text-xs flex items-center justify-center font-bold">2</span>
+                Thông Tin Thiết Bị & Khách Hàng
+              </h2>
+
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <!-- HWID -->
+                <div class="sm:col-span-2">
+                  <label class="block text-xs font-medium text-slate-300 mb-1 flex items-center justify-between">
+                    <span>Mã Thiết Bị (HWID) <span class="text-rose-400">*</span></span>
+                    <button type="button" onclick="copyHWID()" class="text-xs text-brand-400 hover:text-brand-300 flex items-center gap-1">
+                      <i data-lucide="copy" class="w-3 h-3"></i> Copy
+                    </button>
+                  </label>
+                  <input type="text" id="licHwid" required placeholder="Ví dụ: AV-7A8B-9C0D-1E2F-3A4B" 
+                    class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-brand-300 font-mono text-sm tracking-wide focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+
+                <!-- Customer Name -->
+                <div>
+                  <label class="block text-xs font-medium text-slate-300 mb-1">Tên Khách Hàng / Kỹ Sư <span class="text-rose-400">*</span></label>
+                  <input type="text" id="licCustomer" required placeholder="Nguyễn Văn A" 
+                    class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+
+                <!-- Company -->
+                <div>
+                  <label class="block text-xs font-medium text-slate-300 mb-1">Đơn Vị / Công Ty</label>
+                  <input type="text" id="licCompany" placeholder="Công ty CP Tư vấn Thiết kế..." 
+                    class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+
+                <!-- Machine Name -->
+                <div>
+                  <label class="block text-xs font-medium text-slate-300 mb-1">Tên Máy Tính</label>
+                  <input type="text" id="licMachine" placeholder="PC-CIVIL-01" 
+                    class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+
+                <!-- Phone / Zalo -->
+                <div>
+                  <label class="block text-xs font-medium text-slate-300 mb-1">Số Điện Thoại / Zalo</label>
+                  <input type="text" id="licPhone" placeholder="0987654321" 
+                    class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: Modules & Permissions -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm space-y-4">
+              <div class="flex items-center justify-between">
+                <h2 class="text-sm font-semibold uppercase tracking-wider text-brand-400 flex items-center gap-2">
+                  <span class="w-5 h-5 rounded-full bg-brand-500/20 text-brand-300 text-xs flex items-center justify-center font-bold">3</span>
+                  Phân Quyền Module & Tính Năng
+                </h2>
+                <div class="flex items-center gap-2 text-xs">
+                  <button type="button" onclick="selectAllModules(true)" class="text-brand-400 hover:underline">Chọn hết</button>
+                  <span class="text-slate-600">|</span>
+                  <button type="button" onclick="selectAllModules(false)" class="text-slate-400 hover:underline">Bỏ chọn</button>
+                </div>
+              </div>
+
+              <!-- Module Cards Grid -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                
+                <!-- AV_ALL -->
+                <label class="relative flex items-start gap-3 p-3.5 bg-slate-950 border border-slate-800 hover:border-brand-500/50 rounded-xl cursor-pointer transition select-none group">
+                  <input type="checkbox" id="modAll" value="AV_ALL" checked onchange="handleModuleAllToggle(this)" 
+                    class="mt-1 rounded bg-slate-900 border-slate-700 text-brand-500 focus:ring-brand-500 w-4 h-4">
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm font-semibold text-white group-hover:text-brand-300">AV All</span>
+                      <span class="text-[10px] bg-brand-500/20 text-brand-300 px-1.5 py-0.5 rounded font-mono">Gói Đầy Đủ</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-0.5">Kích hoạt toàn bộ bộ công cụ Civil 3D</p>
+                  </div>
+                </label>
+
+                <!-- AV_ROAD -->
+                <label class="relative flex items-start gap-3 p-3.5 bg-slate-950 border border-slate-800 hover:border-brand-500/50 rounded-xl cursor-pointer transition select-none group">
+                  <input type="checkbox" id="modRoad" value="AV_ROAD" checked 
+                    class="mt-1 rounded bg-slate-900 border-slate-700 text-brand-500 focus:ring-brand-500 w-4 h-4 mod-item">
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm font-semibold text-white group-hover:text-brand-300">AV Road</span>
+                      <span class="text-[10px] bg-indigo-500/20 text-indigo-300 px-1.5 py-0.5 rounded font-mono">Đường</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-0.5">Bình đồ Tuyến, Trắc dọc, Trắc ngang, Khối lượng</p>
+                  </div>
+                </label>
+
+                <!-- AV_PIPE / TNM -->
+                <label class="relative flex items-start gap-3 p-3.5 bg-slate-950 border border-slate-800 hover:border-brand-500/50 rounded-xl cursor-pointer transition select-none group">
+                  <input type="checkbox" id="modPipe" value="AV_PIPE" checked 
+                    class="mt-1 rounded bg-slate-900 border-slate-700 text-brand-500 focus:ring-brand-500 w-4 h-4 mod-item">
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm font-semibold text-white group-hover:text-brand-300">AV Pipe / TNM</span>
+                      <span class="text-[10px] bg-sky-500/20 text-sky-300 px-1.5 py-0.5 rounded font-mono">Thoát Nước</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-0.5">Thoát nước mưa, Nước thải & Mạng lưới kỹ thuật</p>
+                  </div>
+                </label>
+
+                <!-- AV_MODEL -->
+                <label class="relative flex items-start gap-3 p-3.5 bg-slate-950 border border-slate-800 hover:border-brand-500/50 rounded-xl cursor-pointer transition select-none group">
+                  <input type="checkbox" id="modModel" value="AV_MODEL" checked 
+                    class="mt-1 rounded bg-slate-900 border-slate-700 text-brand-500 focus:ring-brand-500 w-4 h-4 mod-item">
+                  <div class="flex-1">
+                    <div class="flex items-center justify-between">
+                      <span class="text-sm font-semibold text-white group-hover:text-brand-300">AV Model 3D</span>
+                      <span class="text-[10px] bg-emerald-500/20 text-emerald-300 px-1.5 py-0.5 rounded font-mono">BIM 3D</span>
+                    </div>
+                    <p class="text-xs text-slate-400 mt-0.5">Xuất 3D Solid, IFC và mô hình hóa hạ tầng</p>
+                  </div>
+                </label>
+
+              </div>
+            </div>
+
+            <!-- Step 4: Duration & Expiration -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm space-y-4">
+              <h2 class="text-sm font-semibold uppercase tracking-wider text-brand-400 flex items-center gap-2">
+                <span class="w-5 h-5 rounded-full bg-brand-500/20 text-brand-300 text-xs flex items-center justify-center font-bold">4</span>
+                Thời Hạn Sử Dụng & Hạn Cập Nhật (Update Expiry)
+              </h2>
+
+              <!-- Quick Duration Buttons -->
+              <div>
+                <label class="block text-xs font-medium text-slate-400 mb-2">Chọn nhanh thời hạn:</label>
+                <div class="grid grid-cols-2 sm:grid-cols-5 gap-2">
+                  <button type="button" onclick="setPresetDuration(1)" class="duration-btn py-2 px-3 bg-slate-950 hover:bg-slate-800 border border-slate-700 rounded-xl text-xs font-medium text-slate-200 transition">
+                    1 Tháng
+                  </button>
+                  <button type="button" onclick="setPresetDuration(3)" class="duration-btn py-2 px-3 bg-slate-950 hover:bg-slate-800 border border-slate-700 rounded-xl text-xs font-medium text-slate-200 transition">
+                    3 Tháng
+                  </button>
+                  <button type="button" onclick="setPresetDuration(6)" class="duration-btn py-2 px-3 bg-slate-950 hover:bg-slate-800 border border-slate-700 rounded-xl text-xs font-medium text-slate-200 transition">
+                    6 Tháng
+                  </button>
+                  <button type="button" onclick="setPresetDuration(12)" class="duration-btn active-duration py-2 px-3 bg-brand-600/20 border border-brand-500 text-brand-300 rounded-xl text-xs font-semibold transition">
+                    1 Năm
+                  </button>
+                  <button type="button" onclick="setPermanentDuration()" class="duration-btn py-2 px-3 bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 rounded-xl text-xs font-semibold transition col-span-2 sm:col-span-1">
+                    Vĩnh Viễn
+                  </button>
+                </div>
+              </div>
+
+              <!-- Date Pickers Grid -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <!-- License Expiry Date -->
+                <div>
+                  <div class="flex items-center justify-between mb-1">
+                    <label class="text-xs font-medium text-slate-300">Hạn Sử Dụng Phần Mềm</label>
+                    <label class="text-[11px] text-amber-300 flex items-center gap-1 cursor-pointer">
+                      <input type="checkbox" id="licIsPermanent" onchange="handlePermanentToggle(this)" class="rounded bg-slate-900 border-slate-700 text-amber-500 w-3.5 h-3.5">
+                      Vĩnh viễn
+                    </label>
+                  </div>
+                  <input type="date" id="licExpiryDate" 
+                    class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+
+                <!-- Update Expiry Date (Tách riêng hạn cập nhật) -->
+                <div>
+                  <div class="flex items-center justify-between mb-1">
+                    <label class="text-xs font-medium text-slate-300">Hạn Nhận Bản Cập Nhật</label>
+                    <label class="text-[11px] text-slate-400 flex items-center gap-1 cursor-pointer">
+                      <input type="checkbox" id="syncUpdateDate" checked onchange="handleSyncUpdateToggle(this)" class="rounded bg-slate-900 border-slate-700 text-brand-500 w-3.5 h-3.5">
+                      Cùng hạn License
+                    </label>
+                  </div>
+                  <input type="date" id="licUpdateExpiryDate" 
+                    class="w-full px-3.5 py-2.5 bg-slate-950 border border-slate-700 rounded-xl text-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+              </div>
+
+              <!-- Additional Settings: CAD Version & Notes -->
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                <div>
+                  <label class="block text-xs font-medium text-slate-400 mb-1">Phiên bản AutoCAD / Civil 3D</label>
+                  <select id="licCadVersion" class="w-full px-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white text-xs focus:outline-none focus:ring-2 focus:ring-brand-500">
+                    <option value="ALL">Tất cả phiên bản (2020 - 2027+)</option>
+                    <option value="2027">AutoCAD Civil 3D 2027</option>
+                    <option value="2026">AutoCAD Civil 3D 2026</option>
+                    <option value="2025">AutoCAD Civil 3D 2025</option>
+                    <option value="2024">AutoCAD Civil 3D 2024</option>
+                  </select>
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-slate-400 mb-1">Ghi chú Hợp đồng / Mã đơn</label>
+                  <input type="text" id="licNotes" placeholder="HĐ-2026-AV01..." 
+                    class="w-full px-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white text-xs focus:outline-none focus:ring-2 focus:ring-brand-500">
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Generate & Sign Action Button -->
+            <div>
+              <button type="button" onclick="generateAndSignLicense()" id="btnSignLicense"
+                class="w-full py-4 px-6 bg-gradient-to-r from-brand-600 via-indigo-600 to-brand-500 hover:from-brand-500 hover:to-indigo-500 text-white font-bold rounded-2xl shadow-xl shadow-brand-500/25 transition duration-150 flex items-center justify-center gap-3 text-base group">
+                <i data-lucide="key" class="w-5 h-5 group-hover:rotate-12 transition-transform"></i>
+                <span>Ký Số RSA-2048 & Tạo Giấy Phép (.avlic)</span>
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Right Column: Generated License Result & Preview (5 cols on desktop) -->
+          <div class="lg:col-span-5 space-y-6">
+
+            <!-- Result Card (Shown after signing or placeholder) -->
+            <div id="licenseResultCard" class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm sticky top-24">
+              
+              <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                <div class="flex items-center gap-2">
+                  <div class="w-8 h-8 rounded-lg bg-emerald-500/20 text-emerald-400 flex items-center justify-center">
+                    <i data-lucide="shield-check" class="w-5 h-5"></i>
+                  </div>
+                  <div>
+                    <h3 class="text-sm font-bold text-white">Kết Quả Giấy Phép</h3>
+                    <p class="text-[11px] text-slate-400" id="resStatusSub">Chưa tạo giấy phép</p>
+                  </div>
+                </div>
+                <span id="resBadge" class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 border border-slate-700">Chờ lệnh</span>
+              </div>
+
+              <!-- Placeholder when no license yet -->
+              <div id="resultPlaceholder" class="py-12 text-center text-slate-500 space-y-2">
+                <div class="w-12 h-12 rounded-2xl bg-slate-800/80 mx-auto flex items-center justify-center text-slate-600">
+                  <i data-lucide="file-badge" class="w-6 h-6"></i>
+                </div>
+                <p class="text-sm font-medium">Chưa có Giấy phép nào được tạo</p>
+                <p class="text-xs text-slate-600 max-w-xs mx-auto">Điền thông tin và bấm nút <strong class="text-slate-400">"Ký Số RSA-2048"</strong> để xuất file bản quyền.</p>
+              </div>
+
+              <!-- Live Active License Details (Initially Hidden) -->
+              <div id="resultDetails" class="hidden space-y-4 pt-4">
+
+                <!-- Signature Verification Alert -->
+                <div class="p-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl flex items-center gap-2.5 text-xs text-emerald-300">
+                  <i data-lucide="check-circle-2" class="w-4 h-4 text-emerald-400 flex-shrink-0"></i>
+                  <span>Chữ ký số hợp lệ 100% (Thuật toán RSASSA-PKCS1-v1_5 SHA-256)</span>
+                </div>
+
+                <!-- Info Table -->
+                <div class="bg-slate-950 rounded-xl p-3.5 border border-slate-800/80 text-xs space-y-2">
+                  <div class="flex justify-between items-center py-1 border-b border-slate-800/60">
+                    <span class="text-slate-400">Phần mềm:</span>
+                    <span id="resProduct" class="font-semibold text-blue-400">AVRoad 2026 (TDT 9.1)</span>
+                  </div>
+                  <div class="flex justify-between items-center py-1 border-b border-slate-800/60">
+                    <span class="text-slate-400">Mã License:</span>
+                    <span id="resLicId" class="font-mono font-semibold text-brand-300">LIC-000000</span>
+                  </div>
+                  <div class="flex justify-between items-center py-1 border-b border-slate-800/60">
+                    <span class="text-slate-400">Khách hàng:</span>
+                    <span id="resCustomer" class="font-medium text-white">-</span>
+                  </div>
+                  <div class="flex justify-between items-center py-1 border-b border-slate-800/60">
+                    <span class="text-slate-400">HWID:</span>
+                    <span id="resHwid" class="font-mono text-slate-300 text-[11px] truncate max-w-[180px]">-</span>
+                  </div>
+                  <div class="flex justify-between items-center py-1 border-b border-slate-800/60">
+                    <span class="text-slate-400">Gói Module:</span>
+                    <span id="resModules" class="text-brand-400 font-medium">-</span>
+                  </div>
+                  <div class="flex justify-between items-center py-1 border-b border-slate-800/60">
+                    <span class="text-slate-400">Ngày Cấp:</span>
+                    <span id="resIssueDate" class="text-slate-300">-</span>
+                  </div>
+                  <div class="flex justify-between items-center py-1 border-b border-slate-800/60">
+                    <span class="text-slate-400">Hạn Dùng:</span>
+                    <span id="resExpiryDate" class="font-semibold text-emerald-400">-</span>
+                  </div>
+                  <div class="flex justify-between items-center py-1">
+                    <span class="text-slate-400">Hạn Cập Nhật:</span>
+                    <span id="resUpdateExpiryDate" class="text-indigo-400">-</span>
+                  </div>
+                </div>
+
+                <!-- Action Download Buttons -->
+                <div class="space-y-2 pt-2">
+                  
+                  <!-- Main Download Button -->
+                  <button type="button" onclick="downloadLicenseFile()" 
+                    class="w-full py-3.5 px-4 bg-emerald-600 hover:bg-emerald-500 text-white font-bold rounded-xl shadow-lg shadow-emerald-600/25 transition flex items-center justify-center gap-2 text-sm">
+                    <i data-lucide="download" class="w-4 h-4"></i>
+                    <span>Tải File AV_License.avlic</span>
+                  </button>
+
+                  <!-- Secondary Mobile Share & Copy Buttons -->
+                  <div class="grid grid-cols-2 gap-2">
+                    <button type="button" onclick="shareLicenseFile()" id="btnShareFile" 
+                      class="py-2.5 px-3 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-xl border border-slate-700 flex items-center justify-center gap-1.5 transition">
+                      <i data-lucide="share-2" class="w-3.5 h-3.5 text-brand-400"></i>
+                      <span>Gửi Zalo / Chia sẻ</span>
+                    </button>
+                    <button type="button" onclick="copyLicenseBase64()" 
+                      class="py-2.5 px-3 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-xl border border-slate-700 flex items-center justify-center gap-1.5 transition">
+                      <i data-lucide="copy" class="w-3.5 h-3.5 text-indigo-400"></i>
+                      <span>Copy JSON Base64</span>
+                    </button>
+                  </div>
+
+                  <!-- Inspect Signature Details trigger -->
+                  <button type="button" onclick="toggleInspector()" 
+                    class="w-full text-center py-2 text-xs text-slate-400 hover:text-slate-200 flex items-center justify-center gap-1">
+                    <i data-lucide="code-2" class="w-3.5 h-3.5"></i>
+                    <span>Xem mã Payload JSON & Chữ ký số</span>
+                  </button>
+
+                  <div id="inspectorArea" class="hidden mt-2 p-3 bg-slate-950 rounded-xl border border-slate-800 text-[11px] font-mono text-slate-300 max-h-48 overflow-y-auto">
+                    <pre id="inspectorContent" class="whitespace-pre-wrap break-all"></pre>
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ==================== TAB 2: LICENSE REGISTRY & HISTORY (QUẢN LÝ ĐÃ CẤP) ==================== -->
+      <section id="tab-registry" class="hidden space-y-6">
+        
+        <!-- Header & Stats Cards -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 sm:gap-4">
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
+            <span class="text-xs font-medium text-slate-400">Tổng Giấy Phép</span>
+            <p id="statTotal" class="text-2xl font-bold text-white mt-1">0</p>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
+            <span class="text-xs font-medium text-emerald-400">Đang Hoạt Động</span>
+            <p id="statActive" class="text-2xl font-bold text-emerald-400 mt-1">0</p>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
+            <span class="text-xs font-medium text-amber-400">Sắp Hết Hạn (&lt;30 ngày)</span>
+            <p id="statExpiring" class="text-2xl font-bold text-amber-400 mt-1">0</p>
+          </div>
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4">
+            <span class="text-xs font-medium text-rose-400">Đã Thu Hồi (Revoked)</span>
+            <p id="statRevoked" class="text-2xl font-bold text-rose-400 mt-1">0</p>
+          </div>
+        </div>
+
+        <!-- Controls Bar -->
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-4 flex flex-col sm:flex-row gap-3 items-center justify-between">
+          
+          <!-- Search box -->
+          <div class="relative w-full sm:w-80">
+            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-500"></i>
+            <input type="text" id="registrySearch" oninput="renderRegistryTable()" placeholder="Tìm khách hàng, HWID, công ty..." 
+              class="w-full pl-9 pr-4 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white placeholder-slate-500 focus:outline-none focus:ring-1 focus:ring-brand-500">
+          </div>
+
+          <!-- Status Filter & Actions -->
+          <div class="flex items-center gap-2 w-full sm:w-auto justify-between sm:justify-end overflow-x-auto pb-1 sm:pb-0">
+            
+            <select id="registryFilter" onchange="renderRegistryTable()" class="px-3 py-2 bg-slate-950 border border-slate-700 rounded-xl text-xs text-white focus:outline-none">
+              <option value="ALL">Tất cả trạng thái</option>
+              <option value="ACTIVE">Đang hoạt động</option>
+              <option value="EXPIRING">Sắp hết hạn</option>
+              <option value="EXPIRED">Đã hết hạn</option>
+              <option value="REVOKED">Đã thu hồi</option>
+            </select>
+
+            <!-- Sync to GitHub Button -->
+            <button type="button" onclick="syncBlacklistToGitHub(true)" title="Đồng bộ danh sách thu hồi lên GitHub" 
+              class="px-3 py-2 bg-gradient-to-r from-slate-800 to-slate-700 hover:from-slate-700 hover:to-slate-600 text-white text-xs font-semibold rounded-xl border border-slate-600 flex items-center gap-1.5 whitespace-nowrap transition shadow-sm">
+              <i data-lucide="github" class="w-3.5 h-3.5 text-brand-400"></i>
+              <span>Đồng Bộ GitHub</span>
+            </button>
+
+            <button type="button" onclick="exportLicensesBackup()" class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-xl border border-slate-700 flex items-center gap-1.5 whitespace-nowrap transition">
+              <i data-lucide="download" class="w-3.5 h-3.5 text-brand-400"></i>
+              <span>Sao Lưu JSON</span>
+            </button>
+
+            <label class="px-3 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-medium rounded-xl border border-slate-700 flex items-center gap-1.5 cursor-pointer whitespace-nowrap transition">
+              <i data-lucide="upload" class="w-3.5 h-3.5 text-indigo-400"></i>
+              <span>Khôi Phục</span>
+              <input type="file" id="importBackupInput" accept=".json" class="hidden" onchange="importLicensesBackup(event)">
+            </label>
+
+          </div>
+
+        </div>
+
+        <!-- Product Filter Tabs for Registry -->
+        <div class="flex items-center gap-2 p-1.5 bg-slate-900 border border-slate-800 rounded-2xl overflow-x-auto">
+          <button type="button" id="regProdFilter-ALL" onclick="setRegistryProductFilter('ALL')" 
+            class="reg-prod-tab active px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap bg-brand-600 text-white shadow-sm cursor-pointer">
+            <span>📋 Tất Cả Phần Mềm</span>
+            <span id="badgeCountAll" class="px-2 py-0.5 rounded-full bg-black/30 text-[10px] text-white font-mono">0</span>
+          </button>
+          <button type="button" id="regProdFilter-AVROAD_TDT91" onclick="setRegistryProductFilter('AVROAD_TDT91')" 
+            class="reg-prod-tab px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap bg-slate-950/60 hover:bg-slate-800 text-slate-400 cursor-pointer">
+            <span>🛣️ AVRoad 2026 (TDT 9.1)</span>
+            <span id="badgeCountAvroad" class="px-2 py-0.5 rounded-full bg-blue-500/20 text-[10px] text-blue-300 font-mono">0</span>
+          </button>
+          <button type="button" id="regProdFilter-AV_CIVIL" onclick="setRegistryProductFilter('AV_CIVIL')" 
+            class="reg-prod-tab px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap bg-slate-950/60 hover:bg-slate-800 text-slate-400 cursor-pointer">
+            <span>🏗️ AV_Civil (Civil 3D)</span>
+            <span id="badgeCountAvcivil" class="px-2 py-0.5 rounded-full bg-emerald-500/20 text-[10px] text-emerald-300 font-mono">0</span>
+          </button>
+        </div>
+
+        <!-- Registry Cards List (Mobile & Desktop Responsive) -->
+        <div id="registryListContainer" class="space-y-3">
+          <!-- Populated by JavaScript -->
+        </div>
+
+      </section>
+
+      <!-- ==================== TAB 3: RSA KEY MANAGEMENT (QUẢN LÝ KHÓA RSA) ==================== -->
+      <section id="tab-keys" class="hidden space-y-6">
+        
+        <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 sm:p-6 space-y-6">
+          
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-800 pb-5">
+            <div>
+              <h2 class="text-lg font-bold text-white flex items-center gap-2">
+                <i data-lucide="key-round" class="w-5 h-5 text-brand-400"></i>
+                Quản Lý Cặp Khóa Số RSA-2048
+              </h2>
+              <p class="text-xs text-slate-400 mt-1">Cặp khóa RSA-2048 bảo vệ toàn vẹn bản quyền. Khóa Riêng Tư (Private Key) được lưu cục bộ trên trình duyệt của bạn.</p>
+            </div>
+            
+            <div id="keyStatusBanner" class="px-3.5 py-2 rounded-xl text-xs font-medium flex items-center gap-2 bg-amber-500/10 border border-amber-500/30 text-amber-300">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse"></span>
+              <span id="keyStatusLabel">Chưa nạp Private Key</span>
+            </div>
+          </div>
+
+          <!-- Quick Actions Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            
+            <!-- Option 1: Load Default Key -->
+            <div class="bg-slate-950 border border-slate-800 hover:border-brand-500/50 rounded-2xl p-4 flex flex-col justify-between">
+              <div>
+                <div class="w-10 h-10 rounded-xl bg-brand-500/10 text-brand-400 flex items-center justify-center mb-3">
+                  <i data-lucide="zap" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-sm font-semibold text-white">Nạp Khóa Mặc Định</h3>
+                <p class="text-xs text-slate-400 mt-1">Nạp cặp khóa tiêu chuẩn hệ thống đã cấu hình sẵn trong thư mục <code class="text-brand-300">/keys</code>.</p>
+              </div>
+              <button type="button" onclick="loadDefaultKeys()" class="mt-4 w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-brand-300 rounded-xl transition">
+                Nạp Khóa Mặc Định
+              </button>
+            </div>
+
+            <!-- Option 2: Upload File PEM -->
+            <div class="bg-slate-950 border border-slate-800 hover:border-brand-500/50 rounded-2xl p-4 flex flex-col justify-between">
+              <div>
+                <div class="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 flex items-center justify-center mb-3">
+                  <i data-lucide="folder-up" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-sm font-semibold text-white">Tải Lên Private Key (.pem)</h3>
+                <p class="text-xs text-slate-400 mt-1">Chọn file <code class="text-indigo-300">private_key.pem</code> chuẩn PKCS#8 từ máy tính hoặc điện thoại.</p>
+              </div>
+              <label class="mt-4 w-full py-2.5 bg-slate-800 hover:bg-slate-700 text-xs font-semibold text-indigo-300 rounded-xl transition text-center cursor-pointer block">
+                Chọn File PEM
+                <input type="file" id="pemFileInput" accept=".pem,.key,.txt" class="hidden" onchange="handlePemFileUpload(event)">
+              </label>
+            </div>
+
+            <!-- Option 3: Generate New Keypair in Browser -->
+            <div class="bg-slate-950 border border-slate-800 hover:border-brand-500/50 rounded-2xl p-4 flex flex-col justify-between">
+              <div>
+                <div class="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-400 flex items-center justify-center mb-3">
+                  <i data-lucide="plus-circle" class="w-5 h-5"></i>
+                </div>
+                <h3 class="text-sm font-semibold text-white">Tạo Cặp Khóa Mới (Web Crypto)</h3>
+                <p class="text-xs text-slate-400 mt-1">Sinh cặp khóa RSA-2048 bit hoàn toàn mới trực tiếp ngay trong trình duyệt.</p>
+              </div>
+              <button type="button" onclick="generateNewKeyPair()" class="mt-4 w-full py-2.5 bg-emerald-600/20 hover:bg-emerald-600/30 border border-emerald-500/40 text-xs font-semibold text-emerald-300 rounded-xl transition">
+                Tạo Cặp Khóa Mới
+              </button>
+            </div>
+
+          </div>
+
+          <!-- Manual PEM Paste / View Area -->
+          <div class="space-y-3 pt-2">
+            <div class="flex items-center justify-between">
+              <label class="text-xs font-semibold uppercase tracking-wider text-slate-400">Nội dung Private Key (PEM format)</label>
+              <div class="flex items-center gap-2">
+                <button type="button" onclick="downloadPrivateKeyPem()" id="btnDownloadPriv" class="text-xs text-brand-400 hover:underline hidden">
+                  Tải file private_key.pem
+                </button>
+                <button type="button" onclick="downloadPublicKeyPem()" id="btnDownloadPub" class="text-xs text-indigo-400 hover:underline hidden">
+                  Tải file public_key.pem
+                </button>
+              </div>
+            </div>
+            
+            <textarea id="pemKeyTextarea" rows="6" placeholder="-----BEGIN PRIVATE KEY-----&#10;...&#10;-----END PRIVATE KEY-----" 
+              class="w-full px-4 py-3 bg-slate-950 border border-slate-700 rounded-xl font-mono text-xs text-slate-300 focus:outline-none focus:ring-1 focus:ring-brand-500"></textarea>
+            
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3 pt-1">
+              <span id="keyFingerprintLabel" class="text-[11px] font-mono text-slate-500 truncate max-w-sm">Fingerprint: Chưa xác định</span>
+              <div class="flex items-center gap-2 w-full sm:w-auto">
+                <button type="button" onclick="clearStoredKey()" class="flex-1 sm:flex-none py-2 px-4 bg-slate-800 hover:bg-slate-700 text-rose-400 text-xs font-medium rounded-xl transition">
+                  Xóa Khóa
+                </button>
+                <button type="button" onclick="savePastedKey()" class="flex-1 sm:flex-none py-2 px-5 bg-brand-600 hover:bg-brand-500 text-white text-xs font-semibold rounded-xl shadow-md transition">
+                  Lưu & Kích Hoạt Khóa Này
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ==================== TAB 4: GITHUB SYNC & SETTINGS ==================== -->
+      <section id="tab-settings" class="hidden space-y-6">
+        
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+
+          <!-- Left Card: GitHub Blacklist Sync Configuration -->
+          <div class="space-y-6">
+            
+            <!-- GitHub Settings Card -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm space-y-4">
+              <div class="flex items-center justify-between">
+                <h2 class="text-sm font-semibold uppercase tracking-wider text-white flex items-center gap-2">
+                  <i data-lucide="github" class="w-4 h-4 text-brand-400"></i>
+                  Đồng Bộ Danh Sách Đen Lên GitHub (Online Revocation)
+                </h2>
+                <span class="text-[10px] bg-brand-500/20 text-brand-300 px-2 py-0.5 rounded-full font-mono">Chính Thức</span>
+              </div>
+              <p class="text-xs text-slate-400">
+                Tự động đẩy danh sách thiết bị bị thu hồi lên file <code class="text-brand-300 font-mono">revoked_hwid.json</code> tại repository GitHub <strong class="text-white">tienhoaa/AV_Releases</strong>. Plugin Civil 3D sẽ đọc file này qua đường dẫn Raw trực tiếp để khóa thiết bị vi phạm.
+              </p>
+
+              <div>
+                <label class="block text-xs font-medium text-slate-300 mb-1">GitHub Repository</label>
+                <input type="text" id="ghRepo" value="tienhoaa/AV_Releases" placeholder="owner/repo" 
+                  class="w-full px-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white text-xs font-mono focus:outline-none focus:ring-1 focus:ring-brand-500">
+              </div>
+
+              <div class="grid grid-cols-2 gap-3">
+                <div>
+                  <label class="block text-xs font-medium text-slate-300 mb-1">Đường Dẫn File</label>
+                  <input type="text" id="ghFilePath" value="revoked_hwid.json" 
+                    class="w-full px-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white text-xs font-mono focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+                <div>
+                  <label class="block text-xs font-medium text-slate-300 mb-1">Nhánh (Branch)</label>
+                  <input type="text" id="ghBranch" value="main" 
+                    class="w-full px-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white text-xs font-mono focus:outline-none focus:ring-1 focus:ring-brand-500">
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-slate-300 mb-1 flex items-center justify-between">
+                  <span>GitHub Personal Access Token (PAT) <span class="text-rose-400">*</span></span>
+                  <a href="https://github.com/settings/tokens" target="_blank" class="text-[11px] text-brand-400 hover:underline flex items-center gap-1">
+                    <span>Tạo Token</span> <i data-lucide="external-link" class="w-3 h-3"></i>
+                  </a>
+                </label>
+                <div class="relative">
+                  <input type="password" id="ghToken" placeholder="ghp_... hoặc github_pat_..." 
+                    class="w-full px-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white text-xs font-mono placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-brand-500">
+                  <button type="button" onclick="togglePasswordVisibility('ghToken', this)" 
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white p-1">
+                    <i data-lucide="eye" class="w-4 h-4"></i>
+                  </button>
+                </div>
+                <p class="text-[11px] text-slate-500 mt-1">Yêu cầu quyền <code>repo</code> hoặc <code>contents:write</code> để cập nhật file.</p>
+              </div>
+
+              <!-- Auto-sync checkbox -->
+              <label class="flex items-center gap-2 cursor-pointer text-xs text-slate-300 select-none pt-1">
+                <input type="checkbox" id="ghAutoSync" checked class="rounded bg-slate-800 border-slate-700 text-brand-500 w-4 h-4">
+                <span>Tự động đồng bộ lên GitHub khi Thu hồi hoặc Mở khóa máy</span>
+              </label>
+
+              <!-- Actions -->
+              <div class="flex items-center gap-2 pt-2">
+                <button type="button" onclick="testGitHubConnection()" class="flex-1 py-2 px-3 bg-slate-800 hover:bg-slate-700 text-xs font-medium text-slate-200 rounded-xl transition flex items-center justify-center gap-1.5 border border-slate-700">
+                  <i data-lucide="check" class="w-3.5 h-3.5 text-brand-400"></i>
+                  <span>Kiểm Tra Quyền Token</span>
+                </button>
+                <button type="button" onclick="saveGitHubConfig()" class="py-2 px-4 bg-brand-600 hover:bg-brand-500 text-xs font-semibold text-white rounded-xl shadow-md transition">
+                  Lưu Cấu Hình
+                </button>
+              </div>
+
+              <!-- Push Blacklist Now Button -->
+              <button type="button" onclick="syncBlacklistToGitHub(true)" 
+                class="w-full py-2.5 px-4 bg-gradient-to-r from-slate-800 via-slate-700 to-slate-800 hover:border-brand-500/50 text-brand-300 font-semibold rounded-xl text-xs flex items-center justify-center gap-2 border border-slate-700 transition">
+                <i data-lucide="upload-cloud" class="w-4 h-4 text-brand-400"></i>
+                <span>Đẩy Toàn Bộ Danh Sách Thu Hồi Lên GitHub Ngay</span>
+              </button>
+
+              <!-- Public URL Reference -->
+              <div class="p-3 bg-slate-950 rounded-xl border border-slate-800 text-xs space-y-1">
+                <span class="text-slate-400 font-medium">Link kiểm tra Raw công khai (Civil 3D gọi):</span>
+                <div class="flex items-center justify-between gap-2 pt-0.5">
+                  <code id="rawUrlCode" class="text-[11px] font-mono text-emerald-300 truncate">https://raw.githubusercontent.com/tienhoaa/AV_Releases/main/revoked_hwid.json</code>
+                  <button type="button" onclick="copyRawUrl()" title="Sao chép Link" class="text-slate-400 hover:text-white p-1">
+                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Master Password Config -->
+            <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm space-y-4">
+              <h2 class="text-sm font-semibold uppercase tracking-wider text-white flex items-center gap-2">
+                <i data-lucide="lock" class="w-4 h-4 text-brand-400"></i>
+                Bảo Vệ Mật Khẩu Quản Trị
+              </h2>
+              
+              <div>
+                <label class="block text-xs font-medium text-slate-400 mb-1">Đổi Mật khẩu Quản trị mới</label>
+                <div class="flex gap-2">
+                  <input type="password" id="newMasterPassword" placeholder="Nhập mật khẩu mới..." 
+                    class="flex-1 px-3.5 py-2 bg-slate-950 border border-slate-700 rounded-xl text-white text-xs focus:outline-none focus:ring-1 focus:ring-brand-500">
+                  <button type="button" onclick="handleChangePassword()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium rounded-xl transition">
+                    Cập Nhật
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Right Card: Civil 3D C# Integration Guide -->
+          <div class="bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-sm space-y-4">
+            <h2 class="text-sm font-semibold uppercase tracking-wider text-white flex items-center gap-2">
+              <i data-lucide="code" class="w-4 h-4 text-emerald-400"></i>
+              Mã C# Kiểm Tra Bản Quyền & Blacklist GitHub Trong Civil 3D
+            </h2>
+            <p class="text-xs text-slate-400">
+              Plugin Civil 3D kết hợp 2 lớp bảo vệ: <strong>(1) Xác thực chữ ký số RSA-2048 offline</strong> + <strong>(2) Kiểm tra Blacklist trên GitHub</strong>:
+            </p>
+
+            <div class="relative bg-slate-950 rounded-xl p-3.5 border border-slate-800 font-mono text-[11px] text-slate-300 overflow-x-auto max-h-[520px]">
+              <button onclick="copyCSharpSnippet()" class="absolute right-3 top-3 px-2 py-1 bg-slate-800 hover:bg-slate-700 text-[10px] text-slate-300 rounded flex items-center gap-1">
+                <i data-lucide="copy" class="w-3 h-3"></i> Copy
+              </button>
+              <pre><code class="text-emerald-300">// ========================================================
+// 1. XÁC THỰC FILE BẢN QUYỀN OFFLINE (RSA-2048)
+// ========================================================
+string licPath = @"C:\ProgramData\AV_Civil\AV_License.avlic";
+string jsonText = File.ReadAllText(licPath);
+var licDoc = JsonDocument.Parse(jsonText);
+string payloadString = licDoc.RootElement.GetProperty("payload").GetRawText();
+string signatureBase64 = licDoc.RootElement.GetProperty("signature").GetString();
+
+string publicKeyPem = @"-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi9xQ1EpUK+sQCd+zVTAb...
+-----END PUBLIC KEY-----";
+
+using (var rsa = RSA.Create())
+{
+    rsa.ImportFromPem(publicKeyPem);
+    byte[] dataBytes = Encoding.UTF8.GetBytes(payloadString);
+    byte[] sigBytes = Convert.FromBase64String(signatureBase64);
+    
+    bool isValid = rsa.VerifyData(dataBytes, sigBytes, 
+        HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+
+    if (!isValid) throw new Exception("Chữ ký bản quyền không hợp lệ!");
+}
+
+// ========================================================
+// 2. KIỂM TRA THU HỒI ONLINE TỪ GITHUB (ASYNCHRONOUS)
+// ========================================================
+string currentHwid = GetSystemHwid(); // "AV-XXXX-XXXX-XXXX-XXXX"
+string checkUrl = "https://raw.githubusercontent.com/tienhoaa/AV_Releases/main/revoked_hwid.json";
+
+try
+{
+    using (var client = new HttpClient { Timeout = TimeSpan.FromSeconds(3) })
+    {
+        string rawJson = await client.GetStringAsync(checkUrl + "?t=" + DateTime.UtcNow.Ticks);
+        using var blacklistDoc = JsonDocument.Parse(rawJson);
+        var revokedDict = blacklistDoc.RootElement.GetProperty("revoked_hwids");
+
+        if (revokedDict.TryGetProperty(currentHwid, out var revokedInfo))
+        {
+            string reason = revokedInfo.GetProperty("reason").GetString();
+            throw new Exception($"Máy tính đã bị thu hồi bản quyền! Lý do: {reason}");
+        }
+    }
+}
+catch (HttpRequestException)
+{
+    // Nếu mất mạng Internet hoặc GitHub tạm thời unreachable:
+    // Vẫn cho phép tiếp tục sử dụng nếu chữ ký RSA offline hợp lệ!
+}</code></pre>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+    </main>
+
+    <!-- Mobile Bottom Navigation Bar (Fixed for phone users) -->
+    <nav class="md:hidden fixed bottom-0 left-0 right-0 z-40 bg-slate-900/95 backdrop-blur-lg border-t border-slate-800 safe-bottom">
+      <div class="grid grid-cols-4 h-16">
+        <button onclick="switchTab('issue')" id="nav-mobile-issue" class="mobile-nav-btn flex flex-col items-center justify-center gap-1 text-brand-400">
+          <i data-lucide="file-key" class="w-5 h-5"></i>
+          <span class="text-[10px] font-medium">Cấp Phép</span>
+        </button>
+        <button onclick="switchTab('registry')" id="nav-mobile-registry" class="mobile-nav-btn flex flex-col items-center justify-center gap-1 text-slate-400">
+          <i data-lucide="folder-check" class="w-5 h-5"></i>
+          <span class="text-[10px] font-medium">Đã Cấp</span>
+        </button>
+        <button onclick="switchTab('keys')" id="nav-mobile-keys" class="mobile-nav-btn flex flex-col items-center justify-center gap-1 text-slate-400">
+          <i data-lucide="key-round" class="w-5 h-5"></i>
+          <span class="text-[10px] font-medium">Khóa RSA</span>
+        </button>
+        <button onclick="switchTab('settings')" id="nav-mobile-settings" class="mobile-nav-btn flex flex-col items-center justify-center gap-1 text-slate-400">
+          <i data-lucide="settings" class="w-5 h-5"></i>
+          <span class="text-[10px] font-medium">GitHub</span>
+        </button>
+      </div>
+    </nav>
+
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer" class="fixed top-4 right-4 z-50 flex flex-col gap-2 max-w-sm pointer-events-none"></div>
+
+  <!-- ==================== JAVASCRIPT APPLICATION CORE ==================== -->
+  <script>
+    // System Constants & Storage Keys
+    const DEFAULT_MASTER_PASSWORD = "1";
+    const STORAGE_KEY_AUTH = "av_admin_authenticated";
+    const STORAGE_KEY_PASS = "av_admin_password";
+    const STORAGE_KEY_PRIV = "av_admin_private_key_pem";
+    const STORAGE_KEY_PUB = "av_admin_public_key_pem";
+    const STORAGE_KEY_REGISTRY = "av_admin_licenses_registry";
+    const STORAGE_KEY_GITHUB = "av_admin_github_config";
+
+    // Embedded Default RSA-2048 Key Pair for immediate out-of-the-box usage
+    const SYSTEM_DEFAULT_PRIVATE_KEY = `-----BEGIN PRIVATE KEY-----
+MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCL3FDUSlQr6xAJ
+37NVMBsK3Yd0YVZw+CM9EK9ER1nvbThpMsnaU4piL7Lv99CS7YB1hK3+54SJjN8x
+CfQY7DlPdvx0bMqMKt0baEdIry0WUJif9v0mPbytTdCO6fi7kZcbVRJMBPsnUJb/
+fhG2rno4ULfN4KIIF8Z8wnP0xR/ub6Vl3pRDVcQEwRwzBzeXm1X2upPYRTCABuC0
+Mu1X3ImSdrPpsdpO2ozgtQpXVNPaNeiBd3D43/YkY+2IbySXZ0drUAF4bSKgG4gx
+Ra8B7uJtlwBhLETJwvYu1C8d/gXGQjKoayaN6BNoyIloL47OJu+pAmPQbyPNB2Kj
+bcr6wpqhAgMBAAECggEANx86dijjWrnWxOV3MxR2HAaqe7pfTL/nd4pLYYAzmHM1
+//Ql7Rfu2vrMrdpASKA1eFu2DdhmeqXcU2IGZAo6HjEZl7NG8w5zvXkQWzu7a+eQ
+977rD/bWFYGtOJ5LS3W6leml//MYn2qaUJD530ON5QMfJhOqGMFyF7q149sLVjfy
+TsaJk2Ifw5nUiCGU68rMetGpW2BReVUPrfWdjMhigf5XWimIZxFTtKn1FjrHAQMb
+0wopzTZGJgzDt05ydIFL2Nn3RblcYXg7TCjfbqEC6SjfN/7GgAmF3SQFIuWUbnFr
+LbArpAGQhHQZ4G0NRBgoSk96UvCfMec1lQPdGG10LwKBgQDAJ99+wxB9Y6utInPu
+/+JG7qB6KXZD1ZmKBTWwS14jN6e3I7W95HPloOtfPF0JMVvVSFptFgsNstphQZ2f
+eUiLRzpksR+yZ4dpJm41T9md8d0Rix0//PMrtvpzSratSBXPDauZ4KOotiCkxfnf
+apFZHEeRafzBqDpaq/hRWcnckwKBgQC6VGRm9OSiwtNGjuqj0O2H1R9gUv1cFJXG
+pktRgums2pq49NDtb4/654CqU1Gxf0xaLPAHsXQd+bFLQkCzXlY73pHJt/+UjpTb
+Y9KCTGpCmnuVR8TypQm7gXNb06Xxv6w2Qopfeaw4kS4Ec/6mzK7SsN4875kKXEeN
+iXXmc0fgewKBgCn6S/PYT0jlNkLrbOJAWkFergYh+qkVB6bEPpdVz6nn5aa3kWN7
+feojPmgeusBgXQx58u8zypRihxyKBhIpn7R1igcnPqJtxYIuGBNjb0n25XGIr4ok
+C0d4gLwhDUlLnyANf3htP7OCnh0A9vZcxIXwDJ5yxfnUc3MNcIDtGZErAoGBAIDz
+JKTn+E73u9WJ1LLYRXqKsPMtm++cw2a98UQQ8HzSsN8tdmXLnn4Kts2padEIAyQp
+E1iPo4eXJO6rhDFeKRm313cdooACCNyoAahxD9zWIo7WI2O1eb3NQbOcDqz2dEz8
+0dxvTRO8zXcBe4ud/aMMClFrk6NK5635IqIAyA5/AoGBAL11zwAguvMYUYk6QKJG
+cQJ81OnmJyRJmbN3lUC7sWYlOXCd7WWrxDFIbmptQ6zbHlDnDwaKgzqy9mT5+q4J
+XoLU5iNOA1NSXIhmdIlZzyPHJz0zEwFR0149IKDVcZU+OKxC1mA7sqpro84i6u30
+KyRpRMmBDevAoaj3QocAezNL
+-----END PRIVATE KEY-----`;
+
+    const SYSTEM_DEFAULT_PUBLIC_KEY = `-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi9xQ1EpUK+sQCd+zVTAb
+Ct2HdGFWcPgjPRCvREdZ7204aTLJ2lOKYi+y7/fQku2AdYSt/ueEiYzfMQn0GOw5
+T3b8dGzKjCrdG2hHSK8tFlCYn/b9Jj28rU3Qjun4u5GXG1USTAT7J1CW/34Rtq56
+OFC3zeCiCBfGfMJz9MUf7m+lZd6UQ1XEBMEcMwc3l5tV9rqT2EUwgAbgtDLtV9yJ
+knaz6bHaTtqM4LUKV1TT2jXogXdw+N/2JGPtiG8kl2dHa1ABeG0ioBuIMUWvAe7i
+bZcAYSxEycL2LtQvHf4FxkIyqGsmjegTaMiJaC+OzibvqQJj0G8jzQdio23K+sKa
+oQIDAQAB
+-----END PUBLIC KEY-----`;
+
+    // Global App State
+    let currentCryptoKey = null;
+    let currentPublicKey = null;
+    let activeLicenseObject = null;
+    let activeLicenseFileName = "AV_License.avlic";
+    let currentProductCode = "AVROAD_TDT91";
+    let registryProductFilter = "ALL";
+
+    // ==================== INITIALIZATION & AUTH ====================
+    window.addEventListener('DOMContentLoaded', async () => {
+      lucide.createIcons();
+      checkAuth();
+      initializeDefaultDates();
+      await initializeCryptoKeys();
+      loadGitHubConfig();
+      renderRegistryTable();
+    });
+
+    function checkAuth() {
+      const isAuth = localStorage.getItem(STORAGE_KEY_AUTH);
+      const authOverlay = document.getElementById('authOverlay');
+      if (isAuth === 'true') {
+        authOverlay.classList.add('hidden');
+      } else {
+        authOverlay.classList.remove('hidden');
+      }
+    }
+
+    function handleAuthSubmit(e) {
+      e.preventDefault();
+      const inputPass = document.getElementById('authPasswordInput').value.trim();
+      const storedPass = localStorage.getItem(STORAGE_KEY_PASS) || DEFAULT_MASTER_PASSWORD;
+
+      const validPass = ["1", "AVAdmin@2026", "admin"];
+      if (validPass.includes(inputPass) || inputPass === storedPass) {
+        localStorage.setItem(STORAGE_KEY_AUTH, 'true');
+        localStorage.setItem(STORAGE_KEY_PASS, '1');
+        document.getElementById('authOverlay').classList.add('hidden');
+        showToast('Đăng nhập thành công!', 'success');
+      } else {
+        showToast('Mật khẩu quản trị không chính xác!', 'error');
+        document.getElementById('authPasswordInput').value = '';
+      }
+    }
+
+    function handleLogout() {
+      localStorage.removeItem(STORAGE_KEY_AUTH);
+      sessionStorage.removeItem(STORAGE_KEY_AUTH);
+      document.getElementById('authPasswordInput').value = '';
+      document.getElementById('authOverlay').classList.remove('hidden');
+      showToast('Đã khóa màn hình quản trị.', 'info');
+    }
+
+    function togglePasswordVisibility(inputId, btn) {
+      const input = document.getElementById(inputId);
+      if (input.type === 'password') {
+        input.type = 'text';
+        btn.innerHTML = '<i data-lucide="eye-off" class="w-4 h-4"></i>';
+      } else {
+        input.type = 'password';
+        btn.innerHTML = '<i data-lucide="eye" class="w-4 h-4"></i>';
+      }
+      lucide.createIcons();
+    }
+
+    function handleChangePassword() {
+      const newPass = document.getElementById('newMasterPassword').value.trim();
+      if (!newPass) {
+        showToast('Vui lòng nhập mật khẩu mới!', 'error');
+        return;
+      }
+      localStorage.setItem(STORAGE_KEY_PASS, newPass);
+      document.getElementById('newMasterPassword').value = '';
+      showToast('Đã đổi mật khẩu quản trị thành công!', 'success');
+    }
+
+    // ==================== TAB NAVIGATION ====================
+    function switchTab(tabId) {
+      const tabs = ['issue', 'registry', 'keys', 'settings'];
+      tabs.forEach(t => {
+        const sec = document.getElementById(`tab-${t}`);
+        const navD = document.getElementById(`nav-desktop-${t}`);
+        const navM = document.getElementById(`nav-mobile-${t}`);
+        
+        if (t === tabId) {
+          sec?.classList.remove('hidden');
+          // Desktop nav styling
+          navD?.classList.add('bg-brand-500/15', 'text-brand-300', 'border-brand-500/30');
+          navD?.classList.remove('text-slate-400', 'hover:bg-slate-800');
+          // Mobile nav styling
+          navM?.classList.add('text-brand-400');
+          navM?.classList.remove('text-slate-400');
+        } else {
+          sec?.classList.add('hidden');
+          // Desktop nav styling
+          navD?.classList.remove('bg-brand-500/15', 'text-brand-300', 'border-brand-500/30');
+          navD?.classList.add('text-slate-400', 'hover:bg-slate-800');
+          // Mobile nav styling
+          navM?.classList.remove('text-brand-400');
+          navM?.classList.add('text-slate-400');
+        }
+      });
+      lucide.createIcons();
+    }
+
+    // ==================== DATE HELPERS ====================
+    function initializeDefaultDates() {
+      const today = new Date();
+      const oneYearLater = new Date();
+      oneYearLater.setFullYear(today.getFullYear() + 1);
+
+      document.getElementById('licExpiryDate').value = formatDateISO(oneYearLater);
+      document.getElementById('licUpdateExpiryDate').value = formatDateISO(oneYearLater);
+    }
+
+    function formatDateISO(d) {
+      return d.toISOString().split('T')[0];
+    }
+
+    function setPresetDuration(months) {
+      const permCheck = document.getElementById('licIsPermanent');
+      permCheck.checked = false;
+      document.getElementById('licExpiryDate').disabled = false;
+
+      const target = new Date();
+      target.setMonth(target.getMonth() + months);
+      const isoStr = formatDateISO(target);
+
+      document.getElementById('licExpiryDate').value = isoStr;
+      if (document.getElementById('syncUpdateDate').checked) {
+        document.getElementById('licUpdateExpiryDate').value = isoStr;
+      }
+
+      document.querySelectorAll('.duration-btn').forEach(btn => {
+        btn.classList.remove('active-duration', 'bg-brand-600/20', 'border-brand-500', 'text-brand-300');
+        btn.classList.add('bg-slate-950', 'text-slate-200');
+      });
+      event?.currentTarget?.classList.add('active-duration', 'bg-brand-600/20', 'border-brand-500', 'text-brand-300');
+      event?.currentTarget?.classList.remove('bg-slate-950', 'text-slate-200');
+    }
+
+    function setPermanentDuration() {
+      const permCheck = document.getElementById('licIsPermanent');
+      permCheck.checked = true;
+      handlePermanentToggle(permCheck);
+
+      const oneYear = new Date();
+      oneYear.setFullYear(oneYear.getFullYear() + 1);
+      document.getElementById('licUpdateExpiryDate').value = formatDateISO(oneYear);
+      document.getElementById('syncUpdateDate').checked = false;
+    }
+
+    function handlePermanentToggle(checkbox) {
+      const expiryInput = document.getElementById('licExpiryDate');
+      if (checkbox.checked) {
+        expiryInput.value = '9999-12-31';
+        expiryInput.disabled = true;
+      } else {
+        expiryInput.disabled = false;
+        initializeDefaultDates();
+      }
+    }
+
+    function handleSyncUpdateToggle(checkbox) {
+      if (checkbox.checked) {
+        document.getElementById('licUpdateExpiryDate').value = document.getElementById('licExpiryDate').value;
+      }
+    }
+
+    // ==================== REQUEST FILE IMPORT ====================
+    function handleDragOver(e) {
+      e.preventDefault();
+      document.getElementById('dropzone').classList.add('border-brand-400', 'bg-brand-500/10');
+    }
+
+    function handleDragLeave(e) {
+      e.preventDefault();
+      document.getElementById('dropzone').classList.remove('border-brand-400', 'bg-brand-500/10');
+    }
+
+    function handleFileDrop(e) {
+      e.preventDefault();
+      document.getElementById('dropzone').classList.remove('border-brand-400', 'bg-brand-500/10');
+      if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+        parseRequestFile(e.dataTransfer.files[0]);
+      }
+    }
+
+    function handleFileSelect(e) {
+      if (e.target.files && e.target.files[0]) {
+        parseRequestFile(e.target.files[0]);
+      }
+    }
+
+    function parseRequestFile(file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        try {
+          const content = e.target.result;
+          const json = JSON.parse(content);
+          populateRequestData(json);
+          showToast(`Đã nhận diện: ${file.name}`, 'success');
+        } catch (err) {
+          showToast('File không đúng định dạng JSON/AVREQ hợp lệ!', 'error');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    function togglePasteArea() {
+      const area = document.getElementById('pasteArea');
+      area.classList.toggle('hidden');
+    }
+
+    function handlePasteParse() {
+      const text = document.getElementById('pasteJsonInput').value.trim();
+      if (!text) return;
+      try {
+        const json = JSON.parse(text);
+        populateRequestData(json);
+        document.getElementById('pasteArea').classList.add('hidden');
+        document.getElementById('pasteJsonInput').value = '';
+        showToast('Đã nạp thông tin thành công!', 'success');
+      } catch (err) {
+        showToast('Nội dung dán không phải là JSON hợp lệ!', 'error');
+      }
+    }
+
+    function selectProduct(code) {
+      currentProductCode = code;
+      const tabAvroad = document.getElementById('tabProductAvroad');
+      const tabAvcivil = document.getElementById('tabProductAvcivil');
+      const badge = document.getElementById('activeProductBadge');
+
+      if (!tabAvroad || !tabAvcivil) return;
+
+      if (code === 'AVROAD_TDT91') {
+        tabAvroad.className = 'product-tab active flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-blue-500 bg-blue-500/10 text-blue-300 font-semibold text-xs sm:text-sm transition-all duration-200 shadow-sm cursor-pointer';
+        tabAvcivil.className = 'product-tab flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-slate-800 bg-slate-950/60 hover:bg-slate-800/50 text-slate-400 font-semibold text-xs sm:text-sm transition-all duration-200 cursor-pointer';
+        if (badge) {
+          badge.textContent = 'AVRoad 2026 (TDT 9.1)';
+          badge.className = 'text-xs px-2.5 py-0.5 rounded-full font-bold bg-blue-500/20 text-blue-300 border border-blue-500/30';
+        }
+      } else {
+        tabAvcivil.className = 'product-tab active flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-emerald-500 bg-emerald-500/10 text-emerald-300 font-semibold text-xs sm:text-sm transition-all duration-200 shadow-sm cursor-pointer';
+        tabAvroad.className = 'product-tab flex items-center justify-center gap-3 py-3 px-4 rounded-xl border border-slate-800 bg-slate-950/60 hover:bg-slate-800/50 text-slate-400 font-semibold text-xs sm:text-sm transition-all duration-200 cursor-pointer';
+        if (badge) {
+          badge.textContent = 'AV_Civil';
+          badge.className = 'text-xs px-2.5 py-0.5 rounded-full font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+        }
+      }
+    }
+
+    function setRegistryProductFilter(prod) {
+      registryProductFilter = prod;
+      ['ALL', 'AVROAD_TDT91', 'AV_CIVIL'].forEach(id => {
+        const btn = document.getElementById('regProdFilter-' + id);
+        if (btn) {
+          if (id === prod) {
+            btn.className = 'reg-prod-tab active px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap bg-brand-600 text-white shadow-sm cursor-pointer';
+          } else {
+            btn.className = 'reg-prod-tab px-4 py-2 rounded-xl text-xs font-bold transition flex items-center gap-1.5 whitespace-nowrap bg-slate-950/60 hover:bg-slate-800 text-slate-400 cursor-pointer';
+          }
+        }
+      });
+      renderRegistryTable();
+    }
+
+    function populateRequestData(data) {
+      // Nhận diện phần mềm từ file .avreq
+      let detectedProduct = currentProductCode;
+      let productName = detectedProduct === 'AVROAD_TDT91' ? 'AVRoad 2026 (TDT 9.1)' : 'AV_Civil';
+
+      if (data.software_code === 'AV_CIVIL' || 
+          (data.app_name && data.app_name.toLowerCase().includes('civil')) || 
+          (data.product && data.product.toLowerCase().includes('civil'))) {
+        detectedProduct = 'AV_CIVIL';
+        productName = 'AV_Civil (Civil 3D)';
+      } else if (data.software_code === 'AVROAD_TDT91' || 
+                 (data.app_name && (data.app_name.toLowerCase().includes('avroad') || data.app_name.toLowerCase().includes('tdt'))) ||
+                 (data.product && (data.product.toLowerCase().includes('avroad') || data.product.toLowerCase().includes('tdt')))) {
+        detectedProduct = 'AVROAD_TDT91';
+        productName = 'AVRoad 2026 (TDT 9.1)';
+      }
+
+      selectProduct(detectedProduct);
+
+      if (data.hwid) document.getElementById('licHwid').value = data.hwid;
+      if (data.customer_name) document.getElementById('licCustomer').value = data.customer_name;
+      if (data.company) document.getElementById('licCompany').value = data.company;
+      if (data.machine_name) document.getElementById('licMachine').value = data.machine_name;
+      if (data.phone) document.getElementById('licPhone').value = data.phone;
+
+      showToast(`Đã nhận diện phần mềm: ${productName}`, 'info');
+    }
+
+    function loadSampleRequest() {
+      if (currentProductCode === 'AVROAD_TDT91') {
+        populateRequestData({
+          app_name: "AVRoad 2026 (TDT 9.1)",
+          product: "AVRoad 2026 (TDT 9.1)",
+          software_code: "AVROAD_TDT91",
+          customer_name: "Trần Minh Quang",
+          company: "Công ty Cổ phần Thiết kế Đường TDT",
+          phone: "0987654321",
+          email: "quang.tdt@gmail.com",
+          machine_name: "DESKTOP-TDT91",
+          hwid: "AV-4A1B-2C3D-4E5F-6A7B"
+        });
+      } else {
+        populateRequestData({
+          app_name: "AV_Civil",
+          product: "AV_Civil",
+          software_code: "AV_CIVIL",
+          customer_name: "Nguyễn Văn Hưng",
+          company: "Công ty CP Hạ tầng Giao thông AV",
+          phone: "0912345678",
+          email: "hung.civil@example.com",
+          machine_name: "DESKTOP-CIVIL3D",
+          hwid: "AV-7A8B-9C0D-1E2F-3A4B"
+        });
+      }
+      showToast('Đã nạp dữ liệu mẫu thử nghiệm!', 'info');
+    }
+
+    function resetLicenseForm() {
+      document.getElementById('licHwid').value = '';
+      document.getElementById('licCustomer').value = '';
+      document.getElementById('licCompany').value = '';
+      document.getElementById('licMachine').value = '';
+      document.getElementById('licPhone').value = '';
+      document.getElementById('licNotes').value = '';
+      selectAllModules(true);
+      initializeDefaultDates();
+      document.getElementById('licenseResultCard').querySelector('#resultPlaceholder').classList.remove('hidden');
+      document.getElementById('licenseResultCard').querySelector('#resultDetails').classList.add('hidden');
+      showToast('Đã làm mới form thông tin.', 'info');
+    }
+
+    function copyHWID() {
+      const hwid = document.getElementById('licHwid').value.trim();
+      if (!hwid) return;
+      navigator.clipboard.writeText(hwid);
+      showToast('Đã sao chép HWID vào bộ nhớ tạm!', 'success');
+    }
+
+    // ==================== MODULE SELECTION LOGIC ====================
+    function handleModuleAllToggle(checkbox) {
+      const items = document.querySelectorAll('.mod-item');
+      items.forEach(cb => cb.checked = checkbox.checked);
+    }
+
+    function selectAllModules(checked) {
+      document.getElementById('modAll').checked = checked;
+      document.querySelectorAll('.mod-item').forEach(cb => cb.checked = checked);
+    }
+
+    function getSelectedModules() {
+      const list = [];
+      if (document.getElementById('modAll').checked) list.push('AV_ALL');
+      if (document.getElementById('modRoad').checked) list.push('AV_ROAD');
+      if (document.getElementById('modPipe').checked) list.push('AV_PIPE');
+      if (document.getElementById('modModel').checked) list.push('AV_MODEL');
+      return list.length > 0 ? list : ['AV_ALL'];
+    }
+
+    // ==================== WEB CRYPTO RSA ENGINE ====================
+    function pemToArrayBuffer(pem) {
+      const b64 = pem
+        .replace(/-----[^-]+-----/g, '')
+        .replace(/\s+/g, '');
+      const raw = atob(b64);
+      const u8 = new Uint8Array(raw.length);
+      for (let i = 0; i < raw.length; i++) {
+        u8[i] = raw.charCodeAt(i);
+      }
+      return u8.buffer;
+    }
+
+    function arrayBufferToPem(buffer, label) {
+      const bytes = new Uint8Array(buffer);
+      let binary = '';
+      for (let i = 0; i < bytes.byteLength; i++) {
+        binary += String.fromCharCode(bytes[i]);
+      }
+      const b64 = btoa(binary);
+      const chunks = b64.match(/.{1,64}/g) || [];
+      return `-----BEGIN ${label}-----\n${chunks.join('\n')}\n-----END ${label}-----`;
+    }
+
+    async function initializeCryptoKeys() {
+      let storedPrivPem = localStorage.getItem(STORAGE_KEY_PRIV);
+      let storedPubPem = localStorage.getItem(STORAGE_KEY_PUB);
+
+      if (!storedPrivPem) {
+        storedPrivPem = SYSTEM_DEFAULT_PRIVATE_KEY;
+        storedPubPem = SYSTEM_DEFAULT_PUBLIC_KEY;
+        localStorage.setItem(STORAGE_KEY_PRIV, storedPrivPem);
+        localStorage.setItem(STORAGE_KEY_PUB, storedPubPem);
+      }
+
+      await loadPrivateKeyFromPem(storedPrivPem, storedPubPem);
+    }
+
+    async function loadPrivateKeyFromPem(privPem, pubPem) {
+      try {
+        const privBuffer = pemToArrayBuffer(privPem);
+        currentCryptoKey = await crypto.subtle.importKey(
+          'pkcs8',
+          privBuffer,
+          { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+          true,
+          ['sign']
+        );
+
+        if (pubPem) {
+          const pubBuffer = pemToArrayBuffer(pubPem);
+          currentPublicKey = await crypto.subtle.importKey(
+            'spki',
+            pubBuffer,
+            { name: 'RSASSA-PKCS1-v1_5', hash: 'SHA-256' },
+            true,
+            ['verify']
+          );
+        }
+
+        updateKeyStatusUI(true, privPem);
+      } catch (err) {
+        console.error('Failed to import RSA key:', err);
+        updateKeyStatusUI(false);
+      }
+    }
+
+    async function updateKeyStatusUI(isReady, privPem = '') {
+      const headerBadge = document.getElementById('headerKeyBadge');
+      const headerText = document.getElementById('headerKeyText');
+      const headerTextShort = document.getElementById('headerKeyTextShort');
+      const keyStatusBanner = document.getElementById('keyStatusBanner');
+      const keyStatusLabel = document.getElementById('keyStatusLabel');
+      const pemTextarea = document.getElementById('pemKeyTextarea');
+      const btnDownloadPriv = document.getElementById('btnDownloadPriv');
+      const btnDownloadPub = document.getElementById('btnDownloadPub');
+      const keyFingerprintLabel = document.getElementById('keyFingerprintLabel');
+
+      if (isReady) {
+        headerBadge.className = 'flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium border transition bg-emerald-500/10 border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20';
+        headerBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-emerald-400"></span><span class="hidden sm:inline">Khóa RSA: Sẵn Sàng</span><span class="sm:hidden">RSA OK</span>';
+        
+        keyStatusBanner.className = 'px-3.5 py-2 rounded-xl text-xs font-medium flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 text-emerald-300';
+        keyStatusLabel.textContent = 'Khóa Riêng Tư Đang Hoạt Động (RSA-2048 PKCS#8)';
+        
+        pemTextarea.value = privPem;
+        btnDownloadPriv.classList.remove('hidden');
+        btnDownloadPub.classList.remove('hidden');
+
+        if (currentCryptoKey) {
+          const rawPriv = await crypto.subtle.exportKey('pkcs8', currentCryptoKey);
+          const hashBuf = await crypto.subtle.digest('SHA-256', rawPriv);
+          const hashHex = Array.from(new Uint8Array(hashBuf)).slice(0, 8).map(b => b.toString(16).padStart(2, '0')).join(':');
+          keyFingerprintLabel.textContent = `SHA-256: ${hashHex}... (RSA-2048 bit)`;
+        }
+      } else {
+        headerBadge.className = 'flex items-center gap-1.5 px-2.5 sm:px-3 py-1.5 rounded-lg text-xs font-medium border transition bg-rose-500/10 border-rose-500/30 text-rose-300 hover:bg-rose-500/20';
+        headerBadge.innerHTML = '<span class="w-2 h-2 rounded-full bg-rose-400 animate-pulse"></span><span class="hidden sm:inline">Chưa có Khóa RSA</span><span class="sm:hidden">Chưa có khóa</span>';
+        
+        keyStatusBanner.className = 'px-3.5 py-2 rounded-xl text-xs font-medium flex items-center gap-2 bg-rose-500/10 border border-rose-500/30 text-rose-300';
+        keyStatusLabel.textContent = 'Chưa nạp Private Key (Bản quyền sẽ không thể ký)';
+        
+        btnDownloadPriv.classList.add('hidden');
+        btnDownloadPub.classList.add('hidden');
+        keyFingerprintLabel.textContent = 'Fingerprint: Không có khóa';
+      }
+    }
+
+    async function generateNewKeyPair() {
+      if (!confirm('Bạn có chắc chắn muốn tạo cặp khóa RSA-2048 mới? Khóa cũ sẽ được thay thế.')) return;
+
+      try {
+        const keyPair = await crypto.subtle.generateKey(
+          {
+            name: 'RSASSA-PKCS1-v1_5',
+            modulusLength: 2048,
+            publicExponent: new Uint8Array([1, 0, 1]),
+            hash: 'SHA-256'
+          },
+          true,
+          ['sign', 'verify']
+        );
+
+        const privBuf = await crypto.subtle.exportKey('pkcs8', keyPair.privateKey);
+        const pubBuf = await crypto.subtle.exportKey('spki', keyPair.publicKey);
+
+        const privPem = arrayBufferToPem(privBuf, 'PRIVATE KEY');
+        const pubPem = arrayBufferToPem(pubBuf, 'PUBLIC KEY');
+
+        localStorage.setItem(STORAGE_KEY_PRIV, privPem);
+        localStorage.setItem(STORAGE_KEY_PUB, pubPem);
+
+        currentCryptoKey = keyPair.privateKey;
+        currentPublicKey = keyPair.publicKey;
+
+        updateKeyStatusUI(true, privPem);
+        showToast('Đã tạo thành công cặp khóa RSA-2048 mới!', 'success');
+      } catch (err) {
+        showToast('Lỗi khi tạo khóa RSA: ' + err.message, 'error');
+      }
+    }
+
+    async function loadDefaultKeys() {
+      localStorage.setItem(STORAGE_KEY_PRIV, SYSTEM_DEFAULT_PRIVATE_KEY);
+      localStorage.setItem(STORAGE_KEY_PUB, SYSTEM_DEFAULT_PUBLIC_KEY);
+      await loadPrivateKeyFromPem(SYSTEM_DEFAULT_PRIVATE_KEY, SYSTEM_DEFAULT_PUBLIC_KEY);
+      showToast('Đã nạp khóa RSA mặc định của hệ thống!', 'success');
+    }
+
+    function clearStoredKey() {
+      if (!confirm('Bạn có chắc muốn xóa khóa khỏi trình duyệt?')) return;
+      localStorage.removeItem(STORAGE_KEY_PRIV);
+      localStorage.removeItem(STORAGE_KEY_PUB);
+      currentCryptoKey = null;
+      currentPublicKey = null;
+      document.getElementById('pemKeyTextarea').value = '';
+      updateKeyStatusUI(false);
+      showToast('Đã xóa khóa khỏi trình duyệt.', 'info');
+    }
+
+    async function savePastedKey() {
+      const pem = document.getElementById('pemKeyTextarea').value.trim();
+      if (!pem.includes('BEGIN PRIVATE KEY')) {
+        showToast('Định dạng không hợp lệ! Khóa phải là PKCS#8 (BEGIN PRIVATE KEY)', 'error');
+        return;
+      }
+      try {
+        await loadPrivateKeyFromPem(pem, null);
+        localStorage.setItem(STORAGE_KEY_PRIV, pem);
+        showToast('Đã lưu và kích hoạt khóa riêng tư!', 'success');
+      } catch (err) {
+        showToast('Không thể giải mã khóa: ' + err.message, 'error');
+      }
+    }
+
+    function handlePemFileUpload(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const pem = event.target.result;
+        document.getElementById('pemKeyTextarea').value = pem;
+        await savePastedKey();
+      };
+      reader.readAsText(file);
+    }
+
+    function downloadPrivateKeyPem() {
+      const pem = localStorage.getItem(STORAGE_KEY_PRIV);
+      if (!pem) return;
+      downloadBlob(pem, 'private_key.pem', 'application/x-pem-file');
+    }
+
+    function downloadPublicKeyPem() {
+      const pem = localStorage.getItem(STORAGE_KEY_PUB);
+      if (!pem) return;
+      downloadBlob(pem, 'public_key.pem', 'application/x-pem-file');
+    }
+
+    // ==================== GENERATE & SIGN LICENSE ====================
+    async function generateAndSignLicense() {
+      if (!currentCryptoKey) {
+        showToast('Chưa nạp Khóa Riêng Tư RSA! Vui lòng vào tab Quản Lý Khóa.', 'error');
+        switchTab('keys');
+        return;
+      }
+
+      const hwid = document.getElementById('licHwid').value.trim().toUpperCase();
+      const customer = document.getElementById('licCustomer').value.trim();
+      const company = document.getElementById('licCompany').value.trim();
+      const machine = document.getElementById('licMachine').value.trim();
+      const phone = document.getElementById('licPhone').value.trim();
+      const expiryDate = document.getElementById('licExpiryDate').value;
+      const updateExpiryDate = document.getElementById('licUpdateExpiryDate').value;
+      const isPermanent = document.getElementById('licIsPermanent').checked;
+      const cadVersion = document.getElementById('licCadVersion').value;
+      const notes = document.getElementById('licNotes').value.trim();
+      const modules = getSelectedModules();
+
+      if (!hwid) {
+        showToast('Vui lòng nhập hoặc kéo thả file để có Mã thiết bị (HWID)!', 'error');
+        document.getElementById('licHwid').focus();
+        return;
+      }
+
+      if (!customer) {
+        showToast('Vui lòng nhập Tên Khách Hàng / Kỹ Sư!', 'error');
+        document.getElementById('licCustomer').focus();
+        return;
+      }
+
+      const timestamp = new Date().toISOString().replace(/[-:T]/g, '').slice(0, 14);
+      const randomSuffix = Math.random().toString(36).substring(2, 6).toUpperCase();
+      const licenseId = `LIC-${timestamp}-${randomSuffix}`;
+      const issuedDate = formatDateISO(new Date());
+
+      const isAvroad = currentProductCode === 'AVROAD_TDT91';
+      const productName = isAvroad ? "AVRoad 2026 (TDT 9.1)" : "AV_Civil";
+
+      const payload = {
+        license_id: licenseId,
+        product: productName,
+        software_code: currentProductCode,
+        customer_name: customer,
+        company: company || 'Cá nhân',
+        machine_name: machine || 'PC',
+        phone: phone || '',
+        hwid: hwid,
+        hardware_id: hwid,
+        modules: modules,
+        license_type: isPermanent ? "Permanent" : "TimeLimited",
+        issued_date: issuedDate,
+        valid_from: issuedDate,
+        expiry_date: isPermanent ? "9999-12-31" : expiryDate,
+        update_expiry_date: updateExpiryDate || expiryDate,
+        is_permanent: isPermanent,
+        max_cad_version: cadVersion,
+        notes: notes,
+        status: "active"
+      };
+
+      try {
+        const payloadString = JSON.stringify(payload);
+        const dataBytes = new TextEncoder().encode(payloadString);
+
+        const signatureBuffer = await crypto.subtle.sign(
+          'RSASSA-PKCS1-v1_5',
+          currentCryptoKey,
+          dataBytes
+        );
+
+        const sigBytes = new Uint8Array(signatureBuffer);
+        let binarySig = '';
+        for (let i = 0; i < sigBytes.byteLength; i++) {
+          binarySig += String.fromCharCode(sigBytes[i]);
+        }
+        const signatureBase64 = btoa(binarySig);
+
+        activeLicenseObject = {
+          version: "1.0",
+          payload: payload,
+          signature: signatureBase64,
+          algorithm: "RSASSA-PKCS1-v1_5-SHA256"
+        };
+
+        const safeCustName = customer.replace(/[^a-zA-Z0-9_\u00C0-\u1EF9]/g, '_');
+        const filePrefix = isAvroad ? "AVRoad_License" : "AVCivil_License";
+        activeLicenseFileName = `${filePrefix}_${safeCustName}_${hwid.substring(hwid.length - 4)}.avlic`;
+
+        document.getElementById('resultPlaceholder').classList.add('hidden');
+        document.getElementById('resultDetails').classList.remove('hidden');
+
+        document.getElementById('resStatusSub').textContent = 'Ký số thành công & sẵn sàng xuất file';
+        document.getElementById('resBadge').textContent = 'ĐÃ KÝ SỐ';
+        document.getElementById('resBadge').className = 'text-[10px] font-mono px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40';
+
+        const resProd = document.getElementById('resProduct');
+        if (resProd) {
+          resProd.textContent = productName;
+          resProd.className = isAvroad ? 'font-semibold text-blue-400' : 'font-semibold text-emerald-400';
+        }
+
+        document.getElementById('resLicId').textContent = licenseId;
+        document.getElementById('resCustomer').textContent = customer;
+        document.getElementById('resHwid').textContent = hwid;
+        document.getElementById('resModules').textContent = modules.join(', ');
+        document.getElementById('resIssueDate').textContent = issuedDate;
+        document.getElementById('resExpiryDate').textContent = isPermanent ? 'Vĩnh Viễn (9999-12-31)' : expiryDate;
+        document.getElementById('resUpdateExpiryDate').textContent = updateExpiryDate || expiryDate;
+
+        document.getElementById('inspectorContent').textContent = JSON.stringify(activeLicenseObject, null, 2);
+
+        saveLicenseToRegistry(activeLicenseObject);
+
+        showToast('Đã ký số & tạo Giấy phép AV_License.avlic thành công!', 'success');
+
+        if (window.innerWidth < 1024) {
+          document.getElementById('licenseResultCard').scrollIntoView({ behavior: 'smooth' });
+        }
+      } catch (err) {
+        console.error('Signing error:', err);
+        showToast('Lỗi trong quá trình ký số: ' + err.message, 'error');
+      }
+    }
+
+    function toggleInspector() {
+      const area = document.getElementById('inspectorArea');
+      area.classList.toggle('hidden');
+    }
+
+    // ==================== DOWNLOAD & EXPORT ====================
+    function downloadLicenseFile() {
+      if (!activeLicenseObject) {
+        showToast('Chưa có giấy phép được tạo!', 'error');
+        return;
+      }
+      const jsonStr = JSON.stringify(activeLicenseObject, null, 2);
+      downloadBlob(jsonStr, activeLicenseFileName, 'application/octet-stream');
+      showToast(`Đã tải xuống file: ${activeLicenseFileName}`, 'success');
+    }
+
+    async function shareLicenseFile() {
+      if (!activeLicenseObject) return;
+      const jsonStr = JSON.stringify(activeLicenseObject, null, 2);
+
+      if (navigator.share) {
+        try {
+          const file = new File([jsonStr], activeLicenseFileName, { type: 'application/octet-stream' });
+          if (navigator.canShare && navigator.canShare({ files: [file] })) {
+            await navigator.share({
+              files: [file],
+              title: 'AV License File',
+              text: `Giấy phép bản quyền AV Civil 3D cho ${activeLicenseObject.payload.customer_name}`
+            });
+            showToast('Chia sẻ thành công!', 'success');
+            return;
+          }
+        } catch (e) {
+          console.log('Share canceled or error:', e);
+        }
+      }
+
+      copyLicenseBase64();
+      showToast('Đã copy nội dung License để gửi qua Zalo/Telegram.', 'info');
+    }
+
+    function copyLicenseBase64() {
+      if (!activeLicenseObject) return;
+      const jsonStr = JSON.stringify(activeLicenseObject);
+      navigator.clipboard.writeText(jsonStr);
+      showToast('Đã sao chép chuỗi License JSON vào Clipboard!', 'success');
+    }
+
+    function downloadBlob(content, filename, contentType) {
+      const blob = new Blob([content], { type: contentType });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    // ==================== LICENSE REGISTRY & HISTORY ====================
+    function getStoredRegistry() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_REGISTRY);
+        return raw ? JSON.parse(raw) : [];
+      } catch (e) {
+        return [];
+      }
+    }
+
+    function saveLicenseToRegistry(lic) {
+      const list = getStoredRegistry();
+      const filtered = list.filter(item => item.payload.license_id !== lic.payload.license_id);
+      filtered.unshift(lic);
+      localStorage.setItem(STORAGE_KEY_REGISTRY, JSON.stringify(filtered));
+      renderRegistryTable();
+    }
+
+    function renderRegistryTable() {
+      const list = getStoredRegistry();
+      const container = document.getElementById('registryListContainer');
+      const search = (document.getElementById('registrySearch')?.value || '').toLowerCase().trim();
+      const filter = document.getElementById('registryFilter')?.value || 'ALL';
+
+      const badge = document.getElementById('registryCountBadge');
+      if (badge) badge.textContent = list.length;
+
+      let countActive = 0;
+      let countExpiring = 0;
+      let countRevoked = 0;
+      const today = new Date();
+
+      let countAll = list.length;
+      let countAvroad = 0;
+      let countAvcivil = 0;
+
+      list.forEach(item => {
+        const p = item.payload || {};
+        const isAvroad = p.software_code === 'AVROAD_TDT91' || (p.product && (p.product.includes('AVRoad') || p.product.includes('TDT')));
+        if (isAvroad) countAvroad++;
+        else countAvcivil++;
+      });
+
+      const bAll = document.getElementById('badgeCountAll');
+      const bAvroad = document.getElementById('badgeCountAvroad');
+      const bAvcivil = document.getElementById('badgeCountAvcivil');
+      if (bAll) bAll.textContent = countAll;
+      if (bAvroad) bAvroad.textContent = countAvroad;
+      if (bAvcivil) bAvcivil.textContent = countAvcivil;
+
+      const filtered = list.filter(item => {
+        const p = item.payload;
+        const exp = new Date(p.expiry_date);
+        const daysLeft = Math.ceil((exp - today) / (1000 * 60 * 60 * 24));
+        const isRevoked = p.status === 'revoked';
+        const isExp = !p.is_permanent && daysLeft < 0;
+        const isExpiring = !p.is_permanent && !isRevoked && daysLeft >= 0 && daysLeft <= 30;
+
+        if (isRevoked) countRevoked++;
+        else if (isExp) { /* expired */ }
+        else {
+          countActive++;
+          if (isExpiring) countExpiring++;
+        }
+
+        if (registryProductFilter !== 'ALL') {
+          const isAvroad = p.software_code === 'AVROAD_TDT91' || (p.product && (p.product.includes('AVRoad') || p.product.includes('TDT')));
+          if (registryProductFilter === 'AVROAD_TDT91' && !isAvroad) return false;
+          if (registryProductFilter === 'AV_CIVIL' && isAvroad) return false;
+        }
+
+        if (search) {
+          const matchStr = `${p.customer_name} ${p.hwid} ${p.company} ${p.phone} ${p.license_id}`.toLowerCase();
+          if (!matchStr.includes(search)) return false;
+        }
+
+        if (filter === 'ACTIVE') return !isRevoked && !isExp;
+        if (filter === 'EXPIRING') return isExpiring;
+        if (filter === 'EXPIRED') return isExp && !isRevoked;
+        if (filter === 'REVOKED') return isRevoked;
+
+        return true;
+      });
+
+      document.getElementById('statTotal').textContent = list.length;
+      document.getElementById('statActive').textContent = countActive;
+      document.getElementById('statExpiring').textContent = countExpiring;
+      document.getElementById('statRevoked').textContent = countRevoked;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="py-12 text-center text-slate-500 bg-slate-900 border border-slate-800 rounded-2xl">
+            <i data-lucide="inbox" class="w-10 h-10 mx-auto text-slate-600 mb-2"></i>
+            <p class="text-sm">Không tìm thấy giấy phép nào</p>
+          </div>
+        `;
+        lucide.createIcons();
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => {
+        const p = item.payload;
+        const isRevoked = p.status === 'revoked';
+        const exp = new Date(p.expiry_date);
+        const daysLeft = Math.ceil((exp - today) / (1000 * 60 * 60 * 24));
+        
+        let statusBadge = '';
+        if (isRevoked) {
+          statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-rose-500/20 text-rose-300 border border-rose-500/30">ĐÃ THU HỒI</span>';
+        } else if (p.is_permanent) {
+          statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30">VĨNH VIỄN</span>';
+        } else if (daysLeft < 0) {
+          statusBadge = '<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-slate-700 text-slate-300">ĐÃ HẾT HẠN</span>';
+        } else if (daysLeft <= 30) {
+          statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/30">CÒN ${daysLeft} NGÀY</span>`;
+        } else {
+          statusBadge = `<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">CÒN ${daysLeft} NGÀY</span>`;
+        }
+
+        const isAvroad = p.software_code === 'AVROAD_TDT91' || (p.product && (p.product.includes('AVRoad') || p.product.includes('TDT')));
+        const prodBadge = isAvroad
+          ? '<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-blue-500/20 text-blue-300 border border-blue-500/30">AVRoad 2026 (TDT 9.1)</span>'
+          : '<span class="px-2 py-0.5 rounded text-[10px] font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30">AV_Civil</span>';
+
+        return `
+          <div class="bg-slate-900 border border-slate-800 hover:border-slate-700 rounded-2xl p-4 sm:p-5 transition shadow-sm flex flex-col md:flex-row md:items-center justify-between gap-4">
+            
+            <div class="space-y-1.5 flex-1">
+              <div class="flex items-center gap-2 flex-wrap">
+                <span class="text-sm font-bold text-white">${p.customer_name}</span>
+                <span class="text-xs text-slate-400">(${p.company || 'Cá nhân'})</span>
+                ${prodBadge}
+                ${statusBadge}
+              </div>
+
+              <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-xs text-slate-400">
+                <span class="font-mono text-brand-300">${p.hwid}</span>
+                <span>•</span>
+                <span>Mã: <code class="text-slate-300 font-mono">${p.license_id}</code></span>
+                <span>•</span>
+                <span>Cấp: ${p.issued_date}</span>
+                <span>•</span>
+                <span>Hạn: <strong class="text-slate-200">${p.is_permanent ? 'Vĩnh viễn' : p.expiry_date}</strong></span>
+              </div>
+
+              <div class="flex items-center gap-1.5 pt-1">
+                ${(p.modules || []).map(m => `<span class="text-[10px] font-mono px-1.5 py-0.5 bg-slate-800 text-slate-300 rounded">${m}</span>`).join('')}
+                <span class="text-xs text-slate-500 ml-2">CAD: ${p.max_cad_version || 'ALL'}</span>
+              </div>
+            </div>
+
+            <!-- Action buttons per row -->
+            <div class="flex items-center gap-2 self-end md:self-center">
+              <button onclick="downloadFromRegistry('${p.license_id}')" title="Tải lại file .avlic" 
+                class="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-xl transition border border-slate-700">
+                <i data-lucide="download" class="w-4 h-4 text-emerald-400"></i>
+              </button>
+
+              <button onclick="quickRenewLicense('${p.license_id}')" title="Gia hạn thêm 1 năm" 
+                class="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white rounded-xl transition border border-slate-700">
+                <i data-lucide="calendar-plus" class="w-4 h-4 text-indigo-400"></i>
+              </button>
+
+              ${!isRevoked ? `
+                <button onclick="revokeLicense('${p.license_id}')" title="Thu hồi giấy phép & Khóa máy" 
+                  class="p-2.5 bg-slate-800 hover:bg-rose-950/40 text-slate-400 hover:text-rose-300 rounded-xl transition border border-slate-700 hover:border-rose-800">
+                  <i data-lucide="ban" class="w-4 h-4 text-rose-400"></i>
+                </button>
+              ` : `
+                <button onclick="unrevokeLicense('${p.license_id}')" title="Khôi phục kích hoạt" 
+                  class="p-2.5 bg-slate-800 hover:bg-emerald-950/40 text-slate-400 hover:text-emerald-300 rounded-xl transition border border-slate-700 hover:border-emerald-800">
+                  <i data-lucide="check" class="w-4 h-4 text-emerald-400"></i>
+                </button>
+              `}
+
+              <button onclick="deleteRegistryRecord('${p.license_id}')" title="Xóa khỏi lịch sử" 
+                class="p-2.5 bg-slate-800 hover:bg-slate-700 text-slate-500 hover:text-rose-400 rounded-xl transition border border-slate-700">
+                <i data-lucide="trash-2" class="w-4 h-4"></i>
+              </button>
+            </div>
+
+          </div>
+        `;
+      }).join('');
+
+      lucide.createIcons();
+    }
+
+    function downloadFromRegistry(licenseId) {
+      const list = getStoredRegistry();
+      const item = list.find(x => x.payload.license_id === licenseId);
+      if (!item) return;
+
+      const p = item.payload;
+      const isAvroad = p.software_code === 'AVROAD_TDT91' || (p.product && (p.product.includes('AVRoad') || p.product.includes('TDT')));
+      const filePrefix = isAvroad ? "AVRoad_License" : "AVCivil_License";
+      const safeCustName = p.customer_name.replace(/[^a-zA-Z0-9_\u00C0-\u1EF9]/g, '_');
+      const filename = `${filePrefix}_${safeCustName}_${p.hwid.substring(p.hwid.length - 4)}.avlic`;
+      downloadBlob(JSON.stringify(item, null, 2), filename, 'application/octet-stream');
+      showToast(`Đã tải xuống: ${filename}`, 'success');
+    }
+
+    function quickRenewLicense(licenseId) {
+      const list = getStoredRegistry();
+      const item = list.find(x => x.payload.license_id === licenseId);
+      if (!item) return;
+
+      const p = item.payload;
+      populateRequestData({
+        software_code: p.software_code,
+        product: p.product,
+        hwid: p.hwid,
+        customer_name: p.customer_name,
+        company: p.company,
+        machine_name: p.machine_name,
+        phone: p.phone
+      });
+
+      setPresetDuration(12);
+      switchTab('issue');
+      showToast(`Đã nạp thông tin của ${p.customer_name} để gia hạn +1 Năm.`, 'info');
+    }
+
+    async function revokeLicense(licenseId) {
+      const list = getStoredRegistry();
+      const item = list.find(x => x.payload.license_id === licenseId);
+      if (!item) return;
+
+      if (!confirm(`Bạn có chắc muốn THU HỒI giấy phép ${licenseId} của khách hàng ${item.payload.customer_name}? Thiết bị này sẽ bị khóa khi kiểm tra qua GitHub.`)) return;
+
+      item.payload.status = 'revoked';
+      item.payload.revoked_at = new Date().toISOString();
+      localStorage.setItem(STORAGE_KEY_REGISTRY, JSON.stringify(list));
+      renderRegistryTable();
+      showToast(`Đã thu hồi giấy phép ${licenseId}`, 'warning');
+
+      // Check auto-sync GitHub
+      const cfg = getStoredGitHubConfig();
+      if (cfg.autoSync && cfg.token) {
+        await syncBlacklistToGitHub(false);
+      }
+    }
+
+    async function unrevokeLicense(licenseId) {
+      const list = getStoredRegistry();
+      const item = list.find(x => x.payload.license_id === licenseId);
+      if (!item) return;
+
+      item.payload.status = 'active';
+      delete item.payload.revoked_at;
+      localStorage.setItem(STORAGE_KEY_REGISTRY, JSON.stringify(list));
+      renderRegistryTable();
+      showToast(`Đã khôi phục hoạt động cho ${licenseId}`, 'success');
+
+      const cfg = getStoredGitHubConfig();
+      if (cfg.autoSync && cfg.token) {
+        await syncBlacklistToGitHub(false);
+      }
+    }
+
+    function deleteRegistryRecord(licenseId) {
+      if (!confirm('Xóa bản ghi này khỏi lịch sử lưu trữ?')) return;
+      let list = getStoredRegistry();
+      list = list.filter(x => x.payload.license_id !== licenseId);
+      localStorage.setItem(STORAGE_KEY_REGISTRY, JSON.stringify(list));
+      renderRegistryTable();
+      showToast('Đã xóa bản ghi.', 'info');
+    }
+
+    function exportLicensesBackup() {
+      const list = getStoredRegistry();
+      const json = JSON.stringify(list, null, 2);
+      const dateStr = formatDateISO(new Date());
+      downloadBlob(json, `licenses_backup_${dateStr}.json`, 'application/json');
+      showToast('Đã xuất file sao lưu licenses_backup.json!', 'success');
+    }
+
+    function importLicensesBackup(e) {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = (event) => {
+        try {
+          const imported = JSON.parse(event.target.result);
+          if (!Array.isArray(imported)) throw new Error('File không hợp lệ');
+
+          const existing = getStoredRegistry();
+          const existingIds = new Set(existing.map(x => x.payload.license_id));
+          
+          let count = 0;
+          imported.forEach(item => {
+            if (item.payload && item.signature && !existingIds.has(item.payload.license_id)) {
+              existing.push(item);
+              count++;
+            }
+          });
+
+          localStorage.setItem(STORAGE_KEY_REGISTRY, JSON.stringify(existing));
+          renderRegistryTable();
+          showToast(`Đã khôi phục thêm ${count} giấy phép vào hệ thống!`, 'success');
+        } catch (err) {
+          showToast('Lỗi khi đọc file sao lưu: ' + err.message, 'error');
+        }
+      };
+      reader.readAsText(file);
+    }
+
+    // ==================== GITHUB BLACKLIST REST API INTEGRATION ====================
+    function utf8ToBase64(str) {
+      return btoa(encodeURIComponent(str).replace(/%([0-9A-F]{2})/g, (match, p1) => {
+        return String.fromCharCode('0x' + p1);
+      }));
+    }
+
+    function getStoredGitHubConfig() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY_GITHUB);
+        return raw ? JSON.parse(raw) : {
+          repo: "tienhoaa/AV_Releases",
+          filePath: "revoked_hwid.json",
+          branch: "main",
+          token: "",
+          autoSync: true
+        };
+      } catch (e) {
+        return {
+          repo: "tienhoaa/AV_Releases",
+          filePath: "revoked_hwid.json",
+          branch: "main",
+          token: "",
+          autoSync: true
+        };
+      }
+    }
+
+    function loadGitHubConfig() {
+      const cfg = getStoredGitHubConfig();
+      if (document.getElementById('ghRepo')) document.getElementById('ghRepo').value = cfg.repo || "tienhoaa/AV_Releases";
+      if (document.getElementById('ghFilePath')) document.getElementById('ghFilePath').value = cfg.filePath || "revoked_hwid.json";
+      if (document.getElementById('ghBranch')) document.getElementById('ghBranch').value = cfg.branch || "main";
+      if (document.getElementById('ghToken')) document.getElementById('ghToken').value = cfg.token || "";
+      if (document.getElementById('ghAutoSync')) document.getElementById('ghAutoSync').checked = cfg.autoSync !== false;
+
+      updateGitHubBadge(cfg.token ? true : false, cfg.repo);
+      updateRawUrlDisplay(cfg.repo, cfg.branch, cfg.filePath);
+    }
+
+    function updateRawUrlDisplay(repo, branch, path) {
+      const url = `https://raw.githubusercontent.com/${repo}/${branch}/${path}`;
+      const codeEl = document.getElementById('rawUrlCode');
+      if (codeEl) codeEl.textContent = url;
+    }
+
+    function updateGitHubBadge(hasToken, repo) {
+      const badge = document.getElementById('headerGithubBadge');
+      const text = document.getElementById('headerGithubText');
+      if (hasToken) {
+        badge.className = 'flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-medium border transition bg-emerald-500/10 border-emerald-500/30 text-emerald-300 hover:bg-emerald-500/20';
+        text.textContent = `GitHub: ${repo} (Đã kết nối)`;
+      } else {
+        badge.className = 'flex items-center gap-1.5 px-2 sm:px-2.5 py-1.5 rounded-lg text-xs font-medium border transition bg-slate-800 border-slate-700 text-slate-300 hover:border-slate-600';
+        text.textContent = `GitHub: ${repo}`;
+      }
+    }
+
+    function saveGitHubConfig() {
+      const repo = document.getElementById('ghRepo').value.trim();
+      const filePath = document.getElementById('ghFilePath').value.trim();
+      const branch = document.getElementById('ghBranch').value.trim();
+      const token = document.getElementById('ghToken').value.trim();
+      const autoSync = document.getElementById('ghAutoSync').checked;
+
+      const cfg = { repo, filePath, branch, token, autoSync };
+      localStorage.setItem(STORAGE_KEY_GITHUB, JSON.stringify(cfg));
+      updateGitHubBadge(token ? true : false, repo);
+      updateRawUrlDisplay(repo, branch, filePath);
+      showToast('Đã lưu cấu hình GitHub thành công!', 'success');
+    }
+
+    async function testGitHubConnection() {
+      const cfg = getStoredGitHubConfig();
+      const inputToken = document.getElementById('ghToken')?.value.trim() || cfg.token;
+      const repo = document.getElementById('ghRepo')?.value.trim() || cfg.repo;
+
+      if (!inputToken) {
+        showToast('Vui lòng nhập GitHub Personal Access Token (PAT)!', 'error');
+        document.getElementById('ghToken')?.focus();
+        return;
+      }
+
+      try {
+        const res = await fetch(`https://api.github.com/repos/${repo}`, {
+          headers: {
+            'Accept': 'application/vnd.github+json',
+            'Authorization': `Bearer ${inputToken}`
+          }
+        });
+
+        if (res.ok) {
+          const repoData = await res.json();
+          showToast(`Kết nối thành công tới GitHub Repo: ${repoData.full_name} (${repoData.visibility})`, 'success');
+          saveGitHubConfig();
+        } else if (res.status === 401) {
+          showToast('Lỗi xác thực (401): Token không hợp lệ hoặc đã hết hạn!', 'error');
+        } else if (res.status === 404) {
+          showToast(`Không tìm thấy repo: ${repo} hoặc token không có quyền truy cập repo!`, 'error');
+        } else {
+          showToast(`Lỗi kết nối GitHub: HTTP ${res.status}`, 'error');
+        }
+      } catch (err) {
+        showToast('Không thể kết nối tới GitHub API: ' + err.message, 'error');
+      }
+    }
+
+    async function syncBlacklistToGitHub(isManual = true) {
+      const cfg = getStoredGitHubConfig();
+      const token = document.getElementById('ghToken')?.value.trim() || cfg.token;
+      const repo = document.getElementById('ghRepo')?.value.trim() || cfg.repo;
+      const filePath = document.getElementById('ghFilePath')?.value.trim() || cfg.filePath;
+      const branch = document.getElementById('ghBranch')?.value.trim() || cfg.branch;
+
+      if (!token) {
+        if (isManual) {
+          showToast('Chưa nhập GitHub Token! Vui lòng vào tab GitHub để cài đặt Token.', 'error');
+          switchTab('settings');
+        }
+        return;
+      }
+
+      // Gather all revoked HWIDs from registry
+      const list = getStoredRegistry();
+      const revokedItems = list.filter(x => x.payload.status === 'revoked');
+      
+      const revokedMap = {};
+      revokedItems.forEach(item => {
+        const p = item.payload;
+        revokedMap[p.hwid] = {
+          customer_name: p.customer_name,
+          company: p.company,
+          license_id: p.license_id,
+          revoked_at: p.revoked_at || new Date().toISOString(),
+          reason: 'Thu hồi bởi quản trị viên AV License Manager'
+        };
+      });
+
+      const payloadFile = {
+        updated_at: new Date().toISOString(),
+        version: "1.0",
+        description: "AV Civil 3D - Danh sách thiết bị phần cứng (HWID) bị thu hồi",
+        total_revoked: Object.keys(revokedMap).length,
+        revoked_hwids: revokedMap
+      };
+
+      const fileContentStr = JSON.stringify(payloadFile, null, 2);
+      const base64Content = utf8ToBase64(fileContentStr);
+
+      try {
+        if (isManual) showToast('Đang kết nối GitHub và kiểm tra file...', 'info');
+
+        // Step 1: Get current file SHA if exists
+        let currentSha = null;
+        const getRes = await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}?ref=${branch}`, {
+          headers: {
+            'Accept': 'application/vnd.github+json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (getRes.ok) {
+          const getData = await getRes.json();
+          currentSha = getData.sha;
+        }
+
+        // Step 2: Commit file to GitHub via PUT
+        const commitBody = {
+          message: `Update revoked_hwid.json (${payloadFile.total_revoked} revoked) [via AV Admin Portal]`,
+          content: base64Content,
+          branch: branch
+        };
+        if (currentSha) {
+          commitBody.sha = currentSha;
+        }
+
+        const putRes = await fetch(`https://api.github.com/repos/${repo}/contents/${filePath}`, {
+          method: 'PUT',
+          headers: {
+            'Accept': 'application/vnd.github+json',
+            'Authorization': `Bearer ${token}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(commitBody)
+        });
+
+        if (putRes.ok) {
+          const putData = await putRes.json();
+          showToast(`Đã đồng bộ thành công lên GitHub! (${payloadFile.total_revoked} thiết bị trong Blacklist)`, 'success');
+        } else {
+          const errData = await putRes.json();
+          throw new Error(errData.message || `HTTP ${putRes.status}`);
+        }
+      } catch (err) {
+        console.error('GitHub Sync Error:', err);
+        showToast('Lỗi khi đồng bộ lên GitHub: ' + err.message, 'error');
+      }
+    }
+
+    function copyRawUrl() {
+      const codeEl = document.getElementById('rawUrlCode');
+      if (codeEl) {
+        navigator.clipboard.writeText(codeEl.textContent.trim());
+        showToast('Đã copy đường dẫn Raw GitHub!', 'success');
+      }
+    }
+
+    function copyCSharpSnippet() {
+      const code = `// ========================================================
+// 1. XÁC THỰC FILE BẢN QUYỀN OFFLINE (RSA-2048)
+// ========================================================
+string licPath = @"C:\\ProgramData\\AV_Civil\\AV_License.avlic";
+string jsonText = File.ReadAllText(licPath);
+var licDoc = JsonDocument.Parse(jsonText);
+string payloadString = licDoc.RootElement.GetProperty("payload").GetRawText();
+string signatureBase64 = licDoc.RootElement.GetProperty("signature").GetString();
+
+string publicKeyPem = @"-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAi9xQ1EpUK+sQCd+zVTAb...
+-----END PUBLIC KEY-----";
+
+using (var rsa = RSA.Create())
+{
+    rsa.ImportFromPem(publicKeyPem);
+    byte[] dataBytes = Encoding.UTF8.GetBytes(payloadString);
+    byte[] sigBytes = Convert.FromBase64String(signatureBase64);
+    
+    bool isValid = rsa.VerifyData(dataBytes, sigBytes, 
+        HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
+
+    if (!isValid) throw new Exception("Chữ ký bản quyền không hợp lệ!");
+}
+
+// ========================================================
+// 2. KIỂM TRA THU HỒI ONLINE TỪ GITHUB (ASYNCHRONOUS)
+// ========================================================
+string currentHwid = GetSystemHwid(); // "AV-XXXX-XXXX-XXXX-XXXX"
+string checkUrl = "https://raw.githubusercontent.com/tienhoaa/AV_Releases/main/revoked_hwid.json";
+
+try
+{
+    using (var client = new HttpClient { Timeout = TimeSpan.FromSeconds(3) })
+    {
+        string rawJson = await client.GetStringAsync(checkUrl + "?t=" + DateTime.UtcNow.Ticks);
+        using var blacklistDoc = JsonDocument.Parse(rawJson);
+        var revokedDict = blacklistDoc.RootElement.GetProperty("revoked_hwids");
+
+        if (revokedDict.TryGetProperty(currentHwid, out var revokedInfo))
+        {
+            string reason = revokedInfo.GetProperty("reason").GetString();
+            throw new Exception($"Máy tính đã bị thu hồi bản quyền! Lý do: {reason}");
+        }
+    }
+}
+catch (HttpRequestException)
+{
+    // Mất mạng: Vẫn cho dùng offline bình thường
+}`;
+      navigator.clipboard.writeText(code);
+      showToast('Đã chép mã nguồn C# vào bộ nhớ tạm!', 'success');
+    }
+
+    // ==================== TOAST NOTIFICATION UTILITY ====================
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      
+      let borderClass = 'border-brand-500/40 text-brand-300';
+      let icon = 'info';
+      if (type === 'success') {
+        borderClass = 'border-emerald-500/40 text-emerald-300';
+        icon = 'check-circle';
+      } else if (type === 'error') {
+        borderClass = 'border-rose-500/40 text-rose-300';
+        icon = 'alert-triangle';
+      } else if (type === 'warning') {
+        borderClass = 'border-amber-500/40 text-amber-300';
+        icon = 'alert-circle';
+      }
+
+      toast.className = `pointer-events-auto flex items-center gap-2.5 px-4 py-3 bg-slate-900/95 border ${borderClass} rounded-xl shadow-2xl text-xs backdrop-blur-md transition-all duration-300 transform translate-y-2 opacity-0`;
+      toast.innerHTML = `<i data-lucide="${icon}" class="w-4 h-4 flex-shrink-0"></i><span>${message}</span>`;
+      
+      container.appendChild(toast);
+      lucide.createIcons();
+
+      requestAnimationFrame(() => {
+        toast.classList.remove('translate-y-2', 'opacity-0');
+      });
+
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+  </script>
+</body>
+</html>

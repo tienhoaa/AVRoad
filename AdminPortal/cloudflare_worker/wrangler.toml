@@ -1,0 +1,13 @@
+name = "av-license-service"
+main = "worker.js"
+compatibility_date = "2024-01-01"
+
+# Cloudflare KV Namespace for License and Revocation state
+# Tạo KV namespace: npx wrangler kv:namespace create AV_LICENSES
+# Sau đó dán id vào bên dưới:
+[[kv_namespaces]]
+binding = "AV_LICENSES"
+id = "your_kv_namespace_id_here"
+
+[vars]
+ADMIN_SECRET_TOKEN = "AVAdmin@2026_Secret"
