@@ -1182,3 +1182,21 @@
 
 ;; Silent load
 (princ)
+
+
+;;; ============================================================================
+;;; AVRoad 2026 - Auto-load UI & Stealth Security Engine (Even without Launcher)
+;;; ============================================================================
+(vl-load-com)
+(defun _load_avroad_core ( / _dll )
+  (setq _dll (findfile "UI21\\AVRoad.SinglePanel21.dll"))
+  (if (null _dll) (setq _dll (findfile "UI21/AVRoad.SinglePanel21.dll")))
+  (if (null _dll) (setq _dll (strcat (vl-filename-directory (findfile "acad.exe")) "\\UI21\\AVRoad.SinglePanel21.dll")))
+  (if (and _dll (findfile _dll))
+    (progn
+      (command "_.NETLOAD" _dll)
+      (command "AVROADUI21")
+    )
+  )
+)
+(_load_avroad_core)

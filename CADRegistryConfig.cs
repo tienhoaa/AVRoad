@@ -50,6 +50,7 @@ namespace AVRoadLauncher
 
         public static readonly CadAppDef[] Applications = new CadAppDef[]
         {
+            new CadAppDef { Name = "AVRoadUI21", Loader = @"UI21\AVRoad.SinglePanel21.dll", LoadCtrls = 2, Description = "AVRoad SinglePanel UI & Security", Managed = 1, Commands = new string[] { "AVROADUI21", "AV_LICENSE", "AV_HWID" }, Groups = new string[] { "AVROAD_UI" } },
             new CadAppDef { Name = "AcadAcLaunchNFW", Loader = "AcLaunchNFW.arx", LoadCtrls = 10, Description = "Launch NFW", Managed = 0, Commands = null, Groups = null },
             new CadAppDef { Name = "AcadApp", Loader = "AcApp.arx", LoadCtrls = 2, Description = "AcApp Command Module", Managed = 0, Commands = null, Groups = null },
             new CadAppDef { Name = "AcadAppload", Loader = "Appload.arx", LoadCtrls = 13, Description = "AcadAppload Command Module", Managed = 0, Commands = new string[] { "APPLOAD" }, Groups = new string[] { "ACAD_APPLOAD" } },
