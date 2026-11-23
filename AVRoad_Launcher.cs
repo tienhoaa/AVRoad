@@ -1584,6 +1584,13 @@ namespace AVRoadLauncher
                 if (a.Equals("/repair-hklm", StringComparison.OrdinalIgnoreCase) || a.Equals("--repair-hklm", StringComparison.OrdinalIgnoreCase))
                 {
                     if (RegistryScope.IsLimited) throw new InvalidOperationException("RC1 permits only the three HKCU COM values.");
+                    string repairHostDir;
+                    string repairAcadExe;
+                    if (IsLiteHostMode(appDir, out repairHostDir, out repairAcadExe))
+                    {
+                        CADRegistryConfig.EnsureAcadExeConfig(repairHostDir, true);
+                        return;
+                    }
                     CADRegistryConfig.WriteHklmKeys(appDir);
                     CADRegistryConfig.GrantUsersFullControl();
                     try { Cad7ComRegistration.EnsureFullCad7ComClasses(appDir); } catch { }
@@ -1666,10 +1673,183 @@ namespace AVRoadLauncher
             Application.Run(new AVStartupForm(appDir, iniPath, fontPath, plotStylePath, plotterPath, argProfile, checkUpdateOnStartup));
         }
 
+        private static string NormalizeAcadExeCandidate(string rawPath)
+        {
+            if (string.IsNullOrEmpty(rawPath)) return null;
+            try
+            {
+                string expanded = Environment.ExpandEnvironmentVariables(rawPath).Trim().Trim('"');
+                if (string.IsNullOrEmpty(expanded)) return null;
+                if (expanded.EndsWith("acad.exe", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (File.Exists(expanded)) return Path.GetFullPath(expanded);
+                    return null;
+                }
+                string candidate = Path.Combine(expanded.TrimEnd('\\', '/'), "acad.exe");
+                if (File.Exists(candidate)) return Path.GetFullPath(candidate);
+            }
+            catch { }
+            return null;
+        }
+
+        private static string ReadAutoCADPathFromIni(string iniPath)
+        {
+            if (!File.Exists(iniPath)) return null;
+            try
+            {
+                string currentSection = "";
+                string preferred = null;
+                string fallback = null;
+                foreach (string raw in File.ReadAllLines(iniPath))
+                {
+                    string line = raw.Trim();
+                    if (line.Length == 0 || line.StartsWith(";") || line.StartsWith("#")) continue;
+                    if (line.StartsWith("[") && line.EndsWith("]"))
+                    {
+                        currentSection = line.Substring(1, line.Length - 2).Trim();
+                        continue;
+                    }
+                    int eq = line.IndexOf('=');
+                    if (eq <= 0) continue;
+                    string k = line.Substring(0, eq).Trim();
+                    string v = line.Substring(eq + 1).Trim();
+                    if (string.Equals(k, "AutoCADPath", StringComparison.OrdinalIgnoreCase) && !string.IsNullOrEmpty(v))
+                    {
+                        if (string.Equals(currentSection, "Settings", StringComparison.OrdinalIgnoreCase) ||
+                            string.Equals(currentSection, "Paths", StringComparison.OrdinalIgnoreCase))
+                        {
+                            preferred = v;
+                            break;
+                        }
+                        if (fallback == null) fallback = v;
+                    }
+                }
+                return !string.IsNullOrEmpty(preferred) ? preferred : fallback;
+            }
+            catch { }
+            return null;
+        }
+
+        private static string ProbeAutoCADFromRegistryHive(RegistryHive hive, RegistryView view)
+        {
+            try
+            {
+                using (RegistryKey root = RegistryKey.OpenBaseKey(hive, view))
+                using (RegistryKey r17 = root.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0", false))
+                {
+                    if (r17 == null) return null;
+                    List<string> subNames = new List<string>();
+                    string curVer = r17.GetValue("CurVer") as string;
+                    if (!string.IsNullOrEmpty(curVer)) subNames.Add(curVer);
+                    if (!subNames.Contains("ACAD-5001:409")) subNames.Add("ACAD-5001:409");
+                    foreach (string s in r17.GetSubKeyNames())
+                    {
+                        if (!subNames.Contains(s)) subNames.Add(s);
+                    }
+                    foreach (string sub in subNames)
+                    {
+                        using (RegistryKey pk = r17.OpenSubKey(sub, false))
+                        {
+                            if (pk == null) continue;
+                            foreach (string valName in new string[] { "Location", "AcadLocation" })
+                            {
+                                string cand = NormalizeAcadExeCandidate(pk.GetValue(valName) as string);
+                                if (!string.IsNullOrEmpty(cand)) return cand;
+                            }
+                        }
+                    }
+                }
+            }
+            catch { }
+            return null;
+        }
+
+        public static string ResolveAutoCADExe(string appDir)
+        {
+            string iniPath = Path.Combine(appDir, "AVRoad.ini");
+
+            // 1. AVRoad.ini ([Settings] / [Paths] -> AutoCADPath)
+            string iniVal = ReadAutoCADPathFromIni(iniPath);
+            string cand = NormalizeAcadExeCandidate(iniVal);
+            if (!string.IsNullOrEmpty(cand)) return cand;
+
+            // 2. Registry HKLM\SOFTWARE\Autodesk\AutoCAD\R17.0 (32-bit & 64-bit views)
+            cand = ProbeAutoCADFromRegistryHive(RegistryHive.LocalMachine, RegistryView.Registry32);
+            if (!string.IsNullOrEmpty(cand)) return cand;
+            cand = ProbeAutoCADFromRegistryHive(RegistryHive.LocalMachine, RegistryView.Registry64);
+            if (!string.IsNullOrEmpty(cand)) return cand;
+
+            // 3. Registry HKCU\Software\Autodesk\AutoCAD\R17.0
+            cand = ProbeAutoCADFromRegistryHive(RegistryHive.CurrentUser, RegistryView.Registry32);
+            if (!string.IsNullOrEmpty(cand)) return cand;
+            cand = ProbeAutoCADFromRegistryHive(RegistryHive.CurrentUser, RegistryView.Default);
+            if (!string.IsNullOrEmpty(cand)) return cand;
+
+            // 4. Default Program Files installation directories
+            foreach (string defDir in new string[] {
+                @"C:\Program Files (x86)\AutoCAD 2007",
+                @"C:\Program Files\AutoCAD 2007"
+            })
+            {
+                cand = NormalizeAcadExeCandidate(defDir);
+                if (!string.IsNullOrEmpty(cand)) return cand;
+            }
+
+            // 5. Fallback: acad.exe inside appDir (Full standalone mode)
+            string localAcad = Path.Combine(appDir, "acad.exe");
+            if (File.Exists(localAcad)) return Path.GetFullPath(localAcad);
+
+            return null;
+        }
+
+        public static bool IsLiteHostMode(string appDir, out string cadHostDir, out string acadExe)
+        {
+            acadExe = ResolveAutoCADExe(appDir);
+            cadHostDir = !string.IsNullOrEmpty(acadExe) ? Path.GetDirectoryName(acadExe).TrimEnd('\\') : appDir.TrimEnd('\\');
+            try
+            {
+                string fullApp = Path.GetFullPath(appDir).TrimEnd('\\');
+                string fullHost = Path.GetFullPath(cadHostDir).TrimEnd('\\');
+                return !string.Equals(fullApp, fullHost, StringComparison.OrdinalIgnoreCase);
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
         public static void ConfigureHardwareAccelerationAndSmoothDrafting(string appDir)
 
         {
             if (RegistryScope.IsLimited) return;
+
+            string cadHostDir;
+            string resolvedAcad;
+            if (IsLiteHostMode(appDir, out cadHostDir, out resolvedAcad))
+            {
+                try
+                {
+                    using (RegistryKey genKey = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Profiles\AVRoad\General"))
+                    {
+                        if (genKey != null)
+                        {
+                            genKey.SetValue("WhipArcEnable", 1, RegistryValueKind.DWord);
+                            genKey.SetValue("VtEnable", 3, RegistryValueKind.DWord);
+                            genKey.SetValue("Dragmode", 2, RegistryValueKind.DWord);
+                            genKey.SetValue("SelectionPreview", 2, RegistryValueKind.DWord);
+                            genKey.SetValue("CmdDia", 1, RegistryValueKind.DWord);
+                            genKey.SetValue("FileDia", 1, RegistryValueKind.DWord);
+                            genKey.SetValue("AttDia", 1, RegistryValueKind.DWord);
+                        }
+                    }
+                    using (RegistryKey edKey = Registry.CurrentUser.CreateSubKey(@"Software\Autodesk\AutoCAD\R17.0\ACAD-5001:409\Profiles\AVRoad\Editor Configuration"))
+                    {
+                        if (edKey != null) edKey.SetValue("ZoomFactor", 60, RegistryValueKind.DWord);
+                    }
+                }
+                catch { }
+                return;
+            }
 
 
             try
@@ -1921,6 +2101,14 @@ namespace AVRoadLauncher
         public static void PrepareProfile(string appDir, string argProfile, string fontPath, string plotStylePath, string plotterPath)
 
         {
+            string cadHostDir;
+            string resolvedAcad;
+            if (IsLiteHostMode(appDir, out cadHostDir, out resolvedAcad))
+            {
+                try { CADRegistryConfig.ApplyLiteConfig(appDir, cadHostDir, fontPath, plotStylePath, plotterPath); } catch { }
+                return;
+            }
+
             try { if (!string.IsNullOrEmpty(argProfile) && File.Exists(argProfile)) Cad7ProfileBootstrap.Ensure(appDir, argProfile); } catch { }
             if (RegistryScope.IsLimited)
             {
@@ -2675,6 +2863,13 @@ namespace AVRoadLauncher
         public static void EnsureSystemRegistryConfigured(string appDir)
         {
             EnsureWindowsUninstallRegistered(appDir);
+            string cadHostDir;
+            string resolvedAcad;
+            if (IsLiteHostMode(appDir, out cadHostDir, out resolvedAcad))
+            {
+                CADRegistryConfig.EnsureAcadExeConfig(cadHostDir, true);
+                return;
+            }
             CADRegistryConfig.EnsureAcadExeConfig(appDir);
             if (RegistryScope.IsLimited) return;
 
@@ -2728,7 +2923,7 @@ namespace AVRoadLauncher
             catch { }
         }
 
-public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, string dwgPath = "")
+        public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, string dwgPath = "")
 
         {
             if (!LicenseManager.IsActiveLicenseValid())
@@ -2740,25 +2935,34 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
                 }
             }
 
-            Cad7ComRegistration.Apply(appDir, null);
+            string cadHostDir;
+            string acadExe;
+            bool isLiteMode = IsLiteHostMode(appDir, out cadHostDir, out acadExe);
+
+            Cad7ComRegistration.Apply(appDir, null, cadHostDir);
             EnsureSystemRegistryConfigured(appDir);
             try
             {
-                CADRegistryConfig.WriteHkcuKeys(appDir);
-                string argProf = Path.Combine(appDir, "AVRoad_Profile.arg");
-                if (File.Exists(argProf)) Cad7ProfileBootstrap.Ensure(appDir, argProf);
+                if (isLiteMode)
+                {
+                    CADRegistryConfig.ApplyLiteConfig(appDir, cadHostDir);
+                }
+                else
+                {
+                    CADRegistryConfig.WriteHkcuKeys(appDir);
+                    string argProf = Path.Combine(appDir, "AVRoad_Profile.arg");
+                    if (File.Exists(argProf)) Cad7ProfileBootstrap.Ensure(appDir, argProf);
+                }
             }
             catch { }
 
-            string acadExe = Path.Combine(appDir, "acad.exe");
-
-            if (!File.Exists(acadExe))
+            if (string.IsNullOrEmpty(acadExe) || !File.Exists(acadExe))
 
             {
 
                 CloseSplashSafe();
 
-                MessageBox.Show("Không tìm thấy file nhân đồ họa AVCAD (acad.exe) để khởi động!", "AVRoad Solution", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Không tìm thấy file nhân đồ họa AutoCAD 2007 (acad.exe) để khởi động!\n\nVui lòng cài đặt AutoCAD 2007 hoặc cấu hình AutoCADPath trong AVRoad.ini.", "AVRoad Solution", MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 return;
 
@@ -2917,6 +3121,17 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
             }
 
             psi.UseShellExecute = false;
+            try
+            {
+                string existingPath = psi.EnvironmentVariables.ContainsKey("PATH")
+                    ? psi.EnvironmentVariables["PATH"]
+                    : (Environment.GetEnvironmentVariable("PATH") ?? "");
+                if (!existingPath.StartsWith(appDir + ";", StringComparison.OrdinalIgnoreCase))
+                {
+                    psi.EnvironmentVariables["PATH"] = appDir + (string.IsNullOrEmpty(existingPath) ? "" : ";" + existingPath);
+                }
+            }
+            catch { }
 
 
 
@@ -2944,7 +3159,7 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
 
                 string vcRedist = Path.Combine(appDir, "vcredist_x86.exe");
 
-                if (!RegistryScope.IsLimited && File.Exists(vcRedist) && (ex.Message.IndexOf("side-by-side", StringComparison.OrdinalIgnoreCase) >= 0 || ex.Message.IndexOf("14001") >= 0))
+                if (!RegistryScope.IsLimited && !isLiteMode && File.Exists(vcRedist) && (ex.Message.IndexOf("side-by-side", StringComparison.OrdinalIgnoreCase) >= 0 || ex.Message.IndexOf("14001") >= 0))
 
                 {
 
@@ -3567,15 +3782,21 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
         {
             if (RegistryScope.IsLimited) return;
 
-            string[] tlbs = new string[]
-            {
-                "acax17enu.tlb", "axdb17enu.tlb", "AcAuthEntities17enu.tlb",
-                "AcMPolygon17enu.tlb", "AcObjClassImp17.tlb", "AcSmComponents17.tlb",
-                "AdComFolderWatch17.tlb", "vl16.tlb", "ACcolor.ocx",
-                "AcadLinetype.ocx", "HatchPattern.ocx", "TDTObjectsWrapper.arx",
-                "acpi.arx", "AcPEXCtl.arx", "AcEditSpinAtl.dll", "AcFocusCtrl16.dll",
-                "AcSceneCOM.dll", "AcTc.dll", "AcTcTools.arx", "AcSmNav.arx", "acETransmit16.tlb"
-            };
+            string cadHostDir;
+            string resolvedAcad;
+            bool isLiteMode = IsLiteHostMode(appDir, out cadHostDir, out resolvedAcad);
+
+            string[] tlbs = isLiteMode
+                ? new string[] { "TDTObjectsWrapper.arx" }
+                : new string[]
+                {
+                    "acax17enu.tlb", "axdb17enu.tlb", "AcAuthEntities17enu.tlb",
+                    "AcMPolygon17enu.tlb", "AcObjClassImp17.tlb", "AcSmComponents17.tlb",
+                    "AdComFolderWatch17.tlb", "vl16.tlb", "ACcolor.ocx",
+                    "AcadLinetype.ocx", "HatchPattern.ocx", "TDTObjectsWrapper.arx",
+                    "acpi.arx", "AcPEXCtl.arx", "AcEditSpinAtl.dll", "AcFocusCtrl16.dll",
+                    "AcSceneCOM.dll", "AcTc.dll", "AcTcTools.arx", "AcSmNav.arx", "acETransmit16.tlb"
+                };
             foreach (string file in tlbs)
             {
                 try
@@ -3600,6 +3821,10 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
         {
             if (RegistryScope.IsLimited) { Cad7ComRegistration.Apply(appDir, null); return; }
 
+            string cadHostDir;
+            string resolvedAcad;
+            bool isLiteMode = IsLiteHostMode(appDir, out cadHostDir, out resolvedAcad);
+
             try
             {
                 string acadExe = Path.Combine(appDir, "acad.exe");
@@ -3607,6 +3832,8 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
                 {
                     if (classes == null) return;
 
+                    if (!isLiteMode)
+                    {
                     // 1. AutoCAD.Application.17
                     using (RegistryKey app17 = classes.CreateSubKey("AutoCAD.Application.17"))
                     {
@@ -3696,6 +3923,7 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
                             using (RegistryKey t = ifDoc.CreateSubKey("TypeLib")) { if (t != null) t.SetValue("", "{851A4561-F4EC-4631-9B0C-E7DC407512C9}"); }
                         }
                     }
+                    } // end !isLiteMode
 
                     // 8. TDTObjectsWrapper COM Classes
                     string wrapperArx = Path.Combine(appDir, "TDTObjectsWrapper.arx");
@@ -3753,18 +3981,21 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
                             axKey.SetValue("TdtDbPointObj", "{A6A88FF4-3FCF-437E-B5C4-4686F504EE7C}");
                         }
                     }
-                    try
+                    if (!isLiteMode)
                     {
-                        using (RegistryKey axKeyLM = Registry.LocalMachine.CreateSubKey(@"Software\Autodesk\ObjectDBX\R17.0\ActiveXCLSID"))
+                        try
                         {
-                            if (axKeyLM != null)
+                            using (RegistryKey axKeyLM = Registry.LocalMachine.CreateSubKey(@"Software\Autodesk\ObjectDBX\R17.0\ActiveXCLSID"))
                             {
-                                axKeyLM.SetValue("TdtDbMeasurePointObj", "{DADDF471-47F4-4799-AA36-14E6237BF7FC}");
-                                axKeyLM.SetValue("TdtDbPointObj", "{A6A88FF4-3FCF-437E-B5C4-4686F504EE7C}");
+                                if (axKeyLM != null)
+                                {
+                                    axKeyLM.SetValue("TdtDbMeasurePointObj", "{DADDF471-47F4-4799-AA36-14E6237BF7FC}");
+                                    axKeyLM.SetValue("TdtDbPointObj", "{A6A88FF4-3FCF-437E-B5C4-4686F504EE7C}");
+                                }
                             }
                         }
+                        catch { }
                     }
-                    catch { }
                 }
             }
             catch { }
@@ -3776,12 +4007,24 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
 
             try
             {
-                CADRegistryConfig.RegisterAll(appDir);
+                string cadHostDir;
+                string resolvedAcad;
+                if (IsLiteHostMode(appDir, out cadHostDir, out resolvedAcad))
+                {
+                    CADRegistryConfig.ApplyLiteConfig(appDir, cadHostDir);
+                    try { Cad7ComRegistration.Apply(appDir, null, cadHostDir); } catch { }
+                    RegisterTypeLibraries(appDir);
+                    RegisterAutoCADCOMClasses(appDir);
+                }
+                else
+                {
+                    CADRegistryConfig.RegisterAll(appDir);
 
-                try { Cad7ComRegistration.Apply(appDir, null); } catch { }
+                    try { Cad7ComRegistration.Apply(appDir, null); } catch { }
 
-                RegisterTypeLibraries(appDir);
-                RegisterAutoCADCOMClasses(appDir);
+                    RegisterTypeLibraries(appDir);
+                    RegisterAutoCADCOMClasses(appDir);
+                }
 
                 // Clean old cached MNR files so new AV_ menus recompile cleanly
                 try
@@ -3809,6 +4052,14 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
         public static void CleanPortableAssociations()
         {
             if (RegistryScope.IsLimited) return;
+            try
+            {
+                string baseDir = AppDomain.CurrentDomain.BaseDirectory.TrimEnd('\\');
+                string hostDir;
+                string hostExe;
+                if (IsLiteHostMode(baseDir, out hostDir, out hostExe)) return;
+            }
+            catch { }
 
             try
             {
@@ -3835,6 +4086,24 @@ public static void LaunchAutoCAD(string appDir, bool checkUpdateOnStartup, strin
                 if (string.IsNullOrEmpty(appDir))
                 {
                     appDir = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+                }
+
+                string cadHostDir;
+                string resolvedAcad;
+                if (IsLiteHostMode(appDir, out cadHostDir, out resolvedAcad))
+                {
+                    // In Lite mode, only seed AVRoad's own Profile.aws if missing; preserve Host CAD's profiles.
+                    string appDataSupportLite = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu\Support");
+                    string avroadProfileDir = Path.Combine(appDataSupportLite, @"Profiles\AVRoad");
+                    Directory.CreateDirectory(avroadProfileDir);
+                    string srcAwsLite = Path.Combine(appDir, "Profile.aws");
+                    if (!File.Exists(srcAwsLite)) srcAwsLite = Path.Combine(appDir, @"UserDataCache\Support\Profiles\AVRoad\Profile.aws");
+                    string dstAwsLite = Path.Combine(avroadProfileDir, "Profile.aws");
+                    if (File.Exists(srcAwsLite) && !File.Exists(dstAwsLite))
+                    {
+                        try { File.Copy(srcAwsLite, dstAwsLite, true); } catch { }
+                    }
+                    return;
                 }
 
                 // 1. Mirror UserDataCache\Support to AppData Support (AcFields.fdc, CUI, DCL, etc.)

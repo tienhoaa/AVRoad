@@ -24,8 +24,21 @@ namespace AVRoadDeployment
 
         public static string Apply(string appDir, string backupFile)
         {
-            string server = Path.GetFullPath(Path.Combine(appDir, "axdb.dll"));
-            if (!File.Exists(server)) throw new FileNotFoundException("Missing native ObjectDBX server", server);
+            return Apply(appDir, backupFile, null);
+        }
+
+        public static string Apply(string appDir, string backupFile, string cadHostDir)
+        {
+            string fullAppDir = Path.GetFullPath(appDir).TrimEnd('\\');
+            bool isLiteMode = !string.IsNullOrEmpty(cadHostDir) &&
+                              !string.Equals(fullAppDir, Path.GetFullPath(cadHostDir).TrimEnd('\\'), StringComparison.OrdinalIgnoreCase);
+
+            string server = Path.GetFullPath(Path.Combine(fullAppDir, "axdb.dll"));
+            if (isLiteMode || !File.Exists(server))
+            {
+                // In Lite/Host CAD mode or when axdb.dll is hosted elsewhere, skip COM overwrite safely.
+                return null;
+            }
             if (String.IsNullOrEmpty(backupFile)) backupFile = Path.Combine(appDir, ".avroad-rollback", "com-v2.xml");
             using (RegistryKey root = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry32))
             {
@@ -90,6 +103,7 @@ namespace AVRoadDeployment
                 appDir = Path.GetFullPath(appDir).TrimEnd('\\');
                 string expectedAcpi = Path.Combine(appDir, "acpi.arx");
                 string expectedPex = Path.Combine(appDir, "AcPEXCtl.arx");
+                if (!File.Exists(expectedAcpi) || !File.Exists(expectedPex)) return;
                 using (RegistryKey root = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry32))
                 using (RegistryKey rootLM = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32))
                 using (RegistryKey k1 = root.OpenSubKey(@"Software\Classes\CLSID\{31DBB451-9109-41EA-854C-B25905225AEA}\InProcServer32", false))

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Security.AccessControl;
 using System.Security.Principal;
@@ -202,6 +204,11 @@ namespace AVRoadLauncher
 
         public static void EnsureAcadExeConfig(string appDir)
         {
+            EnsureAcadExeConfig(appDir, false);
+        }
+
+        public static void EnsureAcadExeConfig(string appDir, bool backupExisting)
+        {
             try
             {
                 if (string.IsNullOrEmpty(appDir) || !Directory.Exists(appDir)) return;
@@ -217,7 +224,18 @@ namespace AVRoadLauncher
                         needsWrite = true;
                     }
                 }
-                if (needsWrite) File.WriteAllText(cfgPath, desired, System.Text.Encoding.UTF8);
+                if (needsWrite)
+                {
+                    if (backupExisting && File.Exists(cfgPath))
+                    {
+                        string bakPath = cfgPath + ".avroad.bak";
+                        if (!File.Exists(bakPath))
+                        {
+                            File.Copy(cfgPath, bakPath, false);
+                        }
+                    }
+                    File.WriteAllText(cfgPath, desired, System.Text.Encoding.UTF8);
+                }
             }
             catch { }
         }
@@ -684,6 +702,452 @@ namespace AVRoadLauncher
         {
             WriteHkcuKeys(appDir);
             WriteHklmKeys(appDir);
+        }
+
+        public static bool ApplyLiteConfig(string appDir, string cadHostDir)
+        {
+            return ApplyLiteConfig(appDir, cadHostDir, null, null, null);
+        }
+
+        public static bool ApplyLiteConfig(string appDir, string cadHostDir, string fontPath, string plotStylePath, string plotterPath)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(appDir)) return false;
+                appDir = Path.GetFullPath(appDir).TrimEnd('\\');
+                if (string.IsNullOrEmpty(cadHostDir) || !Directory.Exists(cadHostDir)) cadHostDir = appDir;
+                else cadHostDir = Path.GetFullPath(cadHostDir).TrimEnd('\\');
+
+                // Ensure acad.exe.config on the Host CAD directory (with .avroad.bak backup if modifying existing file)
+                EnsureAcadExeConfig(cadHostDir, true);
+
+                string iniPath = Path.Combine(appDir, "AVRoad.ini");
+                if (string.IsNullOrEmpty(fontPath)) fontPath = ReadIniKey(iniPath, "FontPath");
+                if (string.IsNullOrEmpty(plotStylePath)) plotStylePath = ReadIniKey(iniPath, "PlotStylePath");
+                if (string.IsNullOrEmpty(plotterPath)) plotterPath = ReadIniKey(iniPath, "PlotterPath");
+
+                string appDataEnuDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu");
+                string localDataEnuDir = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData), @"Autodesk\AutoCAD 2007\R17.0\enu");
+                try
+                {
+                    Directory.CreateDirectory(localDataEnuDir);
+                    Directory.CreateDirectory(Path.Combine(localDataEnuDir, "Template"));
+                    Directory.CreateDirectory(appDataEnuDir);
+                    Directory.CreateDirectory(Path.Combine(appDataEnuDir, "Support"));
+                    Directory.CreateDirectory(Path.Combine(appDataEnuDir, @"Support\Profiles\AVRoad"));
+                }
+                catch { }
+
+                // Copy AVRoad's Profile.aws only for the AVRoad profile (never overwrite Host CAD profiles)
+                try
+                {
+                    string srcAws = Path.Combine(appDir, "Profile.aws");
+                    if (!File.Exists(srcAws)) srcAws = Path.Combine(appDir, @"UserDataCache\Support\Profiles\AVRoad\Profile.aws");
+                    if (File.Exists(srcAws))
+                    {
+                        string dstAws = Path.Combine(appDataEnuDir, @"Support\Profiles\AVRoad\Profile.aws");
+                        if (!File.Exists(dstAws)) File.Copy(srcAws, dstAws, true);
+                    }
+                }
+                catch { }
+
+                string curVer = DetectR17CurVer();
+                string acadRegBase = @"Software\Autodesk\AutoCAD\R17.0\" + curVer;
+                string profileSubPath = acadRegBase + @"\Profiles\AVRoad";
+
+                using (RegistryKey root = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry32))
+                {
+                    // Import AVRoad_Profile.arg only if AVRoad profile does not yet exist
+                    bool profileExists = false;
+                    using (RegistryKey dw = root.OpenSubKey(profileSubPath + @"\Drawing Window", false))
+                    {
+                        if (dw != null) profileExists = true;
+                    }
+                    if (!profileExists)
+                    {
+                        string argProf = ReadIniKey(iniPath, "ArgProfilePath");
+                        if (string.IsNullOrEmpty(argProf) || !File.Exists(argProf))
+                            argProf = Path.Combine(appDir, "AVRoad_Profile.arg");
+                        if (File.Exists(argProf))
+                        {
+                            ImportArgProfileSafe(argProf, curVer);
+                        }
+                    }
+
+                    // Build Support Path: AVRoad paths FIRST, followed by CAD Host paths
+                    List<string> acadPaths = new List<string>();
+                    AddDirUnique(acadPaths, Path.Combine(appDir, "Support"));
+                    AddDirUnique(acadPaths, appDir);
+                    foreach (string rel in new string[] {
+                        "Fonts", "Express", @"Support\color", "Help", "Data",
+                        @"Data\Symbols", @"Data\Bien bao", @"Data\Color", @"Data\Ltype",
+                        "Lib", "CTTK", "DCCT", "Blocks", "Template"
+                    })
+                    {
+                        AddDirUnique(acadPaths, Path.Combine(appDir, rel));
+                    }
+
+                    // Append CAD Host paths
+                    if (!string.Equals(appDir, cadHostDir, StringComparison.OrdinalIgnoreCase))
+                    {
+                        AddDirUnique(acadPaths, Path.Combine(cadHostDir, "Support"));
+                        AddDirUnique(acadPaths, cadHostDir);
+                        AddDirUnique(acadPaths, Path.Combine(cadHostDir, "Fonts"));
+                        AddDirUnique(acadPaths, Path.Combine(cadHostDir, "Express"));
+                        AddDirUnique(acadPaths, Path.Combine(cadHostDir, "Help"));
+                        AddDirUnique(acadPaths, Path.Combine(cadHostDir, @"Support\color"));
+                    }
+                    AddDirUnique(acadPaths, fontPath);
+                    AddDirUnique(acadPaths, Path.Combine(appDataEnuDir, "Support"));
+
+                    // Resolve TemplatePath & ACADDRV (prefer AVRoad if non-empty, else CAD Host)
+                    string appTemplate = Path.Combine(appDir, "Template");
+                    string hostTemplate = Path.Combine(cadHostDir, "Template");
+                    string templatePath = HasDirectoryContent(appTemplate) ? appTemplate : (Directory.Exists(hostTemplate) ? hostTemplate : appTemplate);
+
+                    string appDrv = Path.Combine(appDir, "Drv");
+                    string hostDrv = Path.Combine(cadHostDir, "Drv");
+                    bool appHasHdi = Directory.Exists(appDrv) && Directory.GetFiles(appDrv, "*.hdi").Length > 0;
+                    string drvPath = appHasHdi ? appDrv : (Directory.Exists(hostDrv) ? hostDrv : appDrv);
+
+                    List<string> colorPaths = new List<string>();
+                    AddDirUnique(colorPaths, Path.Combine(appDir, @"Support\color"));
+                    AddDirUnique(colorPaths, Path.Combine(cadHostDir, @"Support\color"));
+                    string colorBook = colorPaths.Count > 0 ? string.Join(";", colorPaths.ToArray()) + ";" : Path.Combine(appDir, @"Support\color") + ";";
+
+                    string hostHelpDir = Path.Combine(cadHostDir, "Help");
+                    string appHelpDir = Path.Combine(appDir, "Help");
+                    string helpDir = Directory.Exists(hostHelpDir) ? hostHelpDir : appHelpDir;
+                    string helpFile = Path.Combine(appHelpDir, "acad.chm");
+                    if (!File.Exists(helpFile)) helpFile = Path.Combine(appDir, "acad.chm");
+                    if (!File.Exists(helpFile)) helpFile = Path.Combine(hostHelpDir, "acad.chm");
+                    if (!File.Exists(helpFile)) helpFile = Path.Combine(cadHostDir, "acad.chm");
+
+                    string resolvedPlotters = (!string.IsNullOrEmpty(plotterPath) && Directory.Exists(plotterPath))
+                        ? plotterPath
+                        : (Directory.Exists(Path.Combine(appDir, "Plotters")) ? Path.Combine(appDir, "Plotters")
+                        : (Directory.Exists(Path.Combine(cadHostDir, "Plotters")) ? Path.Combine(cadHostDir, "Plotters")
+                        : Path.Combine(appDataEnuDir, "Plotters")));
+
+                    string resolvedPlotStyles = (!string.IsNullOrEmpty(plotStylePath) && Directory.Exists(plotStylePath))
+                        ? plotStylePath
+                        : (Directory.Exists(Path.Combine(appDir, "Plot Styles")) ? Path.Combine(appDir, "Plot Styles")
+                        : (Directory.Exists(Path.Combine(cadHostDir, "Plot Styles")) ? Path.Combine(cadHostDir, "Plot Styles")
+                        : Path.Combine(appDataEnuDir, "Plot Styles")));
+
+                    using (RegistryKey genKey = root.CreateSubKey(profileSubPath + @"\General"))
+                    {
+                        if (genKey != null)
+                        {
+                            genKey.SetValue("ACAD", string.Join(";", acadPaths.ToArray()) + ";", RegistryValueKind.String);
+                            genKey.SetValue("ACADDRV", drvPath + ";", RegistryValueKind.String);
+                            genKey.SetValue("TemplatePath", templatePath, RegistryValueKind.String);
+                            genKey.SetValue("ColorBookLocation", colorBook, RegistryValueKind.String);
+                            genKey.SetValue("HelpFilePath", helpDir, RegistryValueKind.String);
+                            if (File.Exists(helpFile)) genKey.SetValue("ACADHELP", helpFile, RegistryValueKind.String);
+                            genKey.SetValue("PrinterConfigDir", resolvedPlotters, RegistryValueKind.String);
+                            genKey.SetValue("PrinterDescDir", Path.Combine(resolvedPlotters, "PMP Files"), RegistryValueKind.String);
+                            genKey.SetValue("PrinterStyleSheetDir", resolvedPlotStyles, RegistryValueKind.String);
+                            genKey.SetValue("DWGCheck", 0, RegistryValueKind.DWord);
+                            genKey.SetValue("Pickfirst", 1, RegistryValueKind.DWord);
+                            genKey.SetValue("Pickstyle", 1, RegistryValueKind.DWord);
+                            genKey.SetValue("DwgAlwaysAssociate", 0, RegistryValueKind.DWord);
+                            genKey.SetValue("WhipArcEnable", 1, RegistryValueKind.DWord);
+                            genKey.SetValue("VtEnable", 3, RegistryValueKind.DWord);
+                            genKey.SetValue("Dragmode", 2, RegistryValueKind.DWord);
+                            genKey.SetValue("SelectionPreview", 2, RegistryValueKind.DWord);
+                            genKey.SetValue("CmdDia", 1, RegistryValueKind.DWord);
+                            genKey.SetValue("FileDia", 1, RegistryValueKind.DWord);
+                            genKey.SetValue("AttDia", 1, RegistryValueKind.DWord);
+                        }
+                    }
+
+                    using (RegistryKey cfgKey = root.CreateSubKey(profileSubPath + @"\General Configuration"))
+                    {
+                        if (cfgKey != null)
+                        {
+                            string menuFile = Path.Combine(appDir, @"Support\acad");
+                            if (!File.Exists(menuFile + ".cui") && File.Exists(Path.Combine(appDir, "acad.cui")))
+                                menuFile = Path.Combine(appDir, "acad");
+                            cfgKey.SetValue("MenuFile", menuFile, RegistryValueKind.String);
+                        }
+                    }
+
+                    using (RegistryKey edKey = root.CreateSubKey(profileSubPath + @"\Editor Configuration"))
+                    {
+                        if (edKey != null)
+                        {
+                            string fmp = Path.Combine(appDir, @"Support\acad.fmp");
+                            if (!File.Exists(fmp)) fmp = Path.Combine(cadHostDir, @"Support\acad.fmp");
+                            if (File.Exists(fmp)) edKey.SetValue("FontMappingFile", fmp, RegistryValueKind.String);
+
+                            string cus = Path.Combine(appDir, @"Support\sample.cus");
+                            if (!File.Exists(cus)) cus = Path.Combine(cadHostDir, @"Support\sample.cus");
+                            if (File.Exists(cus)) edKey.SetValue("CustomDictionary", cus, RegistryValueKind.String);
+
+                            edKey.SetValue("ZoomFactor", 60, RegistryValueKind.DWord);
+                        }
+                    }
+
+                    using (RegistryKey cmdKey = root.CreateSubKey(profileSubPath + @"\Command Line Windows"))
+                    {
+                        if (cmdKey != null)
+                        {
+                            cmdKey.SetValue("CmdLine.FontFace", "Arial", RegistryValueKind.String);
+                            cmdKey.SetValue("CmdLine.FontHeight", 10, RegistryValueKind.DWord);
+                            cmdKey.SetValue("CmdLine.FontWeight", 400, RegistryValueKind.DWord);
+                            cmdKey.SetValue("TextWindow.FontFace", "Arial", RegistryValueKind.String);
+                            cmdKey.SetValue("TextWindow.FontHeight", 10, RegistryValueKind.DWord);
+                            cmdKey.SetValue("TextWindow.FontWeight", 400, RegistryValueKind.DWord);
+                        }
+                    }
+
+                    foreach (string dlg in new string[] { "CustomizeDialog", "DrawingSettingsDialog", "OptionsDialog" })
+                    {
+                        try
+                        {
+                            using (RegistryKey tk = root.OpenSubKey(profileSubPath + @"\Dialogs\" + dlg + @"\TabExtensions", true))
+                            {
+                                if (tk != null) tk.DeleteValue("acmgd.dll", false);
+                            }
+                        }
+                        catch { }
+                    }
+
+                    using (RegistryKey menuKey = root.CreateSubKey(profileSubPath + @"\Menus"))
+                    {
+                        if (menuKey != null)
+                        {
+                            menuKey.SetValue("Group1", "CUSTOM custom", RegistryValueKind.String);
+                            menuKey.SetValue("Group2", "EXPRESS express", RegistryValueKind.String);
+                            menuKey.SetValue("Group3", "KSVN KSVN", RegistryValueKind.String);
+                            menuKey.SetValue("Group4", "VNROAD VNROAD", RegistryValueKind.String);
+                            menuKey.SetValue("Group5", "SANNEN SANNEN", RegistryValueKind.String);
+                            menuKey.SetValue("Group6", "KVN KVN", RegistryValueKind.String);
+                            menuKey.SetValue("Group7", "DCCT DCCT", RegistryValueKind.String);
+                            menuKey.SetValue("Group8", "TDT3D TDT3D", RegistryValueKind.String);
+                            menuKey.SetValue("Group9", "RM RM", RegistryValueKind.String);
+                            for (int i = 1; i <= 30; i++) { try { menuKey.DeleteValue("Pop" + i, false); } catch { } }
+                            string[] order = new string[] {
+                                "ACAD pop1", "ACAD pop2", "ACAD pop3", "ACAD pop4", "ACAD pop5",
+                                "ACAD pop6", "ACAD pop7", "ACAD pop8", "ACAD pop9", "ACAD pop10",
+                                "EXPRESS pop1",
+                                "KSVN POP1", "VNROAD POP1", "SANNEN POP1", "KVN POP1",
+                                "DCCT POP1", "TDT3D POP1", "RM POP1",
+                                "ACAD pop11"
+                            };
+                            for (int i = 0; i < order.Length; i++)
+                            {
+                                menuKey.SetValue("Pop" + (i + 1), order[i], RegistryValueKind.String);
+                            }
+                        }
+                    }
+
+                    // Sanitize any stale user profile paths inside Profiles\AVRoad only
+                    using (RegistryKey profRoot = root.OpenSubKey(profileSubPath, true))
+                    {
+                        if (profRoot != null) SanitizeProfileUserPaths(profRoot);
+                    }
+
+                    // Register TDT / AVRoad Applications only (do NOT touch AutoCAD's own Applications or Location)
+                    using (RegistryKey appKey = root.CreateSubKey(acadRegBase + @"\Applications"))
+                    {
+                        if (appKey != null)
+                        {
+                            using (RegistryKey uiKey = appKey.CreateSubKey("AVRoadUI21"))
+                            {
+                                if (uiKey != null)
+                                {
+                                    uiKey.SetValue("LOADER", Path.Combine(appDir, @"UI21\AVRoad.SinglePanel21.dll"), RegistryValueKind.String);
+                                    uiKey.SetValue("LOADCTRLS", 2, RegistryValueKind.DWord);
+                                    uiKey.SetValue("DESCRIPTION", "AVRoad SinglePanel UI & Security", RegistryValueKind.String);
+                                    uiKey.SetValue("MANAGED", 1, RegistryValueKind.DWord);
+                                    using (RegistryKey ck = uiKey.CreateSubKey("Commands"))
+                                    {
+                                        if (ck != null)
+                                        {
+                                            ck.SetValue("AVROADUI21", "AVROADUI21", RegistryValueKind.String);
+                                            ck.SetValue("AV_LICENSE", "AV_LICENSE", RegistryValueKind.String);
+                                            ck.SetValue("AV_HWID", "AV_HWID", RegistryValueKind.String);
+                                        }
+                                    }
+                                    using (RegistryKey gk = uiKey.CreateSubKey("Groups"))
+                                    {
+                                        if (gk != null) gk.SetValue("AVROAD_UI", "AVROAD_UI", RegistryValueKind.String);
+                                    }
+                                }
+                            }
+                            using (RegistryKey tdtKey = appKey.CreateSubKey("TDTObjects"))
+                            {
+                                if (tdtKey != null)
+                                {
+                                    tdtKey.SetValue("LOADER", Path.Combine(appDir, "TDTObjects17.dbx"), RegistryValueKind.String);
+                                    tdtKey.SetValue("LOADCTRLS", 13, RegistryValueKind.DWord);
+                                    tdtKey.SetValue("DESCRIPTION", "TDT Objects Module", RegistryValueKind.String);
+                                }
+                            }
+                        }
+                    }
+
+                    using (RegistryKey odbxApp = root.CreateSubKey(@"Software\Autodesk\ObjectDBX\R17.0\Applications\TDTObjects"))
+                    {
+                        if (odbxApp != null)
+                        {
+                            odbxApp.SetValue("LOADER", Path.Combine(appDir, "TDTObjects17.dbx"), RegistryValueKind.String);
+                            odbxApp.SetValue("LOADCTRLS", 9, RegistryValueKind.DWord);
+                            odbxApp.SetValue("DESCRIPTION", "TDT Objects version 1.0", RegistryValueKind.String);
+                        }
+                    }
+
+                    using (RegistryKey axKey = root.CreateSubKey(@"Software\Autodesk\ObjectDBX\R17.0\ActiveXCLSID"))
+                    {
+                        if (axKey != null)
+                        {
+                            axKey.SetValue("TdtDbMeasurePointObj", "{DADDF471-47F4-4799-AA36-14E6237BF7FC}", RegistryValueKind.String);
+                            axKey.SetValue("TdtDbPointObj", "{A6A88FF4-3FCF-437E-B5C4-4686F504EE7C}", RegistryValueKind.String);
+                        }
+                    }
+                }
+
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
+        }
+
+        private static string DetectR17CurVer()
+        {
+            try
+            {
+                using (RegistryKey root = RegistryKey.OpenBaseKey(RegistryHive.CurrentUser, RegistryView.Registry32))
+                using (RegistryKey k = root.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0", false))
+                {
+                    string v = k == null ? null : k.GetValue("CurVer") as string;
+                    if (!string.IsNullOrEmpty(v)) return v;
+                }
+            }
+            catch { }
+            try
+            {
+                using (RegistryKey rootLM = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32))
+                using (RegistryKey k = rootLM.OpenSubKey(@"Software\Autodesk\AutoCAD\R17.0", false))
+                {
+                    string v = k == null ? null : k.GetValue("CurVer") as string;
+                    if (!string.IsNullOrEmpty(v)) return v;
+                }
+            }
+            catch { }
+            return "ACAD-5001:409";
+        }
+
+        private static void ImportArgProfileSafe(string argFile, string curVer)
+        {
+            try
+            {
+                string content = File.ReadAllText(argFile);
+                string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+                content = content.Replace(@"C:\\Users\\PC", userProfile.Replace("\\", "\\\\"));
+                content = content.Replace(@"C:\Users\PC", userProfile);
+                if (!string.Equals(curVer, "ACAD-5001:409", StringComparison.OrdinalIgnoreCase))
+                {
+                    content = content.Replace("ACAD-5001:409", curVer);
+                }
+                string tmp = Path.Combine(Path.GetTempPath(), "avroad-lite-profile-" + Guid.NewGuid().ToString("N") + ".reg");
+                try
+                {
+                    File.WriteAllText(tmp, content, System.Text.Encoding.Unicode);
+                    string regExe = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.System), "reg.exe");
+                    ProcessStartInfo psi = new ProcessStartInfo(regExe, "import \"" + tmp + "\"");
+                    psi.UseShellExecute = false;
+                    psi.CreateNoWindow = true;
+                    using (Process p = Process.Start(psi))
+                    {
+                        if (p != null) p.WaitForExit(15000);
+                    }
+                }
+                finally
+                {
+                    try { if (File.Exists(tmp)) File.Delete(tmp); } catch { }
+                }
+            }
+            catch { }
+        }
+
+        private static void SanitizeProfileUserPaths(RegistryKey key)
+        {
+            if (key == null) return;
+            string userProfile = Environment.GetFolderPath(Environment.SpecialFolder.UserProfile);
+            foreach (string vName in key.GetValueNames())
+            {
+                try
+                {
+                    if (key.GetValueKind(vName) == RegistryValueKind.String)
+                    {
+                        string val = key.GetValue(vName) as string;
+                        if (!string.IsNullOrEmpty(val) && val.IndexOf(@"C:\Users\PC", StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            string replaced = val.Replace(@"C:\Users\PC", userProfile).Replace(@"c:\Users\PC", userProfile);
+                            key.SetValue(vName, replaced, RegistryValueKind.String);
+                        }
+                    }
+                }
+                catch { }
+            }
+            foreach (string subName in key.GetSubKeyNames())
+            {
+                try
+                {
+                    using (RegistryKey sub = key.OpenSubKey(subName, true))
+                    {
+                        SanitizeProfileUserPaths(sub);
+                    }
+                }
+                catch { }
+            }
+        }
+
+        private static void AddDirUnique(List<string> list, string dir)
+        {
+            if (string.IsNullOrEmpty(dir)) return;
+            string clean = dir.Trim().TrimEnd('\\');
+            if (string.IsNullOrEmpty(clean) || !Directory.Exists(clean)) return;
+            foreach (string existing in list)
+            {
+                if (string.Equals(existing, clean, StringComparison.OrdinalIgnoreCase)) return;
+            }
+            list.Add(clean);
+        }
+
+        private static bool HasDirectoryContent(string dir)
+        {
+            try
+            {
+                return !string.IsNullOrEmpty(dir) && Directory.Exists(dir) &&
+                       (Directory.GetFiles(dir).Length > 0 || Directory.GetDirectories(dir).Length > 0);
+            }
+            catch { return false; }
+        }
+
+        private static string ReadIniKey(string iniPath, string keyName)
+        {
+            try
+            {
+                if (!File.Exists(iniPath)) return "";
+                foreach (string raw in File.ReadAllLines(iniPath))
+                {
+                    string line = raw.Trim();
+                    if (line.Length == 0 || line.StartsWith(";") || line.StartsWith("#") || line.StartsWith("[")) continue;
+                    int eq = line.IndexOf('=');
+                    if (eq > 0 && string.Equals(line.Substring(0, eq).Trim(), keyName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        return line.Substring(eq + 1).Trim().Trim('"');
+                    }
+                }
+            }
+            catch { }
+            return "";
         }
     }
 }

@@ -322,7 +322,16 @@ public sealed class DesignPanel : UserControl {
     bool selectingModule;
     readonly ImageList icons=new ImageList();
     Font groupFont=new Font("Segoe UI",12F,FontStyle.Bold);
-    readonly string cadHome=Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+    static readonly string processHome=Path.GetDirectoryName(System.Diagnostics.Process.GetCurrentProcess().MainModule.FileName);
+    readonly string cadHome=ResolveAvRoadHome();
+
+    static string ResolveAvRoadHome() {
+        try {
+            DirectoryInfo parent=Directory.GetParent(DesignCommands.Home);
+            if(parent!=null && Directory.Exists(parent.FullName)) return parent.FullName;
+        } catch { }
+        return processHome;
+    }
     int currentFontLevel=1;
 
     public DesignPanel() {
@@ -498,7 +507,12 @@ public sealed class DesignPanel : UserControl {
         if(!Regex.IsMatch(item.Command,"^[A-Za-z0-9_]+$") || !Regex.IsMatch(item.Menu,"^[A-Z0-9]+$") || !Regex.IsMatch(item.Uid,"^MMU_[0-9]+$")) return false;
         try { XmlDocument menu;
             if(fresh || !menuCache.TryGetValue(item.Menu,out menu)) {
-                menu=new XmlDocument(); menu.XmlResolver=null; menu.Load(Path.Combine(cadHome,item.Menu+".cui"));
+                string cuiPath=Path.Combine(cadHome,item.Menu+".cui");
+                if(!File.Exists(cuiPath)) {
+                    string fallbackCui=Path.Combine(processHome,item.Menu+".cui");
+                    if(File.Exists(fallbackCui)) cuiPath=fallbackCui;
+                }
+                menu=new XmlDocument(); menu.XmlResolver=null; menu.Load(cuiPath);
                 if(!fresh) menuCache[item.Menu]=menu;
             }
             XmlNode macro=menu.SelectSingleNode("//MenuMacro[@UID='"+item.Uid+"']/Macro"); return macro!=null && macro["Command"].InnerText.Trim()=="^C^C"+item.Command && macro["Name"].InnerText==item.MenuName;
@@ -541,6 +555,10 @@ public sealed class DesignPanel : UserControl {
                 if(!Directory.Exists(toolsDir)) {
                     string alt=Path.Combine(DesignCommands.Home,@"Support\Tools");
                     if(Directory.Exists(alt)) toolsDir=alt;
+                    else {
+                        string alt2=Path.Combine(processHome,@"Support\Tools");
+                        if(Directory.Exists(alt2)) toolsDir=alt2;
+                    }
                 }
                 if(item.Command=="OPENTOOLSDIR") {
                     if(!Directory.Exists(toolsDir)) Directory.CreateDirectory(toolsDir);
